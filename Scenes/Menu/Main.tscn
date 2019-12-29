@@ -1,0 +1,128 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.376471, 0.376471, 0.376471, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.376471, 0.376471, 0.376471, 1 )
+
+[node name="Main" type="Control"]
+margin_top = -1.0
+margin_right = 960.0
+margin_bottom = 539.0
+script = ExtResource( 1 )
+
+[node name="TitleLabel" type="Label" parent="."]
+margin_left = 380.0
+margin_top = 60.0
+margin_right = 580.0
+margin_bottom = 160.0
+text = "project sabaki pants
+- - -
+( minimum viable product )"
+align = 1
+valign = 1
+
+[node name="ButtonPlay" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -90.0
+margin_right = 100.0
+margin_bottom = -40.0
+text = "play"
+
+[node name="TargetCountLabel" type="Label" parent="."]
+margin_left = 330.0
+margin_top = 280.0
+margin_right = 630.0
+margin_bottom = 430.0
+custom_styles/normal = SubResource( 1 )
+text = "
+
+How many targets?
+
+(8)               (16)"
+align = 1
+
+[node name="TargetCount08" type="CheckBox" parent="."]
+margin_left = 413.43
+margin_top = 364.0
+margin_right = 437.43
+margin_bottom = 388.0
+rect_scale = Vector2( 2, 2 )
+
+[node name="TargetCount16" type="CheckBox" parent="."]
+margin_left = 493.71
+margin_top = 364.0
+margin_right = 517.711
+margin_bottom = 388.0
+rect_scale = Vector2( 2, 2 )
+
+[node name="ControlsAndObjective" type="Label" parent="."]
+margin_left = 680.0
+margin_top = 111.0
+margin_right = 940.0
+margin_bottom = 381.0
+custom_styles/normal = SubResource( 2 )
+text = "
+Controls:
+'W' key = Move vehicle forward.
+'S' key = Move vehicle backward.
+'A' key = Strafe vehicle left.
+'D' key = Strafe vehicle right.
+'up/down' mouse =
+    Look camera/targeting up/down.
+'left/right' mouse =
+    Rotate vehicle left/right.
+'spacebar' key (or) 'left' mousebutton =
+    Shoot.
+
+Objective:
+Shoot all targets."
+
+[node name="Description" type="Label" parent="."]
+margin_left = 20.0
+margin_top = 111.0
+margin_right = 280.0
+margin_bottom = 381.0
+custom_styles/normal = SubResource( 2 )
+text = "
+Description:
+This is a hovercraft style vehicle
+combat game using true physics
+simulations.
+Controls of a frictionless vehicle are
+challenging...  Take it slow.
+For every amount of force applied in
+one direction, to stop the vehicle, an
+equal amount of force must applied in
+the opposite direction."
+
+[node name="SliderMouseSensitivity" type="HSlider" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -230.0
+margin_top = 201.0
+margin_right = -30.0
+margin_bottom = 217.0
+min_value = 1.0
+value = 50.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+tick_count = 20
+
+[node name="LabelMouseSensitivity" type="Label" parent="."]
+margin_left = 490.0
+margin_top = 471.0
+margin_right = 530.0
+margin_bottom = 485.0
+[connection signal="pressed" from="ButtonPlay" to="." method="_on_ButtonPlay_pressed"]
+[connection signal="value_changed" from="SliderMouseSensitivity" to="." method="_on_SliderMouseSensitivity_value_changed"]

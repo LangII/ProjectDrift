@@ -1,0 +1,62 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/Win.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.376471, 0.376471, 0.376471, 1 )
+
+[node name="Win" type="Control"]
+margin_right = 960.0
+margin_bottom = 540.0
+script = ExtResource( 1 )
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -100.0
+margin_top = 60.0
+margin_right = 100.0
+margin_bottom = 160.0
+text = "You did it!
+
+Aren't you special...
+
+Wanna play again?"
+align = 1
+valign = 1
+
+[node name="ButtonReplay" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -90.0
+margin_right = 100.0
+margin_bottom = -40.0
+text = "yes"
+
+[node name="BestTimes08" type="Label" parent="."]
+margin_left = 270.0
+margin_top = 290.0
+margin_right = 450.0
+margin_bottom = 460.0
+custom_styles/normal = SubResource( 1 )
+text = "
+Best Times (8 targets):
+
+"
+align = 1
+
+[node name="BestTimes16" type="Label" parent="."]
+margin_left = 510.0
+margin_top = 290.0
+margin_right = 690.0
+margin_bottom = 460.0
+custom_styles/normal = SubResource( 1 )
+text = "
+Best Times (16 targets):
+
+"
+align = 1
+[connection signal="pressed" from="ButtonReplay" to="." method="_on_ButtonReplay_pressed"]
