@@ -19,6 +19,10 @@ config/name="ProjectDrift"
 run/main_scene="res://Scenes/Main/Main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Globals="*res://Scripts/Globals.gd"
+
 [input]
 
 ui_left={
