@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scenes/Models/ObstColRamp.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/Vehicle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Main/Vehicle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Menu/Pause.tscn" type="PackedScene" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
@@ -252,7 +252,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 12, -28 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 12, 28 )
 
 [node name="Vehicle" parent="." instance=ExtResource( 2 )]
-MOUSE_SENSITIVITY = null
-MOUSE_VERT_DAMP = null
 
 [node name="Pause" parent="." instance=ExtResource( 3 )]
