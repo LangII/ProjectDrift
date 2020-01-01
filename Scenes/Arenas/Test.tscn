@@ -44,7 +44,7 @@ albedo_color = Color( 0.0666667, 0.0980392, 0.937255, 1 )
 [sub_resource type="CubeMesh" id=14]
 material = SubResource( 13 )
 
-[node name="Level01" type="Spatial"]
+[node name="Test01" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
@@ -120,6 +120,7 @@ transform = Transform( -4.37114e-008, 0, 40, 0, 4, 0, -1, 0, -1.74846e-006, 0, 5
 shape = SubResource( 3 )
 
 [node name="ArenaObstacles" type="Spatial" parent="."]
+editor/display_folded = true
 
 [node name="ObstaclesPillars" type="Spatial" parent="ArenaObstacles"]
 editor/display_folded = true
@@ -169,6 +170,7 @@ material/0 = null
 shape = SubResource( 8 )
 
 [node name="ObstaclesRamps" type="Spatial" parent="ArenaObstacles"]
+editor/display_folded = true
 
 [node name="ObstColRampXp" parent="ArenaObstacles/ObstaclesRamps" instance=ExtResource( 1 )]
 transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 30, 5, 0 )
