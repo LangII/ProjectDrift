@@ -3,7 +3,7 @@ extends Node
 
 
 
-var main = {
+var gameplay = {
     'arena': 'Test01'
 }
 

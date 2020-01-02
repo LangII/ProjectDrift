@@ -6,7 +6,7 @@ onready var controls = get_node('/root/Controls')
 onready var vehicle = preload('res://Scenes/Test/Vehicle.tscn')
 onready var pause = preload('res://Scenes/Menu/Pause.tscn')
 
-onready var arena_tag = controls.main['arena']
+onready var arena_tag = controls.gameplay['arena']
 
 onready var arena = load('res://Scenes/Arenas/' + arena_tag + '.tscn')
 
