@@ -9,15 +9,15 @@ extends VehicleBody
                                                                             ###   CONTROL VARS   ###
                                                                             ########################
 
-onready var globals = get_node('/root/Globals')
+onready var controls = get_node('/root/Controls')
 
-onready var FRICTION =          globals.vehicle['friction']
-onready var THRUST =            globals.vehicle['thrust']
-onready var SPIN =              globals.vehicle['spin']
-onready var THRUST_DAMP =       globals.vehicle['thrust_damp']
-onready var SPIN_DAMP =         globals.vehicle['spin_damp']
-onready var MOUSE_SENSITIVITY = globals.vehicle['mouse_sensitivity']
-onready var MOUSE_VERT_DAMP =   globals.vehicle['mouse_vert_damp']
+onready var FRICTION =          controls.vehicle['friction']
+onready var THRUST =            controls.vehicle['thrust']
+onready var SPIN =              controls.vehicle['spin']
+onready var THRUST_DAMP =       controls.vehicle['thrust_damp']
+onready var SPIN_DAMP =         controls.vehicle['spin_damp']
+onready var MOUSE_SENSITIVITY = controls.vehicle['mouse_sensitivity']
+onready var MOUSE_VERT_DAMP =   controls.vehicle['mouse_vert_damp']
 
 
 

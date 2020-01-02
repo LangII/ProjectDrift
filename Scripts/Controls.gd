@@ -4,7 +4,7 @@ extends Node
 
 
 var main = {
-    'arena': 'Test'
+    'arena': 'Test01'
 }
 
 var vehicle = {

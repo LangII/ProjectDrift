@@ -1,8 +1,6 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://Scenes/Models/ObstColRamp.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/Main/Vehicle.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Menu/Pause.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Objects/Environment/Obstacles/ColRamp.tscn" type="PackedScene" id=1]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.0784314, 0.901961, 0.941176, 0.980392 )
@@ -53,7 +51,6 @@ shadow_enabled = true
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64916, 7.5293 )
-visible = false
 
 [node name="ArenaBounds" type="Spatial" parent="."]
 editor/display_folded = true
@@ -253,6 +250,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 12, -28 )
 [node name="TargetPos24" type="Position3D" parent="Targets"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 12, 28 )
 
-[node name="Vehicle" parent="." instance=ExtResource( 2 )]
-
-[node name="Pause" parent="." instance=ExtResource( 3 )]
+[node name="SpawnVehicle" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
