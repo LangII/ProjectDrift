@@ -4,7 +4,7 @@ extends Node
 
 
 var gameplay = {
-    'arena': 'Test01'
+    'arena': 'TestArena01'
 }
 
 var vehicle = {

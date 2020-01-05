@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/Vehicle.gd" type="Script" id=1]
+
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.0
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 0.477039, 0.5, 1.16331 )
+
+[node name="Vehicle" type="VehicleBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0 )
+mass = 1.0
+physics_material_override = SubResource( 1 )
+script = ExtResource( 1 )
+
+[node name="wheelFL" type="VehicleWheel" parent="."]
+transform = Transform( -0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1.4, 0.3, -1 )
+wheel_roll_influence = 1.0
+wheel_rest_length = 0.2
+wheel_friction_slip = 1.5
+suspension_stiffness = 20.0
+
+[node name="wheelFR" type="VehicleWheel" parent="."]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1.4, 0.3, 1 )
+wheel_roll_influence = 1.0
+wheel_rest_length = 0.2
+wheel_friction_slip = 1.5
+suspension_stiffness = 20.0
+
+[node name="wheelBL" type="VehicleWheel" parent="."]
+transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -1.4, 0.3, -1 )
+wheel_roll_influence = 1.0
+wheel_rest_length = 0.2
+wheel_friction_slip = 1.5
+suspension_stiffness = 20.0
+
+[node name="wheelBR" type="VehicleWheel" parent="."]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -1.4, 0.3, 1 )
+wheel_roll_influence = 1.0
+wheel_rest_length = 0.2
+wheel_friction_slip = 1.5
+suspension_stiffness = 20.0
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( -1.31134e-007, 0, 1.5, 0, 1.2, 0, -3, 0, -6.55671e-008, 0, 1, 0 )
+shape = SubResource( 2 )
+
+[node name="Pivot" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37604e-009, 0, 7.45058e-009 )
+
+[node name="Camera" type="Camera" parent="Pivot"]
+transform = Transform( -4.37114e-008, 0.0488498, -0.998806, 0, 0.998806, 0.0488498, 1, 2.13529e-009, -4.36592e-008, -6.2, 2.9, 0 )
+current = true
+far = 200.0
+
+[node name="Scope" type="RayCast" parent="Pivot/Camera"]
+transform = Transform( 1, 5.77316e-015, -9.23706e-014, 0, 1, -9.32254e-017, 0, -9.32255e-017, 1, 9.37916e-013, 2.14577e-006, -11.6054 )
+enabled = true
+cast_to = Vector3( 0, 0, -100 )
+collide_with_areas = true
+
+[node name="LookDefault" type="Position3D" parent="Pivot/Camera/Scope"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -100 )
+
+[node name="SpawnBolt" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.79892, 0 )
