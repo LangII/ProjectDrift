@@ -53,10 +53,8 @@ shadow_enabled = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64916, 7.5293 )
 
 [node name="ArenaBounds" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="ArenaFloor" type="StaticBody" parent="ArenaBounds"]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="ArenaBounds/ArenaFloor"]

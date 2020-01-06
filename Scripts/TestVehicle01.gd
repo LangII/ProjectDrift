@@ -19,6 +19,9 @@ onready var SPIN_DAMP =         controls.vehicle['spin_damp']
 onready var MOUSE_SENSITIVITY = controls.vehicle['mouse_sensitivity']
 onready var MOUSE_VERT_DAMP =   controls.vehicle['mouse_vert_damp']
 
+onready var engines_tag = controls.gameplay['vehicle']['engines']
+
+
 
 
 ####################################################################################################
@@ -74,6 +77,8 @@ func _ready():
     physics_material_override.set_friction(FRICTION)
     set_linear_damp(THRUST_DAMP)
     set_angular_damp(SPIN_DAMP)
+
+    THRUST = controls.engines[engines_tag]['thrust']
 
 
 

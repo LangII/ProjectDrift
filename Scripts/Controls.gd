@@ -4,7 +4,11 @@ extends Node
 
 
 var gameplay = {
-    'arena': 'TestArena01'
+    'arena': 'TestArena01',
+    'vehicle': {
+        'body': 'TestBody01',
+        'engines': 'TestEngines01'
+    }
 }
 
 var vehicle = {
@@ -15,4 +19,13 @@ var vehicle = {
     'spin_damp': 0.99, # (perc)
     'mouse_sensitivity': 0.002,
     'mouse_vert_damp': 0.80 # (perc)
+}
+
+var engines = {
+    'TestEngines01': {
+        'thrust': 0.8
+    }
+    # 'TestEngines02': {
+    #     'thrust': 0.7
+    # }
 }
