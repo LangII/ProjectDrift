@@ -7,7 +7,7 @@ var gameplay = {
     'arena': 'TestArena01',
     'vehicle': {
         'body': 'TestBody01',
-        'engines': 'TestEngines01'
+        'engines': 'TestEngines02'
     }
 }
 
@@ -22,10 +22,6 @@ var vehicle = {
 }
 
 var engines = {
-    'TestEngines01': {
-        'thrust': 0.8
-    }
-    # 'TestEngines02': {
-    #     'thrust': 0.7
-    # }
+    'TestEngines01': {'thrust': 0.5, 'max_speed': 0.0},
+    'TestEngines02': {'thrust': 0.6, 'max_speed': 0.0}
 }
