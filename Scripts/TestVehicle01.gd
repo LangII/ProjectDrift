@@ -11,16 +11,17 @@ extends VehicleBody
 
 onready var controls = get_node('/root/Controls')
 
+onready var engines_tag = controls.gameplay['vehicle']['engines']
+
+# Get set of default control stats.
 onready var FRICTION =          controls.vehicle['friction']
 onready var THRUST =            controls.vehicle['thrust']
 onready var SPIN =              controls.vehicle['spin']
 onready var THRUST_DAMP =       controls.vehicle['thrust_damp']
 onready var SPIN_DAMP =         controls.vehicle['spin_damp']
+onready var MAX_SPEED =         controls.vehicle['max_speed']
 onready var MOUSE_SENSITIVITY = controls.vehicle['mouse_sensitivity']
 onready var MOUSE_VERT_DAMP =   controls.vehicle['mouse_vert_damp']
-
-onready var engines_tag = controls.gameplay['vehicle']['engines']
-
 
 
 
@@ -28,7 +29,7 @@ onready var engines_tag = controls.gameplay['vehicle']['engines']
                                                                                ###   FUNC VARS   ###
                                                                                #####################
 
-# Camera nodes.
+# Camera node.
 onready var pivot = $Pivot
 
 var vel = Vector3()
@@ -66,26 +67,24 @@ func getWasdInput():
 
 func _ready():
 
-    """
-    Capture mouse.
-    """
+    # Capture mouse.
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-    """
-    Updates to physics settings.
-    """
+    # Update physics settings.
     physics_material_override.set_friction(FRICTION)
     set_linear_damp(THRUST_DAMP)
     set_angular_damp(SPIN_DAMP)
 
+    # Get conditional stats from control engines.
     THRUST = controls.engines[engines_tag]['thrust']
+    MAX_SPEED = controls.engines[engines_tag]['max_speed']
 
 
 
 func _unhandled_input(event):
 
     """
-    Vehicle mouse controls (while captured).
+    Vehicle mouse controls (while mouse is captured).
     """
     # Only perform vehicle mouse controls if 'mouse_motion' and 'mouse_captured' are True.
     mouse_motion = event is InputEventMouseMotion
@@ -102,12 +101,14 @@ func _unhandled_input(event):
 
 func _process(delta):
 
-    """
-    WASD processing.
-    """
+    # WASD processing.
     vel = getWasdInput()
     # Rotate vehicle's velocity based on vehicle's rotation.
     vel = vel.rotated(Vector3.UP, rotation.y)
+
+    # Clamp vehicle's max speed.
+    if linear_velocity.length() > MAX_SPEED:
+        linear_velocity = linear_velocity.normalized() * MAX_SPEED
 
 
 
