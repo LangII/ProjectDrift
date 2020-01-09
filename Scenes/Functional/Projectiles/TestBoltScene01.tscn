@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/TestBolt01.gd" type="Script" id=1]
+
+[sub_resource type="SphereShape" id=3]
+
+[node name="Bolt" type="Area"]
+gravity_vec = Vector3( 0, 0, 0 )
+gravity = 0.0
+linear_damp = 0.0
+angular_damp = 0.0
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+shape = SubResource( 3 )
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+[connection signal="area_entered" from="." to="." method="_on_Bolt_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

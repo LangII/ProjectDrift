@@ -7,7 +7,8 @@ var gameplay = {
     'arena': 'TestArena01',
     'vehicle': {
         'body': 'TestBody01',
-        'engines': 'TestEngines01'
+        'engines': 'TestEngines01',
+        'blaster': 'TestBlaster01'
     }
 }
 
@@ -30,5 +31,12 @@ var engines = {
     },
     'TestEngines02': {
         'thrust': 0.90, 'max_speed': 18.0
+    }
+}
+
+var blasters = {
+    'TestBlaster01': {
+        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel01', 'damage': 10, 'speed': 40,
+        'delay': 3.0
     }
 }

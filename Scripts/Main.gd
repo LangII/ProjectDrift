@@ -11,4 +11,4 @@ extends Node
 
 func _ready():
 
-    get_tree().change_scene('res://Scenes/Gameplay.tscn')
+    get_tree().change_scene('res://Scenes/Functional/Gameplay.tscn')
