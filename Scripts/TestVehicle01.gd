@@ -45,10 +45,12 @@ var mouse_captured = false
 
 # Blaster and Bolt variables.
 onready var Bolt = load('res://Scenes/Functional/Projectiles/' + bolt_tag + '.tscn')
+onready var blaster_cool_down = $BlasterCoolDown
 onready var spawn_bolt = $SpawnBolt
 onready var scope = $Pivot/Camera/Scope
 onready var look_default = $Pivot/Camera/Scope/LookDefault
 var pointing_at = Vector3()
+var blaster_cooled_down = true
 
 
 
@@ -65,6 +67,9 @@ func _ready():
     physics_material_override.set_friction(FRICTION)
     set_linear_damp(THRUST_DAMP)
     set_angular_damp(SPIN_DAMP)
+
+    # Get blaster controls.
+    blaster_cool_down.wait_time = controls.blasters[blaster_tag]['cool_down']
 
 
 
@@ -84,17 +89,11 @@ func _unhandled_input(event):
         # Have to apply 'clamp' to prevent extreme camera positions.
         pivot.rotation.z = clamp(pivot.rotation.z, -1.2, 0.6)
 
-    """
-    Bolt spawn controls.
-    """
-    if event.is_action_pressed('ui_accept'):
-        var b = Bolt.instance()
-        get_parent().add_child(b)
-        b.spawn(spawn_bolt.global_transform)
 
 
 
 func _process(delta):
+
 
     # WASD processing.
     vel = getWasdInput()
@@ -111,12 +110,27 @@ func _process(delta):
     else:                       pointing_at = look_default.global_transform.origin
     spawn_bolt.look_at(pointing_at, Vector3.UP)
 
+    """
+    Bolt spawn controls.
+    """
+    if Input.is_action_pressed('ui_accept') and blaster_cooled_down:
+        var b = Bolt.instance()
+        get_parent().add_child(b)
+        b.spawn(spawn_bolt.global_transform)
+        blaster_cooled_down = false
+
 
 
 func _physics_process(delta):
 
     apply_torque_impulse(rot)
     apply_central_impulse(vel)
+
+
+
+func _on_BlasterCoolDown_timeout():
+
+    blaster_cooled_down = true
 
 
 

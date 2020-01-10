@@ -14,7 +14,9 @@ onready var bolt_model = load(scene_str)
 # Get bolt's control variables.
 onready var DAMAGE = controls.blasters[blaster_tag]['damage']
 onready var SPEED = controls.blasters[blaster_tag]['speed']
-onready var DELAY = controls.blasters[blaster_tag]['delay']
+
+# Get system controls.
+onready var LIFE_TIME = controls.vehicle['bolt_life_time']
 
 onready var timer = $Timer
 
@@ -24,7 +26,7 @@ func _ready():
 
     add_child(bolt_model.instance())
 
-    timer.wait_time = DELAY
+    timer.wait_time = LIFE_TIME
     timer.start()
 
 func _process(delta):

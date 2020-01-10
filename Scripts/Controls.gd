@@ -8,7 +8,7 @@ var gameplay = {
     'vehicle': {
         'body': 'TestBody01',
         'engines': 'TestEngines01',
-        'blaster': 'TestBlaster01'
+        'blaster': 'TestBlaster02'
     }
 }
 
@@ -20,7 +20,8 @@ var vehicle = {
     'spin_damp': 0.99, # (perc)
     'max_speed': 20.0,
     'mouse_sensitivity': 0.002,
-    'mouse_vert_damp': 0.80 # (perc)
+    'mouse_vert_damp': 0.80, # (perc)
+    'bolt_life_time': 3.0
 }
 
 ####################################################################################################
@@ -32,11 +33,18 @@ var engines = {
     'TestEngines02': {
         'thrust': 0.90, 'max_speed': 18.0
     }
+    # 'TestEngines02': {
+    #     'thrust': 0.90, 'max_speed': 18.0
+    # }
 }
 
 var blasters = {
     'TestBlaster01': {
         'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel01', 'damage': 10, 'speed': 40,
-        'delay': 3.0
+        'cool_down': 0.5
+    },
+    'TestBlaster02': {
+        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel02', 'damage': 10, 'speed': 20,
+        'cool_down': 0.2
     }
 }
