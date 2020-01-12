@@ -13,8 +13,9 @@ onready var engines = load('res://Scenes/Models/VehicleParts/Engines/' + engines
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
 onready var blaster = load('res://Scenes/Models/VehicleParts/Blasters/' + blaster_tag + '.tscn')
 
-# onready var hud = preload('res://Scenes/Functional/Hud.tscn')
-onready var pause = preload('res://Scenes/Menus/Pause.tscn')
+# Globalized variables to be used outside of value assignment in '_ready()'.
+var vehicle
+var hud
 
 
 
@@ -30,10 +31,15 @@ func _ready():
     add_child(b)
 
     # Instance parts as children of 'vehicle'.
-    var vehicle_body_node = get_node('/root/Gameplay/Vehicle')
-    # vehicle_body_node.add_child(hud.instance())
-    vehicle_body_node.add_child(engines.instance())
-    vehicle_body_node.add_child(blaster.instance())
+    vehicle = get_node('/root/Gameplay/Vehicle')
+    vehicle.add_child(engines.instance())
+    vehicle.add_child(blaster.instance())
 
-    # add_child(hud.instance())
-    add_child(pause.instance())
+    """ NEED TO FIX ... SHOULDN'T USE DIRECT PATH """
+    hud = $Vehicle/Hud
+
+
+
+func _on_HalfSecond_timeout():
+
+    hud.updateSpeedValue(vehicle.linear_velocity.length())

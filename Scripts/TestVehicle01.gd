@@ -52,9 +52,6 @@ onready var look_default = $Pivot/Camera/Scope/LookDefault
 var pointing_at = Vector3()
 var blaster_cooled_down = true
 
-# Hud variables.
-onready var hud = $Hud
-
 
 
 ####################################################################################################
@@ -74,15 +71,11 @@ func _ready():
     # Get blaster controls.
     blaster_cool_down.wait_time = controls.blasters[blaster_tag]['cool_down']
 
-    print("hud", hud)
-
 
 
 func _unhandled_input(event):
 
-    """
-    Vehicle mouse controls (while mouse is captured).
-    """
+    """ Vehicle mouse controls (while mouse is captured). """
     # Only perform vehicle mouse controls if 'mouse_motion' and 'mouse_captured' are True.
     mouse_motion = event is InputEventMouseMotion
     mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
@@ -93,7 +86,6 @@ func _unhandled_input(event):
         pivot.rotate_z(-event.relative.y * MOUSE_SENSITIVITY * MOUSE_VERT_DAMP)
         # Have to apply 'clamp' to prevent extreme camera positions.
         pivot.rotation.z = clamp(pivot.rotation.z, -1.2, 0.6)
-
 
 
 
@@ -115,17 +107,12 @@ func _process(delta):
     else:                       pointing_at = look_default.global_transform.origin
     spawn_bolt.look_at(pointing_at, Vector3.UP)
 
-    """
-    Bolt spawn controls.
-    """
+    """ Bolt spawn controls. """
     if Input.is_action_pressed('ui_accept') and blaster_cooled_down:
         var b = Bolt.instance()
         get_parent().add_child(b)
         b.spawn(spawn_bolt.global_transform)
         blaster_cooled_down = false
-
-    # Send speed values to 'Hud'.
-    hud.speed_value_text = String(stepify(linear_velocity.length(), 0.01))
 
 
 
@@ -147,9 +134,7 @@ func _on_BlasterCoolDown_timeout():
                                                                                 ####################
 
 func getWasdInput():
-    """
-    WASD controls.
-    """
+    """ WASD controls. """
     var vel_ = Vector3()
 
     # With 'THRUST', apply WASD up/down input to 'vel' x-axis (forward/backward).

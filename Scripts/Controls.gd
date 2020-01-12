@@ -33,9 +33,6 @@ var engines = {
     'TestEngines02': {
         'thrust': 0.90, 'max_speed': 18.0
     }
-    # 'TestEngines02': {
-    #     'thrust': 0.90, 'max_speed': 18.0
-    # }
 }
 
 var blasters = {
