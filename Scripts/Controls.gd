@@ -8,7 +8,7 @@ var gameplay = {
     'vehicle': {
         'body': 'TestBody01',
         'engines': 'TestEngines01',
-        'blaster': 'TestBlaster02'
+        'blaster': 'TestBlaster01'
     }
 }
 

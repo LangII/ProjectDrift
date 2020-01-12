@@ -52,6 +52,9 @@ onready var look_default = $Pivot/Camera/Scope/LookDefault
 var pointing_at = Vector3()
 var blaster_cooled_down = true
 
+# Hud variables.
+onready var hud = $Hud
+
 
 
 ####################################################################################################
@@ -70,6 +73,8 @@ func _ready():
 
     # Get blaster controls.
     blaster_cool_down.wait_time = controls.blasters[blaster_tag]['cool_down']
+
+    print("hud", hud)
 
 
 
@@ -118,6 +123,9 @@ func _process(delta):
         get_parent().add_child(b)
         b.spawn(spawn_bolt.global_transform)
         blaster_cooled_down = false
+
+    # Send speed values to 'Hud'.
+    hud.speed_value_text = String(stepify(linear_velocity.length(), 0.01))
 
 
 

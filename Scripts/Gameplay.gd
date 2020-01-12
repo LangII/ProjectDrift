@@ -13,6 +13,7 @@ onready var engines = load('res://Scenes/Models/VehicleParts/Engines/' + engines
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
 onready var blaster = load('res://Scenes/Models/VehicleParts/Blasters/' + blaster_tag + '.tscn')
 
+# onready var hud = preload('res://Scenes/Functional/Hud.tscn')
 onready var pause = preload('res://Scenes/Menus/Pause.tscn')
 
 
@@ -21,7 +22,6 @@ func _ready():
 
     # Instance 'arena' as child of 'Gameplay'.
     add_child(arena.instance())
-    var arena_node = get_node('/root/Gameplay/' + arena_tag)
 
     # Instance 'vehicle' as child of 'Gameplay' at pos of 'SpawnVehicle'.
     var spawn_vehicle = get_node('/root/Gameplay/' + arena_tag + '/SpawnVehicle')
@@ -31,7 +31,9 @@ func _ready():
 
     # Instance parts as children of 'vehicle'.
     var vehicle_body_node = get_node('/root/Gameplay/Vehicle')
+    # vehicle_body_node.add_child(hud.instance())
     vehicle_body_node.add_child(engines.instance())
     vehicle_body_node.add_child(blaster.instance())
 
+    # add_child(hud.instance())
     add_child(pause.instance())
