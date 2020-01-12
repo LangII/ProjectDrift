@@ -12,7 +12,7 @@ onready var scene_str = 'res://Scenes/Models/VehicleParts/Projectiles/' + bolt_m
 onready var bolt_model = load(scene_str)
 
 # Get bolt's control variables.
-onready var DAMAGE = controls.blasters[blaster_tag]['damage']
+onready var ENERGY = controls.blasters[blaster_tag]['energy']
 onready var SPEED = controls.blasters[blaster_tag]['speed']
 
 # Get system controls.

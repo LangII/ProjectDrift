@@ -8,6 +8,10 @@ onready var arena_tag = controls.gameplay['arena']
 onready var arena = load('res://Scenes/Arenas/' + arena_tag + '.tscn')
 onready var body_tag = controls.gameplay['vehicle']['body']
 onready var body = load('res://Scenes/Functional/VehicleBodies/' + body_tag + '.tscn')
+
+onready var generator_tag = controls.gameplay['vehicle']['generator']
+onready var generator = load('res://Scenes/Models/VehicleParts/Generators/' + generator_tag + '.tscn')
+
 onready var engines_tag = controls.gameplay['vehicle']['engines']
 onready var engines = load('res://Scenes/Models/VehicleParts/Engines/' + engines_tag + '.tscn')
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
@@ -32,6 +36,7 @@ func _ready():
 
     # Instance parts as children of 'vehicle'.
     vehicle = get_node('/root/Gameplay/Vehicle')
+    vehicle.add_child(generator.instance())
     vehicle.add_child(engines.instance())
     vehicle.add_child(blaster.instance())
 

@@ -34,12 +34,12 @@ margin_bottom = 710.0
 
 [node name="Speed" type="PanelContainer" parent="Stats"]
 show_behind_parent = true
-margin_right = 276.0
+margin_right = 240.0
 margin_bottom = 20.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="Divider" type="HBoxContainer" parent="Stats/Speed"]
-margin_right = 276.0
+margin_right = 240.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 
@@ -52,6 +52,34 @@ text = " speed:"
 valign = 1
 
 [node name="SpeedValue" type="Label" parent="Stats/Speed/Divider"]
+margin_left = 184.0
+margin_top = 3.0
+margin_right = 228.0
+margin_bottom = 17.0
+text = "000.00"
+valign = 1
+
+[node name="BlasterBattery" type="PanelContainer" parent="Stats"]
+show_behind_parent = true
+margin_top = 24.0
+margin_right = 240.0
+margin_bottom = 44.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="Stats/BlasterBattery"]
+margin_right = 240.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Variable" type="Label" parent="Stats/BlasterBattery/Divider"]
+margin_top = 3.0
+margin_right = 180.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 180, 0 )
+text = " blaster battery:"
+valign = 1
+
+[node name="BlasterBatteryValue" type="Label" parent="Stats/BlasterBattery/Divider"]
 margin_left = 184.0
 margin_top = 3.0
 margin_right = 228.0

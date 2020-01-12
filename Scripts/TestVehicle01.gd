@@ -11,7 +11,8 @@ extends VehicleBody
 
 onready var controls = get_node('/root/Controls')
 
-# Get vehicle parts tags..
+# Get vehicle parts tags.
+onready var generator_tag = controls.gameplay['vehicle']['generator']
 onready var engines_tag = controls.gameplay['vehicle']['engines']
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
 onready var bolt_tag = controls.blasters[blaster_tag]['bolt_scene']
@@ -34,6 +35,8 @@ onready var MAX_SPEED = controls.engines[engines_tag]['max_speed']
                                                                                ###   FUNC VARS   ###
                                                                                #####################
 
+onready var hud = $Hud
+
 # Camera node.
 onready var pivot = $Pivot
 
@@ -43,6 +46,10 @@ var rot = Vector3()
 var mouse_motion = false
 var mouse_captured = false
 
+# Generator variables.
+onready var generator_rate = $GeneratorRate
+onready var replenish = controls.generators[generator_tag]['replenish']
+
 # Blaster and Bolt variables.
 onready var Bolt = load('res://Scenes/Functional/Projectiles/' + bolt_tag + '.tscn')
 onready var blaster_cool_down = $BlasterCoolDown
@@ -51,6 +58,9 @@ onready var scope = $Pivot/Camera/Scope
 onready var look_default = $Pivot/Camera/Scope/LookDefault
 var pointing_at = Vector3()
 var blaster_cooled_down = true
+onready var bolt_energy = controls.blasters[blaster_tag]['energy']
+var blaster_battery = 0.0
+onready var blaster_battery_capacity = controls.blasters[blaster_tag]['battery_capacity']
 
 
 
@@ -70,6 +80,10 @@ func _ready():
 
     # Get blaster controls.
     blaster_cool_down.wait_time = controls.blasters[blaster_tag]['cool_down']
+    # Set 'blaster_battery' to full charge at start of gameplay.
+    blaster_battery = blaster_battery_capacity
+
+    generator_rate.wait_time = controls.generators[generator_tag]['rate']
 
 
 
@@ -91,7 +105,6 @@ func _unhandled_input(event):
 
 func _process(delta):
 
-
     # WASD processing.
     vel = getWasdInput()
     # Rotate vehicle's velocity based on vehicle's rotation.
@@ -108,10 +121,12 @@ func _process(delta):
     spawn_bolt.look_at(pointing_at, Vector3.UP)
 
     """ Bolt spawn controls. """
-    if Input.is_action_pressed('ui_accept') and blaster_cooled_down:
+    if Input.is_action_pressed('ui_accept') and blaster_cooled_down and (blaster_battery >= bolt_energy):
         var b = Bolt.instance()
         get_parent().add_child(b)
         b.spawn(spawn_bolt.global_transform)
+        blaster_battery -= bolt_energy
+        hud.updateBlasterBatteryValue(blaster_battery)
         blaster_cooled_down = false
 
 
@@ -126,6 +141,15 @@ func _physics_process(delta):
 func _on_BlasterCoolDown_timeout():
 
     blaster_cooled_down = true
+
+
+
+func _on_GeneratorRate_timeout():
+
+    if blaster_battery < blaster_battery_capacity:
+        blaster_battery += replenish
+        blaster_battery = clamp(blaster_battery, 0, blaster_battery_capacity)
+        hud.updateBlasterBatteryValue(blaster_battery)
 
 
 

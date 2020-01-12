@@ -7,6 +7,7 @@ var gameplay = {
     'arena': 'TestArena01',
     'vehicle': {
         'body': 'TestBody01',
+        'generator': 'TestGenerator02',
         'engines': 'TestEngines01',
         'blaster': 'TestBlaster01'
     }
@@ -35,13 +36,22 @@ var engines = {
     }
 }
 
+var generators = {
+    'TestGenerator01': {
+        'rate': 1.00, 'replenish': 2.00
+    },
+    'TestGenerator02': {
+        'rate': 0.50, 'replenish': 1.00
+    }
+}
+
 var blasters = {
     'TestBlaster01': {
-        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel01', 'damage': 10, 'speed': 40,
-        'cool_down': 0.5
+        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel01', 'energy': 5,
+        'speed': 40, 'cool_down': 0.5, 'battery_capacity': 20.0
     },
     'TestBlaster02': {
-        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel02', 'damage': 10, 'speed': 20,
-        'cool_down': 0.2
+        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel02', 'energy': 2,
+        'speed': 20, 'cool_down': 0.2, 'battery_capacity': 80.0
     }
 }
