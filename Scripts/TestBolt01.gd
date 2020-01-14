@@ -16,7 +16,7 @@ onready var ENERGY = controls.blasters[blaster_tag]['energy']
 onready var SPEED = controls.blasters[blaster_tag]['speed']
 
 # Get system controls.
-onready var LIFE_TIME = controls.vehicle['bolt_life_time']
+onready var LIFE_TIME = controls.default['bolt']['life_time']
 
 onready var timer = $Timer
 

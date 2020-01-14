@@ -10,14 +10,16 @@ onready var body_tag = controls.gameplay['vehicle']['body']
 onready var body = load('res://Scenes/Functional/VehicleBodies/' + body_tag + '.tscn')
 
 onready var generator_tag = controls.gameplay['vehicle']['generator']
-onready var generator = load('res://Scenes/Models/VehicleParts/Generators/' + generator_tag + '.tscn')
+onready var gt_str = 'res://Scenes/Models/VehicleParts/Generators/' + generator_tag + '.tscn'
+onready var generator = load(gt_str)
 
 onready var engines_tag = controls.gameplay['vehicle']['engines']
 onready var engines = load('res://Scenes/Models/VehicleParts/Engines/' + engines_tag + '.tscn')
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
 onready var blaster = load('res://Scenes/Models/VehicleParts/Blasters/' + blaster_tag + '.tscn')
 
-# Globalized variables to be used outside of value assignment in '_ready()'.
+var spawn_vehicle
+var b
 var vehicle
 var hud
 
@@ -29,8 +31,8 @@ func _ready():
     add_child(arena.instance())
 
     # Instance 'vehicle' as child of 'Gameplay' at pos of 'SpawnVehicle'.
-    var spawn_vehicle = get_node('/root/Gameplay/' + arena_tag + '/SpawnVehicle')
-    var b = body.instance()
+    spawn_vehicle = get_node('/root/Gameplay/' + arena_tag + '/SpawnVehicle')
+    b = body.instance()
     b.translate(spawn_vehicle.translation)
     add_child(b)
 

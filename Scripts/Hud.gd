@@ -7,8 +7,8 @@ extends Control
 onready var speed_value = get_node('/root/Gameplay/Vehicle/Hud/Stats/Speed/Divider/SpeedValue')
 onready var speed_value_input = 0.0
 
-onready var bb_string = '/root/Gameplay/Vehicle/Hud/Stats/BlasterBattery/Divider/BlasterBatteryValue'
-onready var blaster_battery_value = get_node(bb_string)
+onready var bb_str = '/root/Gameplay/Vehicle/Hud/Stats/BlasterBattery/Divider/BlasterBatteryValue'
+onready var blaster_battery_value = get_node(bb_str)
 onready var blaster_battery_value_input = 0.0
 
 func _ready():

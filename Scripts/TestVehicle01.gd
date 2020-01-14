@@ -11,23 +11,28 @@ extends VehicleBody
 
 onready var controls = get_node('/root/Controls')
 
-# Get vehicle parts tags.
+# Get parts tags.
 onready var generator_tag = controls.gameplay['vehicle']['generator']
-onready var engines_tag = controls.gameplay['vehicle']['engines']
-onready var blaster_tag = controls.gameplay['vehicle']['blaster']
-onready var bolt_tag = controls.blasters[blaster_tag]['bolt_scene']
+onready var engines_tag =   controls.gameplay['vehicle']['engines']
+onready var blaster_tag =   controls.gameplay['vehicle']['blaster']
+onready var bolt_tag =      controls.blasters[blaster_tag]['bolt_scene']
 
-# Get set of default control stats.
-onready var FRICTION =          controls.vehicle['friction']
-onready var SPIN =              controls.vehicle['spin']
-onready var THRUST_DAMP =       controls.vehicle['thrust_damp']
-onready var SPIN_DAMP =         controls.vehicle['spin_damp']
-onready var MOUSE_SENSITIVITY = controls.vehicle['mouse_sensitivity']
-onready var MOUSE_VERT_DAMP =   controls.vehicle['mouse_vert_damp']
+# Get default control stats.
+onready var FRICTION =          controls.default['vehicle']['friction']
+onready var SPIN =              controls.default['vehicle']['spin']
+onready var THRUST_DAMP =       controls.default['vehicle']['thrust_damp']
+onready var SPIN_DAMP =         controls.default['vehicle']['spin_damp']
+onready var MOUSE_SENSITIVITY = controls.default['vehicle']['mouse_sensitivity']
+onready var MOUSE_VERT_DAMP =   controls.default['vehicle']['mouse_vert_damp']
 
-# Get vehicle control stats.
-onready var THRUST =    controls.engines[engines_tag]['thrust']
-onready var MAX_SPEED = controls.engines[engines_tag]['max_speed']
+# Get parts control stats.
+onready var THRUST =                    controls.engines[engines_tag]['thrust']
+onready var MAX_SPEED =                 controls.engines[engines_tag]['max_speed']
+onready var GENERATOR_RATE =            controls.generators[generator_tag]['rate']
+onready var REPLENISH =                 controls.generators[generator_tag]['replenish']
+onready var BLASTER_BATTERY_CAPACITY =  controls.blasters[blaster_tag]['battery_capacity']
+onready var COOL_DOWN =                 controls.blasters[blaster_tag]['cool_down']
+onready var BOLT_ENERGY =               controls.blasters[blaster_tag]['energy']
 
 
 
@@ -35,20 +40,22 @@ onready var MAX_SPEED = controls.engines[engines_tag]['max_speed']
                                                                                ###   FUNC VARS   ###
                                                                                #####################
 
+# For calling Hud methods for Hud updates.
 onready var hud = $Hud
 
 # Camera node.
 onready var pivot = $Pivot
 
+# _process()
 var vel = Vector3()
 var rot = Vector3()
 
+# _unhandled_input()
 var mouse_motion = false
 var mouse_captured = false
 
 # Generator variables.
 onready var generator_rate = $GeneratorRate
-onready var replenish = controls.generators[generator_tag]['replenish']
 
 # Blaster and Bolt variables.
 onready var Bolt = load('res://Scenes/Functional/Projectiles/' + bolt_tag + '.tscn')
@@ -58,9 +65,12 @@ onready var scope = $Pivot/Camera/Scope
 onready var look_default = $Pivot/Camera/Scope/LookDefault
 var pointing_at = Vector3()
 var blaster_cooled_down = true
-onready var bolt_energy = controls.blasters[blaster_tag]['energy']
+var has_enough_energy = true
 var blaster_battery = 0.0
-onready var blaster_battery_capacity = controls.blasters[blaster_tag]['battery_capacity']
+var bolt
+
+# getWasdInput()
+var vel_ = Vector3()
 
 
 
@@ -78,12 +88,13 @@ func _ready():
     set_linear_damp(THRUST_DAMP)
     set_angular_damp(SPIN_DAMP)
 
-    # Get blaster controls.
-    blaster_cool_down.wait_time = controls.blasters[blaster_tag]['cool_down']
+    """ Set parts' variables. """
+    blaster_cooled_down = true
     # Set 'blaster_battery' to full charge at start of gameplay.
-    blaster_battery = blaster_battery_capacity
-
-    generator_rate.wait_time = controls.generators[generator_tag]['rate']
+    blaster_battery = BLASTER_BATTERY_CAPACITY
+    # Set vehicle parts' timers wait times.
+    generator_rate.wait_time = GENERATOR_RATE
+    blaster_cool_down.wait_time = COOL_DOWN
 
 
 
@@ -121,11 +132,12 @@ func _process(delta):
     spawn_bolt.look_at(pointing_at, Vector3.UP)
 
     """ Bolt spawn controls. """
-    if Input.is_action_pressed('ui_accept') and blaster_cooled_down and (blaster_battery >= bolt_energy):
-        var b = Bolt.instance()
-        get_parent().add_child(b)
-        b.spawn(spawn_bolt.global_transform)
-        blaster_battery -= bolt_energy
+    has_enough_energy = blaster_battery >= BOLT_ENERGY
+    if Input.is_action_pressed('ui_accept') and blaster_cooled_down and has_enough_energy:
+        bolt = Bolt.instance()
+        get_parent().add_child(bolt)
+        bolt.spawn(spawn_bolt.global_transform)
+        blaster_battery -= BOLT_ENERGY
         hud.updateBlasterBatteryValue(blaster_battery)
         blaster_cooled_down = false
 
@@ -146,9 +158,16 @@ func _on_BlasterCoolDown_timeout():
 
 func _on_GeneratorRate_timeout():
 
-    if blaster_battery < blaster_battery_capacity:
-        blaster_battery += replenish
-        blaster_battery = clamp(blaster_battery, 0, blaster_battery_capacity)
+    """
+    Here is where the different batteries will be replenished.  Currently, the only battery being
+    replenished is for blasters.
+    """
+
+    # Regulate blaster battery replenishment.  Only replenish of blaster battery is not full.  If
+    # replenishment overfills blaster battery, clamp it.  Then update Hud.
+    if blaster_battery < BLASTER_BATTERY_CAPACITY:
+        blaster_battery += REPLENISH
+        blaster_battery = clamp(blaster_battery, 0, BLASTER_BATTERY_CAPACITY)
         hud.updateBlasterBatteryValue(blaster_battery)
 
 
@@ -159,7 +178,7 @@ func _on_GeneratorRate_timeout():
 
 func getWasdInput():
     """ WASD controls. """
-    var vel_ = Vector3()
+    vel_ = Vector3()
 
     # With 'THRUST', apply WASD up/down input to 'vel' x-axis (forward/backward).
     if Input.is_action_pressed('ui_up'):	vel_ += Vector3(+THRUST, 0, 0)
