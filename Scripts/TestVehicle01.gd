@@ -56,6 +56,15 @@ var mouse_captured = false
 
 # Generator variables.
 onready var generator_rate = $GeneratorRate
+# Energy replenishment settings variables.
+onready var replenish_sets = [
+    {'engines': 0.5, 'blasters': 0.5},
+    {'engines': 0.0, 'blasters': 1.0},
+    {'engines': 1.0, 'blasters': 0.0}
+]
+onready var replenish_set = 0
+onready var replenish_engines = 0.0
+onready var replenish_blasters = 0.0
 
 # Blaster and Bolt variables.
 onready var Bolt = load('res://Scenes/Functional/Projectiles/' + bolt_tag + '.tscn')
@@ -75,8 +84,8 @@ var vel_ = Vector3()
 
 
 ####################################################################################################
-                                                                             ###   GODOT FUNCS   ###
-                                                                             #######################
+                                                                                   ###   READY   ###
+                                                                                   #################
 
 func _ready():
 
@@ -95,6 +104,18 @@ func _ready():
     # Set vehicle parts' timers wait times.
     generator_rate.wait_time = GENERATOR_RATE
     blaster_cool_down.wait_time = COOL_DOWN
+
+    """ Set initial replenishment values. """
+    replenish_engines = replenish_sets[replenish_set]['engines']
+    replenish_blasters = replenish_sets[replenish_set]['blasters']
+    hud.updateBlasterBatteryValue(blaster_battery)
+    hud.updateReplenishingValues(replenish_engines, replenish_blasters)
+
+
+
+####################################################################################################
+                                                                              ###   PROCESSING   ###
+                                                                              ######################
 
 
 
@@ -141,6 +162,19 @@ func _process(delta):
         hud.updateBlasterBatteryValue(blaster_battery)
         blaster_cooled_down = false
 
+    """ Toggling of energy replenishment settings. """
+    if Input.is_action_just_pressed('ui_focus_next'):
+        if replenish_set <= len(replenish_sets) - 2:    replenish_set += 1
+        else:                                           replenish_set = 0
+        replenish_engines = replenish_sets[replenish_set]['engines']
+        replenish_blasters = replenish_sets[replenish_set]['blasters']
+        hud.updateReplenishingValues(replenish_engines, replenish_blasters)
+
+
+
+####################################################################################################
+                                                                                 ###   SIGNALS   ###
+                                                                                 ###################
 
 
 func _physics_process(delta):
@@ -166,7 +200,7 @@ func _on_GeneratorRate_timeout():
     # Regulate blaster battery replenishment.  Only replenish of blaster battery is not full.  If
     # replenishment overfills blaster battery, clamp it.  Then update Hud.
     if blaster_battery < BLASTER_BATTERY_CAPACITY:
-        blaster_battery += REPLENISH
+        blaster_battery += REPLENISH * replenish_blasters
         blaster_battery = clamp(blaster_battery, 0, BLASTER_BATTERY_CAPACITY)
         hud.updateBlasterBatteryValue(blaster_battery)
 
@@ -181,10 +215,10 @@ func getWasdInput():
     vel_ = Vector3()
 
     # With 'THRUST', apply WASD up/down input to 'vel' x-axis (forward/backward).
-    if Input.is_action_pressed('ui_up'):	vel_ += Vector3(+THRUST, 0, 0)
-    if Input.is_action_pressed('ui_down'):	vel_ += Vector3(-THRUST, 0, 0)
+    if Input.is_action_pressed('ui_up'):	vel_ += Vector3(+THRUST * replenish_engines, 0, 0)
+    if Input.is_action_pressed('ui_down'):	vel_ += Vector3(-THRUST * replenish_engines, 0, 0)
     # With 'THRUST', apply WASD left/right input to 'vel' z-axis (left/right).
-    if Input.is_action_pressed('ui_left'):	vel_ += Vector3(0, 0, -THRUST)
-    if Input.is_action_pressed('ui_right'):	vel_ += Vector3(0, 0, +THRUST)
+    if Input.is_action_pressed('ui_left'):	vel_ += Vector3(0, 0, -THRUST * replenish_engines)
+    if Input.is_action_pressed('ui_right'):	vel_ += Vector3(0, 0, +THRUST * replenish_engines)
 
     return vel_

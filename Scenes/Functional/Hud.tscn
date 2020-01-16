@@ -32,10 +32,38 @@ margin_top = 10.0
 margin_right = 250.0
 margin_bottom = 710.0
 
-[node name="Speed" type="PanelContainer" parent="Stats"]
+[node name="ReplenishEngines" type="PanelContainer" parent="Stats"]
 show_behind_parent = true
 margin_right = 240.0
 margin_bottom = 20.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="Stats/ReplenishEngines"]
+margin_right = 240.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Variable" type="Label" parent="Stats/ReplenishEngines/Divider"]
+margin_top = 3.0
+margin_right = 180.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 180, 0 )
+text = " replenish engines:"
+valign = 1
+
+[node name="ReplenishEnginesValue" type="Label" parent="Stats/ReplenishEngines/Divider"]
+margin_left = 184.0
+margin_top = 3.0
+margin_right = 228.0
+margin_bottom = 17.0
+text = "000.00"
+valign = 1
+
+[node name="Speed" type="PanelContainer" parent="Stats"]
+show_behind_parent = true
+margin_top = 24.0
+margin_right = 240.0
+margin_bottom = 44.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="Divider" type="HBoxContainer" parent="Stats/Speed"]
@@ -59,11 +87,39 @@ margin_bottom = 17.0
 text = "000.00"
 valign = 1
 
+[node name="ReplenishBlasters" type="PanelContainer" parent="Stats"]
+show_behind_parent = true
+margin_top = 48.0
+margin_right = 240.0
+margin_bottom = 68.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="Stats/ReplenishBlasters"]
+margin_right = 240.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Variable" type="Label" parent="Stats/ReplenishBlasters/Divider"]
+margin_top = 3.0
+margin_right = 180.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 180, 0 )
+text = " replenish blasters:"
+valign = 1
+
+[node name="ReplenishBlastersValue" type="Label" parent="Stats/ReplenishBlasters/Divider"]
+margin_left = 184.0
+margin_top = 3.0
+margin_right = 228.0
+margin_bottom = 17.0
+text = "000.00"
+valign = 1
+
 [node name="BlasterBattery" type="PanelContainer" parent="Stats"]
 show_behind_parent = true
-margin_top = 24.0
+margin_top = 72.0
 margin_right = 240.0
-margin_bottom = 44.0
+margin_bottom = 92.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="Divider" type="HBoxContainer" parent="Stats/BlasterBattery"]
