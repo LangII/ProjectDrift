@@ -3,6 +3,8 @@ extends Node
 
 var gameplay = {
     'arena': 'TestArena01',
+    'target_health': 10,
+    'number_of_targets': 8, # 24 or less.
     'vehicle': {
         'body': 'TestBody01',
         'generator': 'TestGenerator02',

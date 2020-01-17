@@ -18,21 +18,28 @@ onready var engines = load('res://Scenes/Models/VehicleParts/Engines/' + engines
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
 onready var blaster = load('res://Scenes/Models/VehicleParts/Blasters/' + blaster_tag + '.tscn')
 
-var spawn_vehicle
-var b
 var vehicle
 var hud
+
+onready var Target = preload('res://Scenes/Functional/Entities/Target.tscn')
+onready var NUMBER_OF_TARGETS = controls.gameplay['number_of_targets']
+var targets
+var targets_array
 
 
 
 func _ready():
 
+    randomize()
+
     # Instance 'arena' as child of 'Gameplay'.
     add_child(arena.instance())
+    targets = get_node(arena_tag + '/Targets')
+    targets_array = targets.get_children()
 
     # Instance 'vehicle' as child of 'Gameplay' at pos of 'SpawnVehicle'.
-    spawn_vehicle = get_node('/root/Gameplay/' + arena_tag + '/SpawnVehicle')
-    b = body.instance()
+    var spawn_vehicle = get_node('/root/Gameplay/' + arena_tag + '/SpawnVehicle')
+    var b = body.instance()
     b.translate(spawn_vehicle.translation)
     add_child(b)
 
@@ -45,8 +52,33 @@ func _ready():
     """ NEED TO FIX ... SHOULDN'T USE DIRECT PATH """
     hud = $Vehicle/Hud
 
+    setTargets()
+
 
 
 func _on_HalfSecond_timeout():
 
     hud.updateSpeedValue(vehicle.linear_velocity.length())
+
+
+
+func setTargets():
+
+    """ Random target instancing. """
+    # To ensure that target positions are not repeated, a 'randoms' array has to be appended to.
+    # This way there is a collection of previous 'random' numbers to compare the most recent
+    # 'random' generation to.
+    var randoms = []
+    for i in range(NUMBER_OF_TARGETS):
+        # While-loop is used to continue to generate a 'random' number until a new 'random' number
+        # is generated.
+        while true:
+            var random = randi() % len(targets_array)
+            if not randoms.has(random):
+                randoms.append(random)
+                break
+    # Once all 'random' numbers have been generated use 'randoms' to instance 'Targets' from
+    # 'targets_array'.
+    for r in randoms:
+        var t = Target.instance()
+        targets_array[r].add_child(t)

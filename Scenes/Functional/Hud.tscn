@@ -142,3 +142,57 @@ margin_right = 228.0
 margin_bottom = 17.0
 text = "000.00"
 valign = 1
+
+[node name="FocusName" type="PanelContainer" parent="Stats"]
+show_behind_parent = true
+margin_top = 96.0
+margin_right = 240.0
+margin_bottom = 116.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="Stats/FocusName"]
+margin_right = 240.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Variable" type="Label" parent="Stats/FocusName/Divider"]
+margin_top = 3.0
+margin_right = 180.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 180, 0 )
+text = " focus name:"
+valign = 1
+
+[node name="FocusNameValue" type="Label" parent="Stats/FocusName/Divider"]
+margin_left = 184.0
+margin_top = 3.0
+margin_right = 184.0
+margin_bottom = 17.0
+valign = 1
+
+[node name="FocusHealth" type="PanelContainer" parent="Stats"]
+show_behind_parent = true
+margin_top = 120.0
+margin_right = 240.0
+margin_bottom = 140.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="Stats/FocusHealth"]
+margin_right = 240.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Variable" type="Label" parent="Stats/FocusHealth/Divider"]
+margin_top = 3.0
+margin_right = 180.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 180, 0 )
+text = " focus health:"
+valign = 1
+
+[node name="FocusHealthValue" type="Label" parent="Stats/FocusHealth/Divider"]
+margin_left = 184.0
+margin_top = 3.0
+margin_right = 184.0
+margin_bottom = 17.0
+valign = 1

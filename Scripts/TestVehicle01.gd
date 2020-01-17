@@ -81,6 +81,9 @@ var bolt
 # getWasdInput()
 var vel_ = Vector3()
 
+var focus
+var focus_name = ''
+
 
 
 ####################################################################################################
@@ -169,6 +172,12 @@ func _process(delta):
         replenish_engines = replenish_sets[replenish_set]['engines']
         replenish_blasters = replenish_sets[replenish_set]['blasters']
         hud.updateReplenishingValues(replenish_engines, replenish_blasters)
+
+    if Input.is_action_just_pressed('ui_focus_prev'):
+        focus = scope.get_collider()
+        focus_name = focus.get_parent().get_name()
+        hud.updateFocusNameValue(focus_name)
+        hud.updateFocusHealthValue(focus.health)
 
 
 
