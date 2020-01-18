@@ -3,7 +3,7 @@ extends Node
 
 var gameplay = {
     'arena': 'TestArena01',
-    'target_health': 10,
+    'target_health': 20,
     'number_of_targets': 8, # 24 or less.
     'vehicle': {
         'body': 'TestBody01',
@@ -53,7 +53,7 @@ var generators = {
 
 var blasters = {
     'TestBlaster01': {
-        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel01', 'energy': 5,
+        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel01', 'energy': 8,
         'speed': 40, 'cool_down': 0.2, 'battery_capacity': 100.0
     },
     'TestBlaster02': {

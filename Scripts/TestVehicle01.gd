@@ -175,7 +175,7 @@ func _process(delta):
 
     if Input.is_action_just_pressed('ui_focus_prev'):
         focus = scope.get_collider()
-        focus_name = focus.get_parent().get_name()
+        focus_name = focus.get_parent().name
         hud.updateFocusNameValue(focus_name)
         hud.updateFocusHealthValue(focus.health)
 

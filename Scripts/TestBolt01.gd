@@ -22,6 +22,8 @@ onready var timer = $Timer
 
 var vel = Vector3()
 
+onready var hud = get_node('/root/Gameplay/Vehicle/Hud')
+
 func _ready():
 
     add_child(bolt_model.instance())
@@ -41,3 +43,22 @@ func spawn(_spawn_transform):
 
     transform = _spawn_transform
     vel = -transform.basis.z * SPEED
+
+func _on_Bolt_body_entered(body):
+
+    queue_free()
+
+func _on_Bolt_area_entered(area):
+
+    if area.get_parent().get_parent().name == 'Targets':
+        area.health -= ENERGY
+
+        if area.health <= 0:
+            area.get_parent().queue_free()
+            hud.updateFocusNameValue('')
+            hud.updateFocusHealthValue('')
+
+        elif hud.focus_name_value.text == area.get_parent().name:
+            hud.updateFocusHealthValue(area.health)
+
+    queue_free()
