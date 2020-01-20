@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scripts/Target.gd" type="Script" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="SphereMesh" id=2]
+material = SubResource( 1 )
+radial_segments = 8
+rings = 6
+
+[sub_resource type="SphereShape" id=3]
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="CubeMesh" id=5]
+material = SubResource( 6 )
+
+[sub_resource type="SphereShape" id=4]
+
+[node name="Target" type="Area"]
+script = ExtResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+cast_shadow = 0
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 3 )
+
+[node name="Turret" type="Position3D" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Turret"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0, -1.5 )
+mesh = SubResource( 5 )
+material/0 = null
+
+[node name="Visibility" type="Area" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="Visibility"]
+shape = SubResource( 4 )
+[connection signal="body_entered" from="Visibility" to="." method="_on_Visibility_body_entered"]
+[connection signal="body_exited" from="Visibility" to="." method="_on_Visibility_body_exited"]

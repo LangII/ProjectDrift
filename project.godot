@@ -66,6 +66,11 @@ ui_down={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="everything"
+3d_physics/layer_2="visibility"
+
 [rendering]
 
 quality/driver/driver_name="GLES2"

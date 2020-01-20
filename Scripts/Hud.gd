@@ -3,12 +3,22 @@ extends Control
 
 onready var controls = get_node('/root/Controls')
 
+onready var number_of_targets = controls.gameplay['number_of_targets']
+
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
 onready var blaster_battery_capacity = controls.blasters[blaster_tag]['battery_capacity']
 
+"""
+*** NEED TO FIX ***
+'get_node' shouldn't use absolute path.
+"""
 
-""" NEED TO FIX ... SHOULDN'T USE ABSOLUTE PATH """
-onready var speed_value = get_node('/root/Gameplay/Vehicle/Hud/Stats/Speed/Divider/SpeedValue')
+onready var h_str = '/root/Gameplay/Vehicle/Hud/Stats/Health/Divider/HealthValue'
+onready var health_value = get_node(h_str)
+onready var health_value_input = 0.0
+
+onready var s_str = '/root/Gameplay/Vehicle/Hud/Stats/Speed/Divider/SpeedValue'
+onready var speed_value = get_node(s_str)
 onready var speed_value_input = 0.0
 
 onready var bb_str = '/root/Gameplay/Vehicle/Hud/Stats/BlasterBattery/Divider/BlasterBatteryValue'
@@ -31,30 +41,40 @@ onready var fh_str = '/root/Gameplay/Vehicle/Hud/Stats/FocusHealth/Divider/Focus
 onready var focus_health_value = get_node(fh_str)
 onready var focus_health_value_input = 0.0
 
+onready var o_str = '/root/Gameplay/Vehicle/Hud/Stats/Objective/Divider/ObjectiveValue'
+onready var objective_value = get_node(o_str)
+onready var objective_value_input = 0.0
+
 ####################################################################################################
 
 func _ready():
 
-    blaster_battery_value.text = String(blaster_battery_capacity)
+    objective_value.text = str(number_of_targets)
+    blaster_battery_value.text = str(blaster_battery_capacity)
 
 ####################################################################################################
-
-func updateSpeedValue(_value):
-
-    speed_value_input = _value
-    speed_value.text = String(stepify(speed_value_input, 0.01))
-
-func updateBlasterBatteryValue(_value):
-
-    blaster_battery_value_input = _value
-    blaster_battery_value.text = String(blaster_battery_value_input)
 
 func updateReplenishingValues(_engines, _blasters):
 
     replenish_engines_value_input = _engines
     replenish_blasters_value_input = _blasters
-    replenish_engines_value.text = String(replenish_engines_value_input)
-    replenish_blasters_value.text = String(replenish_blasters_value_input)
+    replenish_engines_value.text = str(replenish_engines_value_input)
+    replenish_blasters_value.text = str(replenish_blasters_value_input)
+
+func updateHealthValue(_value):
+
+    health_value_input = _value
+    health_value.text = str(stepify(health_value_input, 0.01))
+
+func updateSpeedValue(_value):
+
+    speed_value_input = _value
+    speed_value.text = str(stepify(speed_value_input, 0.01))
+
+func updateBlasterBatteryValue(_value):
+
+    blaster_battery_value_input = _value
+    blaster_battery_value.text = str(stepify(blaster_battery_value_input, 0.01))
 
 func updateFocusNameValue(_value):
 
@@ -64,4 +84,9 @@ func updateFocusNameValue(_value):
 func updateFocusHealthValue(_value):
 
     focus_health_value_input = _value
-    focus_health_value.text = String(focus_health_value_input)
+    focus_health_value.text = str(focus_health_value_input)
+
+func updateObjectiveValue(_value):
+
+    objective_value_input = _value
+    objective_value.text = str(objective_value_input)

@@ -12,6 +12,7 @@ extends VehicleBody
 onready var controls = get_node('/root/Controls')
 
 # Get parts tags.
+onready var body_tag =      controls.gameplay['vehicle']['body']
 onready var generator_tag = controls.gameplay['vehicle']['generator']
 onready var engines_tag =   controls.gameplay['vehicle']['engines']
 onready var blaster_tag =   controls.gameplay['vehicle']['blaster']
@@ -26,6 +27,7 @@ onready var MOUSE_SENSITIVITY = controls.default['vehicle']['mouse_sensitivity']
 onready var MOUSE_VERT_DAMP =   controls.default['vehicle']['mouse_vert_damp']
 
 # Get parts control stats.
+onready var HEALTH =                    controls.body[body_tag]['health']
 onready var THRUST =                    controls.engines[engines_tag]['thrust']
 onready var MAX_SPEED =                 controls.engines[engines_tag]['max_speed']
 onready var GENERATOR_RATE =            controls.generators[generator_tag]['rate']
@@ -111,6 +113,7 @@ func _ready():
     """ Set initial replenishment values. """
     replenish_engines = replenish_sets[replenish_set]['engines']
     replenish_blasters = replenish_sets[replenish_set]['blasters']
+    hud.updateHealthValue(HEALTH)
     hud.updateBlasterBatteryValue(blaster_battery)
     hud.updateReplenishingValues(replenish_engines, replenish_blasters)
 
@@ -175,9 +178,10 @@ func _process(delta):
 
     if Input.is_action_just_pressed('ui_focus_prev'):
         focus = scope.get_collider()
-        focus_name = focus.get_parent().name
-        hud.updateFocusNameValue(focus_name)
-        hud.updateFocusHealthValue(focus.health)
+        if focus != null and focus.name == 'Target':
+            focus_name = focus.get_parent().name
+            hud.updateFocusNameValue(focus_name)
+            hud.updateFocusHealthValue(focus.health)
 
 
 

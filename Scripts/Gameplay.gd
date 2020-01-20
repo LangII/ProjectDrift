@@ -18,11 +18,15 @@ onready var engines = load('res://Scenes/Models/VehicleParts/Engines/' + engines
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
 onready var blaster = load('res://Scenes/Models/VehicleParts/Blasters/' + blaster_tag + '.tscn')
 
+onready var target_tag = controls.gameplay['targets']
+onready var t_str = 'res://Scenes/Functional/Entities/' + target_tag + '.tscn'
+onready var Target = load(t_str)
+
+onready var NUMBER_OF_TARGETS = controls.gameplay['number_of_targets']
+
 var vehicle
 var hud
 
-onready var Target = preload('res://Scenes/Functional/Entities/Target.tscn')
-onready var NUMBER_OF_TARGETS = controls.gameplay['number_of_targets']
 var targets
 var targets_array
 

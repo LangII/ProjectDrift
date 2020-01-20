@@ -50,10 +50,24 @@ func _on_Bolt_body_entered(body):
 
 func _on_Bolt_area_entered(area):
 
+    """
+    *** NEED TO FIX ***
+    Issues with collision layers.  This if replaces layer controls.
+    """
+    if area.name == 'Visibility':
+        print("HIT TARGET VISIBILITY BOUNDS")
+        return
+
+    """
+    *** NEED TO FIX ***
+    These operations should be handled by the parent Gameplay.gd.
+    """
     if area.get_parent().get_parent().name == 'Targets':
+
         area.health -= ENERGY
 
         if area.health <= 0:
+            hud.updateObjectiveValue(int(hud.objective_value.text) - 1)
             area.get_parent().queue_free()
             hud.updateFocusNameValue('')
             hud.updateFocusHealthValue('')

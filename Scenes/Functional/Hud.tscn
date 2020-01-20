@@ -32,26 +32,27 @@ margin_top = 10.0
 margin_right = 250.0
 margin_bottom = 710.0
 
-[node name="ReplenishEngines" type="PanelContainer" parent="Stats"]
+[node name="Health" type="PanelContainer" parent="Stats"]
+editor/display_folded = true
 show_behind_parent = true
 margin_right = 240.0
 margin_bottom = 20.0
 custom_styles/panel = SubResource( 1 )
 
-[node name="Divider" type="HBoxContainer" parent="Stats/ReplenishEngines"]
+[node name="Divider" type="HBoxContainer" parent="Stats/Health"]
 margin_right = 240.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 
-[node name="Variable" type="Label" parent="Stats/ReplenishEngines/Divider"]
+[node name="Variable" type="Label" parent="Stats/Health/Divider"]
 margin_top = 3.0
 margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
-text = " replenish engines:"
+text = " health:"
 valign = 1
 
-[node name="ReplenishEnginesValue" type="Label" parent="Stats/ReplenishEngines/Divider"]
+[node name="HealthValue" type="Label" parent="Stats/Health/Divider"]
 margin_left = 184.0
 margin_top = 3.0
 margin_right = 228.0
@@ -60,6 +61,7 @@ text = "000.00"
 valign = 1
 
 [node name="Speed" type="PanelContainer" parent="Stats"]
+editor/display_folded = true
 show_behind_parent = true
 margin_top = 24.0
 margin_right = 240.0
@@ -87,39 +89,12 @@ margin_bottom = 17.0
 text = "000.00"
 valign = 1
 
-[node name="ReplenishBlasters" type="PanelContainer" parent="Stats"]
+[node name="BlasterBattery" type="PanelContainer" parent="Stats"]
+editor/display_folded = true
 show_behind_parent = true
 margin_top = 48.0
 margin_right = 240.0
 margin_bottom = 68.0
-custom_styles/panel = SubResource( 1 )
-
-[node name="Divider" type="HBoxContainer" parent="Stats/ReplenishBlasters"]
-margin_right = 240.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 0, 20 )
-
-[node name="Variable" type="Label" parent="Stats/ReplenishBlasters/Divider"]
-margin_top = 3.0
-margin_right = 180.0
-margin_bottom = 17.0
-rect_min_size = Vector2( 180, 0 )
-text = " replenish blasters:"
-valign = 1
-
-[node name="ReplenishBlastersValue" type="Label" parent="Stats/ReplenishBlasters/Divider"]
-margin_left = 184.0
-margin_top = 3.0
-margin_right = 228.0
-margin_bottom = 17.0
-text = "000.00"
-valign = 1
-
-[node name="BlasterBattery" type="PanelContainer" parent="Stats"]
-show_behind_parent = true
-margin_top = 72.0
-margin_right = 240.0
-margin_bottom = 92.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="Divider" type="HBoxContainer" parent="Stats/BlasterBattery"]
@@ -143,11 +118,70 @@ margin_bottom = 17.0
 text = "000.00"
 valign = 1
 
-[node name="FocusName" type="PanelContainer" parent="Stats"]
+[node name="ReplenishEngines" type="PanelContainer" parent="Stats"]
+editor/display_folded = true
+show_behind_parent = true
+margin_top = 72.0
+margin_right = 240.0
+margin_bottom = 92.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="Stats/ReplenishEngines"]
+margin_right = 240.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Variable" type="Label" parent="Stats/ReplenishEngines/Divider"]
+margin_top = 3.0
+margin_right = 180.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 180, 0 )
+text = " replenish engines:"
+valign = 1
+
+[node name="ReplenishEnginesValue" type="Label" parent="Stats/ReplenishEngines/Divider"]
+margin_left = 184.0
+margin_top = 3.0
+margin_right = 228.0
+margin_bottom = 17.0
+text = "000.00"
+valign = 1
+
+[node name="ReplenishBlasters" type="PanelContainer" parent="Stats"]
+editor/display_folded = true
 show_behind_parent = true
 margin_top = 96.0
 margin_right = 240.0
 margin_bottom = 116.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="Stats/ReplenishBlasters"]
+margin_right = 240.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Variable" type="Label" parent="Stats/ReplenishBlasters/Divider"]
+margin_top = 3.0
+margin_right = 180.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 180, 0 )
+text = " replenish blasters:"
+valign = 1
+
+[node name="ReplenishBlastersValue" type="Label" parent="Stats/ReplenishBlasters/Divider"]
+margin_left = 184.0
+margin_top = 3.0
+margin_right = 228.0
+margin_bottom = 17.0
+text = "000.00"
+valign = 1
+
+[node name="FocusName" type="PanelContainer" parent="Stats"]
+editor/display_folded = true
+show_behind_parent = true
+margin_top = 120.0
+margin_right = 240.0
+margin_bottom = 140.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="Divider" type="HBoxContainer" parent="Stats/FocusName"]
@@ -171,10 +205,11 @@ margin_bottom = 17.0
 valign = 1
 
 [node name="FocusHealth" type="PanelContainer" parent="Stats"]
+editor/display_folded = true
 show_behind_parent = true
-margin_top = 120.0
+margin_top = 144.0
 margin_right = 240.0
-margin_bottom = 140.0
+margin_bottom = 164.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="Divider" type="HBoxContainer" parent="Stats/FocusHealth"]
@@ -195,4 +230,33 @@ margin_left = 184.0
 margin_top = 3.0
 margin_right = 184.0
 margin_bottom = 17.0
+valign = 1
+
+[node name="Objective" type="PanelContainer" parent="Stats"]
+editor/display_folded = true
+show_behind_parent = true
+margin_top = 168.0
+margin_right = 240.0
+margin_bottom = 188.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="Stats/Objective"]
+margin_right = 240.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Variable" type="Label" parent="Stats/Objective/Divider"]
+margin_top = 3.0
+margin_right = 180.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 180, 0 )
+text = " objective:"
+valign = 1
+
+[node name="ObjectiveValue" type="Label" parent="Stats/Objective/Divider"]
+margin_left = 184.0
+margin_top = 3.0
+margin_right = 192.0
+margin_bottom = 17.0
+text = "0"
 valign = 1
