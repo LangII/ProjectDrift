@@ -59,5 +59,5 @@ var blasters = {
 }
 
 var targets = {
-    'TestTarget01': {'health': 20, 'visibility_radius': 10, 'turret_speed': 0}
+    'TestTarget01': {'health': 20, 'visibility_radius': 12, 'turret_speed': 0}
 }

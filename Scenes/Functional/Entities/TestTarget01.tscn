@@ -13,7 +13,7 @@ rings = 6
 [sub_resource type="SphereShape" id=3]
 
 [sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 1, 0, 0, 1 )
+albedo_color = Color( 0.054902, 1, 0, 1 )
 
 [sub_resource type="CubeMesh" id=5]
 material = SubResource( 6 )
@@ -37,6 +37,8 @@ shape = SubResource( 3 )
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0, -1.5 )
 mesh = SubResource( 5 )
 material/0 = null
+
+[node name="RotTween" type="Tween" parent="Turret"]
 
 [node name="Visibility" type="Area" parent="."]
 collision_layer = 2
