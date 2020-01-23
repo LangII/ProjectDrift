@@ -166,6 +166,7 @@ func _process(delta):
         bolt.spawn(spawn_bolt.global_transform)
         blaster_battery -= BOLT_ENERGY
         hud.updateBlasterBatteryValue(blaster_battery)
+        blaster_cool_down.start()
         blaster_cooled_down = false
 
     """ Toggling of energy replenishment settings. """

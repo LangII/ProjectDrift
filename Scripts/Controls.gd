@@ -49,15 +49,19 @@ var generators = {
 
 var blasters = {
     'TestBlaster01': {
-        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel01', 'energy': 8,
+        'bolt_scene': 'TestVehicleBoltScene01', 'bolt_model': 'TestBoltModel01', 'energy': 8,
         'speed': 40, 'cool_down': 0.2, 'battery_capacity': 300.0
     },
     'TestBlaster02': {
-        'bolt_scene': 'TestBoltScene01', 'bolt_model': 'TestBoltModel02', 'energy': 2,
+        'bolt_scene': 'TestVehicleBoltScene01', 'bolt_model': 'TestBoltModel02', 'energy': 2,
         'speed': 20, 'cool_down': 0.2, 'battery_capacity': 80.0
     }
 }
 
 var targets = {
-    'TestTarget01': {'health': 20, 'visibility_radius': 12, 'turret_speed': 0}
+    'TestTarget01': {
+        'bolt_scene': 'TestTargetBoltScene01', 'bolt_model': 'TestBoltModel03', 'health': 20,
+        'visibility_radius': 12, 'targeting_speed': 0.02, 'energy': '2', 'cool_down': 0.6,
+        'speed': 20
+    }
 }

@@ -8,7 +8,7 @@ onready var blaster_tag = controls.gameplay['vehicle']['blaster']
 
 # Get bolt model tag and scene.
 onready var bolt_model_tag = controls.blasters[blaster_tag]['bolt_model']
-onready var scene_str = 'res://Scenes/Models/VehicleParts/Projectiles/' + bolt_model_tag + '.tscn'
+onready var scene_str = 'res://Scenes/Models/Projectiles/' + bolt_model_tag + '.tscn'
 onready var bolt_model = load(scene_str)
 
 # Get bolt's control variables.
@@ -54,9 +54,7 @@ func _on_Bolt_area_entered(area):
     *** NEED TO FIX ***
     Issues with collision layers.  This if replaces layer controls.
     """
-    if area.name == 'Visibility':
-        print("HIT TARGET VISIBILITY BOUNDS")
-        return
+    if area.name == 'Visibility':  return
 
     """
     *** NEED TO FIX ***
