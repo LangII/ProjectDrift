@@ -17,6 +17,10 @@ onready var h_str = '/root/Gameplay/Vehicle/Hud/Stats/Health/Divider/HealthValue
 onready var health_value = get_node(h_str)
 onready var health_value_input = 0.0
 
+onready var sb_str = '/root/Gameplay/Vehicle/Hud/Stats/ShieldsBattery/Divider/ShieldsBatteryValue'
+onready var shields_battery_value = get_node(sb_str)
+onready var shields_battery_value_input = 0.0
+
 onready var s_str = '/root/Gameplay/Vehicle/Hud/Stats/Speed/Divider/SpeedValue'
 onready var speed_value = get_node(s_str)
 onready var speed_value_input = 0.0
@@ -28,6 +32,10 @@ onready var blaster_battery_value_input = 0.0
 onready var re_str = '/root/Gameplay/Vehicle/Hud/Stats/ReplenishEngines/Divider/ReplenishEnginesValue'
 onready var replenish_engines_value = get_node(re_str)
 onready var replenish_engines_value_input = 0.0
+
+onready var rs_str = '/root/Gameplay/Vehicle/Hud/Stats/ReplenishShields/Divider/ReplenishShieldsValue'
+onready var replenish_shields_value = get_node(rs_str)
+onready var replenish_shields_value_input = 0.0
 
 onready var rb_str = '/root/Gameplay/Vehicle/Hud/Stats/ReplenishBlasters/Divider/ReplenishBlastersValue'
 onready var replenish_blasters_value = get_node(rb_str)
@@ -54,17 +62,24 @@ func _ready():
 
 ####################################################################################################
 
-func updateReplenishingValues(_engines, _blasters):
+func updateReplenishingValues(_engines, _shields, _blasters):
 
     replenish_engines_value_input = _engines
+    replenish_shields_value_input = _shields
     replenish_blasters_value_input = _blasters
     replenish_engines_value.text = str(replenish_engines_value_input)
+    replenish_shields_value.text = str(replenish_shields_value_input)
     replenish_blasters_value.text = str(replenish_blasters_value_input)
 
 func updateHealthValue(_value):
 
     health_value_input = _value
     health_value.text = str(stepify(health_value_input, 0.01))
+
+func updateShieldsBatteryValue(_value):
+
+    shields_battery_value_input = _value
+    shields_battery_value.text = str(stepify(shields_battery_value_input, 0.01))
 
 func updateSpeedValue(_value):
 

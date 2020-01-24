@@ -12,7 +12,7 @@ onready var scene_str = 'res://Scenes/Models/Projectiles/' + bolt_model_tag + '.
 onready var bolt_model = load(scene_str)
 
 # Get bolt's control variables.
-# onready var ENERGY = controls.targets[target_tag]['energy']
+onready var ENERGY = controls.targets[target_tag]['energy']
 onready var SPEED = controls.targets[target_tag]['speed']
 
 # Get system controls.
@@ -44,10 +44,48 @@ func spawn(_spawn_transform):
     transform = _spawn_transform
     vel = -transform.basis.z * SPEED
 
-# func _on_Bolt_body_entered(body):
-#
-#     queue_free()
-#
+func _on_Bolt_body_entered(body):
+
+    if body.name == 'Vehicle':
+
+        if body.shields_battery > 0:
+
+            body.shields_battery -= ENERGY
+
+            if body.shields_battery < 0:
+
+                body.HEALTH -= abs(body.shields_battery)
+                body.shields_battery = 0
+                hud.updateShieldsBatteryValue(body.shields_battery)
+                hud.updateHealthValue(body.HEALTH)
+
+            else:
+
+                hud.updateShieldsBatteryValue(body.shields_battery)
+
+        else:
+
+            body.HEALTH -= ENERGY
+            hud.updateHealthValue(body.HEALTH)
+
+        """
+        *** NEED TO FIX ***
+        These operations should be handled by the parent Gameplay.gd.
+        """
+        if body.HEALTH <= 0:
+            print("GAME OVER")
+
+
+
+    queue_free()
+
+
+
+
+
+
+
+
 # func _on_Bolt_area_entered(area):
 #
 #     """

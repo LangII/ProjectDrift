@@ -51,13 +51,18 @@ func _process(delta):
     if awake:
         if obj_visible:
             targeting = obj_visible.global_transform.origin - turret.global_transform.origin
+            """
+            NEED TO FIX ... targets 1 unit above origin, need to give vehicle to-be-targeted coord
+            """
+            targeting.y += 1
 
             var aim = turret.transform.basis.y.angle_to(targeting)
             # print(aim)
             if (aim < 1.57 + how_close_to_shoot) and (aim > 1.57 - how_close_to_shoot):
                 if turret_cooled_down:
                     bolt = Bolt.instance()
-                    get_parent().get_parent().add_child(bolt)
+                    # print(get_parent().get_parent().get_parent().get_parent().get_name())
+                    get_parent().get_parent().get_parent().get_parent().add_child(bolt)
                     bolt.spawn(spawn_bolt.global_transform)
                     turret_cool_down.start()
                     turret_cooled_down = false

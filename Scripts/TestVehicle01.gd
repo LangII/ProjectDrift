@@ -15,6 +15,7 @@ onready var controls = get_node('/root/Controls')
 onready var body_tag =      controls.gameplay['vehicle']['body']
 onready var generator_tag = controls.gameplay['vehicle']['generator']
 onready var engines_tag =   controls.gameplay['vehicle']['engines']
+onready var shields_tag =   controls.gameplay['vehicle']['shields']
 onready var blaster_tag =   controls.gameplay['vehicle']['blaster']
 onready var bolt_tag =      controls.blasters[blaster_tag]['bolt_scene']
 
@@ -28,6 +29,9 @@ onready var MOUSE_VERT_DAMP =   controls.default['vehicle']['mouse_vert_damp']
 
 # Get parts control stats.
 onready var HEALTH =                    controls.body[body_tag]['health']
+onready var ARMOR =                     controls.body[body_tag]['armor']
+onready var SHIELDS_BATTERY_CAPACITY =  controls.shields[shields_tag]['battery_capacity']
+onready var SHIELDS_DENSITY =           controls.shields[shields_tag]['density']
 onready var THRUST =                    controls.engines[engines_tag]['thrust']
 onready var MAX_SPEED =                 controls.engines[engines_tag]['max_speed']
 onready var GENERATOR_RATE =            controls.generators[generator_tag]['rate']
@@ -60,12 +64,14 @@ var mouse_captured = false
 onready var generator_rate = $GeneratorRate
 # Energy replenishment settings variables.
 onready var replenish_sets = [
-    {'engines': 0.5, 'blasters': 0.5},
-    {'engines': 0.0, 'blasters': 1.0},
-    {'engines': 1.0, 'blasters': 0.0}
+    {'engines': 0.34, 'shields': 0.33, 'blasters': 0.33},
+    {'engines': 1.00, 'shields': 0.00, 'blasters': 0.00},
+    {'engines': 0.00, 'shields': 1.00, 'blasters': 0.00},
+    {'engines': 0.00, 'shields': 0.00, 'blasters': 1.00},
 ]
 onready var replenish_set = 0
 onready var replenish_engines = 0.0
+onready var replenish_shields = 0.0
 onready var replenish_blasters = 0.0
 
 # Blaster and Bolt variables.
@@ -79,6 +85,8 @@ var blaster_cooled_down = true
 var has_enough_energy = true
 var blaster_battery = 0.0
 var bolt
+
+var shields_battery = 0.0
 
 # getWasdInput()
 var vel_ = Vector3()
@@ -106,16 +114,20 @@ func _ready():
     blaster_cooled_down = true
     # Set 'blaster_battery' to full charge at start of gameplay.
     blaster_battery = BLASTER_BATTERY_CAPACITY
+    # Set 'shields_battery' to full charge at start of gameplay.
+    shields_battery = SHIELDS_BATTERY_CAPACITY
     # Set vehicle parts' timers wait times.
     generator_rate.wait_time = GENERATOR_RATE
     blaster_cool_down.wait_time = COOL_DOWN
 
     """ Set initial replenishment values. """
     replenish_engines = replenish_sets[replenish_set]['engines']
+    replenish_shields = replenish_sets[replenish_set]['shields']
     replenish_blasters = replenish_sets[replenish_set]['blasters']
     hud.updateHealthValue(HEALTH)
+    hud.updateShieldsBatteryValue(shields_battery)
     hud.updateBlasterBatteryValue(blaster_battery)
-    hud.updateReplenishingValues(replenish_engines, replenish_blasters)
+    hud.updateReplenishingValues(replenish_engines, replenish_shields, replenish_blasters)
 
 
 
@@ -162,6 +174,7 @@ func _process(delta):
     has_enough_energy = blaster_battery >= BOLT_ENERGY
     if Input.is_action_pressed('ui_accept') and blaster_cooled_down and has_enough_energy:
         bolt = Bolt.instance()
+        # print(get_parent().get_name())
         get_parent().add_child(bolt)
         bolt.spawn(spawn_bolt.global_transform)
         blaster_battery -= BOLT_ENERGY
@@ -174,8 +187,9 @@ func _process(delta):
         if replenish_set <= len(replenish_sets) - 2:    replenish_set += 1
         else:                                           replenish_set = 0
         replenish_engines = replenish_sets[replenish_set]['engines']
+        replenish_shields = replenish_sets[replenish_set]['shields']
         replenish_blasters = replenish_sets[replenish_set]['blasters']
-        hud.updateReplenishingValues(replenish_engines, replenish_blasters)
+        hud.updateReplenishingValues(replenish_engines, replenish_shields, replenish_blasters)
 
     if Input.is_action_just_pressed('ui_focus_prev'):
         focus = scope.get_collider()
@@ -211,12 +225,16 @@ func _on_GeneratorRate_timeout():
     replenished is for blasters.
     """
 
-    # Regulate blaster battery replenishment.  Only replenish of blaster battery is not full.  If
+    # Regulate blaster battery replenishment.  Only replenish if blaster battery is not full.  If
     # replenishment overfills blaster battery, clamp it.  Then update Hud.
     if blaster_battery < BLASTER_BATTERY_CAPACITY:
         blaster_battery += REPLENISH * replenish_blasters
         blaster_battery = clamp(blaster_battery, 0, BLASTER_BATTERY_CAPACITY)
         hud.updateBlasterBatteryValue(blaster_battery)
+    if shields_battery < SHIELDS_BATTERY_CAPACITY:
+        shields_battery += REPLENISH * replenish_shields
+        shields_battery = clamp(shields_battery, 0, SHIELDS_BATTERY_CAPACITY)
+        hud.updateShieldsBatteryValue(shields_battery)
 
 
 
