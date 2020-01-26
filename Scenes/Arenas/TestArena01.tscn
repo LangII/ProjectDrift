@@ -55,6 +55,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64916, 7.5293 )
 [node name="ArenaBounds" type="Spatial" parent="."]
 
 [node name="ArenaFloor" type="StaticBody" parent="ArenaBounds"]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="ArenaBounds/ArenaFloor"]
@@ -115,10 +116,8 @@ transform = Transform( -4.37114e-008, 0, 40, 0, 4, 0, -1, 0, -1.74846e-006, 0, 5
 shape = SubResource( 3 )
 
 [node name="ArenaObstacles" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="ObstaclesPillars" type="Spatial" parent="ArenaObstacles"]
-editor/display_folded = true
 
 [node name="ObstaclePillarXpZp" type="StaticBody" parent="ArenaObstacles/ObstaclesPillars"]
 editor/display_folded = true
@@ -165,7 +164,6 @@ material/0 = null
 shape = SubResource( 8 )
 
 [node name="ObstaclesRamps" type="Spatial" parent="ArenaObstacles"]
-editor/display_folded = true
 
 [node name="ObstColRampXp" parent="ArenaObstacles/ObstaclesRamps" instance=ExtResource( 1 )]
 transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 30, 5, 0 )

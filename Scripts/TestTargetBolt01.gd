@@ -24,6 +24,8 @@ var vel = Vector3()
 
 onready var hud = get_node('/root/Gameplay/Vehicle/Hud')
 
+onready var temp_bug_fix = $TempBugFix
+
 func _ready():
 
     add_child(bolt_model.instance())
@@ -34,6 +36,15 @@ func _ready():
 func _process(delta):
 
     transform.origin += vel * delta
+    # print(get_overlapping_bodies())
+
+    # var over_bods = get_overlapping_bodies()
+    # for bod in over_bods:  print(bod.name)
+    # print("")
+
+    # var fix_bod = temp_bug_fix.get_collider()
+    if temp_bug_fix.is_colliding():
+        if temp_bug_fix.get_collider().get_parent().name == 'ObstaclesRamps':  queue_free()
 
 func _on_Timer_timeout():
 
@@ -43,6 +54,8 @@ func spawn(_spawn_transform):
 
     transform = _spawn_transform
     vel = -transform.basis.z * SPEED
+
+
 
 func _on_Bolt_body_entered(body):
 
@@ -75,8 +88,7 @@ func _on_Bolt_body_entered(body):
         if body.HEALTH <= 0:
             print("GAME OVER")
 
-
-
+    # print(body)
     queue_free()
 
 
@@ -112,3 +124,16 @@ func _on_Bolt_body_entered(body):
 #             hud.updateFocusHealthValue(area.health)
 #
 #     queue_free()
+
+
+# func _on_Bolt_area_entered(area):
+# 	# print(area.get_parent().name, "-", area.get_parent().get_parent().name)
+#     pass
+#
+#
+# func _on_Bolt_body_shape_entered(body_id, body, body_shape, area_shape):
+#     # print(body_id)
+#     # print(body)
+#     # print(body_shape)
+#     # print(area_shape)
+#     pass

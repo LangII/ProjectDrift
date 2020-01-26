@@ -1,13 +1,15 @@
 
 """
 
+TestVehicle01.gd
+
 """
 
 extends VehicleBody
 
 ####################################################################################################
-                                                                            ###   CONTROL VARS   ###
-                                                                            ########################
+                                                                                ###   CONTROLS   ###
+                                                                                ####################
 
 onready var controls = get_node('/root/Controls')
 
@@ -46,53 +48,39 @@ onready var BOLT_ENERGY =               controls.blasters[blaster_tag]['energy']
                                                                                ###   FUNC VARS   ###
                                                                                #####################
 
-# For calling Hud methods for Hud updates.
 onready var hud = $Hud
-
-# Camera node.
 onready var pivot = $Pivot
+onready var vel = Vector3()
+onready var rot = Vector3()
 
-# _process()
-var vel = Vector3()
-var rot = Vector3()
-
-# _unhandled_input()
-var mouse_motion = false
-var mouse_captured = false
-
-# Generator variables.
+# Generator / Replenishment.
 onready var generator_rate = $GeneratorRate
-# Energy replenishment settings variables.
 onready var replenish_sets = [
     {'engines': 0.34, 'shields': 0.33, 'blasters': 0.33},
-    {'engines': 1.00, 'shields': 0.00, 'blasters': 0.00},
-    {'engines': 0.00, 'shields': 1.00, 'blasters': 0.00},
-    {'engines': 0.00, 'shields': 0.00, 'blasters': 1.00},
+    {'engines': 0.80, 'shields': 0.10, 'blasters': 0.10},
+    {'engines': 0.10, 'shields': 0.80, 'blasters': 0.10},
+    {'engines': 0.10, 'shields': 0.10, 'blasters': 0.80},
 ]
-onready var replenish_set = 0
-onready var replenish_engines = 0.0
-onready var replenish_shields = 0.0
-onready var replenish_blasters = 0.0
+onready var repl_set_pointer = 0
 
-# Blaster and Bolt variables.
+# Blaster / Bolt.
 onready var Bolt = load('res://Scenes/Functional/Projectiles/' + bolt_tag + '.tscn')
 onready var blaster_cool_down = $BlasterCoolDown
 onready var spawn_bolt = $SpawnBolt
 onready var scope = $Pivot/Camera/Scope
+# onready var scope_exceptions = ['TargetBolt', 'VehicleBolt']
 onready var look_default = $Pivot/Camera/Scope/LookDefault
-var pointing_at = Vector3()
-var blaster_cooled_down = true
-var has_enough_energy = true
-var blaster_battery = 0.0
-var bolt
+onready var pointing_at = Vector3()
 
-var shields_battery = 0.0
-
-# getWasdInput()
-var vel_ = Vector3()
-
-var focus
-var focus_name = ''
+# BLOCK ... Preset values.
+onready var blaster_cooled_down = true
+# Initial battery values set to full.
+onready var blaster_battery = BLASTER_BATTERY_CAPACITY
+onready var shields_battery = SHIELDS_BATTERY_CAPACITY
+# Initial replenishment values.
+onready var replenish_engines = replenish_sets[repl_set_pointer]['engines']
+onready var replenish_shields = replenish_sets[repl_set_pointer]['shields']
+onready var replenish_blasters = replenish_sets[repl_set_pointer]['blasters']
 
 
 
@@ -110,24 +98,17 @@ func _ready():
     set_linear_damp(THRUST_DAMP)
     set_angular_damp(SPIN_DAMP)
 
-    """ Set parts' variables. """
-    blaster_cooled_down = true
-    # Set 'blaster_battery' to full charge at start of gameplay.
-    blaster_battery = BLASTER_BATTERY_CAPACITY
-    # Set 'shields_battery' to full charge at start of gameplay.
-    shields_battery = SHIELDS_BATTERY_CAPACITY
     # Set vehicle parts' timers wait times.
     generator_rate.wait_time = GENERATOR_RATE
     blaster_cool_down.wait_time = COOL_DOWN
 
-    """ Set initial replenishment values. """
-    replenish_engines = replenish_sets[replenish_set]['engines']
-    replenish_shields = replenish_sets[replenish_set]['shields']
-    replenish_blasters = replenish_sets[replenish_set]['blasters']
+    # Send initial Hud updates.
     hud.updateHealthValue(HEALTH)
     hud.updateShieldsBatteryValue(shields_battery)
     hud.updateBlasterBatteryValue(blaster_battery)
     hud.updateReplenishingValues(replenish_engines, replenish_shields, replenish_blasters)
+
+    # for exception in scope_exceptions:  scope.add_exception(exception)
 
 
 
@@ -135,14 +116,12 @@ func _ready():
                                                                               ###   PROCESSING   ###
                                                                               ######################
 
-
-
 func _unhandled_input(event):
 
-    """ Vehicle mouse controls (while mouse is captured). """
+    # BLOCK ... Vehicle mouse controls (while mouse is captured).
     # Only perform vehicle mouse controls if 'mouse_motion' and 'mouse_captured' are True.
-    mouse_motion = event is InputEventMouseMotion
-    mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+    var mouse_motion = event is InputEventMouseMotion
+    var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
     if mouse_motion and mouse_captured:
         # Mouse motion on the x-axis translates to vehicle motion on the y-axis.
         rot = Vector3(0, -event.relative.x * MOUSE_SENSITIVITY * SPIN, 0)
@@ -159,58 +138,79 @@ func _process(delta):
     vel = getWasdInput()
     # Rotate vehicle's velocity based on vehicle's rotation.
     vel = vel.rotated(Vector3.UP, rotation.y)
-
     # Clamp vehicle's max speed.
     if linear_velocity.length() > MAX_SPEED:
         linear_velocity = linear_velocity.normalized() * MAX_SPEED
-
     # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to ensure
     # that whatever is in the player's crosshairs is the point that will be shot at.
     if scope.is_colliding():    pointing_at = scope.get_collision_point()
     else:                       pointing_at = look_default.global_transform.origin
     spawn_bolt.look_at(pointing_at, Vector3.UP)
 
-    """ Bolt spawn controls. """
-    has_enough_energy = blaster_battery >= BOLT_ENERGY
-    if Input.is_action_pressed('ui_accept') and blaster_cooled_down and has_enough_energy:
-        bolt = Bolt.instance()
-        # print(get_parent().get_name())
-        get_parent().add_child(bolt)
-        bolt.spawn(spawn_bolt.global_transform)
-        blaster_battery -= BOLT_ENERGY
-        hud.updateBlasterBatteryValue(blaster_battery)
-        blaster_cool_down.start()
-        blaster_cooled_down = false
+    ###   INPUT EVENTS   ###
 
-    """ Toggling of energy replenishment settings. """
+    # BLOCK ... Blaster / Bolt controls.
+    if Input.is_action_pressed('ui_accept'):
+        if blaster_cooled_down and (blaster_battery >= BOLT_ENERGY):
+            var bolt = Bolt.instance()
+            get_parent().add_child(bolt)
+            bolt.spawn(spawn_bolt.global_transform)
+            blaster_battery -= BOLT_ENERGY
+            hud.updateBlasterBatteryValue(blaster_battery)
+            blaster_cool_down.start()
+            blaster_cooled_down = false
+
+    # BLOCK ... Replenish controls.
     if Input.is_action_just_pressed('ui_focus_next'):
-        if replenish_set <= len(replenish_sets) - 2:    replenish_set += 1
-        else:                                           replenish_set = 0
-        replenish_engines = replenish_sets[replenish_set]['engines']
-        replenish_shields = replenish_sets[replenish_set]['shields']
-        replenish_blasters = replenish_sets[replenish_set]['blasters']
+        if repl_set_pointer <= len(replenish_sets) - 2:    repl_set_pointer += 1
+        else:                                           repl_set_pointer = 0
+        replenish_engines =     replenish_sets[repl_set_pointer]['engines']
+        replenish_shields =     replenish_sets[repl_set_pointer]['shields']
+        replenish_blasters =    replenish_sets[repl_set_pointer]['blasters']
         hud.updateReplenishingValues(replenish_engines, replenish_shields, replenish_blasters)
 
+    # BLOCK ... Focus controls.
     if Input.is_action_just_pressed('ui_focus_prev'):
-        focus = scope.get_collider()
+        var focus = scope.get_collider()
         if focus != null and focus.name == 'Target':
-            focus_name = focus.get_parent().name
-            hud.updateFocusNameValue(focus_name)
+            hud.updateFocusNameValue(focus.get_parent().name)
             hud.updateFocusHealthValue(focus.health)
+
+
+    # var col_bodies = get_colliding_bodies()
+    # # if col_bodies:  print(col_bodies)
+    # print(col_bodies)
+
+
+
+func _physics_process(delta):
+
+    apply_torque_impulse(rot)
+
+    vel.y += -9.0 * delta # WORKING ON GRAVITY TRANSITIONS
+
+    apply_central_impulse(vel)
+
+
+
+func getWasdInput():
+    """ WASD controls. """
+    var vel_ = Vector3()
+
+    # With 'THRUST', apply WASD up/down input to 'vel' x-axis (forward/backward).
+    if Input.is_action_pressed('ui_up'):	vel_ += Vector3(+THRUST * replenish_engines, 0, 0)
+    if Input.is_action_pressed('ui_down'):	vel_ += Vector3(-THRUST * replenish_engines, 0, 0)
+    # With 'THRUST', apply WASD left/right input to 'vel' z-axis (left/right).
+    if Input.is_action_pressed('ui_left'):	vel_ += Vector3(0, 0, -THRUST * replenish_engines)
+    if Input.is_action_pressed('ui_right'):	vel_ += Vector3(0, 0, +THRUST * replenish_engines)
+
+    return vel_
 
 
 
 ####################################################################################################
                                                                                  ###   SIGNALS   ###
                                                                                  ###################
-
-
-func _physics_process(delta):
-
-    apply_torque_impulse(rot)
-    apply_central_impulse(vel)
-
-
 
 func _on_BlasterCoolDown_timeout():
 
@@ -220,13 +220,8 @@ func _on_BlasterCoolDown_timeout():
 
 func _on_GeneratorRate_timeout():
 
-    """
-    Here is where the different batteries will be replenished.  Currently, the only battery being
-    replenished is for blasters.
-    """
-
-    # Regulate blaster battery replenishment.  Only replenish if blaster battery is not full.  If
-    # replenishment overfills blaster battery, clamp it.  Then update Hud.
+    # Regulate blaster battery and shields battery replenishment.  Only replenish if battery is not
+    # full.  If replenishment overfills battery, clamp it.  Then update Hud.
     if blaster_battery < BLASTER_BATTERY_CAPACITY:
         blaster_battery += REPLENISH * replenish_blasters
         blaster_battery = clamp(blaster_battery, 0, BLASTER_BATTERY_CAPACITY)
@@ -237,20 +232,6 @@ func _on_GeneratorRate_timeout():
         hud.updateShieldsBatteryValue(shields_battery)
 
 
-
-####################################################################################################
-                                                                                ###   MY FUNCS   ###
-                                                                                ####################
-
-func getWasdInput():
-    """ WASD controls. """
-    vel_ = Vector3()
-
-    # With 'THRUST', apply WASD up/down input to 'vel' x-axis (forward/backward).
-    if Input.is_action_pressed('ui_up'):	vel_ += Vector3(+THRUST * replenish_engines, 0, 0)
-    if Input.is_action_pressed('ui_down'):	vel_ += Vector3(-THRUST * replenish_engines, 0, 0)
-    # With 'THRUST', apply WASD left/right input to 'vel' z-axis (left/right).
-    if Input.is_action_pressed('ui_left'):	vel_ += Vector3(0, 0, -THRUST * replenish_engines)
-    if Input.is_action_pressed('ui_right'):	vel_ += Vector3(0, 0, +THRUST * replenish_engines)
-
-    return vel_
+func _on_Vehicle_body_entered(body):
+	# print(body.get_parent().get_parent().name, "-", body.get_parent().name)
+    pass

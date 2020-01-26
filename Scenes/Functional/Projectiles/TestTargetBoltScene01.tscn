@@ -4,11 +4,7 @@
 
 [sub_resource type="SphereShape" id=1]
 
-[node name="Bolt" type="Area"]
-gravity_vec = Vector3( 0, 0, 0 )
-gravity = 0.0
-linear_damp = 0.0
-angular_damp = 0.0
+[node name="TargetBolt" type="Area"]
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -17,6 +13,10 @@ shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
-[connection signal="area_entered" from="." to="." method="_on_Bolt_area_entered"]
+
+[node name="TempBugFix" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25 )
+enabled = true
+cast_to = Vector3( 0, 0, -0.5 )
 [connection signal="body_entered" from="." to="." method="_on_Bolt_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -71,6 +71,11 @@ ui_down={
 3d_physics/layer_1="everything"
 3d_physics/layer_2="visibility"
 
+[physics]
+
+3d/default_gravity=0.0
+3d/default_gravity_vector=Vector3( 0, 0, 0 )
+
 [rendering]
 
 quality/driver/driver_name="GLES2"

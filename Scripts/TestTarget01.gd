@@ -1,5 +1,6 @@
 
-extends Area
+# extends Area
+extends StaticBody
 
 onready var controls = get_node('/root/Controls')
 

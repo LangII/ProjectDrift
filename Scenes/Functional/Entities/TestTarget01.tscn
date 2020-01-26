@@ -20,7 +20,7 @@ material = SubResource( 4 )
 
 [sub_resource type="SphereShape" id=6]
 
-[node name="Target" type="Area"]
+[node name="Target" type="StaticBody"]
 script = ExtResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
@@ -39,7 +39,7 @@ mesh = SubResource( 5 )
 material/0 = null
 
 [node name="SpawnBolt" type="Position3D" parent="Turret"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.54765 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.64465 )
 
 [node name="Visibility" type="Area" parent="."]
 collision_layer = 2

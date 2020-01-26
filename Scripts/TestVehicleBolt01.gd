@@ -24,6 +24,8 @@ var vel = Vector3()
 
 onready var hud = get_node('/root/Gameplay/Vehicle/Hud')
 
+# onready var ignoring_areas = ['Visibility', 'TargetBolt']
+
 func _ready():
 
     add_child(bolt_model.instance())
@@ -46,31 +48,32 @@ func spawn(_spawn_transform):
 
 func _on_Bolt_body_entered(body):
 
-    queue_free()
+    # queue_free()
 
-func _on_Bolt_area_entered(area):
+# func _on_Bolt_area_entered(area):
 
     """
     *** NEED TO FIX ***
     Issues with collision layers.  This if replaces layer controls.
     """
-    if area.name == 'Visibility':  return
+    # if area.name == 'Visibility':  return
+    # if body.name in ignoring_areas:  return
 
     """
     *** NEED TO FIX ***
     These operations should be handled by the parent Gameplay.gd.
     """
-    if area.get_parent().get_parent().name == 'Targets':
+    if body.get_parent().get_parent().name == 'Targets':
 
-        area.health -= ENERGY
+        body.health -= ENERGY
 
-        if area.health <= 0:
+        if body.health <= 0:
             hud.updateObjectiveValue(int(hud.objective_value.text) - 1)
-            area.get_parent().queue_free()
+            body.get_parent().queue_free()
             hud.updateFocusNameValue('')
             hud.updateFocusHealthValue('')
 
-        elif hud.focus_name_value.text == area.get_parent().name:
-            hud.updateFocusHealthValue(area.health)
+        elif hud.focus_name_value.text == body.get_parent().name:
+            hud.updateFocusHealthValue(body.health)
 
     queue_free()

@@ -4,7 +4,7 @@ extends Node
 var gameplay = {
     'arena': 'TestArena01',
     'targets': 'TestTarget01',
-    'number_of_targets': 24, # (currently) 24 or less
+    'number_of_targets': 4, # (currently) 24 or less
     'vehicle': {
         'body': 'TestBody01',
         'generator': 'TestGenerator01',
@@ -37,13 +37,13 @@ var default = {
 var body = {
     'TestBody01': {
         'health': 100.0,
-        'armor': 0.05, # NEED TO IMPLEMENT
+        'armor': 0.05, # (perc) ... NEED TO IMPLEMENT
     },
 }
 
 var engines = {
     'TestEngines01': {
-        'thrust': 0.45,
+        'thrust': 0.60,
         'max_speed': 36.0,
     },
     'TestEngines02': {
@@ -98,10 +98,10 @@ var targets = {
         'bolt_scene': 'TestTargetBoltScene01',
         'bolt_model': 'TestBoltModel03',
         'health': 20.0,
-        'visibility_radius': 12.0,
+        'visibility_radius': 40.0,
         'targeting_speed': 0.02,
-        'energy': 13.0,
-        'cool_down': 0.9,
-        'speed': 10.0,
+        'energy': 20.0,
+        'cool_down': 0.6,
+        'speed': 20.0,
     },
 }
