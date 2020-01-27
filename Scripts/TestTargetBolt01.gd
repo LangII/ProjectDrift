@@ -16,7 +16,7 @@ onready var ENERGY = controls.targets[target_tag]['energy']
 onready var SPEED = controls.targets[target_tag]['speed']
 
 # Get system controls.
-onready var LIFE_TIME = controls.default['bolt']['life_time']
+onready var LIFE_TIME = controls.global['bolt']['life_time']
 
 onready var timer = $Timer
 
@@ -36,13 +36,7 @@ func _ready():
 func _process(delta):
 
     transform.origin += vel * delta
-    # print(get_overlapping_bodies())
 
-    # var over_bods = get_overlapping_bodies()
-    # for bod in over_bods:  print(bod.name)
-    # print("")
-
-    # var fix_bod = temp_bug_fix.get_collider()
     if temp_bug_fix.is_colliding():
         if temp_bug_fix.get_collider().get_parent().name == 'ObstaclesRamps':  queue_free()
 
@@ -63,9 +57,14 @@ func _on_Bolt_body_entered(body):
 
         if body.shields_battery > 0:
 
-            body.shields_battery -= ENERGY
+            body.shields_battery -= ENERGY * (1 - body.SHIELDS_DENSITY)
 
             if body.shields_battery < 0:
+
+                # NEED TO FIX ... Currently, if damage is done to shield, and carried over to
+                # health, the carry over value will have density applied to it, not armor.  If
+                # damage is done to health, armor should be applied, not density.  Right now, this
+                # is not the case.
 
                 body.HEALTH -= abs(body.shields_battery)
                 body.shields_battery = 0
@@ -78,17 +77,16 @@ func _on_Bolt_body_entered(body):
 
         else:
 
-            body.HEALTH -= ENERGY
+            body.HEALTH -= ENERGY * (1 - body.ARMOR)
             hud.updateHealthValue(body.HEALTH)
 
         """
         *** NEED TO FIX ***
         These operations should be handled by the parent Gameplay.gd.
         """
-        if body.HEALTH <= 0:
-            print("GAME OVER")
+        # if body.HEALTH <= 0:
+        #     print("GAME OVER")
 
-    # print(body)
     queue_free()
 
 

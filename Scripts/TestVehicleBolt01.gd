@@ -15,16 +15,14 @@ onready var bolt_model = load(scene_str)
 onready var ENERGY = controls.blasters[blaster_tag]['energy']
 onready var SPEED = controls.blasters[blaster_tag]['speed']
 
-# Get system controls.
-onready var LIFE_TIME = controls.default['bolt']['life_time']
+# Get global controls.
+onready var LIFE_TIME = controls.global['bolt']['life_time']
 
 onready var timer = $Timer
 
 var vel = Vector3()
 
 onready var hud = get_node('/root/Gameplay/Vehicle/Hud')
-
-# onready var ignoring_areas = ['Visibility', 'TargetBolt']
 
 func _ready():
 
@@ -48,21 +46,6 @@ func spawn(_spawn_transform):
 
 func _on_Bolt_body_entered(body):
 
-    # queue_free()
-
-# func _on_Bolt_area_entered(area):
-
-    """
-    *** NEED TO FIX ***
-    Issues with collision layers.  This if replaces layer controls.
-    """
-    # if area.name == 'Visibility':  return
-    # if body.name in ignoring_areas:  return
-
-    """
-    *** NEED TO FIX ***
-    These operations should be handled by the parent Gameplay.gd.
-    """
     if body.get_parent().get_parent().name == 'Targets':
 
         body.health -= ENERGY

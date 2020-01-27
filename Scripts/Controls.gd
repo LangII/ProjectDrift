@@ -1,10 +1,12 @@
 
 extends Node
 
+####################################################################################################
+
 var gameplay = {
     'arena': 'TestArena01',
     'targets': 'TestTarget01',
-    'number_of_targets': 4, # (currently) 24 or less
+    'number_of_targets': 8, # (currently) 24 or less
     'vehicle': {
         'body': 'TestBody01',
         'generator': 'TestGenerator01',
@@ -16,14 +18,12 @@ var gameplay = {
 
 ####################################################################################################
 
-var default = {
+var global = {
     'vehicle': {
         'friction': 0.0,
-        'thrust': 0.5,
         'spin': 6.0,
         'thrust_damp': 0.05, # (perc)
         'spin_damp': 0.99, # (perc)
-        'max_speed': 20.0,
         'mouse_sensitivity': 0.002,
         'mouse_vert_damp': 0.80 # (perc)
     },
@@ -100,8 +100,8 @@ var targets = {
         'health': 20.0,
         'visibility_radius': 40.0,
         'targeting_speed': 0.02,
-        'energy': 20.0,
+        'energy': 5.0,
         'cool_down': 0.6,
-        'speed': 20.0,
+        'speed': 30.0,
     },
 }

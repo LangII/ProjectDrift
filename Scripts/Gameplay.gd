@@ -36,6 +36,10 @@ var targets_array
 
 
 
+####################################################################################################
+
+
+
 func _ready():
 
     randomize()
@@ -64,15 +68,9 @@ func _ready():
 
 
 
-func _on_HalfSecond_timeout():
-
-    hud.updateSpeedValue(vehicle.linear_velocity.length())
-
-
-
 func setTargets():
 
-    """ Random target instancing. """
+    # BLOCK ...  Random target instancing.
     # To ensure that target positions are not repeated, a 'randoms' array has to be appended to.
     # This way there is a collection of previous 'random' numbers to compare the most recent
     # 'random' generation to.
@@ -90,3 +88,13 @@ func setTargets():
     for r in randoms:
         var t = Target.instance()
         targets_array[r].add_child(t)
+
+
+
+####################################################################################################
+
+
+
+func _on_HalfSecond_timeout():
+
+    hud.updateSpeedValue(vehicle.linear_velocity.length())

@@ -7,6 +7,8 @@ TestVehicle01.gd
 
 extends VehicleBody
 
+
+
 ####################################################################################################
                                                                                 ###   CONTROLS   ###
                                                                                 ####################
@@ -21,15 +23,15 @@ onready var shields_tag =   controls.gameplay['vehicle']['shields']
 onready var blaster_tag =   controls.gameplay['vehicle']['blaster']
 onready var bolt_tag =      controls.blasters[blaster_tag]['bolt_scene']
 
-# Get default control stats.
-onready var FRICTION =          controls.default['vehicle']['friction']
-onready var SPIN =              controls.default['vehicle']['spin']
-onready var THRUST_DAMP =       controls.default['vehicle']['thrust_damp']
-onready var SPIN_DAMP =         controls.default['vehicle']['spin_damp']
-onready var MOUSE_SENSITIVITY = controls.default['vehicle']['mouse_sensitivity']
-onready var MOUSE_VERT_DAMP =   controls.default['vehicle']['mouse_vert_damp']
+# Get global control variables.
+onready var FRICTION =          controls.global['vehicle']['friction']
+onready var SPIN =              controls.global['vehicle']['spin']
+onready var THRUST_DAMP =       controls.global['vehicle']['thrust_damp']
+onready var SPIN_DAMP =         controls.global['vehicle']['spin_damp']
+onready var MOUSE_SENSITIVITY = controls.global['vehicle']['mouse_sensitivity']
+onready var MOUSE_VERT_DAMP =   controls.global['vehicle']['mouse_vert_damp']
 
-# Get parts control stats.
+# Get parts control variables.
 onready var HEALTH =                    controls.body[body_tag]['health']
 onready var ARMOR =                     controls.body[body_tag]['armor']
 onready var SHIELDS_BATTERY_CAPACITY =  controls.shields[shields_tag]['battery_capacity']
@@ -48,11 +50,6 @@ onready var BOLT_ENERGY =               controls.blasters[blaster_tag]['energy']
                                                                                ###   FUNC VARS   ###
                                                                                #####################
 
-onready var hud = $Hud
-onready var pivot = $Pivot
-onready var vel = Vector3()
-onready var rot = Vector3()
-
 # Generator / Replenishment.
 onready var generator_rate = $GeneratorRate
 onready var replenish_sets = [
@@ -68,19 +65,24 @@ onready var Bolt = load('res://Scenes/Functional/Projectiles/' + bolt_tag + '.ts
 onready var blaster_cool_down = $BlasterCoolDown
 onready var spawn_bolt = $SpawnBolt
 onready var scope = $Pivot/Camera/Scope
-# onready var scope_exceptions = ['TargetBolt', 'VehicleBolt']
 onready var look_default = $Pivot/Camera/Scope/LookDefault
 onready var pointing_at = Vector3()
 
 # BLOCK ... Preset values.
 onready var blaster_cooled_down = true
-# Initial battery values set to full.
+# Initialize battery values as full.
 onready var blaster_battery = BLASTER_BATTERY_CAPACITY
 onready var shields_battery = SHIELDS_BATTERY_CAPACITY
-# Initial replenishment values.
+# Initialize replenishment values as first set from 'replenish_sets'.
 onready var replenish_engines = replenish_sets[repl_set_pointer]['engines']
 onready var replenish_shields = replenish_sets[repl_set_pointer]['shields']
 onready var replenish_blasters = replenish_sets[repl_set_pointer]['blasters']
+
+# General function variables.
+onready var hud = $Hud
+onready var pivot = $Pivot
+var vel = Vector3()
+var rot = Vector3()
 
 
 
@@ -102,13 +104,8 @@ func _ready():
     generator_rate.wait_time = GENERATOR_RATE
     blaster_cool_down.wait_time = COOL_DOWN
 
-    # Send initial Hud updates.
-    hud.updateHealthValue(HEALTH)
-    hud.updateShieldsBatteryValue(shields_battery)
-    hud.updateBlasterBatteryValue(blaster_battery)
-    hud.updateReplenishingValues(replenish_engines, replenish_shields, replenish_blasters)
-
-    # for exception in scope_exceptions:  scope.add_exception(exception)
+    # Initiate Hud from Vehicle for replenish values.
+    hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
 
 
 
@@ -167,7 +164,7 @@ func _process(delta):
         replenish_engines =     replenish_sets[repl_set_pointer]['engines']
         replenish_shields =     replenish_sets[repl_set_pointer]['shields']
         replenish_blasters =    replenish_sets[repl_set_pointer]['blasters']
-        hud.updateReplenishingValues(replenish_engines, replenish_shields, replenish_blasters)
+        hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
 
     # BLOCK ... Focus controls.
     if Input.is_action_just_pressed('ui_focus_prev'):
@@ -175,11 +172,6 @@ func _process(delta):
         if focus != null and focus.name == 'Target':
             hud.updateFocusNameValue(focus.get_parent().name)
             hud.updateFocusHealthValue(focus.health)
-
-
-    # var col_bodies = get_colliding_bodies()
-    # # if col_bodies:  print(col_bodies)
-    # print(col_bodies)
 
 
 
@@ -230,8 +222,3 @@ func _on_GeneratorRate_timeout():
         shields_battery += REPLENISH * replenish_shields
         shields_battery = clamp(shields_battery, 0, SHIELDS_BATTERY_CAPACITY)
         hud.updateShieldsBatteryValue(shields_battery)
-
-
-func _on_Vehicle_body_entered(body):
-	# print(body.get_parent().get_parent().name, "-", body.get_parent().name)
-    pass

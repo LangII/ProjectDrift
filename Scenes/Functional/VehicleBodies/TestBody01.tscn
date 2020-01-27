@@ -100,6 +100,5 @@ autostart = true
 autostart = true
 
 [node name="Hud" parent="." instance=ExtResource( 2 )]
-[connection signal="body_entered" from="." to="." method="_on_Vehicle_body_entered"]
 [connection signal="timeout" from="BlasterCoolDown" to="." method="_on_BlasterCoolDown_timeout"]
 [connection signal="timeout" from="GeneratorRate" to="." method="_on_GeneratorRate_timeout"]
