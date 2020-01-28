@@ -11,4 +11,12 @@ script = ExtResource( 1 )
 [node name="HalfSecond" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
+
+[node name="Vehicles" type="Spatial" parent="."]
+
+[node name="Targets" type="Spatial" parent="."]
+
+[node name="VehicleBolts" type="Spatial" parent="."]
+
+[node name="TargetBolts" type="Spatial" parent="."]
 [connection signal="timeout" from="HalfSecond" to="." method="_on_HalfSecond_timeout"]

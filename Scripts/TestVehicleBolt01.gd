@@ -4,11 +4,12 @@ extends Area
 onready var controls = get_node('/root/Controls')
 
 # Get control variable tag.
+onready var body_tag = controls.gameplay['vehicle']['body']
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
 
 # Get bolt model tag and scene.
 onready var bolt_model_tag = controls.blasters[blaster_tag]['bolt_model']
-onready var scene_str = 'res://Scenes/Models/Projectiles/' + bolt_model_tag + '.tscn'
+onready var scene_str = 'res://Scenes/Models/Projectiles/%s.tscn' % bolt_model_tag
 onready var bolt_model = load(scene_str)
 
 # Get bolt's control variables.
@@ -22,7 +23,7 @@ onready var timer = $Timer
 
 var vel = Vector3()
 
-onready var hud = get_node('/root/Gameplay/Vehicle/Hud')
+onready var hud = get_node('/root/Gameplay/Vehicles/%s/Hud' % body_tag)
 
 func _ready():
 
@@ -44,15 +45,17 @@ func spawn(_spawn_transform):
     transform = _spawn_transform
     vel = -transform.basis.z * SPEED
 
+
+
 func _on_Bolt_body_entered(body):
 
-    if body.get_parent().get_parent().name == 'Targets':
+    if body.get_parent().name == 'Targets':
 
         body.health -= ENERGY
 
         if body.health <= 0:
             hud.updateObjectiveValue(int(hud.objective_value.text) - 1)
-            body.get_parent().queue_free()
+            body.queue_free()
             hud.updateFocusNameValue('')
             hud.updateFocusHealthValue('')
 

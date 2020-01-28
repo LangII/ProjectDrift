@@ -27,36 +27,46 @@ onready var shields_tag =   controls.gameplay['vehicle']['shields']
                                                                                     ###   VARS   ###
                                                                                     ################
 
-onready var values_path = '/root/Gameplay/Vehicle/Hud/Stats/{s}/Divider/{s}Value'
+onready var values_path = '/root/Gameplay/Vehicles/%s/Hud/Stats/%s/Divider/%sValue'
 
-onready var health_value = get_node(values_path.format({'s': 'Health'}))
+onready var h_insert = [body_tag, 'Health', 'Health']
+onready var health_value = get_node(values_path % h_insert)
 onready var health_input = controls.body[body_tag]['health']
 
-onready var shields_battery_value = get_node(values_path.format({'s': 'ShieldsBattery'}))
+onready var sb_insert = [body_tag, 'ShieldsBattery', 'ShieldsBattery']
+onready var shields_battery_value = get_node(values_path % sb_insert)
 onready var shields_battery_input = controls.shields[shields_tag]['battery_capacity']
 
-onready var speed_value = get_node(values_path.format({'s': 'Speed'}))
+onready var s_insert = [body_tag, 'Speed', 'Speed']
+onready var speed_value = get_node(values_path % s_insert)
 onready var speed_input = 0.0
 
-onready var blaster_battery_value = get_node(values_path.format({'s': 'BlasterBattery'}))
+onready var bb_insert = [body_tag, 'BlasterBattery', 'BlasterBattery']
+onready var blaster_battery_value = get_node(values_path % bb_insert)
 onready var blaster_battery_input = controls.blasters[blaster_tag]['battery_capacity']
 
-onready var replenish_engines_value = get_node(values_path.format({'s': 'ReplenishEngines'}))
+onready var re_insert = [body_tag, 'ReplenishEngines', 'ReplenishEngines']
+onready var replenish_engines_value = get_node(values_path % re_insert)
 onready var replenish_engines_input = 0.0
 
-onready var replenish_shields_value = get_node(values_path.format({'s': 'ReplenishShields'}))
+onready var rs_insert = [body_tag, 'ReplenishShields', 'ReplenishShields']
+onready var replenish_shields_value = get_node(values_path % rs_insert)
 onready var replenish_shields_input = 0.0
 
-onready var replenish_blasters_value = get_node(values_path.format({'s': 'ReplenishBlasters'}))
+onready var rb_insert = [body_tag, 'ReplenishBlasters', 'ReplenishBlasters']
+onready var replenish_blasters_value = get_node(values_path % rb_insert)
 onready var replenish_blasters_input = 0.0
 
-onready var focus_name_value = get_node(values_path.format({'s': 'FocusName'}))
+onready var fn_insert = [body_tag, 'FocusName', 'FocusName']
+onready var focus_name_value = get_node(values_path % fn_insert)
 onready var focus_name_input = ''
 
-onready var focus_health_value = get_node(values_path.format({'s': 'FocusHealth'}))
+onready var fh_insert = [body_tag, 'FocusHealth', 'FocusHealth']
+onready var focus_health_value = get_node(values_path % fh_insert)
 onready var focus_health_input = 0.0
 
-onready var objective_value = get_node(values_path.format({'s': 'Objective'}))
+onready var o_insert = [body_tag, 'Objective', 'Objective']
+onready var objective_value = get_node(values_path % o_insert)
 onready var objective_input = controls.gameplay['number_of_targets']
 
 

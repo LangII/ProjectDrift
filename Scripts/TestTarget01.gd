@@ -4,6 +4,8 @@ extends StaticBody
 
 onready var controls = get_node('/root/Controls')
 
+onready var body_tag = controls.gameplay['vehicle']['body']
+
 onready var target_tag = controls.gameplay['targets']
 onready var bolt_tag = controls.targets[target_tag]['bolt_scene']
 
@@ -63,7 +65,7 @@ func _process(delta):
                 if turret_cooled_down:
                     bolt = Bolt.instance()
                     # print(get_parent().get_parent().get_parent().get_parent().get_name())
-                    get_parent().get_parent().get_parent().get_parent().add_child(bolt)
+                    get_node('/root/Gameplay/TargetBolts').add_child(bolt)
                     bolt.spawn(spawn_bolt.global_transform)
                     turret_cool_down.start()
                     turret_cooled_down = false
@@ -78,7 +80,8 @@ func _process(delta):
 
 func _on_Visibility_body_entered(body):
 
-    if body.name == 'Vehicle':
+    # if body.name == 'Vehicle':
+    if body.name == body_tag:
         awake = true
         obj_visible = body
 

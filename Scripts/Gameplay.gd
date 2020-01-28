@@ -53,16 +53,16 @@ func _ready():
     var spawn_vehicle = get_node('/root/Gameplay/' + arena_tag + '/SpawnVehicle')
     var b = body.instance()
     b.translate(spawn_vehicle.translation)
-    add_child(b)
+    $Vehicles.add_child(b)
 
     # Instance parts as children of 'vehicle'.
-    vehicle = get_node('/root/Gameplay/Vehicle')
+    vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
     vehicle.add_child(generator.instance())
     vehicle.add_child(engines.instance())
     vehicle.add_child(blaster.instance())
 
     """ NEED TO FIX ... SHOULDN'T USE DIRECT PATH """
-    hud = $Vehicle/Hud
+    hud = vehicle.get_node('Hud')
 
     setTargets()
 
@@ -87,7 +87,10 @@ func setTargets():
     # 'targets_array'.
     for r in randoms:
         var t = Target.instance()
-        targets_array[r].add_child(t)
+        get_node('/root/Gameplay/Targets').add_child(t)
+        t.global_transform.origin = targets_array[r].global_transform.origin
+
+    targets.queue_free()
 
 
 

@@ -150,7 +150,7 @@ func _process(delta):
     if Input.is_action_pressed('ui_accept'):
         if blaster_cooled_down and (blaster_battery >= BOLT_ENERGY):
             var bolt = Bolt.instance()
-            get_parent().add_child(bolt)
+            get_node('/root/Gameplay/VehicleBolts').add_child(bolt)
             bolt.spawn(spawn_bolt.global_transform)
             blaster_battery -= BOLT_ENERGY
             hud.updateBlasterBatteryValue(blaster_battery)
@@ -160,7 +160,7 @@ func _process(delta):
     # BLOCK ... Replenish controls.
     if Input.is_action_just_pressed('ui_focus_next'):
         if repl_set_pointer <= len(replenish_sets) - 2:    repl_set_pointer += 1
-        else:                                           repl_set_pointer = 0
+        else:                                              repl_set_pointer = 0
         replenish_engines =     replenish_sets[repl_set_pointer]['engines']
         replenish_shields =     replenish_sets[repl_set_pointer]['shields']
         replenish_blasters =    replenish_sets[repl_set_pointer]['blasters']
@@ -169,8 +169,8 @@ func _process(delta):
     # BLOCK ... Focus controls.
     if Input.is_action_just_pressed('ui_focus_prev'):
         var focus = scope.get_collider()
-        if focus != null and focus.name == 'Target':
-            hud.updateFocusNameValue(focus.get_parent().name)
+        if focus != null and focus.get_parent().name == 'Targets':
+            hud.updateFocusNameValue(focus.name)
             hud.updateFocusHealthValue(focus.health)
 
 

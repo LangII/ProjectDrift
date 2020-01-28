@@ -3,6 +3,8 @@ extends Area
 
 onready var controls = get_node('/root/Controls')
 
+onready var body_tag = controls.gameplay['vehicle']['body']
+
 # Get control variable tag.
 onready var target_tag = controls.gameplay['targets']
 
@@ -22,7 +24,7 @@ onready var timer = $Timer
 
 var vel = Vector3()
 
-onready var hud = get_node('/root/Gameplay/Vehicle/Hud')
+onready var hud = get_node('/root/Gameplay/Vehicles/%s/Hud' % body_tag)
 
 onready var temp_bug_fix = $TempBugFix
 
@@ -53,7 +55,7 @@ func spawn(_spawn_transform):
 
 func _on_Bolt_body_entered(body):
 
-    if body.name == 'Vehicle':
+    if body.name == body_tag:
 
         if body.shields_battery > 0:
 
