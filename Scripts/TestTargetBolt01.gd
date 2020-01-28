@@ -3,6 +3,8 @@ extends Area
 
 onready var controls = get_node('/root/Controls')
 
+onready var gameplay = get_node('/root/Gameplay')
+
 onready var body_tag = controls.gameplay['vehicle']['body']
 
 # Get control variable tag.
@@ -55,85 +57,6 @@ func spawn(_spawn_transform):
 
 func _on_Bolt_body_entered(body):
 
-    if body.name == body_tag:
-
-        if body.shields_battery > 0:
-
-            body.shields_battery -= ENERGY * (1 - body.SHIELDS_DENSITY)
-
-            if body.shields_battery < 0:
-
-                # NEED TO FIX ... Currently, if damage is done to shield, and carried over to
-                # health, the carry over value will have density applied to it, not armor.  If
-                # damage is done to health, armor should be applied, not density.  Right now, this
-                # is not the case.
-
-                body.HEALTH -= abs(body.shields_battery)
-                body.shields_battery = 0
-                hud.updateShieldsBatteryValue(body.shields_battery)
-                hud.updateHealthValue(body.HEALTH)
-
-            else:
-
-                hud.updateShieldsBatteryValue(body.shields_battery)
-
-        else:
-
-            body.HEALTH -= ENERGY * (1 - body.ARMOR)
-            hud.updateHealthValue(body.HEALTH)
-
-        """
-        *** NEED TO FIX ***
-        These operations should be handled by the parent Gameplay.gd.
-        """
-        # if body.HEALTH <= 0:
-        #     print("GAME OVER")
+    if body.name == body_tag:  gameplay.targetBoltHitsVehicleBody(self, body)
 
     queue_free()
-
-
-
-
-
-
-
-
-# func _on_Bolt_area_entered(area):
-#
-#     """
-#     *** NEED TO FIX ***
-#     Issues with collision layers.  This if replaces layer controls.
-#     """
-#     if area.name == 'Visibility':  return
-#
-#     """
-#     *** NEED TO FIX ***
-#     These operations should be handled by the parent Gameplay.gd.
-#     """
-#     if area.get_parent().get_parent().name == 'Targets':
-#
-#         area.health -= ENERGY
-#
-#         if area.health <= 0:
-#             hud.updateObjectiveValue(int(hud.objective_value.text) - 1)
-#             area.get_parent().queue_free()
-#             hud.updateFocusNameValue('')
-#             hud.updateFocusHealthValue('')
-#
-#         elif hud.focus_name_value.text == area.get_parent().name:
-#             hud.updateFocusHealthValue(area.health)
-#
-#     queue_free()
-
-
-# func _on_Bolt_area_entered(area):
-# 	# print(area.get_parent().name, "-", area.get_parent().get_parent().name)
-#     pass
-#
-#
-# func _on_Bolt_body_shape_entered(body_id, body, body_shape, area_shape):
-#     # print(body_id)
-#     # print(body)
-#     # print(body_shape)
-#     # print(area_shape)
-#     pass

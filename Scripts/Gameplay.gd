@@ -98,6 +98,54 @@ func setTargets():
 
 
 
+func vehicleBoltHitsTargetBody(_bolt, _target):
+
+    _target.health -= _bolt.ENERGY
+
+    if _target.health <= 0:
+        hud.updateObjectiveValue(int(hud.objective_value.text) - 1)
+        _target.queue_free()
+        hud.updateFocusNameValue('')
+        hud.updateFocusHealthValue('')
+
+    elif hud.focus_name_value.text == _target.name:
+        hud.updateFocusHealthValue(_target.health)
+
+
+
+func targetBoltHitsVehicleBody(_bolt, _vehicle):
+
+    if _vehicle.shields_battery > 0:
+
+        _vehicle.shields_battery -= _bolt.ENERGY * (1 - _vehicle.SHIELDS_DENSITY)
+
+        if _vehicle.shields_battery < 0:
+
+            # NEED TO FIX ... Currently, if damage is done to shield, and carried over to
+            # health, the carry over value will have density applied to it, not armor.  If
+            # damage is done to health, armor should be applied, not density.  Right now, this
+            # is not the case.
+
+            _vehicle.HEALTH -= abs(_vehicle.shields_battery)
+            _vehicle.shields_battery = 0
+            hud.updateShieldsBatteryValue(_vehicle.shields_battery)
+            hud.updateHealthValue(_vehicle.HEALTH)
+
+        else:
+
+            hud.updateShieldsBatteryValue(_vehicle.shields_battery)
+
+    else:
+
+        _vehicle.HEALTH -= _bolt.ENERGY * (1 - _vehicle.ARMOR)
+        hud.updateHealthValue(_vehicle.HEALTH)
+
+
+
+####################################################################################################
+
+
+
 func _on_HalfSecond_timeout():
 
     hud.updateSpeedValue(vehicle.linear_velocity.length())

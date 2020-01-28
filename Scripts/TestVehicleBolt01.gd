@@ -3,6 +3,8 @@ extends Area
 
 onready var controls = get_node('/root/Controls')
 
+onready var gameplay = get_node('/root/Gameplay')
+
 # Get control variable tag.
 onready var body_tag = controls.gameplay['vehicle']['body']
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
@@ -45,21 +47,8 @@ func spawn(_spawn_transform):
     transform = _spawn_transform
     vel = -transform.basis.z * SPEED
 
-
-
 func _on_Bolt_body_entered(body):
 
-    if body.get_parent().name == 'Targets':
-
-        body.health -= ENERGY
-
-        if body.health <= 0:
-            hud.updateObjectiveValue(int(hud.objective_value.text) - 1)
-            body.queue_free()
-            hud.updateFocusNameValue('')
-            hud.updateFocusHealthValue('')
-
-        elif hud.focus_name_value.text == body.get_parent().name:
-            hud.updateFocusHealthValue(body.health)
+    if body.get_parent().name == 'Targets':  gameplay.vehicleBoltHitsTargetBody(self, body)
 
     queue_free()
