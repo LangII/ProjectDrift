@@ -36,6 +36,7 @@ var targets_array
 
 
 
+
 ####################################################################################################
 
 
@@ -149,3 +150,5 @@ func targetBoltHitsVehicleBody(_bolt, _vehicle):
 func _on_HalfSecond_timeout():
 
     hud.updateSpeedValue(vehicle.linear_velocity.length())
+
+    vehicle.printTransformBasis()
