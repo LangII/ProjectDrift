@@ -122,17 +122,8 @@ func _unhandled_input(event):
     var mouse_motion = event is InputEventMouseMotion
     var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
     if mouse_motion and mouse_captured:
-        # Mouse motion on the x-axis translates to vehicle motion on the y-axis.
-
-        # rot = Vector3(0, -event.relative.x * MOUSE_SENSITIVITY * SPIN, 0) # original
-
-        # rot = Vector3(0, 0, -event.relative.x * MOUSE_SENSITIVITY * SPIN)
 
         rot_force = -event.relative.x * MOUSE_SENSITIVITY * SPIN
-
-        # rot = rot.rotated(Vector3.UP, rotation.y)
-        # rot = rot.rotated(Vector3.LEFT, -rotation.z)
-        # rot = rot.rotated(Vector3.FORWARD, -rotation.z)
 
         # Mouse motion on the y-axis translates to camera ('pivot') motion on the z-axis.
         pivot.rotate_z(-event.relative.y * MOUSE_SENSITIVITY * MOUSE_VERT_DAMP)
@@ -228,8 +219,20 @@ func _physics_process(delta):
 
     vel = vel.rotated(Vector3(1, 0, 0), deg2rad(90))
 
+    var vel_rotation = rotation.x - deg2rad(90)
+    if rotation.y >= 0:  vel_rotation = -vel_rotation
 
-    # vel = vel.rotated(transform.basis.y, rotation.y)
+    vel = vel.rotated(transform.basis.y, vel_rotation)
+
+    # vel = vel.rotated(transform.basis.y, rot_weird)
+
+
+    # vel = vel.rotated(transform.basis.y, -(rotation.x - deg2rad(90)))
+
+    # vel = vel.rotated(global_transform.basis.y, rotation.y)
+    # vel = vel.rotated(transform.basis.y, rotation.x - deg2rad(90))
+
+
     # vel = vel.rotated(transform.basis.y, rotation.z)
 
     # vel = transform.basis.xform_inv(vel)
@@ -300,9 +303,9 @@ func _on_GeneratorRate_timeout():
 
 func printTransformBasis():
     print("rot ", rotation_degrees)
-    # print("X   ", transform.basis.x)
-    # print("Y   ", transform.basis.y)
-    # print("Z   ", transform.basis.z)
+    print("X   ", transform.basis.x)
+    print("Y   ", transform.basis.y)
+    print("Z   ", transform.basis.z)
     print("\n")
 
 
