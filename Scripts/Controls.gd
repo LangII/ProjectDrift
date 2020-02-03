@@ -1,22 +1,36 @@
 
+"""
+
+Controls.gd
+
+"""
+
 extends Node
 
+
+
 ####################################################################################################
+                                                                                ###   GAMEPLAY   ###
+                                                                                ####################
 
 var gameplay = {
     'arena': 'TestArena01',
     'targets': 'TestTarget01',
-    'number_of_targets': 0, # (currently) 24 or less
+    'number_of_targets': 24, # (currently) 24 or less
     'vehicle': {
         'body': 'TestBody01',
         'generator': 'TestGenerator01',
         'engines': 'TestEngines01',
         'blaster': 'TestBlaster01',
         'shields': 'TestShields01',
-    }
+    },
 }
 
+
+
 ####################################################################################################
+                                                                                 ###   GLOBALS   ###
+                                                                                 ###################
 
 var global = {
     'vehicle': {
@@ -25,19 +39,27 @@ var global = {
         'thrust_damp': 0.05, # (perc)
         'spin_damp': 0.99, # (perc)
         'mouse_sensitivity': 0.002,
-        'mouse_vert_damp': 0.80 # (perc)
+        'mouse_vert_damp': 0.80, # (perc)
+    },
+    'target': {
+        'angle_to_shoot': 0.04,
+        'at_rest_tolerance': 1.6,
     },
     'bolt': {
-        'life_time': 3.0
-    }
+        'life_time': 3.0,
+    },
 }
 
+
+
 ####################################################################################################
+                                                                           ###   VEHICLE PARTS   ###
+                                                                           #########################
 
 var body = {
     'TestBody01': {
         'health': 100.0,
-        'armor': 0.05, # (perc) ... NEED TO IMPLEMENT
+        'armor': 0.05,
     },
 }
 
@@ -93,15 +115,21 @@ var shields = {
     },
 }
 
+
+
+####################################################################################################
+                                                                                ###   ENTITIES   ###
+                                                                                ####################
+
 var targets = {
     'TestTarget01': {
         'bolt_scene': 'TestTargetBoltScene01',
         'bolt_model': 'TestBoltModel03',
         'health': 20.0,
-        'visibility_radius': 40.0,
-        'targeting_speed': 0.02,
+        'visibility_range': 40.0,
+        'rotation_speed': 0.02,
         'energy': 5.0,
-        'cool_down': 0.6,
+        'turret_cool_down': 0.6,
         'speed': 30.0,
     },
 }

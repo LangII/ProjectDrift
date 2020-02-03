@@ -29,6 +29,8 @@ onready var shields_tag =   controls.gameplay['vehicle']['shields']
 
 onready var values_path = '/root/Gameplay/Vehicles/%s/Hud/Stats/%s/Divider/%sValue'
 
+# Each block is a different Hud variable.
+
 onready var h_insert = [body_tag, 'Health', 'Health']
 onready var health_value = get_node(values_path % h_insert)
 onready var health_input = controls.body[body_tag]['health']
@@ -77,6 +79,8 @@ onready var objective_input = controls.gameplay['number_of_targets']
 
 func _ready():
 
+    # Set Hud variables that require initiation.
+
     health_value.text =             str(health_input)
     shields_battery_value.text =    str(shields_battery_input)
     speed_value.text =              str(speed_input)
@@ -88,6 +92,8 @@ func _ready():
 ####################################################################################################
                                                                                  ###   UPDATES   ###
                                                                                  ###################
+
+# Each function is a Hud variable update.
 
 func updateHealthValue(_value):
 

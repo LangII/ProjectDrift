@@ -15,7 +15,7 @@ extends VehicleBody
 
 onready var controls = get_node('/root/Controls')
 
-# Get parts tags.
+# Get tags.
 onready var body_tag =      controls.gameplay['vehicle']['body']
 onready var generator_tag = controls.gameplay['vehicle']['generator']
 onready var engines_tag =   controls.gameplay['vehicle']['engines']
@@ -31,7 +31,7 @@ onready var SPIN_DAMP =         controls.global['vehicle']['spin_damp']
 onready var MOUSE_SENSITIVITY = controls.global['vehicle']['mouse_sensitivity']
 onready var MOUSE_VERT_DAMP =   controls.global['vehicle']['mouse_vert_damp']
 
-# Get parts control variables.
+# Get parts' control variables.
 onready var HEALTH =                    controls.body[body_tag]['health']
 onready var ARMOR =                     controls.body[body_tag]['armor']
 onready var SHIELDS_BATTERY_CAPACITY =  controls.shields[shields_tag]['battery_capacity']
@@ -134,30 +134,6 @@ func _unhandled_input(event):
 
 func _process(delta):
 
-    # WASD processing.
-
-
-
-
-    # vel = getWasdInput()
-    # vel = vel.rotated(Vector3.UP, rotation.y)   # original
-
-    ###   \/   UNDER CONSTRUCTION   \/   ###
-
-    # Rotate vehicle's velocity based on vehicle's rotation.
-    # vel = vel.rotated(Vector3.UP, rotation.y)
-    # vel = vel.rotated(Vector3.RIGHT, rotation.z)
-
-    # vel = vel.rotated(Vector3.FORWARD, rotation.z)
-
-    # vel = vel.rotated(Vector3(0, 1, 0), -rotation.x + deg2rad(90)) # sort of works
-
-    # vel = vel.rotated(Vector3(0, 1, 0), rotation.x)
-
-    ###   /\   UNDER CONSTRUCTION   /\   ###
-
-
-
     # Clamp vehicle's max speed.
     if linear_velocity.length() > MAX_SPEED:
         linear_velocity = linear_velocity.normalized() * MAX_SPEED
@@ -200,58 +176,23 @@ func _process(delta):
 
 func _physics_process(delta):
 
-    # GRAVITY FORCE DOWN
-    # apply_central_impulse(Vector3(0, -0.1, 0))
-    # apply_torque_impulse(Vector3(0, rot_force, 0))
-
-    # GRAVITY FORCE LEFT
-    apply_central_impulse(Vector3(0, 0, -0.1))
-    apply_torque_impulse(Vector3(0, 0, rot_force))
-
-    # rot = rot.rotated(Vector3(1, 0, 0), deg2rad(90))
-    # apply_torque_impulse(rot)
-
     vel = getWasdInput()
 
-    # vel = vel.rotated(transform.UP, rotation.y)   # original
+    ### GRAVITY FORCE DOWN
+    var grav_dir = Vector3(0, -0.1, 0)
+    var rot_force_on_axis = Vector3(0, rot_force, 0)
+    vel = vel.rotated(Vector3.UP, rotation.y)
 
-    # vel = vel.rotated(Vector3(0, 1, 0), rotation_degrees.x - 90)
+    ### GRAVITY FORCE LEFT
+    # var grav_dir = Vector3(0, 0, -0.1)
+    # var rot_force_on_axis = Vector3(0, 0, rot_force)
+    # vel = vel.rotated(Vector3(1, 0, 0), deg2rad(90))
+    # var vel_rotation = rotation.x - deg2rad(90)
+    # if rotation.y >= 0:  vel_rotation = -vel_rotation
+    # vel = vel.rotated(transform.basis.y, vel_rotation)
 
-    vel = vel.rotated(Vector3(1, 0, 0), deg2rad(90))
-
-    var vel_rotation = rotation.x - deg2rad(90)
-    if rotation.y >= 0:  vel_rotation = -vel_rotation
-
-    vel = vel.rotated(transform.basis.y, vel_rotation)
-
-    # vel = vel.rotated(transform.basis.y, rot_weird)
-
-
-    # vel = vel.rotated(transform.basis.y, -(rotation.x - deg2rad(90)))
-
-    # vel = vel.rotated(global_transform.basis.y, rotation.y)
-    # vel = vel.rotated(transform.basis.y, rotation.x - deg2rad(90))
-
-
-    # vel = vel.rotated(transform.basis.y, rotation.z)
-
-    # vel = transform.basis.xform_inv(vel)
-
-
-    # vel = vel.rotated(Vector3(0, 0, 1), -deg2rad(rotation_degrees.x - 90))
-    # vel = vel.rotated(Vector3.RIGHT, deg2rad(90))
-
-
-
-    # vel = vel.rotated(Vector3.FORWARD, )
-    # vel = vel.rotated(Vector3.FORWARD, -abs(rotation.x))
-    # vel = vel.rotated(Vector3.UP, rotation.x)
-
-    # vel = vel.rotated(Vector3.RIGHT, transform.basis.z.y)
-
-    # vel = vel.rotated(Vector3(0, 0, 1), rotation.x)
-
-
+    apply_central_impulse(grav_dir)
+    apply_torque_impulse(rot_force_on_axis)
     apply_central_impulse(vel)
 
 
@@ -296,32 +237,9 @@ func _on_GeneratorRate_timeout():
 
 
 
-
-
-
-
-
-func printTransformBasis():
-    print("rot ", rotation_degrees)
-    print("X   ", transform.basis.x)
-    print("Y   ", transform.basis.y)
-    print("Z   ", transform.basis.z)
-    print("\n")
-
-
-
-
-
-
-
-
-# func _physics_process(delta):
-#
-#     apply_central_impulse(Vector3(0, 0, -0.1))
-#     apply_torque_impulse(Vector3(0, 0, rot_force))
-#
-#     vel = getWasdInput()
-#
-#     vel = vel.rotated(Vector3(1, 0, 0), deg2rad(90))
-#
-#     apply_central_impulse(vel)
+# func printTransformBasis():
+#     print("rot ", rotation_degrees)
+#     print("X   ", transform.basis.x)
+#     print("Y   ", transform.basis.y)
+#     print("Z   ", transform.basis.z)
+#     print("\n")

@@ -53,8 +53,6 @@ func spawn(_spawn_transform):
     transform = _spawn_transform
     vel = -transform.basis.z * SPEED
 
-
-
 func _on_Bolt_body_entered(body):
 
     if body.name == body_tag:  gameplay.targetBoltHitsVehicleBody(self, body)

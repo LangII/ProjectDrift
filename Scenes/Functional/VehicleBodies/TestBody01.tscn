@@ -23,7 +23,7 @@ albedo_color = Color( 1, 1, 0, 1 )
 material = SubResource( 5 )
 
 [node name="TestBody01" type="VehicleBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0 )
+transform = Transform( 1, 0, 3.32346e-008, 0, 1, 0, -3.32346e-008, 0, 1, 0, 0.3, 0 )
 mass = 1.0
 physics_material_override = SubResource( 1 )
 contacts_reported = 5
@@ -68,7 +68,7 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="MeshInstance1" type="MeshInstance" parent="MeshInstance"]
-transform = Transform( 0.393923, 0.0347296, 0, -0.0694593, 0.196962, 0, 0, 0, 0.4, -0.6, 0.3, 0 )
+transform = Transform( 0.393923, 0.0347296, 0, -0.0694593, 0.196962, 0, 0, 0, 0.4, -0.535393, 0.3, 2.14718e-009 )
 mesh = SubResource( 6 )
 material/0 = null
 
