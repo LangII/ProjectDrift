@@ -81,11 +81,12 @@ func _ready():
 
     # Set Hud variables that require initiation.
 
-    health_value.text =             str(health_input)
-    shields_battery_value.text =    str(shields_battery_input)
-    speed_value.text =              str(speed_input)
-    blaster_battery_value.text =    str(blaster_battery_input)
-    objective_value.text =          str(objective_input)
+    health_value.text =             "%7.2f" % health_input
+    shields_battery_value.text =    "%7.2f" % shields_battery_input
+    speed_value.text =              "%7.2f" % speed_input
+    blaster_battery_value.text =    "%7.2f" % blaster_battery_input
+    objective_value.text =          "%6d" % objective_input
+
 
 
 
@@ -98,43 +99,44 @@ func _ready():
 func updateHealthValue(_value):
 
     health_input = _value
-    health_value.text = str(stepify(health_input, 0.01))
+    health_value.text = "%7.2f" % health_input
 
 func updateShieldsBatteryValue(_value):
 
     shields_battery_input = _value
-    shields_battery_value.text = str(stepify(shields_battery_input, 0.01))
+    shields_battery_value.text = "%7.2f" % shields_battery_input
 
 func updateSpeedValue(_value):
 
     speed_input = _value
-    speed_value.text = str(stepify(speed_input, 0.01))
+    speed_value.text = "%7.2f" % speed_input
 
 func updateBlasterBatteryValue(_value):
 
     blaster_battery_input = _value
-    blaster_battery_value.text = str(stepify(blaster_battery_input, 0.01))
+    blaster_battery_value.text = "%7.2f" % blaster_battery_input
 
 func updateReplenishValues(_engines, _shields, _blasters):
 
-    replenish_engines_input = _engines
-    replenish_shields_input = _shields
-    replenish_blasters_input = _blasters
-    replenish_engines_value.text = str(replenish_engines_input)
-    replenish_shields_value.text = str(replenish_shields_input)
-    replenish_blasters_value.text = str(replenish_blasters_input)
+    replenish_engines_input =   _engines
+    replenish_shields_input =   _shields
+    replenish_blasters_input =  _blasters
+    replenish_engines_value.text =  "%7.2f" % replenish_engines_input
+    replenish_shields_value.text =  "%7.2f" % replenish_shields_input
+    replenish_blasters_value.text = "%7.2f" % replenish_blasters_input
 
 func updateFocusNameValue(_value):
 
     focus_name_input = _value
-    focus_name_value.text = focus_name_input
+    focus_name_value.text = "%013s" % str(focus_name_input)
 
 func updateFocusHealthValue(_value):
 
     focus_health_input = _value
-    focus_health_value.text = str(focus_health_input)
+    if focus_health_input:  focus_health_value.text = "%7.2f" % focus_health_input
+    else:                   focus_health_value.text = focus_health_input
 
 func updateObjectiveValue(_value):
 
     objective_input = _value
-    objective_value.text = str(objective_input)
+    objective_value.text = "%6d" % objective_input

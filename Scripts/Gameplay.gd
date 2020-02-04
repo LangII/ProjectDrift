@@ -108,8 +108,11 @@ func setTargets():
                 break
     # Once all 'random' numbers have been generated use 'randoms' to instance 'Targets' from
     # 'targets_array'.
+    var t_count = 0
     for r in randoms:
         var t = Target.instance()
+        t_count += 1
+        t.set_name('Target%02d' % t_count)
         get_node('/root/Gameplay/Targets').add_child(t)
         t.global_transform.origin = targets_array[r].global_transform.origin
 

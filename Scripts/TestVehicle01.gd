@@ -170,7 +170,7 @@ func _process(delta):
         var focus = scope.get_collider()
         if focus != null and focus.get_parent().name == 'Targets':
             hud.updateFocusNameValue(focus.name)
-            hud.updateFocusHealthValue(focus.health)
+            hud.updateFocusHealthValue(focus.HEALTH)
 
 
 
