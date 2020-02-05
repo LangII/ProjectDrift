@@ -211,12 +211,20 @@ func applyGravToVel():
     var applied_vel = Vector3()
 
     match gravity_dir:
+
         Vector3.DOWN:
             applied_vel = vel.rotated(Vector3.UP, rotation.y)
+
         Vector3.FORWARD:
             vel = vel.rotated(Vector3(1, 0, 0), deg2rad(90))
             var vel_rotation = rotation.x - deg2rad(90)
             if rotation.y >= 0:  vel_rotation = -vel_rotation
+            applied_vel = vel.rotated(transform.basis.y, vel_rotation)
+
+        Vector3.RIGHT:
+            vel = vel.rotated(Vector3(0, 0, 1), deg2rad(90))
+            var vel_rotation = -rotation.x
+            if rotation.z <= 0:  vel_rotation = -vel_rotation + deg2rad(180)
             applied_vel = vel.rotated(transform.basis.y, vel_rotation)
 
     return applied_vel
