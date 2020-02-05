@@ -86,6 +86,9 @@ var rot = Vector3()
 
 var rot_force = 0.0
 
+var gravity_force = 0.08
+var gravity_dir = Vector3.DOWN
+
 
 
 ####################################################################################################
@@ -178,37 +181,60 @@ func _physics_process(delta):
 
     vel = getWasdInput()
 
-    ### GRAVITY FORCE DOWN
-    var grav_dir = Vector3(0, -0.1, 0)
-    var rot_force_on_axis = Vector3(0, rot_force, 0)
-    vel = vel.rotated(Vector3.UP, rotation.y)
+    var grav_force_dir = applyGravDirToGravForce()
+    apply_central_impulse(grav_force_dir)
 
-    ### GRAVITY FORCE LEFT
-    # var grav_dir = Vector3(0, 0, -0.1)
-    # var rot_force_on_axis = Vector3(0, 0, rot_force)
-    # vel = vel.rotated(Vector3(1, 0, 0), deg2rad(90))
-    # var vel_rotation = rotation.x - deg2rad(90)
-    # if rotation.y >= 0:  vel_rotation = -vel_rotation
-    # vel = vel.rotated(transform.basis.y, vel_rotation)
+    var rot_force_dir = applyGravToRotForce()
+    apply_torque_impulse(rot_force_dir)
 
-    apply_central_impulse(grav_dir)
-    apply_torque_impulse(rot_force_on_axis)
-    apply_central_impulse(vel)
+    var vel_dir = applyGravToVel()
+    apply_central_impulse(vel_dir)
+
+
+
+func applyGravDirToGravForce():
+
+    var applied_grav = Vector3()
+    for axis in range(3):  applied_grav[axis] = gravity_dir[axis] * gravity_force
+
+    return applied_grav
+
+func applyGravToRotForce():
+
+    var applied_rot_force = Vector3()
+    for axis in range(3):  applied_rot_force[axis] = -gravity_dir[axis] * rot_force
+
+    return applied_rot_force
+
+func applyGravToVel():
+
+    var applied_vel = Vector3()
+
+    match gravity_dir:
+        Vector3.DOWN:
+            applied_vel = vel.rotated(Vector3.UP, rotation.y)
+        Vector3.FORWARD:
+            vel = vel.rotated(Vector3(1, 0, 0), deg2rad(90))
+            var vel_rotation = rotation.x - deg2rad(90)
+            if rotation.y >= 0:  vel_rotation = -vel_rotation
+            applied_vel = vel.rotated(transform.basis.y, vel_rotation)
+
+    return applied_vel
 
 
 
 func getWasdInput():
     """ WASD controls. """
-    var vel_ = Vector3()
+    var wasd_vel = Vector3()
 
     # With 'THRUST', apply WASD up/down input to 'vel' x-axis (forward/backward).
-    if Input.is_action_pressed('ui_up'):	vel_ += Vector3(+THRUST * replenish_engines, 0, 0)
-    if Input.is_action_pressed('ui_down'):	vel_ += Vector3(-THRUST * replenish_engines, 0, 0)
+    if Input.is_action_pressed('ui_up'):	wasd_vel += Vector3(+THRUST * replenish_engines, 0, 0)
+    if Input.is_action_pressed('ui_down'):	wasd_vel += Vector3(-THRUST * replenish_engines, 0, 0)
     # With 'THRUST', apply WASD left/right input to 'vel' z-axis (left/right).
-    if Input.is_action_pressed('ui_left'):	vel_ += Vector3(0, 0, -THRUST * replenish_engines)
-    if Input.is_action_pressed('ui_right'):	vel_ += Vector3(0, 0, +THRUST * replenish_engines)
+    if Input.is_action_pressed('ui_left'):	wasd_vel += Vector3(0, 0, -THRUST * replenish_engines)
+    if Input.is_action_pressed('ui_right'):	wasd_vel += Vector3(0, 0, +THRUST * replenish_engines)
 
-    return vel_
+    return wasd_vel
 
 
 

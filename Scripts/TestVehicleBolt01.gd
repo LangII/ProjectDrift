@@ -16,7 +16,7 @@ onready var bolt_model = load(scene_str)
 
 # Get bolt's control variables.
 onready var ENERGY = controls.blasters[blaster_tag]['energy']
-onready var SPEED = controls.blasters[blaster_tag]['speed']
+onready var SPEED = controls.blasters[blaster_tag]['bolt_speed']
 
 # Get global controls.
 onready var LIFE_TIME = controls.global['bolt']['life_time']
