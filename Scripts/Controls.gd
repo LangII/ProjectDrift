@@ -36,7 +36,7 @@ var global = {
     'vehicle': {
         'friction': 0.00,
         'spin': 6.00,
-        'thrust_damp': 0.05, # (perc)
+        'thrust_damp': 0.20, # (perc)
         'spin_damp': 0.99, # (perc)
         'mouse_sensitivity': 0.002,
         'mouse_vert_damp': 0.80, # (perc)
