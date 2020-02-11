@@ -86,7 +86,8 @@ var rot = Vector3()
 
 var rot_force = 0.0
 
-var gravity_force = 0.08
+# var gravity_force = 0.50
+var gravity_force = 1.00
 var gravity_dir = Vector3.DOWN
 
 
@@ -137,9 +138,10 @@ func _unhandled_input(event):
 
 func _process(delta):
 
-    # Clamp vehicle's max speed.
-    if linear_velocity.length() > MAX_SPEED:
-        linear_velocity = linear_velocity.normalized() * MAX_SPEED
+    # # Clamp vehicle's max speed.
+    # if linear_velocity.length() > MAX_SPEED:
+    #     linear_velocity = linear_velocity.normalized() * MAX_SPEED
+
     # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to ensure
     # that whatever is in the player's crosshairs is the point that will be shot at.
     if scope.is_colliding():    pointing_at = scope.get_collision_point()
@@ -175,6 +177,9 @@ func _process(delta):
             hud.updateFocusNameValue(focus.name)
             hud.updateFocusHealthValue(focus.HEALTH)
 
+func _integrate_forces(state):
+    if state.linear_velocity.length() > MAX_SPEED:
+        state.linear_velocity = state.linear_velocity.normalized() * MAX_SPEED
 
 
 func _physics_process(delta):

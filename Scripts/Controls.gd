@@ -14,7 +14,8 @@ extends Node
                                                                                 ####################
 
 var gameplay = {
-    'arena': 'TestArena01',
+    # 'arena': 'TestArena01',
+    'arena': 'Bunny',
     'targets': 'TestTarget01',
     'number_of_targets': 0, # (currently) 24 or less
     'vehicle': {
@@ -35,11 +36,11 @@ var gameplay = {
 var global = {
     'vehicle': {
         'friction': 0.00,
-        'spin': 6.00,
+        'spin': 24.00,
         'thrust_damp': 0.20, # (perc)
         'spin_damp': 0.99, # (perc)
         'mouse_sensitivity': 0.002,
-        'mouse_vert_damp': 0.80, # (perc)
+        'mouse_vert_damp': 0.90, # (perc)
     },
     'target': {
         'angle_to_shoot': 0.08,
@@ -65,8 +66,9 @@ var body = {
 
 var engines = {
     'TestEngines01': {
-        'thrust': 0.60,
-        'max_speed': 36.00,
+        # 'thrust': 0.60,
+        'thrust': 8.00,
+        'max_speed': 30.00,
     },
     'TestEngines02': {
         'thrust': 0.90,

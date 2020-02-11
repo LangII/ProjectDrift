@@ -1,6 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scenes/Functional/Environment/GravityInvConcave.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/InversionConcave.gd" type="Script" id=1]
+
+
 
 [sub_resource type="BoxShape" id=15]
 extents = Vector3( 1, 1, 0.0346348 )

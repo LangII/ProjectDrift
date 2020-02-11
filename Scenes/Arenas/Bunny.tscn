@@ -1,0 +1,249 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Arenas/BunnyComponents/FloorA.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Arenas/BunnyComponents/WallA.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Arenas/BunnyComponents/InversionConcaveA.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Arenas/BunnyComponents/WallB.tscn" type="PackedScene" id=4]
+
+[node name="Bunny" type="Spatial"]
+
+[node name="Bounds" type="Spatial" parent="."]
+
+[node name="Floors" type="Spatial" parent="Bounds"]
+
+[node name="FloorDowns" type="Spatial" parent="Bounds/Floors"]
+editor/display_folded = true
+
+[node name="FloorDown01" parent="Bounds/Floors/FloorDowns" instance=ExtResource( 1 )]
+
+[node name="FloorDown02" parent="Bounds/Floors/FloorDowns" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0 )
+
+[node name="FloorDown03" parent="Bounds/Floors/FloorDowns" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0 )
+
+[node name="FloorDown04" parent="Bounds/Floors/FloorDowns" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20 )
+
+[node name="FloorDown05" parent="Bounds/Floors/FloorDowns" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 20 )
+
+[node name="FloorDown06" parent="Bounds/Floors/FloorDowns" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 20 )
+
+[node name="FloorDown07" parent="Bounds/Floors/FloorDowns" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20 )
+
+[node name="FloorDown08" parent="Bounds/Floors/FloorDowns" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -20 )
+
+[node name="FloorDown09" parent="Bounds/Floors/FloorDowns" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -20 )
+
+[node name="FloorRights" type="Spatial" parent="Bounds/Floors"]
+editor/display_folded = true
+transform = Transform( -2.98023e-008, -1, 0, 1, -2.98023e-008, 0, 0, 0, 1, 40, 40, 0 )
+
+[node name="FloorRight01" parent="Bounds/Floors/FloorRights" instance=ExtResource( 1 )]
+
+[node name="FloorRight02" parent="Bounds/Floors/FloorRights" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0 )
+
+[node name="FloorRight03" parent="Bounds/Floors/FloorRights" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0 )
+
+[node name="FloorRight04" parent="Bounds/Floors/FloorRights" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20 )
+
+[node name="FloorRight05" parent="Bounds/Floors/FloorRights" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 20 )
+
+[node name="FloorRight06" parent="Bounds/Floors/FloorRights" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 20 )
+
+[node name="FloorRight07" parent="Bounds/Floors/FloorRights" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20 )
+
+[node name="FloorRight08" parent="Bounds/Floors/FloorRights" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -20 )
+
+[node name="FloorRight09" parent="Bounds/Floors/FloorRights" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -20 )
+
+[node name="FloorForwards" type="Spatial" parent="Bounds/Floors"]
+editor/display_folded = true
+transform = Transform( 1.3027e-015, 4.37114e-008, 1, 1, -2.98023e-008, 0, 2.98023e-008, 1, -4.37114e-008, 0, 40, -40 )
+
+[node name="FloorForward01" parent="Bounds/Floors/FloorForwards" instance=ExtResource( 1 )]
+
+[node name="FloorForward02" parent="Bounds/Floors/FloorForwards" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0 )
+
+[node name="FloorForward03" parent="Bounds/Floors/FloorForwards" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0 )
+
+[node name="FloorForward04" parent="Bounds/Floors/FloorForwards" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20 )
+
+[node name="FloorForward05" parent="Bounds/Floors/FloorForwards" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 20 )
+
+[node name="FloorForward06" parent="Bounds/Floors/FloorForwards" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 20 )
+
+[node name="FloorForward07" parent="Bounds/Floors/FloorForwards" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20 )
+
+[node name="FloorForward08" parent="Bounds/Floors/FloorForwards" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -20 )
+
+[node name="FloorForward09" parent="Bounds/Floors/FloorForwards" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -20 )
+
+[node name="Walls" type="Spatial" parent="Bounds"]
+
+[node name="WallDowns" type="Spatial" parent="Bounds/Walls"]
+editor/display_folded = true
+
+[node name="WallDown04" parent="Bounds/Walls/WallDowns" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -30, 0, 0 )
+
+[node name="WallDown05" parent="Bounds/Walls/WallDowns" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -30, 0, -20 )
+
+[node name="WallDown06" parent="Bounds/Walls/WallDowns" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -30, 0, 20 )
+
+[node name="WallDown07" parent="Bounds/Walls/WallDowns" instance=ExtResource( 2 )]
+transform = Transform( -1, 0, -8.74228e-008, 0, 1, 0, 8.74228e-008, 0, -1, 0, 0, 30 )
+
+[node name="WallDown08" parent="Bounds/Walls/WallDowns" instance=ExtResource( 2 )]
+transform = Transform( -1, 0, -8.74228e-008, 0, 1, 0, 8.74228e-008, 0, -1, -20, 0, 30 )
+
+[node name="WallDown09" parent="Bounds/Walls/WallDowns" instance=ExtResource( 2 )]
+transform = Transform( -1, 0, -8.74228e-008, 0, 1, 0, 8.74228e-008, 0, -1, 20, 0, 30 )
+
+[node name="WallRights" type="Spatial" parent="Bounds/Walls"]
+editor/display_folded = true
+transform = Transform( 5.21541e-008, -1, 0, -1, -5.21541e-008, 8.74228e-008, -8.74228e-008, -4.55945e-015, -1, 40, 40, 0 )
+
+[node name="WallRight01" parent="Bounds/Walls/WallRights" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30 )
+
+[node name="WallRight02" parent="Bounds/Walls/WallRights" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -30 )
+
+[node name="WallRight03" parent="Bounds/Walls/WallRights" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -30 )
+
+[node name="WallRight04" parent="Bounds/Walls/WallRights" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -30, 0, 0 )
+
+[node name="WallRight05" parent="Bounds/Walls/WallRights" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -30, 0, -20 )
+
+[node name="WallRight06" parent="Bounds/Walls/WallRights" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -30, 0, 20 )
+
+[node name="WallForwards" type="Spatial" parent="Bounds/Walls"]
+editor/display_folded = true
+transform = Transform( 1, 9.58655e-008, -4.37114e-008, -4.37114e-008, -2.27973e-015, -1, -9.58655e-008, 1, 1.91069e-015, 0, 40, -40 )
+
+[node name="WallForward01" parent="Bounds/Walls/WallForwards" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30 )
+
+[node name="WallForward02" parent="Bounds/Walls/WallForwards" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -30 )
+
+[node name="WallForward03" parent="Bounds/Walls/WallForwards" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -30 )
+
+[node name="WallForward04" parent="Bounds/Walls/WallForwards" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -30, 0, 0 )
+
+[node name="WallForward05" parent="Bounds/Walls/WallForwards" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -30, 0, -20 )
+
+[node name="WallForward06" parent="Bounds/Walls/WallForwards" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -30, 0, 20 )
+
+[node name="Inversions" type="Spatial" parent="."]
+
+[node name="DownRight" type="Spatial" parent="Inversions"]
+editor/display_folded = true
+
+[node name="InvConcave01" parent="Inversions/DownRight" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 30, 0, -20 )
+gravity_dir_A = "down"
+gravity_dir_B = "right"
+
+[node name="InvConcave02" parent="Inversions/DownRight" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 30, 0, 0 )
+gravity_dir_A = "down"
+gravity_dir_B = "right"
+
+[node name="InvConcave03" parent="Inversions/DownRight" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 30, 0, 20 )
+gravity_dir_A = "down"
+gravity_dir_B = "right"
+
+[node name="InvWall01" parent="Inversions/DownRight" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, -30 )
+
+[node name="InvWall02" parent="Inversions/DownRight" instance=ExtResource( 4 )]
+transform = Transform( -1, 0, -1.19209e-007, 0, 1, 0, 1.19209e-007, 0, -1, 35, 0, 30 )
+
+[node name="DownForward" type="Spatial" parent="Inversions"]
+editor/display_folded = true
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, 0, 0, 0 )
+
+[node name="InvConcave01" parent="Inversions/DownForward" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 30, 0, -20 )
+gravity_dir_A = "down"
+gravity_dir_B = "forward"
+
+[node name="InvConcave02" parent="Inversions/DownForward" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 30, 0, 0 )
+gravity_dir_A = "down"
+gravity_dir_B = "forward"
+
+[node name="InvConcave03" parent="Inversions/DownForward" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 30, 0, 20 )
+gravity_dir_A = "down"
+gravity_dir_B = "forward"
+
+[node name="InvWall01" parent="Inversions/DownForward" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, -30 )
+
+[node name="InvWall02" parent="Inversions/DownForward" instance=ExtResource( 4 )]
+transform = Transform( -1, 0, -1.19209e-007, 0, 1, 0, 1.19209e-007, 0, -1, 35, 0, 30 )
+
+[node name="ForwardRight" type="Spatial" parent="Inversions"]
+editor/display_folded = true
+transform = Transform( 1.91069e-015, -1, -4.37114e-008, -4.37114e-008, -4.37114e-008, 1, -1, 0, -4.37114e-008, 40, 40, 0 )
+
+[node name="InvConcave01" parent="Inversions/ForwardRight" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 30, 0, -20 )
+gravity_dir_A = "forward"
+gravity_dir_B = "right"
+
+[node name="InvConcave02" parent="Inversions/ForwardRight" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 30, 0, 0 )
+gravity_dir_A = "forward"
+gravity_dir_B = "right"
+
+[node name="InvConcave03" parent="Inversions/ForwardRight" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 30, 0, 20 )
+gravity_dir_A = "forward"
+gravity_dir_B = "right"
+
+[node name="InvWall01" parent="Inversions/ForwardRight" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, -30 )
+
+[node name="InvWall02" parent="Inversions/ForwardRight" instance=ExtResource( 4 )]
+transform = Transform( -1, 0, -1.19209e-007, 0, 1, 0, 1.19209e-007, 0, -1, 35, 0, 30 )
+
+[node name="Targets" type="Spatial" parent="."]
+
+[node name="SpawnVehicle" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 3, 14 )

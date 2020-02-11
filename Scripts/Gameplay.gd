@@ -67,8 +67,6 @@ func _ready():
 
     # Instance 'arena' as child of 'Gameplay'.
     add_child(Arena.instance())
-    targets = get_node(arena_tag + '/Targets')
-    targets_array = targets.get_children()
 
     # Instance 'vehicle' as child of 'Gameplay' at pos of 'SpawnVehicle'.
     var spawn_vehicle = get_node('/root/Gameplay/' + arena_tag + '/SpawnVehicle')
@@ -87,7 +85,10 @@ func _ready():
     """ NEED TO FIX ... SHOULDN'T USE DIRECT PATH """
     hud = vehicle.get_node('Hud')
 
-    setTargets()
+    if NUMBER_OF_TARGETS:
+        targets = get_node(arena_tag + '/TargetPos')
+        targets_array = targets.get_children()
+        setTargets()
 
 
 

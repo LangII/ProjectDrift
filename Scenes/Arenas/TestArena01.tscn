@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scenes/Models/Environment/Obstacles/ColRamp.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/Functional/Environment/GravityInvConcave.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/InversionConcave.gd" type="Script" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.0784314, 0.901961, 0.941176, 0.980392 )
@@ -57,7 +57,6 @@ shadow_enabled = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.64916, 7.5293 )
 
 [node name="ArenaBounds" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="ArenaFloor" type="StaticBody" parent="ArenaBounds"]
 editor/display_folded = true
@@ -73,6 +72,7 @@ transform = Transform( 40, 0, 0, 0, 1, 0, 0, 0, 40, 0, 1, 0 )
 shape = SubResource( 3 )
 
 [node name="ArenaWallXP" type="StaticBody" parent="ArenaBounds"]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, -3, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="ArenaBounds/ArenaWallXP"]
@@ -109,6 +109,7 @@ transform = Transform( -4.37114e-008, 0, 40, 0, 4, 0, -1, 0, -1.74846e-006, 0, 5
 shape = SubResource( 3 )
 
 [node name="ArenaWallZN" type="StaticBody" parent="ArenaBounds"]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, -3, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="ArenaBounds/ArenaWallZN"]
@@ -177,89 +178,91 @@ transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 30, 5, 0 )
 [node name="ObstColRampXn" parent="ArenaObstacles/ObstaclesRamps" instance=ExtResource( 1 )]
 transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, -30, 5, 0 )
 
-[node name="Targets" type="Spatial" parent="."]
+[node name="TargetPos" type="Spatial" parent="."]
 editor/display_folded = true
 
-[node name="TargetPos01" type="Position3D" parent="Targets"]
+[node name="TargetPos01" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 3.5, -7 )
 
-[node name="TargetPos02" type="Position3D" parent="Targets"]
+[node name="TargetPos02" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 3.5, 7 )
 
-[node name="TargetPos03" type="Position3D" parent="Targets"]
+[node name="TargetPos03" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -37, 3.5, 7 )
 
-[node name="TargetPos04" type="Position3D" parent="Targets"]
+[node name="TargetPos04" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -37, 3.5, -7 )
 
-[node name="TargetPos05" type="Position3D" parent="Targets"]
+[node name="TargetPos05" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 3.5, 28 )
 
-[node name="TargetPos06" type="Position3D" parent="Targets"]
+[node name="TargetPos06" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 3.5, 28 )
 
-[node name="TargetPos07" type="Position3D" parent="Targets"]
+[node name="TargetPos07" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 3.5, -28 )
 
-[node name="TargetPos08" type="Position3D" parent="Targets"]
+[node name="TargetPos08" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 3.5, -28 )
 
-[node name="TargetPos09" type="Position3D" parent="Targets"]
+[node name="TargetPos09" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 18, -22 )
 
-[node name="TargetPos10" type="Position3D" parent="Targets"]
+[node name="TargetPos10" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 18, -22 )
 
-[node name="TargetPos11" type="Position3D" parent="Targets"]
+[node name="TargetPos11" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 18, 22 )
 
-[node name="TargetPos12" type="Position3D" parent="Targets"]
+[node name="TargetPos12" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 18, 22 )
 
-[node name="TargetPos13" type="Position3D" parent="Targets"]
+[node name="TargetPos13" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 3.5, 7 )
 
-[node name="TargetPos14" type="Position3D" parent="Targets"]
+[node name="TargetPos14" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 3.5, -7 )
 
-[node name="TargetPos15" type="Position3D" parent="Targets"]
+[node name="TargetPos15" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 3.5, -7 )
 
-[node name="TargetPos16" type="Position3D" parent="Targets"]
+[node name="TargetPos16" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 3.5, 7 )
 
-[node name="TargetPos17" type="Position3D" parent="Targets"]
+[node name="TargetPos17" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 10, -19 )
 
-[node name="TargetPos18" type="Position3D" parent="Targets"]
+[node name="TargetPos18" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 10, 19 )
 
-[node name="TargetPos19" type="Position3D" parent="Targets"]
+[node name="TargetPos19" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 10, -19 )
 
-[node name="TargetPos20" type="Position3D" parent="Targets"]
+[node name="TargetPos20" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 10, 19 )
 
-[node name="TargetPos21" type="Position3D" parent="Targets"]
+[node name="TargetPos21" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 12, 28 )
 
-[node name="TargetPos22" type="Position3D" parent="Targets"]
+[node name="TargetPos22" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 12, -28 )
 
-[node name="TargetPos23" type="Position3D" parent="Targets"]
+[node name="TargetPos23" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 12, -28 )
 
-[node name="TargetPos24" type="Position3D" parent="Targets"]
+[node name="TargetPos24" type="Position3D" parent="TargetPos"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 12, 28 )
 
 [node name="SpawnVehicle" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 
 [node name="GravityInvConcave" type="StaticBody" parent="."]
+editor/display_folded = true
 transform = Transform( 40, 0, 0, 0, 4, 0, 0, 0, 4, 0, 1, -36 )
 script = ExtResource( 2 )
 
 [node name="CSGBox" type="CSGBox" parent="GravityInvConcave"]
+editor/display_folded = true
 transform = Transform( -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0, 0, 1, 0, 1, 0 )
 operation = 2
 use_collision = true
@@ -272,6 +275,7 @@ height = 3.0
 sides = 32
 
 [node name="GravityFlip" type="Area" parent="GravityInvConcave"]
+editor/display_folded = true
 
 [node name="CollisionShape" type="CollisionShape" parent="GravityInvConcave/GravityFlip"]
 transform = Transform( 1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 1, 0 )
