@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/FloorA.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/WallA.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Arenas/BunnyComponents/InversionConcaveA.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/Arenas/BunnyComponents/WallB.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Arenas/BunnyComponents/ObstacleRamp.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Arenas/BunnyComponents/InversionConcaveA.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Arenas/BunnyComponents/WallB.tscn" type="PackedScene" id=5]
 
 [node name="Bunny" type="Spatial"]
 
@@ -268,18 +269,28 @@ transform = Transform( 1, 0, -1.98084e-009, 0, 1, 0, 1.98084e-009, 0, 1, 10, 3.4
 [node name="Wall19" parent="Walls/Forward" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, -1.98084e-009, 0, 1, 0, 1.98084e-009, 0, 1, -30, 4.19617e-005, -30 )
 
+[node name="Obstacles" type="Spatial" parent="."]
+
+[node name="Ramps" type="Spatial" parent="Obstacles"]
+
+[node name="ObstColRamp01" parent="Obstacles/Ramps" instance=ExtResource( 3 )]
+transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 58, 3.8638, 6 )
+
+[node name="ObstColRamp02" parent="Obstacles/Ramps" instance=ExtResource( 3 )]
+transform = Transform( -1.74846e-007, 1.74846e-007, 4, 4, -1.74846e-007, 1.74846e-007, 1.74846e-007, 4, -1.74846e-007, -9.57702e-007, 57.8638, -36 )
+
 [node name="Inversions" type="Spatial" parent="."]
 editor/display_folded = true
 
-[node name="InversionConcave01" parent="Inversions" instance=ExtResource( 3 )]
+[node name="InversionConcave01" parent="Inversions" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30 )
 gravity_dir_A = "down"
 gravity_dir_B = "forward"
 
-[node name="Wall01" parent="Inversions" instance=ExtResource( 4 )]
+[node name="Wall01" parent="Inversions" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 10, 0, -35 )
 
-[node name="Wall02" parent="Inversions" instance=ExtResource( 4 )]
+[node name="Wall02" parent="Inversions" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -10, 0, -35 )
 
 [node name="SpawnVehicle" type="Position3D" parent="."]

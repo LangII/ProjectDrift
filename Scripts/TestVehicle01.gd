@@ -88,7 +88,7 @@ var rot = Vector3()
 var rot_force = 0.0
 
 # var gravity_force = 0.50
-var gravity_force = 1.00
+var gravity_force = 2.00
 var gravity_dir = Vector3.DOWN
 
 

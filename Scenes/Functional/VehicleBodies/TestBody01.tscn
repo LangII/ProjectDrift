@@ -36,7 +36,7 @@ transform = Transform( -0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107,
 wheel_rest_length = 0.5
 wheel_friction_slip = 0.0
 suspension_travel = 0.5
-suspension_stiffness = 80.0
+suspension_stiffness = 200.0
 damping_compression = 0.98
 damping_relaxation = 0.99
 
@@ -45,7 +45,7 @@ transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1
 wheel_rest_length = 0.5
 wheel_friction_slip = 0.0
 suspension_travel = 0.5
-suspension_stiffness = 80.0
+suspension_stiffness = 200.0
 damping_compression = 0.98
 damping_relaxation = 0.99
 
@@ -54,7 +54,7 @@ transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107,
 wheel_rest_length = 0.5
 wheel_friction_slip = 0.0
 suspension_travel = 0.5
-suspension_stiffness = 80.0
+suspension_stiffness = 200.0
 damping_compression = 0.98
 damping_relaxation = 0.99
 
@@ -63,7 +63,7 @@ transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -
 wheel_rest_length = 0.5
 wheel_friction_slip = 0.0
 suspension_travel = 0.5
-suspension_stiffness = 80.0
+suspension_stiffness = 200.0
 damping_compression = 0.98
 damping_relaxation = 0.99
 

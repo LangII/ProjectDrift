@@ -122,7 +122,6 @@ transform = Transform( -4.37114e-008, 0, 40, 0, 4, 0, -1, 0, -1.74846e-006, 0, 5
 shape = SubResource( 3 )
 
 [node name="ArenaObstacles" type="Spatial" parent="."]
-editor/display_folded = true
 
 [node name="ObstaclesPillars" type="Spatial" parent="ArenaObstacles"]
 
