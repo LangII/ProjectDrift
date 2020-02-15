@@ -7,6 +7,6 @@ albedo_color = Color( 1, 1, 0, 1 )
 material = SubResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance"]
-transform = Transform( -2.18557e-009, 0.15, 0, -0.05, -6.55671e-009, 0, 0, 0, 0.15, -1.1252, 1.06698, 0 )
+transform = Transform( -2.18557e-009, 0.15, 0, -0.05, -6.55671e-009, 0, 0, 0, 0.15, -1.125, 0.45, 0 )
 mesh = SubResource( 2 )
 material/0 = null

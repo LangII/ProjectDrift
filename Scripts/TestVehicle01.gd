@@ -24,12 +24,13 @@ onready var blaster_tag =   controls.gameplay['vehicle']['blaster']
 onready var bolt_tag =      controls.blasters[blaster_tag]['bolt_scene']
 
 # Get global control variables.
-onready var FRICTION =          controls.global['vehicle']['friction']
-onready var SPIN =              controls.global['vehicle']['spin']
-onready var THRUST_DAMP =       controls.global['vehicle']['thrust_damp']
-onready var SPIN_DAMP =         controls.global['vehicle']['spin_damp']
-onready var MOUSE_SENSITIVITY = controls.global['vehicle']['mouse_sensitivity']
-onready var MOUSE_VERT_DAMP =   controls.global['vehicle']['mouse_vert_damp']
+onready var FRICTION =              controls.global['vehicle']['friction']
+onready var SPIN =                  controls.global['vehicle']['spin']
+onready var THRUST_LINEAR_DAMP =    controls.global['vehicle']['thrust_linear_damp']
+onready var REST_LINEAR_DAMP =      controls.global['vehicle']['rest_linear_damp']
+onready var SPIN_DAMP =             controls.global['vehicle']['spin_damp']
+onready var MOUSE_SENSITIVITY =     controls.global['vehicle']['mouse_sensitivity']
+onready var MOUSE_VERT_DAMP =       controls.global['vehicle']['mouse_vert_damp']
 
 # Get parts' control variables.
 onready var HEALTH =                    controls.body[body_tag]['health']
@@ -103,7 +104,7 @@ func _ready():
 
     # Update physics settings.
     physics_material_override.set_friction(FRICTION)
-    set_linear_damp(THRUST_DAMP)
+    set_linear_damp(THRUST_LINEAR_DAMP)
     set_angular_damp(SPIN_DAMP)
 
     # Set vehicle parts' timers wait times.
@@ -177,22 +178,27 @@ func _process(delta):
             hud.updateFocusNameValue(focus.name)
             hud.updateFocusHealthValue(focus.HEALTH)
 
+
+
 func _integrate_forces(state):
+
     if state.linear_velocity.length() > MAX_SPEED:
         state.linear_velocity = state.linear_velocity.normalized() * MAX_SPEED
-
-
-func _physics_process(delta):
-
-    vel = getWasdInput()
-
-    var grav_force_dir = applyGravDirToGravForce()
-    apply_central_impulse(grav_force_dir)
 
     var rot_force_dir = applyGravToRotForce()
     apply_torque_impulse(rot_force_dir)
 
-    var vel_dir = applyGravToVel()
+
+
+func _physics_process(delta):
+
+
+    var grav_force_dir = applyGravDirToGravForce()
+    apply_central_impulse(grav_force_dir)
+
+    vel = getWasdInput()
+
+    var vel_dir = applyGravToVel(vel)
     apply_central_impulse(vel_dir)
 
 
@@ -211,26 +217,26 @@ func applyGravToRotForce():
 
     return applied_rot_force
 
-func applyGravToVel():
+func applyGravToVel(_vel):
 
     var applied_vel = Vector3()
 
     match gravity_dir:
 
         Vector3.DOWN:
-            applied_vel = vel.rotated(Vector3.UP, rotation.y)
+            applied_vel = _vel.rotated(Vector3.UP, rotation.y)
 
         Vector3.FORWARD:
-            vel = vel.rotated(Vector3(1, 0, 0), deg2rad(90))
+            _vel = _vel.rotated(Vector3(1, 0, 0), deg2rad(90))
             var vel_rotation = rotation.x - deg2rad(90)
             if rotation.y >= 0:  vel_rotation = -vel_rotation
-            applied_vel = vel.rotated(transform.basis.y, vel_rotation)
+            applied_vel = _vel.rotated(transform.basis.y, vel_rotation)
 
         Vector3.RIGHT:
-            vel = vel.rotated(Vector3(0, 0, 1), deg2rad(90))
+            _vel = _vel.rotated(Vector3(0, 0, 1), deg2rad(90))
             var vel_rotation = -rotation.x
             if rotation.z <= 0:  vel_rotation = -vel_rotation + deg2rad(180)
-            applied_vel = vel.rotated(transform.basis.y, vel_rotation)
+            applied_vel = _vel.rotated(transform.basis.y, vel_rotation)
 
     return applied_vel
 

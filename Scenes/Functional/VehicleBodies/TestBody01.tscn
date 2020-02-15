@@ -23,7 +23,7 @@ albedo_color = Color( 1, 1, 0, 1 )
 material = SubResource( 5 )
 
 [node name="TestBody01" type="VehicleBody"]
-transform = Transform( 1, 0, 3.32346e-008, 0, 1, 0, -3.32346e-008, 0, 1, 0, 0.3, 0 )
+transform = Transform( 1, 0, 3.32346e-008, 0, 1, 0, -3.32346e-008, 0, 1, 0, 0.00871718, 0 )
 mass = 8.0
 physics_material_override = SubResource( 1 )
 contacts_reported = 5
@@ -32,52 +32,44 @@ angular_damp = 0.0
 script = ExtResource( 1 )
 
 [node name="wheelFL" type="VehicleWheel" parent="."]
-transform = Transform( -0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1.5, 0.5, -1 )
-wheel_roll_influence = 1.0
-wheel_radius = 0.6
+transform = Transform( -0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1.5, -0.168777, -1 )
 wheel_rest_length = 0.5
-wheel_friction_slip = 1.2
-suspension_travel = 4.0
-suspension_stiffness = 10.0
+wheel_friction_slip = 0.0
+suspension_travel = 0.5
+suspension_stiffness = 80.0
 damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="wheelFR" type="VehicleWheel" parent="."]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1.5, 0.5, 1 )
-wheel_roll_influence = 1.0
-wheel_radius = 0.6
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1.5, -0.168777, 1 )
 wheel_rest_length = 0.5
-wheel_friction_slip = 1.2
-suspension_travel = 4.0
-suspension_stiffness = 10.0
+wheel_friction_slip = 0.0
+suspension_travel = 0.5
+suspension_stiffness = 80.0
 damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="wheelBL" type="VehicleWheel" parent="."]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -1.5, 0.5, -1 )
-wheel_roll_influence = 1.0
-wheel_radius = 0.6
+transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -1.5, -0.168777, -1 )
 wheel_rest_length = 0.5
-wheel_friction_slip = 1.2
-suspension_travel = 4.0
-suspension_stiffness = 10.0
+wheel_friction_slip = 0.0
+suspension_travel = 0.5
+suspension_stiffness = 80.0
 damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="wheelBR" type="VehicleWheel" parent="."]
-transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -1.5, 0.5, 1 )
-wheel_roll_influence = 1.0
-wheel_radius = 0.6
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -1.5, -0.168777, 1 )
 wheel_rest_length = 0.5
-wheel_friction_slip = 1.2
-suspension_travel = 4.0
-suspension_stiffness = 10.0
+wheel_friction_slip = 0.0
+suspension_travel = 0.5
+suspension_stiffness = 80.0
 damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 editor/display_folded = true
-transform = Transform( -8.74228e-008, 0, 1.2, 0, 0.5, 0, -2, 0, -5.24537e-008, 0, 0.810059, 0 )
+transform = Transform( -8.74228e-008, 0, 1.2, 0, 0.5, 0, -2, 0, -5.24537e-008, 0, 0.177642, 0 )
 shape = SubResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="CollisionShape"]
@@ -91,12 +83,12 @@ mesh = SubResource( 6 )
 material/0 = null
 
 [node name="Pivot" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37604e-009, 0, 7.45058e-009 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37604e-009, -0.632416, 7.45058e-009 )
 
 [node name="Camera" type="Camera" parent="Pivot"]
 transform = Transform( -4.37114e-008, 0.0488498, -0.998806, 0, 0.998806, 0.0488498, 1, 2.13529e-009, -4.36592e-008, -6.2, 2.9, 0 )
 current = true
-far = 200.0
+far = 500.0
 
 [node name="Scope" type="RayCast" parent="Pivot/Camera"]
 transform = Transform( 1, 5.77316e-015, -9.23706e-014, 0, 1, -9.32254e-017, 0, -9.32255e-017, 1, 9.37916e-013, 2.14577e-006, -11.6054 )
@@ -107,7 +99,7 @@ cast_to = Vector3( 0, 0, -100 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -100 )
 
 [node name="SpawnBolt" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.79892, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.1665, 0 )
 
 [node name="BlasterCoolDown" type="Timer" parent="."]
 one_shot = true

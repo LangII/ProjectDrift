@@ -37,8 +37,9 @@ var global = {
     'vehicle': {
         'friction': 0.00,
         'spin': 24.00,
-        'thrust_damp': 0.20, # (perc)
-        'spin_damp': 0.99, # (perc)
+        'thrust_linear_damp': 0.80, # (perc)
+        'rest_linear_damp': 0.90, # (perc)
+        'spin_damp': 0.98, # (perc)
         'mouse_sensitivity': 0.002,
         'mouse_vert_damp': 0.90, # (perc)
     },
@@ -67,7 +68,7 @@ var body = {
 var engines = {
     'TestEngines01': {
         # 'thrust': 0.60,
-        'thrust': 8.00,
+        'thrust': 20.00,
         'max_speed': 30.00,
     },
     'TestEngines02': {

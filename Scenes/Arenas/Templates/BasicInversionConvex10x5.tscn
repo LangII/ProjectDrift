@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/InversionConvex.gd" type="Script" id=1]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 9.99, 9.99, 9.99 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 9.99, 0.2, 8.6 )
+
+[node name="BasicInversionConvex10x5" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.089138, 0, 0 )
+script = ExtResource( 1 )
+gravity_dir_A = "right"
+gravity_dir_B = "down"
+
+[node name="CSGBox" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -5 )
+operation = 1
+use_collision = true
+width = 20.0
+height = 10.0
+depth = 10.0
+
+[node name="CSGCylinder" type="CSGCylinder" parent="CSGBox"]
+transform = Transform( -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0, 0, 1, 0, -5, -5 )
+operation = 1
+radius = 10.0
+height = 20.5
+sides = 32
+smooth_faces = false
+
+[node name="InvAreaOuter" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="InvAreaOuter"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0 )
+shape = SubResource( 1 )
+
+[node name="InvAreaInner_A" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="InvAreaInner_A"]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 13, 3.5 )
+shape = SubResource( 2 )
+
+[node name="InvAreaInner_B" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -10 )
+
+[node name="CollisionShape" type="CollisionShape" parent="InvAreaInner_B"]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 3.5, 13 )
+shape = SubResource( 2 )
+[connection signal="body_exited" from="InvAreaOuter" to="." method="_on_InvAreaOuter_body_exited"]
+[connection signal="body_exited" from="InvAreaInner_A" to="." method="_on_InvAreaInner_A_body_exited"]
+[connection signal="body_exited" from="InvAreaInner_B" to="." method="_on_InvAreaInner_B_body_exited"]
