@@ -27,7 +27,7 @@ onready var bolt_tag =      controls.blasters[blaster_tag]['bolt_scene']
 onready var FRICTION =              controls.global['vehicle']['friction']
 onready var SPIN =                  controls.global['vehicle']['spin']
 onready var THRUST_LINEAR_DAMP =    controls.global['vehicle']['thrust_linear_damp']
-onready var REST_LINEAR_DAMP =      controls.global['vehicle']['rest_linear_damp']
+# onready var REST_LINEAR_DAMP =      controls.global['vehicle']['rest_linear_damp']
 onready var SPIN_DAMP =             controls.global['vehicle']['spin_damp']
 onready var MOUSE_SENSITIVITY =     controls.global['vehicle']['mouse_sensitivity']
 onready var MOUSE_VERT_DAMP =       controls.global['vehicle']['mouse_vert_damp']
@@ -139,6 +139,7 @@ func _unhandled_input(event):
 
 func _process(delta):
 
+    ###   OBSOLETE   ###
     # # Clamp vehicle's max speed.
     # if linear_velocity.length() > MAX_SPEED:
     #     linear_velocity = linear_velocity.normalized() * MAX_SPEED
