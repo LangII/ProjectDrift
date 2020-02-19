@@ -79,16 +79,27 @@ func _ready():
     vehicle.add_child(Generator.instance())
     vehicle.add_child(Engines.instance())
     vehicle.add_child(Blaster.instance())
-
     vehicle.add_child(Shields.instance())
 
-    """ NEED TO FIX ... SHOULDN'T USE DIRECT PATH """
+    # Have to assign 'hud' after 'vehicle' assignment.
     hud = vehicle.get_node('Hud')
 
+    # Handle random target generation.
     if NUMBER_OF_TARGETS:
-        targets = get_node(arena_tag + '/TargetPos')
+        # This process potentially could be improved upon...  Which targets to delete are randomly
+        # generated, then targets are transfered from arena's 'Targets' node to gameplay's
+        # 'Targets' node.
+        targets = get_node(arena_tag + '/Targets')
         targets_array = targets.get_children()
+
         setTargets()
+
+        for target in targets.get_children():
+            target.get_parent().remove_child(target)
+            get_node('/root/Gameplay/Targets').add_child(target)
+
+        targets.queue_free()
+
 
 
 
@@ -98,8 +109,10 @@ func setTargets():
     # To ensure that target positions are not repeated, a 'randoms' array has to be appended to.
     # This way there is a collection of previous 'random' numbers to compare the most recent
     # 'random' generation to.
+    # Modification ... 'randoms' is now generated to set which targets will be deleted, not which
+    # will be generated.
     var randoms = []
-    for i in range(NUMBER_OF_TARGETS):
+    for i in range(len(targets_array) - NUMBER_OF_TARGETS):
         # While-loop is used to continue to generate a 'random' number until a new 'random' number
         # is generated.
         while true:
@@ -107,17 +120,8 @@ func setTargets():
             if not randoms.has(random):
                 randoms.append(random)
                 break
-    # Once all 'random' numbers have been generated use 'randoms' to instance 'Targets' from
-    # 'targets_array'.
-    var t_count = 0
-    for r in randoms:
-        var t = Target.instance()
-        t_count += 1
-        t.set_name('Target%02d' % t_count)
-        get_node('/root/Gameplay/Targets').add_child(t)
-        t.global_transform.origin = targets_array[r].global_transform.origin
-
-    targets.queue_free()
+    # Once all 'random' numbers have been generated use 'randoms' to delete generated ints.
+    for r in randoms:  targets_array[r].queue_free()
 
 
 
@@ -139,7 +143,7 @@ func vehicleBoltHitsTargetBody(_bolt, _target):
         hud.updateFocusHealthValue('')
 
     # Hud update for '_target' that is in "focus".
-    elif hud.focus_name_value.text == _target.name:
+    elif hud.focus_name_input == _target.name:
         hud.updateFocusHealthValue(_target.HEALTH)
 
 

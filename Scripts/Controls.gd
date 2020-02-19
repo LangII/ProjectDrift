@@ -17,7 +17,7 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 0, # (currently) 24 or less
+    'number_of_targets': 2, # (currently) 24 or less
     'vehicle': {
         'body': 'TestBody01',
         'generator': 'TestGenerator01',
@@ -44,7 +44,7 @@ var global = {
         'mouse_vert_damp': 0.90, # (perc)
     },
     'target': {
-        'angle_to_shoot': 0.08,
+        'angle_to_shoot': 0.04,
         'at_rest_tolerance': 1.60,
     },
     'bolt': {
@@ -130,7 +130,7 @@ var targets = {
         'bolt_model': 'TestBoltModel03',
         'health': 20.00,
         'visibility_range': 40.00,
-        'rotation_speed': 0.04,
+        'rotation_speed': 0.02,
         'energy': 5.00,
         'turret_cool_down': 0.40,
         'bolt_speed': 30.00,
