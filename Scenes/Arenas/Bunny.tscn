@@ -140,15 +140,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 20 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 0 )
 
 [node name="Floor19" parent="Floors/Forward" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 0, 20 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 7.62939e-006, 20 )
 
 [node name="Floor20" parent="Floors/Forward" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 0, 0 )
 
 [node name="Floor21" parent="Floors/Forward" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 0, 40 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 7.62939e-006, 40 )
 
 [node name="Walls" type="Spatial" parent="."]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 0 )
 
 [node name="Down" type="Spatial" parent="Walls"]
@@ -282,7 +283,7 @@ editor/display_folded = true
 transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 58, 3.8638, 4 )
 
 [node name="ObstRamp02" parent="Obstacles/Ramps" instance=ExtResource( 3 )]
-transform = Transform( -1.74846e-007, 1.74846e-007, 4, 4, -1.74846e-007, 1.74846e-007, 1.74846e-007, 4, -1.74846e-007, -18, 57.8638, -36 )
+transform = Transform( -1.74846e-007, 1.74846e-007, 4, 4, -1.74846e-007, 1.74846e-007, 1.74846e-007, 4, -1.74846e-007, -18, 56.8638, -36 )
 
 [node name="Pillars" type="Spatial" parent="Obstacles"]
 editor/display_folded = true
@@ -346,8 +347,264 @@ transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 10, 0
 [node name="Wall02" parent="Inversions" instance=ExtResource( 6 )]
 transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -10, 0, -35 )
 
-[node name="SpawnVehicle" type="Position3D" parent="."]
-transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -28, 4, 0 )
+[node name="Targets" type="Spatial" parent="."]
+editor/display_folded = true
+
+[node name="TargetD01" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 3, -27 )
+at_rest = "down"
+
+[node name="TargetD02" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 3, -27 )
+at_rest = "down"
+
+[node name="TargetD03" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 3, -17 )
+at_rest = "down"
+
+[node name="TargetD04" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 3, -3 )
+at_rest = "down"
+
+[node name="TargetD05" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 3, -3 )
+at_rest = "down"
+
+[node name="TargetD06" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 3, 12 )
+at_rest = "down"
+
+[node name="TargetD07" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 3, 12 )
+at_rest = "down"
+
+[node name="TargetD08" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 3, 10 )
+at_rest = "down"
+
+[node name="TargetD09" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, 10 )
+at_rest = "down"
+
+[node name="TargetD10" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, 26 )
+at_rest = "down"
+
+[node name="TargetD11" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 3, 26 )
+at_rest = "down"
+
+[node name="TargetD12" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 3, 26 )
+at_rest = "down"
+
+[node name="TargetD13" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 3, 26 )
+at_rest = "down"
+
+[node name="TargetD14" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 3, 10 )
+at_rest = "down"
+
+[node name="TargetD15" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 3, 10 )
+at_rest = "down"
+
+[node name="TargetD16" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 3, -17 )
+at_rest = "down"
+
+[node name="TargetD17" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 3, -27 )
+at_rest = "down"
+
+[node name="TargetD18" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 3, -27 )
+at_rest = "down"
+
+[node name="TargetD19" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 3, -27 )
+at_rest = "down"
+
+[node name="TargetD20" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 49, 3, -27 )
+at_rest = "down"
+
+[node name="TargetD21" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61, 3, -27 )
+at_rest = "down"
+
+[node name="TargetD22" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 3, -18 )
+at_rest = "down"
+
+[node name="TargetD23" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 3, 18 )
+at_rest = "down"
+
+[node name="TargetD24" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 3, 0 )
+at_rest = "down"
+
+[node name="TargetD25" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 13, 0 )
+at_rest = "down"
+
+[node name="TargetD26" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 13, -18 )
+at_rest = "down"
+
+[node name="TargetD27" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 13, 18 )
+at_rest = "down"
+
+[node name="TargetD28" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, 13, 23 )
+at_rest = "down"
+
+[node name="TargetD29" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, 13, -23 )
+at_rest = "down"
+
+[node name="TargetD30" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51, 13, -23 )
+at_rest = "down"
+
+[node name="TargetD31" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51, 13, 23 )
+at_rest = "down"
+
+[node name="TargetD32" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -53, 3, 0 )
+at_rest = "down"
+
+[node name="TargetF33" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 64, -37 )
+at_rest = "forward"
+
+[node name="TargetF34" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68, 64, -37 )
+at_rest = "forward"
+
+[node name="TargetF35" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 64, -37 )
+at_rest = "forward"
+
+[node name="TargetF36" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56, 64, -37 )
+at_rest = "forward"
+
+[node name="TargetF37" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56, 51, -37 )
+at_rest = "forward"
+
+[node name="TargetF38" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 51, -37 )
+at_rest = "forward"
+
+[node name="TargetF39" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 64, -37 )
+at_rest = "forward"
+
+[node name="TargetF40" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0.000506022, 5.22087e-010, -0.000506022, 1, 2.21621e-006, 5.22087e-010, -2.21621e-006, 1, 21.0005, 62, -27 )
+at_rest = "forward"
+
+[node name="TargetF41" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 62, -27 )
+at_rest = "forward"
+
+[node name="TargetF42" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 62, -27 )
+at_rest = "forward"
+
+[node name="TargetF43" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 43, 62, -27 )
+at_rest = "forward"
+
+[node name="TargetF44" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53, 62, -27 )
+at_rest = "forward"
+
+[node name="TargetF45" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 59, 62, -27 )
+at_rest = "forward"
+
+[node name="TargetF46" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 24, -37 )
+at_rest = "forward"
+
+[node name="TargetF47" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 24, -37 )
+at_rest = "forward"
+
+[node name="TargetF48" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 24, -37 )
+at_rest = "forward"
+
+[node name="TargetF49" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 24, -37 )
+at_rest = "forward"
+
+[node name="TargetF50" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68, 12, -37 )
+at_rest = "forward"
+
+[node name="TargetF51" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68, 18, -37 )
+at_rest = "forward"
+
+[node name="TargetF52" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68, 24, -37 )
+at_rest = "forward"
+
+[node name="TargetF53" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68, 30, -37 )
+at_rest = "forward"
+
+[node name="TargetF54" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68, 36, -37 )
+at_rest = "forward"
+
+[node name="TargetF55" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -68, 51, -37 )
+at_rest = "forward"
+
+[node name="TargetF56" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 50, -37 )
+at_rest = "forward"
+
+[node name="TargetF57" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 50, -37 )
+at_rest = "forward"
+
+[node name="TargetF58" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 51, -37 )
+at_rest = "forward"
+
+[node name="TargetF59" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 51, -37 )
+at_rest = "forward"
+
+[node name="TargetF60" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 51, -37 )
+at_rest = "forward"
+
+[node name="TargetF61" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 43, 51, -37 )
+at_rest = "forward"
+
+[node name="TargetF62" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53, 51, -37 )
+at_rest = "forward"
+
+[node name="TargetF63" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 59, 51, -37 )
+at_rest = "forward"
+
+[node name="TargetF64" parent="Targets" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 67, 67, -37 )
+at_rest = "forward"
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.642788, 1.24532e-007, 0.766044, -0.719846, 0.34202, 0.604023, -0.262003, -0.939693, 0.219846, 0, 80, 0 )
@@ -355,20 +612,28 @@ light_energy = 0.5
 shadow_enabled = true
 shadow_reverse_cull_face = true
 
-[node name="Targets" type="Spatial" parent="."]
+[node name="VehicleSpawners" type="Spatial" parent="."]
 
-[node name="Target01" parent="Targets" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 8 )
-at_rest = "forward"
+[node name="SpawnVehicle01" type="Position3D" parent="VehicleSpawners"]
+transform = Transform( 9.63227e-016, 4.37114e-008, 1, 1, -4.37114e-008, 9.47459e-016, 4.37114e-008, 1, -4.37114e-008, 18, 4, 18 )
 
-[node name="Target02" parent="Targets" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 7, 4 )
-at_rest = "forward"
+[node name="SpawnVehicle02" type="Position3D" parent="VehicleSpawners"]
+transform = Transform( -1, 0, -1.50996e-007, 0, 1, 0, 1.50996e-007, 0, -1, 25, 4, -5 )
 
-[node name="Target03" parent="Targets" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 7, -1 )
-at_rest = "forward"
+[node name="SpawnVehicle03" type="Position3D" parent="VehicleSpawners"]
+transform = Transform( 1, 0, 2.38419e-007, 0, 1, 0, -2.38419e-007, 0, 1, -39, 4, -4.99999 )
 
-[node name="Target04" parent="Targets" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 7, -8 )
-at_rest = "forward"
+[node name="SpawnVehicle04" type="Position3D" parent="VehicleSpawners"]
+transform = Transform( 1, 0, 2.38419e-007, 0, 1, 0, -2.38419e-007, 0, 1, -65, 4, 25 )
+
+[node name="SpawnVehicle05" type="Position3D" parent="VehicleSpawners"]
+transform = Transform( 1.31134e-007, -1.62921e-007, -1, -1, -4.37114e-008, -1.31134e-007, -4.37114e-008, 1, -1.62921e-007, -43, 65, -36 )
+
+[node name="SpawnVehicle06" type="Position3D" parent="VehicleSpawners"]
+transform = Transform( 1, 1.94707e-007, -8.51092e-015, 0, -4.37114e-008, -1, -1.94707e-007, 1, -4.37114e-008, -56, 33, -36 )
+
+[node name="SpawnVehicle07" type="Position3D" parent="VehicleSpawners"]
+transform = Transform( -1, -1.50996e-007, -6.60024e-015, 0, -4.37114e-008, 1, -1.50996e-007, 1, 4.37114e-008, 60, 39, -36 )
+
+[node name="SpawnVehicle08" type="Position3D" parent="VehicleSpawners"]
+transform = Transform( 4.37114e-008, -1.62921e-007, -1, -1, -4.37114e-008, -4.37114e-008, -4.37114e-008, 1, -1.62921e-007, -18, 44, -36 )

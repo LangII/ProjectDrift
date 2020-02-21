@@ -42,7 +42,7 @@ func _process(delta):
     transform.origin += vel * delta
 
     if temp_bug_fix.is_colliding():
-        if temp_bug_fix.get_collider().get_parent().name == 'ObstaclesRamps':  queue_free()
+        if temp_bug_fix.get_collider().get_parent().name == 'Ramps':  queue_free()
 
 func _on_Timer_timeout():
 

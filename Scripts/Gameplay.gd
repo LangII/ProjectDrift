@@ -68,10 +68,13 @@ func _ready():
     # Instance 'arena' as child of 'Gameplay'.
     add_child(Arena.instance())
 
-    # Instance 'vehicle' as child of 'Gameplay' at pos of 'SpawnVehicle'.
-    var spawn_vehicle = get_node('/root/Gameplay/' + arena_tag + '/SpawnVehicle')
+    # BLOCK ...  Instance vehicle body.
     var b = Body.instance()
-    b.translate(spawn_vehicle.translation)
+    # Get vehicle_spawners and randomly select spawner for vehicle spawn point.
+    var vehicle_spawners = get_node('/root/Gameplay/%s/VehicleSpawners' % arena_tag).get_children()
+    b.global_transform = vehicle_spawners[randi() % len(vehicle_spawners)].global_transform
+    # Orient vehicle according to spawner, orientation also resets gravity direction.
+    if b.transform.basis.y.z == 1:  b.gravity_dir = Vector3.FORWARD
     $Vehicles.add_child(b)
 
     # Instance parts as children of 'vehicle'.

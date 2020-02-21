@@ -17,7 +17,7 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 2, # (currently) 24 or less
+    'number_of_targets': 8, # (currently) 24 or less
     'vehicle': {
         'body': 'TestBody01',
         'generator': 'TestGenerator01',
