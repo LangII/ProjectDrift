@@ -182,6 +182,18 @@ func targetBoltHitsVehicleBody(_bolt, _vehicle):
 
 
 
+func winConditionMet():
+
+    get_tree().change_scene('res://Scenes/Menus/WinConditionMet.tscn')
+
+
+
+func loseConditionMet():
+
+    get_tree().change_scene('res://Scenes/Menus/LoseConditionMet.tscn')
+
+
+
 ####################################################################################################
                                                                                  ###   SIGNALS   ###
                                                                                  ###################

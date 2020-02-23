@@ -24,6 +24,7 @@ onready var blaster_tag =   controls.gameplay['vehicle']['blaster']
 onready var bolt_tag =      controls.blasters[blaster_tag]['bolt_scene']
 
 # Get global control variables.
+onready var GRAVITY_FORCE =         controls.global['vehicle']['gravity_force']
 onready var FRICTION =              controls.global['vehicle']['friction']
 onready var SPIN =                  controls.global['vehicle']['spin']
 onready var THRUST_LINEAR_DAMP =    controls.global['vehicle']['thrust_linear_damp']
@@ -37,6 +38,7 @@ onready var HEALTH =                    controls.body[body_tag]['health']
 onready var ARMOR =                     controls.body[body_tag]['armor']
 onready var SHIELDS_BATTERY_CAPACITY =  controls.shields[shields_tag]['battery_capacity']
 onready var SHIELDS_DENSITY =           controls.shields[shields_tag]['density']
+onready var SHIELDS_CONCENTRATION =     controls.shields[shields_tag]['concentration']
 onready var THRUST =                    controls.engines[engines_tag]['thrust']
 onready var MAX_SPEED =                 controls.engines[engines_tag]['max_speed']
 onready var GENERATOR_RATE =            controls.generators[generator_tag]['rate']
@@ -207,7 +209,7 @@ func _physics_process(delta):
 func applyGravDirToGravForce():
 
     var applied_grav = Vector3()
-    for axis in range(3):  applied_grav[axis] = gravity_dir[axis] * gravity_force
+    for axis in range(3):  applied_grav[axis] = gravity_dir[axis] * GRAVITY_FORCE
 
     return applied_grav
 
@@ -277,7 +279,7 @@ func _on_GeneratorRate_timeout():
         blaster_battery = clamp(blaster_battery, 0, BLASTER_BATTERY_CAPACITY)
         hud.updateBlasterBatteryValue(blaster_battery)
     if shields_battery < SHIELDS_BATTERY_CAPACITY:
-        shields_battery += REPLENISH * replenish_shields
+        shields_battery += REPLENISH * replenish_shields * SHIELDS_CONCENTRATION
         shields_battery = clamp(shields_battery, 0, SHIELDS_BATTERY_CAPACITY)
         hud.updateShieldsBatteryValue(shields_battery)
 

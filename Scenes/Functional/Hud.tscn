@@ -45,7 +45,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/Health/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
 text = " health:"
@@ -74,7 +74,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/ShieldsBattery/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
 text = " shields battery:"
@@ -103,7 +103,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/Speed/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
 text = " speed:"
@@ -132,7 +132,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/BlasterBattery/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
 text = " blaster battery:"
@@ -161,7 +161,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/ReplenishEngines/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
 text = " replenish engines:"
@@ -190,7 +190,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/ReplenishShields/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
 text = " replenish shields:"
@@ -219,7 +219,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/ReplenishBlasters/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
 text = " replenish blasters:"
@@ -248,7 +248,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/FocusName/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 140.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 140, 0 )
 text = " focus name:"
@@ -276,7 +276,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/FocusHealth/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
 text = " focus health:"
@@ -304,7 +304,7 @@ rect_min_size = Vector2( 0, 20 )
 
 [node name="Variable" type="Label" parent="Stats/Objective/Divider"]
 margin_top = 3.0
-margin_right = 160.0
+margin_right = 180.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 180, 0 )
 text = " objective:"

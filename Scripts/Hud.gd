@@ -14,6 +14,7 @@ extends Control
                                                                                 ####################
 
 onready var controls = get_node('/root/Controls')
+onready var gameplay = get_node('/root/Gameplay')
 
 onready var body_tag =      controls.gameplay['vehicle']['body']
 # onready var generator_tag = controls.gameplay['vehicle']['generator']
@@ -101,6 +102,8 @@ func updateHealthValue(_value):
     health_input = _value
     health_value.text = "%7.2f" % health_input
 
+    if health_input <= 0:  gameplay.loseConditionMet()
+
 func updateShieldsBatteryValue(_value):
 
     shields_battery_input = _value
@@ -140,3 +143,5 @@ func updateObjectiveValue(_value):
 
     objective_input = _value
     objective_value.text = "%6d" % objective_input
+
+    if objective_input <= 0:  gameplay.winConditionMet()

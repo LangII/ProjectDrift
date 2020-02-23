@@ -17,7 +17,7 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 8, # (currently) 24 or less
+    'number_of_targets': 8, # (currently) 64 or less
     'vehicle': {
         'body': 'TestBody01',
         'generator': 'TestGenerator01',
@@ -35,13 +35,14 @@ var gameplay = {
 
 var global = {
     'vehicle': {
+        'gravity_force': 3.00,
         'friction': 0.00,
         'spin': 24.00,
-        'thrust_linear_damp': 0.50, # (perc)
+        'thrust_linear_damp': 0.70, # (perc)
         # 'rest_linear_damp': 0.90, # (perc)
         'spin_damp': 0.99, # (perc)
         'mouse_sensitivity': 0.002,
-        'mouse_vert_damp': 0.90, # (perc)
+        'mouse_vert_damp': 0.50, # (perc)
     },
     'target': {
         'angle_to_shoot': 0.04,
@@ -67,8 +68,7 @@ var body = {
 
 var engines = {
     'TestEngines01': {
-        # 'thrust': 0.60,
-        'thrust': 8.00,
+        'thrust': 16.00,
         'max_speed': 20.00,
     },
     'TestEngines02': {
@@ -79,7 +79,7 @@ var engines = {
 
 var generators = {
     'TestGenerator01': {
-        'rate': 0.60,
+        'rate': 0.80,
         'replenish': 5.00,
     },
     'TestGenerator02': {
@@ -93,7 +93,7 @@ var blasters = {
         'bolt_scene': 'TestVehicleBoltScene01',
         'bolt_model': 'TestBoltModel01',
         'energy': 6.00,
-        'bolt_speed': 40.00,
+        'bolt_speed': 50.00,
         'cool_down': 0.30,
         'battery_capacity': 100.00,
     },
@@ -110,11 +110,13 @@ var blasters = {
 var shields = {
     'TestShields01': {
         'density': 0.02,
+        'concentration': 0.20, # (perc)
         'battery_capacity': 40.00,
     },
     'TestShields02': {
         'density': 0.01,
-        'battery_capacity': 150.00,
+        'concentration': 0.30, # (perc)
+        'battery_capacity': 80.00,
     },
 }
 
@@ -129,10 +131,10 @@ var targets = {
         'bolt_scene': 'TestTargetBoltScene01',
         'bolt_model': 'TestBoltModel03',
         'health': 20.00,
-        'visibility_range': 40.00,
+        'visibility_range': 80.00,
         'rotation_speed': 0.02,
-        'energy': 5.00,
+        'energy': 3.00,
         'turret_cool_down': 0.40,
-        'bolt_speed': 30.00,
+        'bolt_speed': 40.00,
     },
 }

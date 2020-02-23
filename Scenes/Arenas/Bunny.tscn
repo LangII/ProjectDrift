@@ -615,7 +615,7 @@ shadow_reverse_cull_face = true
 [node name="VehicleSpawners" type="Spatial" parent="."]
 
 [node name="SpawnVehicle01" type="Position3D" parent="VehicleSpawners"]
-transform = Transform( 9.63227e-016, 4.37114e-008, 1, 1, -4.37114e-008, 9.47459e-016, 4.37114e-008, 1, -4.37114e-008, 18, 4, 18 )
+transform = Transform( -4.37114e-008, -9.47459e-016, 1, 0, 1, 9.47459e-016, -1, 4.14147e-023, -4.37114e-008, 18, 4, 18 )
 
 [node name="SpawnVehicle02" type="Position3D" parent="VehicleSpawners"]
 transform = Transform( -1, 0, -1.50996e-007, 0, 1, 0, 1.50996e-007, 0, -1, 25, 4, -5 )
