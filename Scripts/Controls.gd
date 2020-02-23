@@ -39,7 +39,7 @@ var global = {
         'friction': 0.00,
         'spin': 24.00,
         'linear_damp': 0.70, # (perc)
-        'spin_damp': 0.99, # (perc)
+        'spin_damp': 0.98, # (perc)
         'mouse_sensitivity': 0.004,
         'mouse_vert_damp': 0.50, # (perc)
     },
