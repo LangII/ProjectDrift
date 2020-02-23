@@ -20,10 +20,10 @@ var gameplay = {
     'number_of_targets': 8, # (currently) 64 or less
     'vehicle': {
         'body': 'TestBody01',
-        'generator': 'TestGenerator01',
-        'engines': 'TestEngines01',
-        'blaster': 'TestBlaster01',
-        'shields': 'TestShields01',
+        'generator': 'TestGenerator02',
+        'engines': 'TestEngines02',
+        'blaster': 'TestBlaster02',
+        'shields': 'TestShields02',
     },
 }
 
@@ -38,10 +38,9 @@ var global = {
         'gravity_force': 3.00,
         'friction': 0.00,
         'spin': 24.00,
-        'thrust_linear_damp': 0.70, # (perc)
-        # 'rest_linear_damp': 0.90, # (perc)
+        'linear_damp': 0.70, # (perc)
         'spin_damp': 0.99, # (perc)
-        'mouse_sensitivity': 0.002,
+        'mouse_sensitivity': 0.004,
         'mouse_vert_damp': 0.50, # (perc)
     },
     'target': {
@@ -69,22 +68,22 @@ var body = {
 var engines = {
     'TestEngines01': {
         'thrust': 16.00,
-        'max_speed': 20.00,
+        'max_speed': 18.00,
     },
     'TestEngines02': {
-        'thrust': 0.90,
-        'max_speed': 18.00,
+        'thrust': 22.00,
+        'max_speed': 12.00,
     },
 }
 
 var generators = {
     'TestGenerator01': {
         'rate': 0.80,
-        'replenish': 5.00,
+        'replenish': 8.00,
     },
     'TestGenerator02': {
-        'rate': 0.50,
-        'replenish': 1.00,
+        'rate': 0.40,
+        'replenish': 4.00,
     },
 }
 
@@ -100,9 +99,9 @@ var blasters = {
     'TestBlaster02': {
         'bolt_scene': 'TestVehicleBoltScene01',
         'bolt_model': 'TestBoltModel02',
-        'energy': 2.00,
-        'bolt_speed': 20.00,
-        'cool_down': 0.20,
+        'energy': 8.00,
+        'bolt_speed': 40.00,
+        'cool_down': 0.35,
         'battery_capacity': 80.00,
     },
 }
@@ -110,13 +109,13 @@ var blasters = {
 var shields = {
     'TestShields01': {
         'density': 0.02,
-        'concentration': 0.20, # (perc)
+        'concentration': 0.05, # (perc)
         'battery_capacity': 40.00,
     },
     'TestShields02': {
-        'density': 0.01,
-        'concentration': 0.30, # (perc)
-        'battery_capacity': 80.00,
+        'density': 0.05,
+        'concentration': 0.02, # (perc)
+        'battery_capacity': 50.00,
     },
 }
 
@@ -133,7 +132,7 @@ var targets = {
         'health': 20.00,
         'visibility_range': 80.00,
         'rotation_speed': 0.02,
-        'energy': 3.00,
+        'bolt_energy': 3.00,
         'turret_cool_down': 0.40,
         'bolt_speed': 40.00,
     },

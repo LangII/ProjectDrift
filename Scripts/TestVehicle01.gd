@@ -27,7 +27,7 @@ onready var bolt_tag =      controls.blasters[blaster_tag]['bolt_scene']
 onready var GRAVITY_FORCE =         controls.global['vehicle']['gravity_force']
 onready var FRICTION =              controls.global['vehicle']['friction']
 onready var SPIN =                  controls.global['vehicle']['spin']
-onready var THRUST_LINEAR_DAMP =    controls.global['vehicle']['thrust_linear_damp']
+onready var LINEAR_DAMP =           controls.global['vehicle']['linear_damp']
 # onready var REST_LINEAR_DAMP =      controls.global['vehicle']['rest_linear_damp']
 onready var SPIN_DAMP =             controls.global['vehicle']['spin_damp']
 onready var MOUSE_SENSITIVITY =     controls.global['vehicle']['mouse_sensitivity']
@@ -106,7 +106,7 @@ func _ready():
 
     # Update physics settings.
     physics_material_override.set_friction(FRICTION)
-    set_linear_damp(THRUST_LINEAR_DAMP)
+    set_linear_damp(LINEAR_DAMP)
     set_angular_damp(SPIN_DAMP)
 
     # Set vehicle parts' timers wait times.

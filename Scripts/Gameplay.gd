@@ -166,11 +166,17 @@ func targetBoltHitsVehicleBody(_bolt, _vehicle):
         # Handle spill over of bolt's ENERGY if vehicle's 'shields_battery' over depletes by
         # applying over depletion to vehicle's HEALTH.
         else:
-            # NEED TO FIX ... Currently, if damage is done to shield, and carried over to
-            # health, the carry over value will have density applied to it, not armor.  If
-            # damage is done to health, armor should be applied, not density.  Right now, this
-            # is not the case.
-            _vehicle.HEALTH -= abs(_vehicle.shields_battery)
+
+            # # NEED TO FIX ... Currently, if damage is done to shield, and carried over to
+            # # health, the carry over value will have density applied to it, not armor.  If
+            # # damage is done to health, armor should be applied, not density.  Right now, this
+            # # is not the case.
+            # _vehicle.HEALTH -= abs(_vehicle.shields_battery)
+
+            # Updated line as temp fix.  Still needs improvement but atleast ARMOR is actually
+            # used now.
+            _vehicle.HEALTH -= abs(_vehicle.shields_battery) * (1 - _vehicle.ARMOR)
+
             _vehicle.shields_battery = 0
             hud.updateShieldsBatteryValue(_vehicle.shields_battery)
             hud.updateHealthValue(_vehicle.HEALTH)

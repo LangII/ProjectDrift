@@ -16,7 +16,7 @@ onready var scene_str = 'res://Scenes/Models/Projectiles/' + bolt_model_tag + '.
 onready var bolt_model = load(scene_str)
 
 # Get bolt's control variables.
-onready var ENERGY = controls.targets[target_tag]['energy']
+onready var ENERGY = controls.targets[target_tag]['bolt_energy']
 onready var SPEED = controls.targets[target_tag]['bolt_speed']
 
 # Get system controls.
