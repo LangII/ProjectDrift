@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/PartSelection.gd" type="Script" id=1]
+
+[node name="PartSelection" type="Control"]
+margin_right = 1280.0
+margin_bottom = 720.0
+script = ExtResource( 1 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_right = 334.0
+margin_bottom = 16.0
+grow_horizontal = 2
+
+[node name="MouseSensitivity" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_right = 334.0
+margin_bottom = 16.0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/MouseSensitivity"]
+margin_top = 1.0
+margin_right = 126.0
+margin_bottom = 15.0
+text = "mouse sensitivity:  "
+
+[node name="Slider" type="HSlider" parent="CenterContainer/VBoxContainer/MouseSensitivity"]
+margin_left = 130.0
+margin_right = 230.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 100, 0 )
+min_value = 1.0
+value = 50.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Sensitivity" type="Label" parent="CenterContainer/VBoxContainer/MouseSensitivity"]
+margin_left = 234.0
+margin_top = 1.0
+margin_right = 334.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 100, 0 )
+[connection signal="value_changed" from="CenterContainer/VBoxContainer/MouseSensitivity/Slider" to="." method="_on_Slider_value_changed"]
