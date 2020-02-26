@@ -17,33 +17,75 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_right = 334.0
-margin_bottom = 16.0
+margin_bottom = 68.0
 grow_horizontal = 2
 
-[node name="MouseSensitivity" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+[node name="EnginesSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 margin_right = 334.0
-margin_bottom = 16.0
+margin_bottom = 24.0
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/MouseSensitivity"]
+[node name="Label01" type="Label" parent="CenterContainer/VBoxContainer/EnginesSelection"]
+margin_top = 5.0
+margin_right = 125.0
+margin_bottom = 19.0
+text = "engines selection:  "
+
+[node name="Label02" type="Label" parent="CenterContainer/VBoxContainer/EnginesSelection"]
+margin_left = 129.0
+margin_top = 5.0
+margin_right = 182.0
+margin_bottom = 19.0
+text = "yellow >"
+
+[node name="EnginesYellow" type="CheckBox" parent="CenterContainer/VBoxContainer/EnginesSelection"]
+margin_left = 186.0
+margin_right = 210.0
+margin_bottom = 24.0
+
+[node name="Label03" type="Label" parent="CenterContainer/VBoxContainer/EnginesSelection"]
+margin_left = 214.0
+margin_top = 5.0
+margin_right = 262.0
+margin_bottom = 19.0
+text = "green >"
+
+[node name="EnginesGreen" type="CheckBox" parent="CenterContainer/VBoxContainer/EnginesSelection"]
+margin_left = 266.0
+margin_right = 290.0
+margin_bottom = 24.0
+
+[node name="Mouse" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 28.0
+margin_right = 334.0
+margin_bottom = 44.0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/Mouse"]
 margin_top = 1.0
 margin_right = 126.0
 margin_bottom = 15.0
 text = "mouse sensitivity:  "
 
-[node name="Slider" type="HSlider" parent="CenterContainer/VBoxContainer/MouseSensitivity"]
+[node name="Slider" type="HSlider" parent="CenterContainer/VBoxContainer/Mouse"]
 margin_left = 130.0
 margin_right = 230.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 100, 0 )
 min_value = 1.0
 value = 50.0
-tick_count = 20
+tick_count = 10
 ticks_on_borders = true
 
-[node name="Sensitivity" type="Label" parent="CenterContainer/VBoxContainer/MouseSensitivity"]
+[node name="MouseSensitivity" type="Label" parent="CenterContainer/VBoxContainer/Mouse"]
 margin_left = 234.0
 margin_top = 1.0
 margin_right = 334.0
 margin_bottom = 15.0
 rect_min_size = Vector2( 100, 0 )
-[connection signal="value_changed" from="CenterContainer/VBoxContainer/MouseSensitivity/Slider" to="." method="_on_Slider_value_changed"]
+
+[node name="Play" type="Button" parent="CenterContainer/VBoxContainer"]
+margin_top = 48.0
+margin_right = 334.0
+margin_bottom = 68.0
+text = "play"
+[connection signal="value_changed" from="CenterContainer/VBoxContainer/Mouse/Slider" to="." method="_on_Slider_value_changed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Play" to="." method="_on_Play_pressed"]
