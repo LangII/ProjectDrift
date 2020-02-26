@@ -17,6 +17,7 @@ func _ready():
 
     engines_yellow.set_button_group(engines_group)
     engines_green.set_button_group(engines_group)
+
     engines_yellow.set_pressed(true)
 
     mouse_sensitivity.text = str(controls.global['vehicle']['mouse_sensitivity'])
