@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/PartSelection.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.372549, 0.372549, 0.372549, 1 )
 
 [node name="PartSelection" type="Control"]
 margin_right = 1280.0
@@ -17,12 +20,48 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_right = 334.0
-margin_bottom = 68.0
+margin_bottom = 152.0
 grow_horizontal = 2
 
-[node name="EnginesSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+[node name="GeneratorSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 margin_right = 334.0
 margin_bottom = 24.0
+
+[node name="Label01" type="Label" parent="CenterContainer/VBoxContainer/GeneratorSelection"]
+margin_top = 5.0
+margin_right = 136.0
+margin_bottom = 19.0
+text = "generator selection:  "
+
+[node name="Label02" type="Label" parent="CenterContainer/VBoxContainer/GeneratorSelection"]
+margin_left = 140.0
+margin_top = 5.0
+margin_right = 193.0
+margin_bottom = 19.0
+text = "yellow >"
+
+[node name="GeneratorYellow" type="CheckBox" parent="CenterContainer/VBoxContainer/GeneratorSelection"]
+margin_left = 197.0
+margin_right = 221.0
+margin_bottom = 24.0
+
+[node name="Label03" type="Label" parent="CenterContainer/VBoxContainer/GeneratorSelection"]
+margin_left = 225.0
+margin_top = 5.0
+margin_right = 273.0
+margin_bottom = 19.0
+text = "green >"
+
+[node name="GeneratorGreen" type="CheckBox" parent="CenterContainer/VBoxContainer/GeneratorSelection"]
+margin_left = 277.0
+margin_right = 301.0
+margin_bottom = 24.0
+
+[node name="EnginesSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+editor/display_folded = true
+margin_top = 28.0
+margin_right = 334.0
+margin_bottom = 52.0
 
 [node name="Label01" type="Label" parent="CenterContainer/VBoxContainer/EnginesSelection"]
 margin_top = 5.0
@@ -54,10 +93,83 @@ margin_left = 266.0
 margin_right = 290.0
 margin_bottom = 24.0
 
-[node name="Mouse" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-margin_top = 28.0
+[node name="BlasterSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+editor/display_folded = true
+margin_top = 56.0
 margin_right = 334.0
-margin_bottom = 44.0
+margin_bottom = 80.0
+
+[node name="Label01" type="Label" parent="CenterContainer/VBoxContainer/BlasterSelection"]
+margin_top = 5.0
+margin_right = 119.0
+margin_bottom = 19.0
+text = "blaster selection:  "
+
+[node name="Label02" type="Label" parent="CenterContainer/VBoxContainer/BlasterSelection"]
+margin_left = 123.0
+margin_top = 5.0
+margin_right = 176.0
+margin_bottom = 19.0
+text = "yellow >"
+
+[node name="BlasterYellow" type="CheckBox" parent="CenterContainer/VBoxContainer/BlasterSelection"]
+margin_left = 180.0
+margin_right = 204.0
+margin_bottom = 24.0
+
+[node name="Label03" type="Label" parent="CenterContainer/VBoxContainer/BlasterSelection"]
+margin_left = 208.0
+margin_top = 5.0
+margin_right = 256.0
+margin_bottom = 19.0
+text = "green >"
+
+[node name="BlasterGreen" type="CheckBox" parent="CenterContainer/VBoxContainer/BlasterSelection"]
+margin_left = 260.0
+margin_right = 284.0
+margin_bottom = 24.0
+
+[node name="ShieldsSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+editor/display_folded = true
+margin_top = 84.0
+margin_right = 334.0
+margin_bottom = 108.0
+
+[node name="Label01" type="Label" parent="CenterContainer/VBoxContainer/ShieldsSelection"]
+margin_top = 5.0
+margin_right = 121.0
+margin_bottom = 19.0
+text = "shields selection:  "
+
+[node name="Label02" type="Label" parent="CenterContainer/VBoxContainer/ShieldsSelection"]
+margin_left = 125.0
+margin_top = 5.0
+margin_right = 178.0
+margin_bottom = 19.0
+text = "yellow >"
+
+[node name="ShieldsYellow" type="CheckBox" parent="CenterContainer/VBoxContainer/ShieldsSelection"]
+margin_left = 182.0
+margin_right = 206.0
+margin_bottom = 24.0
+
+[node name="Label03" type="Label" parent="CenterContainer/VBoxContainer/ShieldsSelection"]
+margin_left = 210.0
+margin_top = 5.0
+margin_right = 258.0
+margin_bottom = 19.0
+text = "green >"
+
+[node name="ShieldsGreen" type="CheckBox" parent="CenterContainer/VBoxContainer/ShieldsSelection"]
+margin_left = 262.0
+margin_right = 286.0
+margin_bottom = 24.0
+
+[node name="Mouse" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+editor/display_folded = true
+margin_top = 112.0
+margin_right = 334.0
+margin_bottom = 128.0
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer/Mouse"]
 margin_top = 1.0
@@ -71,7 +183,8 @@ margin_right = 230.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 100, 0 )
 min_value = 1.0
-value = 50.0
+max_value = 200.0
+value = 100.0
 tick_count = 10
 ticks_on_borders = true
 
@@ -83,9 +196,22 @@ margin_bottom = 15.0
 rect_min_size = Vector2( 100, 0 )
 
 [node name="Play" type="Button" parent="CenterContainer/VBoxContainer"]
-margin_top = 48.0
+margin_top = 132.0
 margin_right = 334.0
-margin_bottom = 68.0
+margin_bottom = 152.0
 text = "play"
+
+[node name="PartNotes" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -300.0
+margin_top = -300.0
+rect_min_size = Vector2( 300, 300 )
+custom_styles/normal = SubResource( 1 )
+text = "this is where words go.  lots and lots of words.  more words can go here and so and and so on"
+autowrap = true
+[connection signal="pressed" from="CenterContainer/VBoxContainer/GeneratorSelection/GeneratorYellow" to="." method="_on_GeneratorYellow_pressed"]
 [connection signal="value_changed" from="CenterContainer/VBoxContainer/Mouse/Slider" to="." method="_on_Slider_value_changed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Play" to="." method="_on_Play_pressed"]

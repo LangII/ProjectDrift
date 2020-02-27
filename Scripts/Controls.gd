@@ -20,10 +20,10 @@ var gameplay = {
     'number_of_targets': 8, # (currently) 64 or less
     'vehicle': {
         'body': 'TestBody01',
-        'generator': 'TestGenerator02',
-        'engines': 'TestEngines02',
-        'blaster': 'TestBlaster02',
-        'shields': 'TestShields02',
+        'generator': 'TestGenerator01',
+        'engines': 'TestEngines01',
+        'blaster': 'TestBlaster01',
+        'shields': 'TestShields01',
     },
 }
 
@@ -65,17 +65,6 @@ var body = {
     },
 }
 
-var engines = {
-    'TestEngines01': {
-        'thrust': 16.00,
-        'max_speed': 18.00,
-    },
-    'TestEngines02': {
-        'thrust': 22.00,
-        'max_speed': 12.00,
-    },
-}
-
 var generators = {
     'TestGenerator01': {
         'rate': 0.80,
@@ -84,6 +73,17 @@ var generators = {
     'TestGenerator02': {
         'rate': 0.40,
         'replenish': 4.00,
+    },
+}
+
+var engines = {
+    'TestEngines01': {
+        'thrust': 16.00,
+        'max_speed': 18.00,
+    },
+    'TestEngines02': {
+        'thrust': 22.00,
+        'max_speed': 12.00,
     },
 }
 

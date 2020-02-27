@@ -9,4 +9,5 @@ func _ready():
 
 func _on_ButtonReplay_pressed():
 
-    get_tree().change_scene('res://Scenes/Functional/Gameplay.tscn')
+    # get_tree().change_scene('res://Scenes/Functional/Gameplay.tscn')
+    get_tree().change_scene('res://Scenes/Menus/PartSelection.tscn')
