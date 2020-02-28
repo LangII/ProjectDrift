@@ -20,10 +20,10 @@ var gameplay = {
     'number_of_targets': 8, # (currently) 64 or less
     'vehicle': {
         'body': 'TestBody01',
-        'generator': 'TestGenerator01',
-        'engines': 'TestEngines01',
-        'blaster': 'TestBlaster01',
-        'shields': 'TestShields01',
+        'generator': 'GeneratorYellow',
+        'engines': 'EnginesYellow',
+        'blaster': 'BlasterYellow',
+        'shields': 'ShieldsYellow',
     },
 }
 
@@ -66,39 +66,39 @@ var body = {
 }
 
 var generators = {
-    'TestGenerator01': {
+    'GeneratorYellow': {
         'rate': 0.80,
         'replenish': 8.00,
     },
-    'TestGenerator02': {
+    'GeneratorGreen': {
         'rate': 0.40,
         'replenish': 4.00,
     },
 }
 
 var engines = {
-    'TestEngines01': {
+    'EnginesYellow': {
         'thrust': 16.00,
         'max_speed': 18.00,
     },
-    'TestEngines02': {
+    'EnginesGreen': {
         'thrust': 22.00,
         'max_speed': 12.00,
     },
 }
 
 var blasters = {
-    'TestBlaster01': {
-        'bolt_scene': 'TestVehicleBoltScene01',
-        'bolt_model': 'TestBoltModel01',
+    'BlasterYellow': {
+        'bolt_scene': 'VehicleBoltScene01',
+        'bolt_model': 'BoltModelYellow',
         'energy': 6.00,
         'bolt_speed': 50.00,
         'cool_down': 0.30,
         'battery_capacity': 100.00,
     },
-    'TestBlaster02': {
-        'bolt_scene': 'TestVehicleBoltScene01',
-        'bolt_model': 'TestBoltModel02',
+    'BlasterGreen': {
+        'bolt_scene': 'VehicleBoltScene01',
+        'bolt_model': 'BoltModelGreen',
         'energy': 8.00,
         'bolt_speed': 40.00,
         'cool_down': 0.35,
@@ -107,12 +107,12 @@ var blasters = {
 }
 
 var shields = {
-    'TestShields01': {
+    'ShieldsYellow': {
         'density': 0.02,
         'concentration': 0.05, # (perc)
         'battery_capacity': 40.00,
     },
-    'TestShields02': {
+    'ShieldsGreen': {
         'density': 0.05,
         'concentration': 0.02, # (perc)
         'battery_capacity': 50.00,
