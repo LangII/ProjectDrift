@@ -88,8 +88,7 @@ density = 0.02 (perc)
 concentration = 0.05 (perc)
 battery capacity = 40.00
 
-"2% of damage done will be ignored (density).  Concentration is how effective battery replenishment
-is.  Battery stores less energy."
+"2% of damage done will be ignored (density).  Concentration is how effective battery replenishment is.  Battery stores less energy."
 
 """,
 
@@ -101,8 +100,7 @@ density = 0.05 (perc)
 concentration = 0.02 (perc)
 battery capacity = 50.00
 
-"5% of damage done will be ignored (density).  Concentration is how effective battery replenishment
-is.  Battery stores more energy."
+"5% of damage done will be ignored (density).  Concentration is how effective battery replenishment is.  Battery stores more energy."
 
 """
 

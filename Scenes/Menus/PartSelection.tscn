@@ -20,42 +20,13 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_right = 334.0
-margin_bottom = 172.0
+margin_bottom = 226.0
 grow_horizontal = 2
-
-[node name="Turrets" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-editor/display_folded = true
-margin_right = 334.0
-margin_bottom = 16.0
-
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/Turrets"]
-margin_top = 1.0
-margin_right = 126.0
-margin_bottom = 15.0
-text = "mouse sensitivity:  "
-
-[node name="TurretsSlider" type="HSlider" parent="CenterContainer/VBoxContainer/Turrets"]
-margin_left = 130.0
-margin_right = 230.0
-margin_bottom = 16.0
-rect_min_size = Vector2( 100, 0 )
-max_value = 64.0
-value = 8.0
-tick_count = 10
-ticks_on_borders = true
-
-[node name="TurretCount" type="Label" parent="CenterContainer/VBoxContainer/Turrets"]
-margin_left = 234.0
-margin_top = 1.0
-margin_right = 334.0
-margin_bottom = 15.0
-rect_min_size = Vector2( 100, 0 )
 
 [node name="GeneratorSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 editor/display_folded = true
-margin_top = 20.0
 margin_right = 334.0
-margin_bottom = 44.0
+margin_bottom = 24.0
 
 [node name="Label01" type="Label" parent="CenterContainer/VBoxContainer/GeneratorSelection"]
 margin_top = 5.0
@@ -89,9 +60,9 @@ margin_bottom = 24.0
 
 [node name="EnginesSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 editor/display_folded = true
-margin_top = 48.0
+margin_top = 28.0
 margin_right = 334.0
-margin_bottom = 72.0
+margin_bottom = 52.0
 
 [node name="Label01" type="Label" parent="CenterContainer/VBoxContainer/EnginesSelection"]
 margin_top = 5.0
@@ -125,9 +96,9 @@ margin_bottom = 24.0
 
 [node name="BlasterSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 editor/display_folded = true
-margin_top = 76.0
+margin_top = 56.0
 margin_right = 334.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 
 [node name="Label01" type="Label" parent="CenterContainer/VBoxContainer/BlasterSelection"]
 margin_top = 5.0
@@ -161,9 +132,9 @@ margin_bottom = 24.0
 
 [node name="ShieldsSelection" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 editor/display_folded = true
-margin_top = 104.0
+margin_top = 84.0
 margin_right = 334.0
-margin_bottom = 128.0
+margin_bottom = 108.0
 
 [node name="Label01" type="Label" parent="CenterContainer/VBoxContainer/ShieldsSelection"]
 margin_top = 5.0
@@ -195,11 +166,52 @@ margin_left = 262.0
 margin_right = 286.0
 margin_bottom = 24.0
 
+[node name="LazySpacer01" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 112.0
+margin_right = 334.0
+margin_bottom = 126.0
+text = " "
+
+[node name="Turrets" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+editor/display_folded = true
+margin_top = 130.0
+margin_right = 334.0
+margin_bottom = 146.0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/Turrets"]
+margin_top = 1.0
+margin_right = 88.0
+margin_bottom = 15.0
+text = "turret count:  "
+
+[node name="TurretsSlider" type="HSlider" parent="CenterContainer/VBoxContainer/Turrets"]
+margin_left = 92.0
+margin_right = 192.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 100, 0 )
+max_value = 64.0
+value = 8.0
+tick_count = 10
+ticks_on_borders = true
+
+[node name="TurretCount" type="Label" parent="CenterContainer/VBoxContainer/Turrets"]
+margin_left = 196.0
+margin_top = 1.0
+margin_right = 296.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 100, 0 )
+
+[node name="LazySpacer02" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 150.0
+margin_right = 334.0
+margin_bottom = 164.0
+text = " "
+
 [node name="Mouse" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 editor/display_folded = true
-margin_top = 132.0
+margin_top = 168.0
 margin_right = 334.0
-margin_bottom = 148.0
+margin_bottom = 184.0
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer/Mouse"]
 margin_top = 1.0
@@ -225,11 +237,45 @@ margin_right = 334.0
 margin_bottom = 15.0
 rect_min_size = Vector2( 100, 0 )
 
-[node name="Play" type="Button" parent="CenterContainer/VBoxContainer"]
-margin_top = 152.0
+[node name="LazySpacer03" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 188.0
 margin_right = 334.0
-margin_bottom = 172.0
+margin_bottom = 202.0
+text = " "
+
+[node name="Play" type="Button" parent="CenterContainer/VBoxContainer"]
+margin_top = 206.0
+margin_right = 334.0
+margin_bottom = 226.0
 text = "play"
+
+[node name="ControlsNotes" type="Label" parent="."]
+margin_right = 336.0
+margin_bottom = 400.0
+rect_min_size = Vector2( 340, 400 )
+custom_styles/normal = SubResource( 1 )
+text = "
+Controls:
+
+'W' key = Move vehicle forward.
+'A' key = Strafe vehicle left.
+'S' key = Move vehicle backward.
+'D' key = Strafe vehicle right.
+
+'up/down' mouse = Look camera/targeting up/down.
+'left/right' mouse = Rotate vehicle left/right.
+
+'spacebar' key  = Shoot bolts.
+
+'shift' key = Get details of turret in crosshairs.
+'tab' key = Cycle through replenishment settings.
+    (Adjust percentage of generator replenishment
+    that engines, blaster, and shields receive.)
+
+Objective:
+
+Eliminate all turrets."
+autowrap = true
 
 [node name="PartNotes" type="Label" parent="."]
 anchor_left = 1.0
@@ -240,10 +286,7 @@ margin_left = -300.0
 margin_top = -300.0
 rect_min_size = Vector2( 300, 300 )
 custom_styles/normal = SubResource( 1 )
-text = "
- Welcome Drifter"
 autowrap = true
-[connection signal="value_changed" from="CenterContainer/VBoxContainer/Turrets/TurretsSlider" to="." method="_on_TurretsSlider_value_changed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/GeneratorSelection/GeneratorYellow" to="." method="_on_GeneratorYellow_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/GeneratorSelection/GeneratorGreen" to="." method="_on_GeneratorGreen_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/EnginesSelection/EnginesYellow" to="." method="_on_EnginesYellow_pressed"]
@@ -252,5 +295,6 @@ autowrap = true
 [connection signal="pressed" from="CenterContainer/VBoxContainer/BlasterSelection/BlasterGreen" to="." method="_on_BlasterGreen_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ShieldsSelection/ShieldsYellow" to="." method="_on_ShieldsYellow_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ShieldsSelection/ShieldsGreen" to="." method="_on_ShieldsGreen_pressed"]
+[connection signal="value_changed" from="CenterContainer/VBoxContainer/Turrets/TurretsSlider" to="." method="_on_TurretsSlider_value_changed"]
 [connection signal="value_changed" from="CenterContainer/VBoxContainer/Mouse/MouseSlider" to="." method="_on_MouseSlider_value_changed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Play" to="." method="_on_Play_pressed"]
