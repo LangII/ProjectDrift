@@ -1,12 +1,11 @@
 [gd_scene load_steps=3 format=2]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="CubeMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 1, 1, 0, 1 )
 
-[sub_resource type="CubeMesh" id=2]
-material = SubResource( 1 )
-
 [node name="MeshInstance" type="MeshInstance"]
-transform = Transform( -2.18557e-009, 0.15, 0, -0.05, -6.55671e-009, 0, 0, 0, 0.15, -1.125, 0.45, 0 )
-mesh = SubResource( 2 )
-material/0 = null
+transform = Transform( -2.18557e-09, 0.15, 0, -0.05, -6.55671e-09, 0, 0, 0, 0.15, -1.125, 0.45, 0 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )

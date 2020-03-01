@@ -13,11 +13,14 @@ extends Node
                                                                                 ###   GAMEPLAY   ###
                                                                                 ####################
 
+# If 'true' bypass menus and generate game from 'gameplay' values.
+var testing = false
+
 var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 8, # (currently) 64 or less
+    'number_of_targets': 4, # (currently) 64 or less
     'vehicle': {
         'body': 'TestBody01',
         'generator': 'GeneratorYellow',

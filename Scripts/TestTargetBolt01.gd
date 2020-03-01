@@ -32,29 +32,29 @@ onready var temp_bug_fix = $TempBugFix
 
 func _ready():
 
-    add_child(bolt_model.instance())
+	add_child(bolt_model.instance())
 
-    timer.wait_time = LIFE_TIME
-    timer.start()
+	timer.wait_time = LIFE_TIME
+	timer.start()
 
 func _process(delta):
 
-    transform.origin += vel * delta
+	transform.origin += vel * delta
 
-    if temp_bug_fix.is_colliding():
-        if temp_bug_fix.get_collider().get_parent().name == 'Ramps':  queue_free()
+	if temp_bug_fix.is_colliding():
+		if temp_bug_fix.get_collider().get_parent().name == 'Ramps':  queue_free()
 
 func _on_Timer_timeout():
 
-    queue_free()
+	queue_free()
 
 func spawn(_spawn_transform):
 
-    transform = _spawn_transform
-    vel = -transform.basis.z * SPEED
+	transform = _spawn_transform
+	vel = -transform.basis.z * SPEED
 
 func _on_Bolt_body_entered(body):
 
-    if body.name == body_tag:  gameplay.targetBoltHitsVehicleBody(self, body)
+	if body.name == body_tag:  gameplay.targetBoltHitsVehicleBody(self, body)
 
-    queue_free()
+	queue_free()
