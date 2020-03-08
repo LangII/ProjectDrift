@@ -29,26 +29,26 @@ onready var hud = get_node('/root/Gameplay/Vehicles/%s/Hud' % body_tag)
 
 func _ready():
 
-	add_child(bolt_model.instance())
+    add_child(bolt_model.instance())
 
-	timer.wait_time = LIFE_TIME
-	timer.start()
+    timer.wait_time = LIFE_TIME
+    timer.start()
 
 func _process(delta):
 
-	transform.origin += vel * delta
+    transform.origin += vel * delta
 
 func _on_Timer_timeout():
 
-	queue_free()
+    queue_free()
 
 func spawn(_spawn_transform):
 
-	transform = _spawn_transform
-	vel = -transform.basis.z * SPEED
+    transform = _spawn_transform
+    vel = -transform.basis.z * SPEED
 
 func _on_Bolt_body_entered(body):
 
-	if body.get_parent().name == 'Targets':  gameplay.vehicleBoltHitsTargetBody(self, body)
+    if body.get_parent().name == 'Targets':  gameplay.vehicleBoltHitsTargetBody(self, body)
 
-	queue_free()
+    queue_free()

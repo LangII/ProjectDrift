@@ -10,8 +10,8 @@ extends StaticBody
 
 
 ####################################################################################################
-																				###   CONTROLS   ###
-																				####################
+                                                                                ###   CONTROLS   ###
+                                                                                ####################
 
 onready var controls = get_node('/root/Controls')
 
@@ -33,8 +33,8 @@ onready var TURRET_COOL_DOWN =  controls.targets[target_tag]['turret_cool_down']
 
 
 ####################################################################################################
-																			   ###   FUNC VARS   ###
-																			   #####################
+                                                                               ###   FUNC VARS   ###
+                                                                               #####################
 
 onready var visibility_col = $Visibility/CollisionShape
 
@@ -63,107 +63,107 @@ var above_target
 
 
 ####################################################################################################
-																				   ###   READY   ###
-																				   #################
+                                                                                   ###   READY   ###
+                                                                                   #################
 
 func _ready():
 
-	match at_rest:
+    match at_rest:
 
-		'left':     pass
-		'right':    pass
-		'up':       pass
+        'left':     pass
+        'right':    pass
+        'up':       pass
 
-		'down':
-			at_rest = Vector3(0, -1, 0.00001)
-			below_target = Vector3.DOWN
-			above_target = Vector3.UP
+        'down':
+            at_rest = Vector3(0, -1, 0.00001)
+            below_target = Vector3.DOWN
+            above_target = Vector3.UP
 
-		'forward':
-			at_rest = Vector3(0, 0.00001, -1)
-			below_target = Vector3.FORWARD
-			above_target = Vector3.BACK
+        'forward':
+            at_rest = Vector3(0, 0.00001, -1)
+            below_target = Vector3.FORWARD
+            above_target = Vector3.BACK
 
-		'back':     pass
+        'back':     pass
 
-	# BLOCK ...  Set initiating variables.
-	visibility_col.shape.radius = VISIBILITY_RANGE
-	turret_cool_down.wait_time = TURRET_COOL_DOWN
-	turret_cooled_down = true
+    # BLOCK ...  Set initiating variables.
+    visibility_col.shape.radius = VISIBILITY_RANGE
+    turret_cool_down.wait_time = TURRET_COOL_DOWN
+    turret_cooled_down = true
 
-	# Set turret's at rest position.
-	turret.look_at(turret.global_transform.origin + at_rest, above_target)
+    # Set turret's at rest position.
+    turret.look_at(turret.global_transform.origin + at_rest, above_target)
 
 
 
 ####################################################################################################
-																			  ###   PROCESSING   ###
-																			  ######################
+                                                                              ###   PROCESSING   ###
+                                                                              ######################
 
 func _process(delta):
 
-	### from Discord (Fabian) ...  To try in the future as a better interpolation method.
-	# _tween.interpolate_property(self, "transform:basis",
-	#         initial_basis, final_basis, 1.0, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	#     _tween.start()
+    ### from Discord (Fabian) ...  To try in the future as a better interpolation method.
+    # _tween.interpolate_property(self, "transform:basis",
+    #         initial_basis, final_basis, 1.0, Tween.TRANS_LINEAR, Tween.EASE_IN)
+    #     _tween.start()
 
-	# 'awake' is used to reduce unnecessary 'target' processing.
-	if awake:
-		if obj_visible:
-			targeting = obj_visible.global_transform.origin - turret.global_transform.origin
+    # 'awake' is used to reduce unnecessary 'target' processing.
+    if awake:
+        if obj_visible:
+            targeting = obj_visible.global_transform.origin - turret.global_transform.origin
 
-			###   OBSOLETE   ###
-			# # NEED TO FIX ...  Targets 1 unit above origin, need to give vehicle to-be-targeted
-			# # coord.  Will fix with next vehicle update of part positional instancing.
-			# targeting.y += 1
+            ###   OBSOLETE   ###
+            # # NEED TO FIX ...  Targets 1 unit above origin, need to give vehicle to-be-targeted
+            # # coord.  Will fix with next vehicle update of part positional instancing.
+            # targeting.y += 1
 
-			angle_to_targeting = turret.transform.basis.y.angle_to(targeting)
-			# NEED TO FIX ...  Not sure why, but 'angle_to_targeting' has a constant offset of 90d
-			# (1.57r).  Should not be hard coded this way.
-			if angle_to_targeting < 1.57 + ANGLE_TO_SHOOT:
-				if angle_to_targeting > 1.57 - ANGLE_TO_SHOOT:
-					if turret_cooled_down:
-						# If all conditions are met, proceed to processing of instancing 'bolt',
-						# spawning 'bolt', and reseting 'turret_cool_down'.
-						bolt = Bolt.instance()
-						target_bolts.add_child(bolt)
-						bolt.spawn(spawn_bolt.global_transform)
-						turret_cool_down.start()
-						turret_cooled_down = false
+            angle_to_targeting = turret.transform.basis.y.angle_to(targeting)
+            # NEED TO FIX ...  Not sure why, but 'angle_to_targeting' has a constant offset of 90d
+            # (1.57r).  Should not be hard coded this way.
+            if angle_to_targeting < 1.57 + ANGLE_TO_SHOOT:
+                if angle_to_targeting > 1.57 - ANGLE_TO_SHOOT:
+                    if turret_cooled_down:
+                        # If all conditions are met, proceed to processing of instancing 'bolt',
+                        # spawning 'bolt', and reseting 'turret_cool_down'.
+                        bolt = Bolt.instance()
+                        target_bolts.add_child(bolt)
+                        bolt.spawn(spawn_bolt.global_transform)
+                        turret_cool_down.start()
+                        turret_cooled_down = false
 
-		# Handle processing of turret from object-no-longer-visible to at-rest.
-		else:
-			targeting = at_rest
-			if turret.transform.basis.y.angle_to(below_target) < AT_REST_TOLERANCE:  awake = false
+        # Handle processing of turret from object-no-longer-visible to at-rest.
+        else:
+            targeting = at_rest
+            if turret.transform.basis.y.angle_to(below_target) < AT_REST_TOLERANCE:  awake = false
 
-		# Need additional step of 'targeting_dir' for interpolation.
-		targeting_dir = turret.transform.looking_at(targeting, above_target)
-		targeting_dir = turret.transform.interpolate_with(targeting_dir, ROTATION_SPEED)
-		turret.transform = targeting_dir.orthonormalized()
+        # Need additional step of 'targeting_dir' for interpolation.
+        targeting_dir = turret.transform.looking_at(targeting, above_target)
+        targeting_dir = turret.transform.interpolate_with(targeting_dir, ROTATION_SPEED)
+        turret.transform = targeting_dir.orthonormalized()
 
 
 
 ####################################################################################################
-																				 ###   SIGNALS   ###
-																				 ###################
+                                                                                 ###   SIGNALS   ###
+                                                                                 ###################
 
 func _on_Visibility_body_entered(body):
 
-	# Only handle body entering if 'body' is vehicle's 'body_tag'.
-	if body.name == body_tag:
-		awake = true
-		obj_visible = body
+    # Only handle body entering if 'body' is vehicle's 'body_tag'.
+    if body.name == body_tag:
+        awake = true
+        obj_visible = body
 
 
 
 func _on_Visibility_body_exited(body):
 
-	# Only handle body exiting if 'body' is body recognized ('obj_visible') from body entered
-	# signal.
-	if body == obj_visible:  obj_visible = null
+    # Only handle body exiting if 'body' is body recognized ('obj_visible') from body entered
+    # signal.
+    if body == obj_visible:  obj_visible = null
 
 
 
 func _on_TurretCoolDown_timeout():
 
-	turret_cooled_down = true
+    turret_cooled_down = true

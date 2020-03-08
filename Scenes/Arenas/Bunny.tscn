@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/FloorA.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/WallA.tscn" type="PackedScene" id=2]
@@ -7,6 +7,15 @@
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/InversionConcaveA.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/WallB.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Functional/Entities/TestTarget01.tscn" type="PackedScene" id=7]
+[ext_resource path="res://background_01_02.png" type="Texture" id=8]
+
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 8 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+background_sky_orientation = Basis( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1 )
 
 [node name="Bunny" type="Spatial"]
 
@@ -607,10 +616,16 @@ transform = Transform( 1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, -39, 4, -
 [node name="SpawnVehicle04" type="Position3D" parent="VehicleSpawners"]
 transform = Transform( 1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, -65, 4, 25 )
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 0.866025, 2.98023e-08, -0.5, 0.211309, 0.906308, 0.365998, 0.453154, -0.422618, 0.784886, 0, 26, 0 )
+transform = Transform( 0.707107, 0.122788, -0.696364, 0.298836, 0.840647, 0.451675, 0.640857, -0.527481, 0.557733, 0, 26, 0 )
 light_energy = 0.46
 light_bake_mode = 2
 shadow_enabled = true
+shadow_bias = 0.0
 shadow_reverse_cull_face = true
+directional_shadow_normal_bias = 0.0
+directional_shadow_depth_range = 1
 directional_shadow_max_distance = 1000.0
