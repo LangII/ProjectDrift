@@ -148,15 +148,21 @@ func _process(delta):
 
     # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to ensure
     # that whatever is in the player's crosshairs is the point that will be shot at.
-    if scope.is_colliding():    pointing_at = scope.get_collision_point()
-    else:                       pointing_at = look_default.global_transform.origin
+    if scope.is_colliding():  pointing_at = scope.get_collision_point()
+    else:  pointing_at = look_default.global_transform.origin
     spawn_bolt.look_at(pointing_at, Vector3.UP)
 
     ###   INPUT EVENTS   ###
 
     # BLOCK ... Blaster / Bolt controls.
     if Input.is_action_pressed('ui_accept'):
-        if blaster_cooled_down and (blaster_battery >= BOLT_ENERGY):
+        
+        ###
+        
+        if bolt_tag and blaster_cooled_down and (blaster_battery >= BOLT_ENERGY):
+            
+            ###
+            
             var bolt = Bolt.instance()
             get_node('/root/Gameplay/VehicleBolts').add_child(bolt)
             bolt.spawn(spawn_bolt.global_transform)
@@ -167,8 +173,8 @@ func _process(delta):
 
     # BLOCK ... Replenish controls.
     if Input.is_action_just_pressed('ui_focus_next'):
-        if repl_set_pointer <= len(replenish_sets) - 2:    repl_set_pointer += 1
-        else:                                              repl_set_pointer = 0
+        if repl_set_pointer <= len(replenish_sets) - 2:  repl_set_pointer += 1
+        else:  repl_set_pointer = 0
         replenish_engines =     replenish_sets[repl_set_pointer]['engines']
         replenish_shields =     replenish_sets[repl_set_pointer]['shields']
         replenish_blasters =    replenish_sets[repl_set_pointer]['blasters']

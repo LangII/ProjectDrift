@@ -129,20 +129,20 @@ func _on_ShieldsGreen_pressed():
 func _on_Play_pressed():
 
     match generator_group.get_pressed_button():
-        generator_yellow:     controls.gameplay['vehicle']['generator'] = 'GeneratorYellow'
-        generator_green:      controls.gameplay['vehicle']['generator'] = 'GeneratorGreen'
+        generator_yellow:  controls.gameplay['vehicle']['generator'] = 'GeneratorYellow'
+        generator_green:  controls.gameplay['vehicle']['generator'] = 'GeneratorGreen'
 
     match engines_group.get_pressed_button():
-        engines_yellow:     controls.gameplay['vehicle']['engines'] = 'EnginesYellow'
-        engines_green:      controls.gameplay['vehicle']['engines'] = 'EnginesGreen'
+        engines_yellow:  controls.gameplay['vehicle']['engines'] = 'EnginesYellow'
+        engines_green:  controls.gameplay['vehicle']['engines'] = 'EnginesGreen'
 
     match blaster_group.get_pressed_button():
-        blaster_yellow:     controls.gameplay['vehicle']['blaster'] = 'BlasterYellow'
-        blaster_green:      controls.gameplay['vehicle']['blaster'] = 'BlasterGreen'
+        blaster_yellow:  controls.gameplay['vehicle']['blaster'] = 'BlasterYellow'
+        blaster_green:  controls.gameplay['vehicle']['blaster'] = 'BlasterGreen'
 
     match shields_group.get_pressed_button():
-        shields_yellow:     controls.gameplay['vehicle']['shields'] = 'ShieldsYellow'
-        shields_green:      controls.gameplay['vehicle']['shields'] = 'ShieldsGreen'
+        shields_yellow:  controls.gameplay['vehicle']['shields'] = 'ShieldsYellow'
+        shields_green:  controls.gameplay['vehicle']['shields'] = 'ShieldsGreen'
 
     controls.gameplay['number_of_targets'] = int(turret_count.text)
     controls.global['vehicle']['mouse_sensitivity'] = float(mouse_sensitivity.text)

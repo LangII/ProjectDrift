@@ -26,5 +26,5 @@ func _ready():
 
 func _on_InversionArea_body_entered(body):
 
-    if body.gravity_dir == GRAVITY_DIR_A:      body.gravity_dir = GRAVITY_DIR_B
-    elif body.gravity_dir == GRAVITY_DIR_B:    body.gravity_dir = GRAVITY_DIR_A
+    if body.gravity_dir == GRAVITY_DIR_A:  body.gravity_dir = GRAVITY_DIR_B
+    elif body.gravity_dir == GRAVITY_DIR_B:  body.gravity_dir = GRAVITY_DIR_A

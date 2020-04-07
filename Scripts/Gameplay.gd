@@ -35,8 +35,12 @@ onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tsc
 onready var engines_tag = controls.gameplay['vehicle']['engines']
 onready var Engines = load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
 
+###
+
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
-onready var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
+#onready var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
+
+###
 
 onready var shields_tag = controls.gameplay['vehicle']['shields']
 onready var Shields = load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
@@ -81,7 +85,15 @@ func _ready():
     vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
     vehicle.add_child(Generator.instance())
     vehicle.add_child(Engines.instance())
-    vehicle.add_child(Blaster.instance())
+
+    ###
+
+    if blaster_tag:
+        var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
+        vehicle.add_child(Blaster.instance())
+
+    ###
+
     vehicle.add_child(Shields.instance())
 
     # Have to assign 'hud' after 'vehicle' assignment.

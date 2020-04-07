@@ -14,6 +14,7 @@ extends Node
                                                                                 ####################
 
 # If 'true' bypass menus and generate game from 'gameplay' values.
+#var testing = true
 var testing = true
 
 var gameplay = {
@@ -25,7 +26,8 @@ var gameplay = {
         'body': 'TestBody01',
         'generator': 'GeneratorYellow',
         'engines': 'EnginesYellow',
-        'blaster': 'BlasterYellow',
+#        'blaster': 'BlasterYellow',
+        'blaster': '',
         'shields': 'ShieldsYellow',
     },
 }
@@ -106,6 +108,14 @@ var blasters = {
         'bolt_speed': 40.00,
         'cool_down': 0.35,
         'battery_capacity': 80.00,
+    },
+    '': {
+        'bolt_scene': '',
+        'bolt_model': '',
+        'energy': 0.00,
+        'bolt_speed': 0.00,
+        'cool_down': 0.00,
+        'battery_capacity': 0.00,
     },
 }
 

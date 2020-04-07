@@ -137,7 +137,7 @@ func updateFocusHealthValue(_value):
 
     focus_health_input = _value
     if focus_health_input:  focus_health_value.text = "%7.2f" % focus_health_input
-    else:                   focus_health_value.text = focus_health_input
+    else:  focus_health_value.text = focus_health_input
 
 func updateObjectiveValue(_value):
 
