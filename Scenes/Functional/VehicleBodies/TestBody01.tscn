@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/TestVehicle01.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Functional/Hud.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Materials/TestMatLightOrange.tres" type="Material" id=3]
 [ext_resource path="res://Materials/TestMatOrange.tres" type="Material" id=4]
+[ext_resource path="res://Scenes/Models/VehicleParts/Slots/GeneratorSlot.tscn" type="PackedScene" id=5]
 
 [sub_resource type="PhysicsMaterial" id=1]
 friction = 0.0
@@ -20,7 +21,7 @@ extents = Vector3( 1.44788, 0.335658, 0.875511 )
 [sub_resource type="CubeMesh" id=6]
 
 [sub_resource type="SpatialMaterial" id=7]
-albedo_color = Color( 0.705882, 0.705882, 0.705882, 1 )
+albedo_color = Color( 0.784314, 0.784314, 0.784314, 1 )
 
 [node name="TestBody01" type="VehicleBody"]
 transform = Transform( 1, 0, 3.32346e-08, 0, 1, 0, -3.32346e-08, 0, 1, 0, 0, 0 )
@@ -32,7 +33,7 @@ angular_damp = 0.0
 script = ExtResource( 1 )
 
 [node name="wheelFL" type="VehicleWheel" parent="."]
-transform = Transform( -0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1.5, -0.168777, -1 )
+transform = Transform( -0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1.5, 0.2, -1 )
 engine_force = 1.05612e-38
 wheel_radius = 0.1
 wheel_rest_length = 0.5
@@ -43,7 +44,7 @@ damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="wheelFR" type="VehicleWheel" parent="."]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1.5, -0.168777, 1 )
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1.5, 0.2, 1 )
 engine_force = 1.05612e-38
 wheel_radius = 0.1
 wheel_rest_length = 0.5
@@ -54,7 +55,7 @@ damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="wheelBL" type="VehicleWheel" parent="."]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -1.5, -0.168777, -1 )
+transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -1.5, 0.2, -1 )
 engine_force = 1.05612e-38
 wheel_radius = 0.1
 wheel_rest_length = 0.5
@@ -65,7 +66,7 @@ damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="wheelBR" type="VehicleWheel" parent="."]
-transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -1.5, -0.168777, 1 )
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -1.5, 0.2, 1 )
 engine_force = 1.05612e-38
 wheel_radius = 0.1
 wheel_rest_length = 0.5
@@ -76,52 +77,8 @@ damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0304959, 0.22587, 1.01352e-09 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0.645, 0 )
 shape = SubResource( 2 )
-
-[node name="Mesh" type="Spatial" parent="."]
-transform = Transform( 1, 0, -3.55271e-15, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-
-[node name="Base" type="Spatial" parent="Mesh"]
-
-[node name="MeshInstance01" type="MeshInstance" parent="Mesh/Base"]
-transform = Transform( 1.4, 0, -9.72411e-09, 0, 0.2, 0, 1.68071e-08, 0, 0.81, 0, 0.16, 0 )
-mesh = SubResource( 3 )
-material/0 = ExtResource( 3 )
-
-[node name="MeshInstance02" type="MeshInstance" parent="Mesh/Base"]
-transform = Transform( 0.7, 0, 9.59609e-09, 0, 0.24, 0, -7.94003e-09, 0, 0.846, -0.65, 0.16, 0 )
-mesh = SubResource( 4 )
-material/0 = ExtResource( 4 )
-
-[node name="MeshInstance03" type="MeshInstance" parent="Mesh/Base"]
-transform = Transform( 0.18, 0, 9.53466e-08, 0, 0.24, 0, -2.24345e-08, 0, 0.765, 1.27, 0.16, 0 )
-mesh = SubResource( 4 )
-material/0 = ExtResource( 4 )
-
-[node name="MeshInstance04" type="MeshInstance" parent="Mesh/Base"]
-transform = Transform( 0.3, 0, 5.6394e-09, 0, 0.06, 0, -4.22955e-09, 0, 0.4, -0.4, 0.460451, 0 )
-mesh = SubResource( 5 )
-material/0 = ExtResource( 3 )
-
-[node name="MeshInstance05" type="MeshInstance" parent="Mesh/Base"]
-transform = Transform( 0.06, 0, 4.27501e-08, 0, 0.01, 0, -8.55001e-09, 0, 0.3, -0.15, 0.52, 0 )
-mesh = SubResource( 5 )
-material/0 = ExtResource( 4 )
-
-[node name="PartSlots" type="Spatial" parent="Mesh"]
-
-[node name="MeshInstance" type="MeshInstance" parent="Mesh/PartSlots"]
-transform = Transform( 0.421101, 0, 1.00695e-08, 0, 0.0137858, 0, 1.00695e-08, 0, 0.118119, 0.589517, 0.375915, -0.345189 )
-mesh = SubResource( 6 )
-material/0 = SubResource( 7 )
-
-[node name="PartPositions" type="Spatial" parent="."]
-
-[node name="Blasters" type="Spatial" parent="PartPositions"]
-
-[node name="Blaster1" type="Position3D" parent="PartPositions/Blasters"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31047, 0 )
 
 [node name="Pivot" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37604e-09, -0.632416, 7.45058e-09 )
@@ -139,16 +96,61 @@ cast_to = Vector3( 0, 0, -100 )
 [node name="LookDefault" type="Position3D" parent="Pivot/Camera/Scope"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -100 )
 
+[node name="BodyMesh" type="Spatial" parent="."]
+transform = Transform( 1, 0, -3.55271e-15, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="MeshInstance01" type="MeshInstance" parent="BodyMesh"]
+transform = Transform( 1.4, 0, -9.72411e-09, 0, 0.2, 0, 1.68071e-08, 0, 0.81, 0, 0.55, 0 )
+mesh = SubResource( 3 )
+material/0 = ExtResource( 3 )
+
+[node name="MeshInstance02" type="MeshInstance" parent="BodyMesh"]
+transform = Transform( 0.7, 0, 9.59609e-09, 0, 0.24, 0, -7.94003e-09, 0, 0.846, -0.65, 0.55, 0 )
+mesh = SubResource( 4 )
+material/0 = ExtResource( 4 )
+
+[node name="MeshInstance03" type="MeshInstance" parent="BodyMesh"]
+transform = Transform( 0.18, 0, 9.53466e-08, 0, 0.24, 0, -2.24345e-08, 0, 0.765, 1.27, 0.55, 0 )
+mesh = SubResource( 4 )
+material/0 = ExtResource( 4 )
+
+[node name="MeshInstance04" type="MeshInstance" parent="BodyMesh"]
+transform = Transform( 0.3, 0, 5.6394e-09, 0, 0.1, 0, -4.22955e-09, 0, 0.4, -0.4, 0.86, 0 )
+mesh = SubResource( 5 )
+material/0 = ExtResource( 3 )
+
+[node name="MeshInstance05" type="MeshInstance" parent="BodyMesh"]
+transform = Transform( 0.06, 0, 4.27501e-08, 0, 0.06, 0, -8.55001e-09, 0, 0.3, -0.14, 0.92, 0 )
+mesh = SubResource( 5 )
+material/0 = ExtResource( 4 )
+
+[node name="Parts" type="Spatial" parent="."]
+
+[node name="GeneratorSlotPos" type="Position3D" parent="Parts"]
+transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, -1.39757, 0.554035, -4.64477e-08 )
+
+[node name="GeneratorSlot" parent="Parts/GeneratorSlotPos" instance=ExtResource( 5 )]
+
+[node name="Blaster1" type="Position3D" parent="Parts"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.58, 0.75, -0.42 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Parts/Blaster1"]
+transform = Transform( 0.4, 0, -1.91299e-09, 0, 0.02, 0, 9.56493e-09, 0, 0.08, 0, 0.02, 0 )
+mesh = SubResource( 6 )
+material/0 = SubResource( 7 )
+
 [node name="SpawnBolt" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.1665, 0 )
 
-[node name="BlasterCoolDown" type="Timer" parent="."]
+[node name="NonSpatial" type="Node" parent="."]
+
+[node name="BlasterCoolDown" type="Timer" parent="NonSpatial"]
 one_shot = true
 autostart = true
 
-[node name="GeneratorRate" type="Timer" parent="."]
+[node name="GeneratorRate" type="Timer" parent="NonSpatial"]
 autostart = true
 
-[node name="Hud" parent="." instance=ExtResource( 2 )]
-[connection signal="timeout" from="BlasterCoolDown" to="." method="_on_BlasterCoolDown_timeout"]
-[connection signal="timeout" from="GeneratorRate" to="." method="_on_GeneratorRate_timeout"]
+[node name="Hud" parent="NonSpatial" instance=ExtResource( 2 )]
+[connection signal="timeout" from="NonSpatial/BlasterCoolDown" to="." method="_on_BlasterCoolDown_timeout"]
+[connection signal="timeout" from="NonSpatial/GeneratorRate" to="." method="_on_GeneratorRate_timeout"]

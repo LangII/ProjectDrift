@@ -54,7 +54,7 @@ onready var BOLT_ENERGY =               controls.blasters[blaster_tag]['energy']
                                                                                #####################
 
 # Generator / Replenishment.
-onready var generator_rate = $GeneratorRate
+onready var generator_rate = $NonSpatial/GeneratorRate
 onready var replenish_sets = [
     {'engines': 0.34, 'shields': 0.33, 'blasters': 0.33},
     {'engines': 0.80, 'shields': 0.10, 'blasters': 0.10},
@@ -65,7 +65,7 @@ onready var repl_set_pointer = 0
 
 # Blaster / Bolt.
 onready var Bolt = load('res://Scenes/Functional/Projectiles/' + bolt_tag + '.tscn')
-onready var blaster_cool_down = $BlasterCoolDown
+onready var blaster_cool_down = $NonSpatial/BlasterCoolDown
 onready var spawn_bolt = $SpawnBolt
 onready var scope = $Pivot/Camera/Scope
 onready var look_default = $Pivot/Camera/Scope/LookDefault
@@ -82,7 +82,7 @@ onready var replenish_shields = replenish_sets[repl_set_pointer]['shields']
 onready var replenish_blasters = replenish_sets[repl_set_pointer]['blasters']
 
 # General function variables.
-onready var hud = $Hud
+onready var hud = $NonSpatial/Hud
 onready var pivot = $Pivot
 var vel = Vector3()
 var rot = Vector3()
@@ -161,7 +161,7 @@ func _process(delta):
         
         if bolt_tag and blaster_cooled_down and (blaster_battery >= BOLT_ENERGY):
             
-            ###
+        ###
             
             var bolt = Bolt.instance()
             get_node('/root/Gameplay/VehicleBolts').add_child(bolt)

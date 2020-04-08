@@ -28,7 +28,7 @@ onready var shields_tag =   controls.gameplay['vehicle']['shields']
                                                                                     ###   VARS   ###
                                                                                     ################
 
-onready var values_path = '/root/Gameplay/Vehicles/%s/Hud/Stats/%s/Divider/%sValue'
+onready var values_path = '/root/Gameplay/Vehicles/%s/NonSpatial/Hud/Stats/%s/Divider/%sValue'
 
 # Each block is a different Hud variable.
 
