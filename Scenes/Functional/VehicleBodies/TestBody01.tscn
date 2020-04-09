@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/TestVehicle01.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Functional/Hud.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Materials/TestMatLightOrange.tres" type="Material" id=3]
 [ext_resource path="res://Materials/TestMatOrange.tres" type="Material" id=4]
 [ext_resource path="res://Scenes/Models/VehicleParts/Slots/GeneratorSlot.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Models/VehicleParts/Slots/ShieldsSlot.tscn" type="PackedScene" id=6]
 
 [sub_resource type="PhysicsMaterial" id=1]
 friction = 0.0
@@ -126,15 +127,20 @@ material/0 = ExtResource( 4 )
 
 [node name="Parts" type="Spatial" parent="."]
 
-[node name="GeneratorSlotPos" type="Position3D" parent="Parts"]
+[node name="GeneratorPos" type="Position3D" parent="Parts"]
 transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, -1.39757, 0.554035, -4.64477e-08 )
 
-[node name="GeneratorSlot" parent="Parts/GeneratorSlotPos" instance=ExtResource( 5 )]
+[node name="MeshInstance" parent="Parts/GeneratorPos" instance=ExtResource( 5 )]
 
-[node name="Blaster1" type="Position3D" parent="Parts"]
+[node name="ShieldsPos" type="Position3D" parent="Parts"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.03902, 0.786472, -3.45316e-08 )
+
+[node name="GeneratorSlot" parent="Parts/ShieldsPos" instance=ExtResource( 6 )]
+
+[node name="Blaster1Pos" type="Position3D" parent="Parts"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.58, 0.75, -0.42 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Parts/Blaster1"]
+[node name="MeshInstance" type="MeshInstance" parent="Parts/Blaster1Pos"]
 transform = Transform( 0.4, 0, -1.91299e-09, 0, 0.02, 0, 9.56493e-09, 0, 0.08, 0, 0.02, 0 )
 mesh = SubResource( 6 )
 material/0 = SubResource( 7 )

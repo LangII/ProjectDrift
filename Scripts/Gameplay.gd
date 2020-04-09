@@ -35,12 +35,8 @@ onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tsc
 onready var engines_tag = controls.gameplay['vehicle']['engines']
 onready var Engines = load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
 
-###
-
 onready var blaster_tag = controls.gameplay['vehicle']['blaster']
-#onready var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
-
-###
+onready var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
 
 onready var shields_tag = controls.gameplay['vehicle']['shields']
 onready var Shields = load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
@@ -84,23 +80,42 @@ func _ready():
     # Instance parts as children of 'vehicle'.
     vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
 #    vehicle.add_child(Generator.instance())
+#    vehicle.add_child(Shields.instance())
     vehicle.add_child(Engines.instance())
 
-    ###
 
-    if blaster_tag:
-        var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
-        vehicle.add_child(Blaster.instance())
 
-    var generator_slot = vehicle.find_node('GeneratorSlotPos')
+    ####################################
+    """   UNDER CONSTRUCTION   >>>   """
+    ####################################
+
+
+
+    """
+    TURNOVER NOTES:  Add 'Shields' 3D position node to TestBody01.
+    """
+
+    var generator_slot = vehicle.find_node('GeneratorPos')
     generator_slot.add_child(Generator.instance())
-#    print(generator_slot)
 
-#    get_tree().quit()
+    var shields_slot = vehicle.find_node('ShieldsPos')
+    shields_slot.add_child(Shields.instance())
 
-    ###
+#    var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
+#    vehicle.add_child(Blaster.instance())
 
-    vehicle.add_child(Shields.instance())
+#    var engines_suffixes = ['FL', 'FR', 'BL', 'BR']
+#    for suffix in engines_suffixes:
+#        var engine_slot = vehicle.find_node('Engine%s' % suffix)
+#        engine_slot.add_child(Engine.instance())
+
+
+
+    ####################################
+    """   <<<   UNDER CONSTRUCTION   """
+    ####################################
+
+
 
     # Have to assign 'hud' after 'vehicle' assignment.
     hud = vehicle.get_node('NonSpatial/Hud')
