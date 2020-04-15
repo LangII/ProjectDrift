@@ -81,7 +81,7 @@ func _ready():
     vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
 #    vehicle.add_child(Generator.instance())
 #    vehicle.add_child(Shields.instance())
-    vehicle.add_child(Engines.instance())
+#    vehicle.add_child(Engines.instance())
 
 
 
@@ -92,7 +92,7 @@ func _ready():
 
 
     """
-    TURNOVER NOTES:  Add 'Shields' 3D position node to TestBody01.
+    TURNOVER NOTES:  y = 0.245
     """
 
     var generator_slot = vehicle.find_node('GeneratorPos')
@@ -101,13 +101,13 @@ func _ready():
     var shields_slot = vehicle.find_node('ShieldsPos')
     shields_slot.add_child(Shields.instance())
 
+    var engines_suffixes = ['Fr', 'Br', 'Bl', 'Fl']
+    for suffix in engines_suffixes:
+        var engine_slot = vehicle.find_node('Engine%sPos' % suffix)
+        engine_slot.add_child(Engines.instance())
+
 #    var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
 #    vehicle.add_child(Blaster.instance())
-
-#    var engines_suffixes = ['FL', 'FR', 'BL', 'BR']
-#    for suffix in engines_suffixes:
-#        var engine_slot = vehicle.find_node('Engine%s' % suffix)
-#        engine_slot.add_child(Engine.instance())
 
 
 
