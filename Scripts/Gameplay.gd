@@ -92,7 +92,7 @@ func _ready():
 
 
     """
-    TURNOVER NOTES:  y = 0.245
+    TURNOVER NOTES:  ...
     """
 
     var generator_slot = vehicle.find_node('GeneratorPos')
@@ -113,6 +113,8 @@ func _ready():
         var Blaster1 = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster1_tag)
         var blaster1_slot = vehicle.find_node('Blaster1Pos')
         blaster1_slot.add_child(Blaster1.instance())
+        
+    vehicle.assignPartValues()
 
 
     ####################################

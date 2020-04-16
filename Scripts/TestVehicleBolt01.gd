@@ -25,7 +25,7 @@ onready var timer = $Timer
 
 var vel = Vector3()
 
-onready var hud = get_node('/root/Gameplay/Vehicles/%s/Hud' % body_tag)
+#onready var hud = get_node('/root/Gameplay/Vehicles/%s/Hud' % body_tag)
 
 func _ready():
 

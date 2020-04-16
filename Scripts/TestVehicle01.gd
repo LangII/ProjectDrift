@@ -67,8 +67,14 @@ onready var repl_set_pointer = 0
 onready var Bolt1 = load('res://Scenes/Functional/Projectiles/' + bolt1_tag + '.tscn')
 onready var blaster1_cool_down = $NonSpatial/BlasterCoolDown
 
+
+
 #onready var barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
-onready var bolt1_spawn = $SpawnBolt
+#onready var bolt1_spawn = $SpawnBolt
+onready var barrel1_pivot = $TempPivot
+onready var bolt1_spawn = $TempSpawn
+
+
 
 onready var scope = $CameraPivot/Camera/Scope
 onready var look_default = $CameraPivot/Camera/Scope/LookDefault
@@ -121,6 +127,15 @@ func _ready():
 
 
 
+func assignPartValues():
+
+    barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
+    bolt1_spawn = barrel1_pivot.get_node('BoltSpawn')
+    
+    print("WORKED")
+
+
+
 ####################################################################################################
                                                                               ###   PROCESSING   ###
                                                                               ######################
@@ -165,13 +180,13 @@ func _process(delta):
 
     """
     TURNOVER NOTES:  Need to optimize variable designations.  'barrel1_pivot' and 'bolt1_spawn'
-        should be designated onready.  But they can't be because they're dependent on child scenes
+        should be assigned onready.  But they can't be because they're dependent on child scenes
         that are generated after scene instancing.  ...  Not sure how to fix it.
     """
 
     # Visuals of rotating blaster barrel to look at 'pointing_at'.
-    var barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
-    bolt1_spawn = barrel1_pivot.get_node('BoltSpawn')
+#    var barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
+#    bolt1_spawn = barrel1_pivot.get_node('BoltSpawn')
     barrel1_pivot.look_at(pointing_at, Vector3.UP)
     barrel1_pivot.rotation_degrees.y = -90
     barrel1_pivot.rotation_degrees.x = clamp(barrel1_pivot.rotation_degrees.x, 0, 90)

@@ -210,7 +210,10 @@ transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 1.26, 0
 
 [node name="EngineSlot" parent="Parts/EngineFlPos" instance=ExtResource( 7 )]
 
-[node name="SpawnBolt" type="Position3D" parent="."]
+[node name="TempPivot" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.1665, 0 )
+
+[node name="TempSpawn" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.1665, 0 )
 
 [node name="NonSpatial" type="Node" parent="."]
