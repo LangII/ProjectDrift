@@ -19,7 +19,7 @@ onready var gameplay = get_node('/root/Gameplay')
 onready var body_tag =      controls.gameplay['vehicle']['body']
 # onready var generator_tag = controls.gameplay['vehicle']['generator']
 # onready var engines_tag =   controls.gameplay['vehicle']['engines']
-onready var blaster_tag =   controls.gameplay['vehicle']['blaster']
+onready var blaster1_tag =   controls.gameplay['vehicle']['blaster1']
 onready var shields_tag =   controls.gameplay['vehicle']['shields']
 
 
@@ -45,8 +45,8 @@ onready var speed_value = get_node(values_path % s_insert)
 onready var speed_input = 0.0
 
 onready var bb_insert = [body_tag, 'BlasterBattery', 'BlasterBattery']
-onready var blaster_battery_value = get_node(values_path % bb_insert)
-onready var blaster_battery_input = controls.blasters[blaster_tag]['battery_capacity']
+onready var blaster1_battery_value = get_node(values_path % bb_insert)
+onready var blaster1_battery_input = controls.blasters[blaster1_tag]['battery_capacity']
 
 onready var re_insert = [body_tag, 'ReplenishEngines', 'ReplenishEngines']
 onready var replenish_engines_value = get_node(values_path % re_insert)
@@ -85,7 +85,7 @@ func _ready():
     health_value.text =             "%7.2f" % health_input
     shields_battery_value.text =    "%7.2f" % shields_battery_input
     speed_value.text =              "%7.2f" % speed_input
-    blaster_battery_value.text =    "%7.2f" % blaster_battery_input
+    blaster1_battery_value.text =    "%7.2f" % blaster1_battery_input
     objective_value.text =          "%6d" % objective_input
 
 
@@ -116,8 +116,8 @@ func updateSpeedValue(_value):
 
 func updateBlasterBatteryValue(_value):
 
-    blaster_battery_input = _value
-    blaster_battery_value.text = "%7.2f" % blaster_battery_input
+    blaster1_battery_input = _value
+    blaster1_battery_value.text = "%7.2f" % blaster1_battery_input
 
 func updateReplenishValues(_engines, _shields, _blasters):
 

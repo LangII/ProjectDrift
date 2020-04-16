@@ -35,8 +35,8 @@ onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tsc
 onready var engines_tag = controls.gameplay['vehicle']['engines']
 onready var Engines = load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
 
-onready var blaster_tag = controls.gameplay['vehicle']['blaster']
-onready var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
+onready var blaster1_tag = controls.gameplay['vehicle']['blaster1']
+#onready var Blaster1 = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster1_tag)
 
 onready var shields_tag = controls.gameplay['vehicle']['shields']
 onready var Shields = load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
@@ -109,6 +109,10 @@ func _ready():
 #    var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
 #    vehicle.add_child(Blaster.instance())
 
+    if blaster1_tag:
+        var Blaster1 = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster1_tag)
+        var blaster1_slot = vehicle.find_node('Blaster1Pos')
+        blaster1_slot.add_child(Blaster1.instance())
 
 
     ####################################

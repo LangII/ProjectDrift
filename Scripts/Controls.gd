@@ -26,8 +26,8 @@ var gameplay = {
         'body': 'TestBody01',
         'generator': 'GeneratorYellow',
         'engines': 'EnginesYellow',
-#        'blaster': 'BlasterYellow',
-        'blaster': '',
+        'blaster1': 'BlasterYellow',
+#        'blaster1': '',
         'shields': 'ShieldsYellow',
     },
 }

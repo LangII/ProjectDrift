@@ -20,8 +20,8 @@ onready var body_tag =      controls.gameplay['vehicle']['body']
 onready var generator_tag = controls.gameplay['vehicle']['generator']
 onready var engines_tag =   controls.gameplay['vehicle']['engines']
 onready var shields_tag =   controls.gameplay['vehicle']['shields']
-onready var blaster_tag =   controls.gameplay['vehicle']['blaster']
-onready var bolt_tag =      controls.blasters[blaster_tag]['bolt_scene']
+onready var blaster1_tag =  controls.gameplay['vehicle']['blaster1']
+onready var bolt1_tag =     controls.blasters[blaster1_tag]['bolt_scene']
 
 # Get global control variables.
 onready var GRAVITY_FORCE =         controls.global['vehicle']['gravity_force']
@@ -43,9 +43,9 @@ onready var THRUST =                    controls.engines[engines_tag]['thrust']
 onready var MAX_SPEED =                 controls.engines[engines_tag]['max_speed']
 onready var GENERATOR_RATE =            controls.generators[generator_tag]['rate']
 onready var REPLENISH =                 controls.generators[generator_tag]['replenish']
-onready var BLASTER_BATTERY_CAPACITY =  controls.blasters[blaster_tag]['battery_capacity']
-onready var COOL_DOWN =                 controls.blasters[blaster_tag]['cool_down']
-onready var BOLT_ENERGY =               controls.blasters[blaster_tag]['energy']
+onready var BLASTER1_BATTERY_CAPACITY = controls.blasters[blaster1_tag]['battery_capacity']
+onready var BLASTER1_COOL_DOWN =        controls.blasters[blaster1_tag]['cool_down']
+onready var BOLT1_ENERGY =              controls.blasters[blaster1_tag]['energy']
 
 
 
@@ -64,17 +64,20 @@ onready var replenish_sets = [
 onready var repl_set_pointer = 0
 
 # Blaster / Bolt.
-onready var Bolt = load('res://Scenes/Functional/Projectiles/' + bolt_tag + '.tscn')
-onready var blaster_cool_down = $NonSpatial/BlasterCoolDown
-onready var spawn_bolt = $SpawnBolt
-onready var scope = $Pivot/Camera/Scope
-onready var look_default = $Pivot/Camera/Scope/LookDefault
+onready var Bolt1 = load('res://Scenes/Functional/Projectiles/' + bolt1_tag + '.tscn')
+onready var blaster1_cool_down = $NonSpatial/BlasterCoolDown
+
+#onready var barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
+onready var bolt1_spawn = $SpawnBolt
+
+onready var scope = $CameraPivot/Camera/Scope
+onready var look_default = $CameraPivot/Camera/Scope/LookDefault
 onready var pointing_at = Vector3()
 
 # BLOCK ... Preset values.
-onready var blaster_cooled_down = true
+onready var blaster1_cooled_down = true
 # Initialize battery values as full.
-onready var blaster_battery = BLASTER_BATTERY_CAPACITY
+onready var blaster1_battery = BLASTER1_BATTERY_CAPACITY
 onready var shields_battery = SHIELDS_BATTERY_CAPACITY
 # Initialize replenishment values as first set from 'replenish_sets'.
 onready var replenish_engines = replenish_sets[repl_set_pointer]['engines']
@@ -83,7 +86,7 @@ onready var replenish_blasters = replenish_sets[repl_set_pointer]['blasters']
 
 # General function variables.
 onready var hud = $NonSpatial/Hud
-onready var pivot = $Pivot
+onready var camera_pivot = $CameraPivot
 var vel = Vector3()
 var rot = Vector3()
 
@@ -111,7 +114,7 @@ func _ready():
 
     # Set vehicle parts' timers wait times.
     generator_rate.wait_time = GENERATOR_RATE
-    blaster_cool_down.wait_time = COOL_DOWN
+    blaster1_cool_down.wait_time = BLASTER1_COOL_DOWN
 
     # Initiate Hud from Vehicle for replenish values.
     hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
@@ -133,9 +136,9 @@ func _unhandled_input(event):
         rot_force = -event.relative.x * MOUSE_SENSITIVITY * SPIN
 
         # Mouse motion on the y-axis translates to camera ('pivot') motion on the z-axis.
-        pivot.rotate_z(-event.relative.y * MOUSE_SENSITIVITY * MOUSE_VERT_DAMP)
+        camera_pivot.rotate_z(-event.relative.y * MOUSE_SENSITIVITY * MOUSE_VERT_DAMP)
         # Have to apply 'clamp' to prevent extreme camera positions.
-        pivot.rotation.z = clamp(pivot.rotation.z, -1.2, 0.6)
+        camera_pivot.rotation.z = clamp(camera_pivot.rotation.z, -1.2, 0.6)
 
 
 
@@ -150,7 +153,36 @@ func _process(delta):
     # that whatever is in the player's crosshairs is the point that will be shot at.
     if scope.is_colliding():  pointing_at = scope.get_collision_point()
     else:  pointing_at = look_default.global_transform.origin
-    spawn_bolt.look_at(pointing_at, Vector3.UP)
+    bolt1_spawn.look_at(pointing_at, Vector3.UP)
+
+
+
+    ####################################
+    """   UNDER CONSTRUCTION   >>>   """
+    ####################################
+
+
+
+    """
+    TURNOVER NOTES:  Need to optimize variable designations.  'barrel1_pivot' and 'bolt1_spawn'
+        should be designated onready.  But they can't be because they're dependent on child scenes
+        that are generated after scene instancing.  ...  Not sure how to fix it.
+    """
+
+    # Visuals of rotating blaster barrel to look at 'pointing_at'.
+    var barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
+    bolt1_spawn = barrel1_pivot.get_node('BoltSpawn')
+    barrel1_pivot.look_at(pointing_at, Vector3.UP)
+    barrel1_pivot.rotation_degrees.y = -90
+    barrel1_pivot.rotation_degrees.x = clamp(barrel1_pivot.rotation_degrees.x, 0, 90)
+
+
+
+    ####################################
+    """   <<<   UNDER CONSTRUCTION   """
+    ####################################
+
+
 
     ###   INPUT EVENTS   ###
 
@@ -159,17 +191,17 @@ func _process(delta):
         
         ###
         
-        if bolt_tag and blaster_cooled_down and (blaster_battery >= BOLT_ENERGY):
+        if bolt1_tag and blaster1_cooled_down and (blaster1_battery >= BOLT1_ENERGY):
             
         ###
             
-            var bolt = Bolt.instance()
-            get_node('/root/Gameplay/VehicleBolts').add_child(bolt)
-            bolt.spawn(spawn_bolt.global_transform)
-            blaster_battery -= BOLT_ENERGY
-            hud.updateBlasterBatteryValue(blaster_battery)
-            blaster_cool_down.start()
-            blaster_cooled_down = false
+            var bolt1 = Bolt1.instance()
+            get_node('/root/Gameplay/VehicleBolts').add_child(bolt1)
+            bolt1.spawn(bolt1_spawn.global_transform)
+            blaster1_battery -= BOLT1_ENERGY
+            hud.updateBlasterBatteryValue(blaster1_battery)
+            blaster1_cool_down.start()
+            blaster1_cooled_down = false
 
     # BLOCK ... Replenish controls.
     if Input.is_action_just_pressed('ui_focus_next'):
@@ -272,7 +304,7 @@ func getWasdInput():
 
 func _on_BlasterCoolDown_timeout():
 
-    blaster_cooled_down = true
+    blaster1_cooled_down = true
 
 
 
@@ -280,10 +312,10 @@ func _on_GeneratorRate_timeout():
 
     # Regulate blaster battery and shields battery replenishment.  Only replenish if battery is not
     # full.  If replenishment overfills battery, clamp it.  Then update Hud.
-    if blaster_battery < BLASTER_BATTERY_CAPACITY:
-        blaster_battery += REPLENISH * replenish_blasters
-        blaster_battery = clamp(blaster_battery, 0, BLASTER_BATTERY_CAPACITY)
-        hud.updateBlasterBatteryValue(blaster_battery)
+    if blaster1_battery < BLASTER1_BATTERY_CAPACITY:
+        blaster1_battery += REPLENISH * replenish_blasters
+        blaster1_battery = clamp(blaster1_battery, 0, BLASTER1_BATTERY_CAPACITY)
+        hud.updateBlasterBatteryValue(blaster1_battery)
     if shields_battery < SHIELDS_BATTERY_CAPACITY:
         shields_battery += REPLENISH * replenish_shields * SHIELDS_CONCENTRATION
         shields_battery = clamp(shields_battery, 0, SHIELDS_BATTERY_CAPACITY)

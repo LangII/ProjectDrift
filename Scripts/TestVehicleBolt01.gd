@@ -7,7 +7,7 @@ onready var gameplay = get_node('/root/Gameplay')
 
 # Get control variable tag.
 onready var body_tag = controls.gameplay['vehicle']['body']
-onready var blaster_tag = controls.gameplay['vehicle']['blaster']
+onready var blaster_tag = controls.gameplay['vehicle']['blaster1']
 
 # Get bolt model tag and scene.
 onready var bolt_model_tag = controls.blasters[blaster_tag]['bolt_model']
