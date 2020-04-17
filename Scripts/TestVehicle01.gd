@@ -15,7 +15,7 @@ extends VehicleBody
 
 onready var controls = get_node('/root/Controls')
 
-# Get tags.
+### Get tags.
 onready var body_tag =      controls.gameplay['vehicle']['body']
 onready var generator_tag = controls.gameplay['vehicle']['generator']
 onready var engines_tag =   controls.gameplay['vehicle']['engines']
@@ -23,7 +23,7 @@ onready var shields_tag =   controls.gameplay['vehicle']['shields']
 onready var blaster1_tag =  controls.gameplay['vehicle']['blaster1']
 onready var bolt1_tag =     controls.blasters[blaster1_tag]['bolt_scene']
 
-# Get global control variables.
+### Get global control variables.
 onready var GRAVITY_FORCE =         controls.global['vehicle']['gravity_force']
 onready var FRICTION =              controls.global['vehicle']['friction']
 onready var SPIN =                  controls.global['vehicle']['spin']
@@ -33,7 +33,7 @@ onready var SPIN_DAMP =             controls.global['vehicle']['spin_damp']
 onready var MOUSE_SENSITIVITY =     controls.global['vehicle']['mouse_sensitivity']
 onready var MOUSE_VERT_DAMP =       controls.global['vehicle']['mouse_vert_damp']
 
-# Get parts' control variables.
+### Get parts' control variables.
 onready var HEALTH =                    controls.body[body_tag]['health']
 onready var ARMOR =                     controls.body[body_tag]['armor']
 onready var SHIELDS_BATTERY_CAPACITY =  controls.shields[shields_tag]['battery_capacity']
@@ -53,7 +53,7 @@ onready var BOLT1_ENERGY =              controls.blasters[blaster1_tag]['energy'
                                                                                ###   FUNC VARS   ###
                                                                                #####################
 
-# Generator / Replenishment.
+### Generator / Replenishment.
 onready var generator_rate = $NonSpatial/GeneratorRate
 onready var replenish_sets = [
     {'engines': 0.34, 'shields': 0.33, 'blasters': 0.33},
@@ -63,42 +63,31 @@ onready var replenish_sets = [
 ]
 onready var repl_set_pointer = 0
 
-# Blaster / Bolt.
+### Blaster / Bolt.
 onready var Bolt1 = load('res://Scenes/Functional/Projectiles/' + bolt1_tag + '.tscn')
 onready var blaster1_cool_down = $NonSpatial/BlasterCoolDown
-
-
-
-#onready var barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
-#onready var bolt1_spawn = $SpawnBolt
 onready var barrel1_pivot = $TempPivot
 onready var bolt1_spawn = $TempSpawn
-
-
-
 onready var scope = $CameraPivot/Camera/Scope
 onready var look_default = $CameraPivot/Camera/Scope/LookDefault
 onready var pointing_at = Vector3()
 
-# BLOCK ... Preset values.
+### BLOCK ... Preset values.
 onready var blaster1_cooled_down = true
-# Initialize battery values as full.
+### Initialize battery values as full.
 onready var blaster1_battery = BLASTER1_BATTERY_CAPACITY
 onready var shields_battery = SHIELDS_BATTERY_CAPACITY
-# Initialize replenishment values as first set from 'replenish_sets'.
+### Initialize replenishment values as first set from 'replenish_sets'.
 onready var replenish_engines = replenish_sets[repl_set_pointer]['engines']
 onready var replenish_shields = replenish_sets[repl_set_pointer]['shields']
 onready var replenish_blasters = replenish_sets[repl_set_pointer]['blasters']
 
-# General function variables.
+### Other node references.
 onready var hud = $NonSpatial/Hud
 onready var camera_pivot = $CameraPivot
-var vel = Vector3()
-var rot = Vector3()
 
+### Assigned variables.
 var rot_force = 0.0
-
-# var gravity_force = 0.50
 var gravity_force = 2.00
 var gravity_dir = Vector3.DOWN
 
@@ -128,11 +117,14 @@ func _ready():
 
 
 func assignPartValues():
+    """
+    Needed for reassigning variables...  Variables cannot be designated in _ready() because their
+    node reference doesn't exist upon scene instance.  So, they must be forced to be reassigned
+    after nodes they're pointing to are made children in Gameplay.gd.
+    """
 
     barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
     bolt1_spawn = barrel1_pivot.get_node('BoltSpawn')
-    
-    print("WORKED")
 
 
 
@@ -160,56 +152,28 @@ func _unhandled_input(event):
 func _process(delta):
 
     ###   OBSOLETE   ###
-    # # Clamp vehicle's max speed.
-    # if linear_velocity.length() > MAX_SPEED:
-    #     linear_velocity = linear_velocity.normalized() * MAX_SPEED
+#    # Clamp vehicle's max speed.
+#    if linear_velocity.length() > MAX_SPEED:
+#        linear_velocity = linear_velocity.normalized() * MAX_SPEED
 
-    # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to ensure
-    # that whatever is in the player's crosshairs is the point that will be shot at.
+    # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to
+    # ensure that whatever is in the player's crosshairs is the point that will be shot at.
     if scope.is_colliding():  pointing_at = scope.get_collision_point()
     else:  pointing_at = look_default.global_transform.origin
     bolt1_spawn.look_at(pointing_at, Vector3.UP)
 
-
-
-    ####################################
-    """   UNDER CONSTRUCTION   >>>   """
-    ####################################
-
-
-
-    """
-    TURNOVER NOTES:  Need to optimize variable designations.  'barrel1_pivot' and 'bolt1_spawn'
-        should be assigned onready.  But they can't be because they're dependent on child scenes
-        that are generated after scene instancing.  ...  Not sure how to fix it.
-    """
-
-    # Visuals of rotating blaster barrel to look at 'pointing_at'.
-#    var barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
-#    bolt1_spawn = barrel1_pivot.get_node('BoltSpawn')
+    # Point barrel1_pivot at pointing_at.
     barrel1_pivot.look_at(pointing_at, Vector3.UP)
     barrel1_pivot.rotation_degrees.y = -90
     barrel1_pivot.rotation_degrees.x = clamp(barrel1_pivot.rotation_degrees.x, 0, 90)
 
-
-
-    ####################################
-    """   <<<   UNDER CONSTRUCTION   """
-    ####################################
-
-
-
+    ########################
     ###   INPUT EVENTS   ###
+    ########################
 
-    # BLOCK ... Blaster / Bolt controls.
+    # Blaster / Bolt controls.
     if Input.is_action_pressed('ui_accept'):
-        
-        ###
-        
         if bolt1_tag and blaster1_cooled_down and (blaster1_battery >= BOLT1_ENERGY):
-            
-        ###
-            
             var bolt1 = Bolt1.instance()
             get_node('/root/Gameplay/VehicleBolts').add_child(bolt1)
             bolt1.spawn(bolt1_spawn.global_transform)
@@ -218,7 +182,7 @@ func _process(delta):
             blaster1_cool_down.start()
             blaster1_cooled_down = false
 
-    # BLOCK ... Replenish controls.
+    # Replenish controls.
     if Input.is_action_just_pressed('ui_focus_next'):
         if repl_set_pointer <= len(replenish_sets) - 2:  repl_set_pointer += 1
         else:  repl_set_pointer = 0
@@ -227,7 +191,7 @@ func _process(delta):
         replenish_blasters =    replenish_sets[repl_set_pointer]['blasters']
         hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
 
-    # BLOCK ... Focus controls.
+    # Focus controls.
     if Input.is_action_just_pressed('ui_focus_prev'):
         var focus = scope.get_collider()
         if focus != null and focus.get_parent().name == 'Targets':
@@ -238,9 +202,11 @@ func _process(delta):
 
 func _integrate_forces(state):
 
+    # Physics processing method of clamping speed.
     if state.linear_velocity.length() > MAX_SPEED:
         state.linear_velocity = state.linear_velocity.normalized() * MAX_SPEED
-
+    
+    # Handle rotation with applied gravity.
     var rot_force_dir = applyGravToRotForce()
     apply_torque_impulse(rot_force_dir)
 
@@ -248,68 +214,75 @@ func _integrate_forces(state):
 
 func _physics_process(delta):
 
-
+    # Apply gravity.
     var grav_force_dir = applyGravDirToGravForce()
     apply_central_impulse(grav_force_dir)
 
-    vel = getWasdInput()
-
+    # Apply player input force.
+    var vel = getWasdInput()
     var vel_dir = applyGravToVel(vel)
     apply_central_impulse(vel_dir)
 
 
 
 func applyGravDirToGravForce():
+    # With the changing of direction of gravity, gravity has to be manually applied via function.
 
-    var applied_grav = Vector3()
-    for axis in range(3):  applied_grav[axis] = gravity_dir[axis] * GRAVITY_FORCE
+    var applied_grav_ = Vector3()
+    for axis in range(3):  applied_grav_[axis] = gravity_dir[axis] * GRAVITY_FORCE
 
-    return applied_grav
+    return applied_grav_
+
+
 
 func applyGravToRotForce():
+    # With the changing of direction of gravity, gravity has to be manually applied via function.
 
-    var applied_rot_force = Vector3()
-    for axis in range(3):  applied_rot_force[axis] = -gravity_dir[axis] * rot_force
+    var applied_rot_force_ = Vector3()
+    for axis in range(3):  applied_rot_force_[axis] = -gravity_dir[axis] * rot_force
 
-    return applied_rot_force
+    return applied_rot_force_
+
+
 
 func applyGravToVel(_vel):
+    # With the changing of direction of gravity, gravity has to be manually applied via function.
 
-    var applied_vel = Vector3()
+    var applied_vel_ = Vector3()
 
+    # Gravity is applied specifically to each rotational direction based on gravity's direction in
+    # 3D space.
     match gravity_dir:
-
         Vector3.DOWN:
-            applied_vel = _vel.rotated(Vector3.UP, rotation.y)
-
+            applied_vel_ = _vel.rotated(Vector3.UP, rotation.y)
         Vector3.FORWARD:
             _vel = _vel.rotated(Vector3(1, 0, 0), deg2rad(90))
             var vel_rotation = rotation.x - deg2rad(90)
             if rotation.y >= 0:  vel_rotation = -vel_rotation
-            applied_vel = _vel.rotated(transform.basis.y, vel_rotation)
-
+            applied_vel_ = _vel.rotated(transform.basis.y, vel_rotation)
         Vector3.RIGHT:
             _vel = _vel.rotated(Vector3(0, 0, 1), deg2rad(90))
             var vel_rotation = -rotation.x
             if rotation.z <= 0:  vel_rotation = -vel_rotation + deg2rad(180)
-            applied_vel = _vel.rotated(transform.basis.y, vel_rotation)
+            applied_vel_ = _vel.rotated(transform.basis.y, vel_rotation)
 
-    return applied_vel
+    return applied_vel_
 
 
 
 func getWasdInput():
-    """ WASD controls. """
-    var wasd_vel = Vector3()
+    # WASD controls; primary user input of force on vehicle.
+
+    var wasd_vel_ = Vector3()
 
     # With 'THRUST', apply WASD up/down input to 'vel' x-axis (forward/backward).
-    if Input.is_action_pressed('ui_up'):	wasd_vel += Vector3(+THRUST * replenish_engines, 0, 0)
-    if Input.is_action_pressed('ui_down'):	wasd_vel += Vector3(-THRUST * replenish_engines, 0, 0)
+    if Input.is_action_pressed('ui_up'):	wasd_vel_ += Vector3(+THRUST * replenish_engines, 0, 0)
+    if Input.is_action_pressed('ui_down'):	wasd_vel_ += Vector3(-THRUST * replenish_engines, 0, 0)
     # With 'THRUST', apply WASD left/right input to 'vel' z-axis (left/right).
-    if Input.is_action_pressed('ui_left'):	wasd_vel += Vector3(0, 0, -THRUST * replenish_engines)
-    if Input.is_action_pressed('ui_right'):	wasd_vel += Vector3(0, 0, +THRUST * replenish_engines)
+    if Input.is_action_pressed('ui_left'):	wasd_vel_ += Vector3(0, 0, -THRUST * replenish_engines)
+    if Input.is_action_pressed('ui_right'):	wasd_vel_ += Vector3(0, 0, +THRUST * replenish_engines)
 
-    return wasd_vel
+    return wasd_vel_
 
 
 
@@ -324,9 +297,9 @@ func _on_BlasterCoolDown_timeout():
 
 
 func _on_GeneratorRate_timeout():
-
     # Regulate blaster battery and shields battery replenishment.  Only replenish if battery is not
     # full.  If replenishment overfills battery, clamp it.  Then update Hud.
+
     if blaster1_battery < BLASTER1_BATTERY_CAPACITY:
         blaster1_battery += REPLENISH * replenish_blasters
         blaster1_battery = clamp(blaster1_battery, 0, BLASTER1_BATTERY_CAPACITY)
@@ -344,3 +317,13 @@ func _on_GeneratorRate_timeout():
 #     print("Y   ", transform.basis.y)
 #     print("Z   ", transform.basis.z)
 #     print("\n")
+
+
+
+####################################
+"""   UNDER CONSTRUCTION   >>>   """
+####################################
+
+####################################
+"""   <<<   UNDER CONSTRUCTION   """
+####################################
