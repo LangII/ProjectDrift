@@ -35,14 +35,15 @@ onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tsc
 onready var engines_tag = controls.gameplay['vehicle']['engines']
 onready var Engines = load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
 
-onready var blaster1_tag = controls.gameplay['vehicle']['blaster1']
-#onready var Blaster1 = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster1_tag)
-
 onready var shields_tag = controls.gameplay['vehicle']['shields']
 onready var Shields = load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
 
 onready var target_tag = controls.gameplay['targets']
 onready var Target = load('res://Scenes/Functional/Entities/%s.tscn' % target_tag)
+
+""" Optional vehicle part scene tags. (not mandatory scenes) """
+
+onready var blaster1_tag = controls.gameplay['vehicle']['blaster1']
 
 
 
@@ -68,33 +69,33 @@ func _ready():
     # Instance 'arena' as child of 'Gameplay'.
     add_child(Arena.instance())
 
-    # BLOCK ...  Instance vehicle body.
-    var b = Body.instance()
+    # BLOCK...  Build vehicle, start with body.
+    var body = Body.instance()
     # Get vehicle_spawners and randomly select spawner for vehicle spawn point.
     var vehicle_spawners = get_node('/root/Gameplay/%s/VehicleSpawners' % arena_tag).get_children()
-    b.global_transform = vehicle_spawners[randi() % len(vehicle_spawners)].global_transform
+    body.global_transform = vehicle_spawners[randi() % len(vehicle_spawners)].global_transform
     # Orient vehicle according to spawner, orientation also resets gravity direction.
-    if b.transform.basis.y.z == 1:  b.gravity_dir = Vector3.FORWARD
-    $Vehicles.add_child(b)
-
-    # Instance parts as children of 'vehicle'.
+    if body.transform.basis.y.z == 1:  body.gravity_dir = Vector3.FORWARD
+    # Child body to Gameplay/Vehicles container.
+    $Vehicles.add_child(body)
+    # Get true vehicle variable for referencing.
     vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
-#    vehicle.add_child(Generator.instance())
-#    vehicle.add_child(Shields.instance())
-#    vehicle.add_child(Engines.instance())
+    # Child parts.
+    instanceVehicleParts()
+    # (see function's comments)
+    vehicle.assignPartValues()
+    # Assign hud after vehicle build is complete.
+    hud = vehicle.get_node('NonSpatial/Hud')
+
+    generateTargets()
 
 
 
-    ####################################
-    """   UNDER CONSTRUCTION   >>>   """
-    ####################################
-
-
-
+func instanceVehicleParts():
     """
-    TURNOVER NOTES:  ...
+    For each designated vehicle body slot assign child of associated vehicle part from Controls.gd. 
     """
-
+    
     var generator_slot = vehicle.find_node('GeneratorPos')
     generator_slot.add_child(Generator.instance())
 
@@ -106,26 +107,17 @@ func _ready():
         var engine_slot = vehicle.find_node('Engine%sPos' % suffix)
         engine_slot.add_child(Engines.instance())
 
-#    var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
-#    vehicle.add_child(Blaster.instance())
-
+    # Blaster1 is wrapped in an if conditional because it's the only current part that is optional.
     if blaster1_tag:
         var Blaster1 = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster1_tag)
         var blaster1_slot = vehicle.find_node('Blaster1Pos')
         blaster1_slot.add_child(Blaster1.instance())
-        
-    vehicle.assignPartValues()
-
-
-    ####################################
-    """   <<<   UNDER CONSTRUCTION   """
-    ####################################
 
 
 
-    # Have to assign 'hud' after 'vehicle' assignment.
-    hud = vehicle.get_node('NonSpatial/Hud')
-
+func generateTargets():
+    """ Randomly generate targets. """
+    
     # Handle random target generation.
     targets = get_node(arena_tag + '/Targets')
     if NUMBER_OF_TARGETS:
@@ -134,36 +126,30 @@ func _ready():
         # 'Targets' node.
         targets_array = targets.get_children()
 
-        setTargets()
+        # BLOCK...  Random target instancing.
+        # To ensure that target positions are not repeated, a 'randoms' array has to be appended to.
+        # This way there is a collection of previous 'random' numbers to compare the most recent
+        # 'random' generation to.
+        # Modification... 'randoms' is now generated to set which targets will be deleted, not
+        # which will be generated.
+        var randoms = []
+        for i in range(len(targets_array) - NUMBER_OF_TARGETS):
+            # While-loop is used to continue to generate a 'random' number until a new 'random'
+            # number is generated.
+            while true:
+                var random = randi() % len(targets_array)
+                if not randoms.has(random):
+                    randoms.append(random)
+                    break
+        # Once all 'random' numbers have been generated use 'randoms' to delete generated ints.
+        for r in randoms:  targets_array[r].queue_free()
 
         for target in targets.get_children():
             target.get_parent().remove_child(target)
             get_node('/root/Gameplay/Targets').add_child(target)
 
+    # Delete no longer needed container.
     targets.queue_free()
-
-
-
-
-func setTargets():
-
-    # BLOCK ...  Random target instancing.
-    # To ensure that target positions are not repeated, a 'randoms' array has to be appended to.
-    # This way there is a collection of previous 'random' numbers to compare the most recent
-    # 'random' generation to.
-    # Modification ... 'randoms' is now generated to set which targets will be deleted, not which
-    # will be generated.
-    var randoms = []
-    for i in range(len(targets_array) - NUMBER_OF_TARGETS):
-        # While-loop is used to continue to generate a 'random' number until a new 'random' number
-        # is generated.
-        while true:
-            var random = randi() % len(targets_array)
-            if not randoms.has(random):
-                randoms.append(random)
-                break
-    # Once all 'random' numbers have been generated use 'randoms' to delete generated ints.
-    for r in randoms:  targets_array[r].queue_free()
 
 
 
@@ -206,11 +192,11 @@ func targetBoltHitsVehicleBody(_bolt, _vehicle):
         # applying over depletion to vehicle's HEALTH.
         else:
 
-            # # NEED TO FIX ... Currently, if damage is done to shield, and carried over to
-            # # health, the carry over value will have density applied to it, not armor.  If
-            # # damage is done to health, armor should be applied, not density.  Right now, this
-            # # is not the case.
-            # _vehicle.HEALTH -= abs(_vehicle.shields_battery)
+#            ###   NEED TO FIX   ###
+#            # Currently, if damage is done to shield, and carried over to health, the carry over
+#            # value will have density applied to it, not armor.  If damage is done to health, armor
+#            # should be applied, not density.  Right now, this is not the case.
+#            _vehicle.HEALTH -= abs(_vehicle.shields_battery)
 
             # Updated line as temp fix.  Still needs improvement but atleast ARMOR is actually
             # used now.

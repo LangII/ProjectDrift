@@ -66,11 +66,12 @@ onready var repl_set_pointer = 0
 ### Blaster / Bolt.
 onready var Bolt1 = load('res://Scenes/Functional/Projectiles/' + bolt1_tag + '.tscn')
 onready var blaster1_cool_down = $NonSpatial/BlasterCoolDown
-onready var barrel1_pivot = $TempPivot
-onready var bolt1_spawn = $TempSpawn
 onready var scope = $CameraPivot/Camera/Scope
 onready var look_default = $CameraPivot/Camera/Scope/LookDefault
 onready var pointing_at = Vector3()
+### ...  temporary assignment until assignPartValues()
+onready var barrel1_pivot = $TempPivot  
+onready var bolt1_spawn = $TempSpawn
 
 ### BLOCK ... Preset values.
 onready var blaster1_cooled_down = true
@@ -119,7 +120,7 @@ func _ready():
 func assignPartValues():
     """
     Needed for reassigning variables...  Variables cannot be designated in _ready() because their
-    node reference doesn't exist upon scene instance.  So, they must be forced to be reassigned
+    node reference doesn't exist at scene instance.  So, they must be forced to be reassigned
     after nodes they're pointing to are made children in Gameplay.gd.
     """
 
@@ -162,8 +163,13 @@ func _process(delta):
     else:  pointing_at = look_default.global_transform.origin
     bolt1_spawn.look_at(pointing_at, Vector3.UP)
 
+    ###   NEED TO FIX   ###
+    # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
+    # on local or parent rotation.  Can see the issue in the barrel's rotation while vehicle is on
+    # a gravity inversion slope.
+
     # Point barrel1_pivot at pointing_at.
-    barrel1_pivot.look_at(pointing_at, Vector3.UP)
+    barrel1_pivot.look_at(pointing_at, gravity_dir * -1)
     barrel1_pivot.rotation_degrees.y = -90
     barrel1_pivot.rotation_degrees.x = clamp(barrel1_pivot.rotation_degrees.x, 0, 90)
 

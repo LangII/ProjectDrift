@@ -34,7 +34,7 @@ angular_damp = 0.0
 script = ExtResource( 1 )
 
 [node name="wheelFL" type="VehicleWheel" parent="."]
-transform = Transform( -0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1.5, 0.2, -1 )
+transform = Transform( -0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1.5, -0.341642, -1 )
 engine_force = 1.05612e-38
 wheel_radius = 0.1
 wheel_rest_length = 0.5
@@ -45,7 +45,7 @@ damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="wheelFR" type="VehicleWheel" parent="."]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1.5, 0.2, 1 )
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1.5, -0.341642, 1 )
 engine_force = 1.05612e-38
 wheel_radius = 0.1
 wheel_rest_length = 0.5
@@ -56,7 +56,7 @@ damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="wheelBL" type="VehicleWheel" parent="."]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -1.5, 0.2, -1 )
+transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -1.5, -0.341642, -1 )
 engine_force = 1.05612e-38
 wheel_radius = 0.1
 wheel_rest_length = 0.5
@@ -67,7 +67,7 @@ damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="wheelBR" type="VehicleWheel" parent="."]
-transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -1.5, 0.2, 1 )
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -1.5, -0.341642, 1 )
 engine_force = 1.05612e-38
 wheel_radius = 0.1
 wheel_rest_length = 0.5
@@ -78,11 +78,11 @@ damping_compression = 0.98
 damping_relaxation = 0.99
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0.645, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0.103358, 0 )
 shape = SubResource( 2 )
 
 [node name="CameraPivot" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37604e-09, -0.632416, 7.45058e-09 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37604e-09, -1.17406, 7.45058e-09 )
 
 [node name="Camera" type="Camera" parent="CameraPivot"]
 transform = Transform( -4.37114e-08, 0.0488498, -0.998806, 0, 0.998806, 0.0488498, 1, 2.13529e-09, -4.36592e-08, -6.2, 2.9, 0 )
@@ -98,7 +98,7 @@ cast_to = Vector3( 0, 0, -100 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -100 )
 
 [node name="BodyMesh" type="Spatial" parent="."]
-transform = Transform( 1, 0, -3.55271e-15, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform = Transform( 1, 0, -3.55271e-15, 0, 1, 0, 0, 0, 1, 0, -0.541642, 0 )
 
 [node name="MeshInstance01" type="MeshInstance" parent="BodyMesh"]
 transform = Transform( 1.4, 0, -8.40355e-09, 0, 0.2, 0, 1.68071e-08, 0, 0.7, 0, 0.55, 0 )
@@ -174,6 +174,7 @@ mesh = SubResource( 5 )
 material/0 = ExtResource( 3 )
 
 [node name="Parts" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.541642, 0 )
 
 [node name="GeneratorPos" type="Position3D" parent="Parts"]
 transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, -1.39757, 0.554035, -4.64477e-08 )
@@ -211,10 +212,10 @@ transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 1.26, 0
 [node name="EngineSlot" parent="Parts/EngineFlPos" instance=ExtResource( 7 )]
 
 [node name="TempPivot" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.1665, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 0.624858, 0 )
 
 [node name="TempSpawn" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 1.1665, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 0.624858, 0 )
 
 [node name="NonSpatial" type="Node" parent="."]
 
