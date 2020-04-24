@@ -15,11 +15,11 @@ extends Node
 
 ### If 'true' bypass menus and generate game from 'gameplay' values.
 #var testing = false
-var testing = true
+var TESTING_no_menu = true
 
 ### If 'false', vehicle takes no damage from target bolts.
 #var take_damage = true
-var take_damage = false
+var TESTING_no_take_damage = true
 
 var gameplay = {
     # 'arena': 'TestArena01',

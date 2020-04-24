@@ -184,7 +184,7 @@ func targetBoltHitsVehicleBody(_bolt, _vehicle):
     # Anonymously handle target bolt to vehicle body collisions.
 
     # For testing, override vehicle take damage.
-    if not controls.take_damage:  return
+    if controls.TESTING_no_take_damage:  return
 
     # Handle vehicle's 'shields_battery' first.
     if _vehicle.shields_battery > 0:

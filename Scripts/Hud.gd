@@ -72,10 +72,13 @@ onready var o_insert = [body_tag, 'Objective', 'Objective']
 onready var objective_value = get_node(values_path % o_insert)
 onready var objective_input = controls.gameplay['number_of_targets']
 
-# Working vars.
+
+
+### Working vars.
 onready var focus_cam = find_node('FocusCamera')
 onready var vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
 onready var focus_obj = vehicle
+###
 
 
 
@@ -149,7 +152,9 @@ func updateFocusHealthValue(_value):
 """   UNDER CONSTRUCTION   >>>   """
 ####################################
 
-
+"""
+E 0:00:01.867   look_at_from_position: Node origin and target are in the same position, look_at() failed.
+"""
 
 func updateFocusViewport(_obj):
     
@@ -165,6 +170,10 @@ func updateFocusViewport(_obj):
 
 
 func _process(delta):
+    
+    """
+    TO-DO:  Load origin variables in onready (This function is bloated).
+    """
 
     var cam_pos = (vehicle.global_transform.origin - focus_obj.global_transform.origin).normalized() * 4
     focus_cam.global_transform.origin = focus_obj.global_transform.origin + cam_pos

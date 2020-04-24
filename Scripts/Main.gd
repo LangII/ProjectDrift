@@ -15,5 +15,5 @@ onready var controls = get_node('/root/Controls')
 
 func _ready():
 
-    if controls.testing:  get_tree().change_scene('res://Scenes/Functional/Gameplay.tscn')
+    if controls.TESTING_no_menu:  get_tree().change_scene('res://Scenes/Functional/Gameplay.tscn')
     else:  get_tree().change_scene('res://Scenes/Menus/PartSelection.tscn')
