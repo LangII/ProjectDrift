@@ -1,7 +1,11 @@
 
 """
 
-TURNOVER NOTES:
+Main.gd
+
+Curently not much to see.  This is because the current primary development focus is on gameplay
+vehicle controls (not to be confused with Controls.gd) and functionality.  As menu systems are
+developed, so will Main.gd.
 
 """
 

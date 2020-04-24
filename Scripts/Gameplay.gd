@@ -3,6 +3,10 @@
 
 Gameplay.gd
 
+'Master' controller of functionality of gameplay.  Individual components hold their own private
+individual functions.  But any functionality that expands outside of an individual object, must be
+routed through here.
+
 """
 
 extends Node
@@ -178,6 +182,9 @@ func vehicleBoltHitsTargetBody(_bolt, _target):
 
 func targetBoltHitsVehicleBody(_bolt, _vehicle):
     # Anonymously handle target bolt to vehicle body collisions.
+
+    # For testing, override vehicle take damage.
+    if not controls.take_damage:  return
 
     # Handle vehicle's 'shields_battery' first.
     if _vehicle.shields_battery > 0:

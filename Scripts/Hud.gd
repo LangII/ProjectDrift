@@ -72,6 +72,11 @@ onready var o_insert = [body_tag, 'Objective', 'Objective']
 onready var objective_value = get_node(values_path % o_insert)
 onready var objective_input = controls.gameplay['number_of_targets']
 
+# Working vars.
+onready var focus_cam = find_node('FocusCamera')
+onready var vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
+onready var focus_obj = vehicle
+
 
 
 ####################################################################################################
@@ -87,7 +92,6 @@ func _ready():
     speed_value.text =              "%7.2f" % speed_input
     blaster1_battery_value.text =    "%7.2f" % blaster1_battery_input
     objective_value.text =          "%6d" % objective_input
-
 
 
 
@@ -138,6 +142,43 @@ func updateFocusHealthValue(_value):
     focus_health_input = _value
     if focus_health_input:  focus_health_value.text = "%7.2f" % focus_health_input
     else:  focus_health_value.text = focus_health_input
+
+
+
+####################################
+"""   UNDER CONSTRUCTION   >>>   """
+####################################
+
+
+
+func updateFocusViewport(_obj):
+    
+#    print(_obj)    
+
+    focus_obj = _obj
+    _obj.find_node('MeshInstance').set_layer_mask_bit(1, true)
+
+#    var testing = focus_cam.find_node('MeshInstance')
+#
+#    testing.set_layer_mask_bit(1, true)
+
+
+
+func _process(delta):
+
+    var cam_pos = (vehicle.global_transform.origin - focus_obj.global_transform.origin).normalized() * 4
+    focus_cam.global_transform.origin = focus_obj.global_transform.origin + cam_pos
+    focus_cam.look_at(focus_obj.global_transform.origin, vehicle.gravity_dir * -1)
+    
+    print(cam_pos)
+
+
+
+####################################
+"""   <<<   UNDER CONSTRUCTION   """
+####################################
+
+
 
 func updateObjectiveValue(_value):
 

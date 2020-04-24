@@ -3,6 +3,12 @@
 
 TestVehicle01.gd
 
+Currently the only vehicle body.  With the development of additional vehicle bodies, there will
+need to be the development of a vehicle body module.  Much of the functionality of each body will
+be mostly universal.  The functionality that is known to be non-universal will be the part slots.
+Though there will be some room for modularization there.  As for now, interchangeable part
+functionality will not be modularized.
+
 """
 
 extends VehicleBody
@@ -203,6 +209,8 @@ func _process(delta):
         if focus != null and focus.get_parent().name == 'Targets':
             hud.updateFocusNameValue(focus.name)
             hud.updateFocusHealthValue(focus.HEALTH)
+
+            hud.updateFocusViewport(focus)
 
 
 

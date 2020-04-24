@@ -2,15 +2,16 @@
 
 [ext_resource path="res://Scripts/TestTarget01.gd" type="Script" id=1]
 
+[sub_resource type="SpatialMaterial" id=11]
+albedo_color = Color( 1, 0, 0, 1 )
+
 [sub_resource type="SphereMesh" id=1]
+material = SubResource( 11 )
 radial_segments = 8
 rings = 6
 
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 1, 0, 0, 1 )
-
 [sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 1, 0, 0, 1 )
+albedo_color = Color( 1, 0.392157, 0.392157, 1 )
 
 [sub_resource type="CubeMesh" id=4]
 material = SubResource( 3 )
@@ -22,24 +23,24 @@ material = SubResource( 3 )
 [sub_resource type="SpatialMaterial" id=7]
 albedo_color = Color( 1, 0, 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=8]
 albedo_color = Color( 0.588235, 0, 0.588235, 1 )
 
-[sub_resource type="CubeMesh" id=10]
-material = SubResource( 9 )
+[sub_resource type="CubeMesh" id=9]
+material = SubResource( 8 )
 
-[sub_resource type="SphereShape" id=8]
+[sub_resource type="SphereShape" id=10]
 
 [node name="Target" type="StaticBody"]
 script = ExtResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-visible = false
 mesh = SubResource( 1 )
-material/0 = SubResource( 2 )
+material/0 = null
 
 [node name="MeshInstance2" type="MeshInstance" parent="."]
 transform = Transform( 0.424264, -0.424264, 0, 0.346924, 0.346924, 0.34538, -0.244221, -0.244221, 0.490625, 0, 0, 0 )
+visible = false
 mesh = SubResource( 4 )
 material/0 = null
 
@@ -49,23 +50,23 @@ shape = SubResource( 5 )
 [node name="Turret" type="Position3D" parent="."]
 
 [node name="MeshInstance1" type="MeshInstance" parent="Turret"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.4, 0, 0, -1.5 )
+transform = Transform( 0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.6, 0, 0, -1.72852 )
 mesh = SubResource( 6 )
 material/0 = SubResource( 7 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Turret"]
-transform = Transform( 0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.15, 0, 0.1, -1.8 )
-mesh = SubResource( 10 )
+transform = Transform( 0.05, 0, 0, 0, 0.04, 0, 0, 0, 0.25, 0, 0.160745, -2.12437 )
+mesh = SubResource( 9 )
 material/0 = null
 
 [node name="SpawnBolt" type="Position3D" parent="Turret"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.64465 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.86416 )
 
 [node name="Visibility" type="Area" parent="."]
 collision_layer = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="Visibility"]
-shape = SubResource( 8 )
+shape = SubResource( 10 )
 
 [node name="TurretCoolDown" type="Timer" parent="."]
 one_shot = true

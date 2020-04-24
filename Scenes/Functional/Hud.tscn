@@ -1,15 +1,32 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Hud.gd" type="Script" id=1]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0, 0.784314, 1, 1 )
+
+[sub_resource type="PrismMesh" id=2]
+material = SubResource( 5 )
+
+[sub_resource type="SpatialMaterial" id=7]
+flags_do_not_receive_shadows = true
+
+[sub_resource type="PlaneMesh" id=6]
+material = SubResource( 7 )
+
+[sub_resource type="CubeMesh" id=8]
+
 [node name="Hud" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 1.52588e-005
+margin_top = 1.52588e-05
 mouse_filter = 2
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Crosshairs" type="Label" parent="."]
 anchor_left = 0.5
@@ -31,6 +48,9 @@ margin_left = 10.0
 margin_top = 10.0
 margin_right = 250.0
 margin_bottom = 710.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Health" type="PanelContainer" parent="Stats"]
 show_behind_parent = true
@@ -318,3 +338,45 @@ margin_bottom = 17.0
 text = "0"
 align = 2
 valign = 1
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_left = 541.584
+margin_top = 26.0
+margin_right = 589.584
+margin_bottom = 77.0
+rect_scale = Vector2( 4.15579, 3.40889 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 200, 200 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="FocusCamera" type="Camera" parent="ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27147, 0 )
+cull_mask = 2
+
+[node name="MeshInstance" type="MeshInstance" parent="ViewportContainer/Viewport/FocusCamera"]
+transform = Transform( 0.89932, 0.160031, -0.406957, -0.372631, 0.767471, -0.521665, 0.228846, 0.620788, 0.749834, 0, 0, -10.5256 )
+visible = false
+layers = 3
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Background" type="MeshInstance" parent="ViewportContainer/Viewport/FocusCamera"]
+transform = Transform( 10, 0, 0, 0, -4.37114e-08, -10, 0, 1, -4.37114e-07, 0, 0, -12.9087 )
+layers = 2
+cast_shadow = 0
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="MeshInstance2" type="MeshInstance" parent="ViewportContainer/Viewport/FocusCamera"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 5, 0, 0, -5.4522 )
+visible = false
+mesh = SubResource( 8 )
+material/0 = null
