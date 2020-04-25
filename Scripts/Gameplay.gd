@@ -169,10 +169,11 @@ func vehicleBoltHitsTargetBody(_bolt, _target):
 
     # Handle '_target' with 0 HEALTH.
     if _target.HEALTH <= 0:
+        hud.focus_obj = null
         hud.updateObjectiveValue(int(hud.objective_value.text) - 1)
-        _target.queue_free()
         hud.updateFocusNameValue('')
         hud.updateFocusHealthValue('')
+        _target.queue_free()
 
     # Hud update for '_target' that is in "focus".
     elif hud.focus_name_input == _target.name:
@@ -184,7 +185,7 @@ func targetBoltHitsVehicleBody(_bolt, _vehicle):
     # Anonymously handle target bolt to vehicle body collisions.
 
     # For testing, override vehicle take damage.
-    if controls.TESTING_no_take_damage:  return
+    if controls.TESTING_take_no_damage:  return
 
     # Handle vehicle's 'shields_battery' first.
     if _vehicle.shields_battery > 0:
@@ -229,6 +230,38 @@ func winConditionMet():
 func loseConditionMet():
 
     get_tree().change_scene('res://Scenes/Menus/LoseConditionMet.tscn')
+
+
+
+####################################
+"""   UNDER CONSTRUCTION   >>>   """
+####################################
+
+
+
+func toggleObjectVisualLayer(_obj, _layer):
+    # For all children/grandchildren of _obj, if MeshInstance, toggle VisualInstance _layer.
+
+    # Get list of child/grandchild nodes with MeshInstance children.
+    var sub_mesh_groups = []
+    if _obj.get_parent().name == 'Targets':  sub_mesh_groups = ['Turret']
+
+    # Build list of all nodes with MeshInstance children.
+    var mesh_groups = [_obj.get_children()]
+    for group in sub_mesh_groups:  mesh_groups += [_obj.get_node(group).get_children()]
+
+    # Loop through all nodes with MeshInstance children.
+    for group in mesh_groups:
+        for child in group:
+            if child is MeshInstance:
+                if child.get_layer_mask_bit(_layer):  child.set_layer_mask_bit(_layer, false)
+                else:  child.set_layer_mask_bit(_layer, true)
+
+
+
+####################################
+"""   <<<   UNDER CONSTRUCTION   """
+####################################
 
 
 

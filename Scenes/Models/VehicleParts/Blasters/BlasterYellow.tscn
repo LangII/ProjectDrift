@@ -54,4 +54,4 @@ mesh = SubResource( 8 )
 material/0 = null
 
 [node name="BoltSpawn" type="Position3D" parent="BarrelPivot"]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -2.44381e-07, 0, -1.5 )
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -3.39445e-07, 0, -2.0835 )

@@ -103,7 +103,6 @@ transform = Transform( 1, 0, -3.55271e-15, 0, 1, 0, 0, 0, 1, 0, -0.541642, 0 )
 
 [node name="MeshInstance01" type="MeshInstance" parent="BodyMesh"]
 transform = Transform( 1.4, 0, -8.40355e-09, 0, 0.2, 0, 1.68071e-08, 0, 0.7, 0, 0.55, 0 )
-layers = 3
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 

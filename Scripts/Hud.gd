@@ -75,9 +75,12 @@ onready var objective_input = controls.gameplay['number_of_targets']
 
 
 ### Working vars.
-onready var focus_cam = find_node('FocusCamera')
 onready var vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
-onready var focus_obj = vehicle
+
+onready var focus_cam = find_node('FocusCamera')
+onready var focus_obj = null
+onready var focus_cam_pos = Vector3()
+onready var focus_obj_pos = Vector3()
 ###
 
 
@@ -157,29 +160,35 @@ E 0:00:01.867   look_at_from_position: Node origin and target are in the same po
 """
 
 func updateFocusViewport(_obj):
-    
-#    print(_obj)    
 
+    if focus_obj:  gameplay.toggleObjectVisualLayer(focus_obj, 1)
+    gameplay.toggleObjectVisualLayer(_obj, 1)
     focus_obj = _obj
-    _obj.find_node('MeshInstance').set_layer_mask_bit(1, true)
-
-#    var testing = focus_cam.find_node('MeshInstance')
-#
-#    testing.set_layer_mask_bit(1, true)
 
 
 
 func _process(delta):
-    
+
     """
-    TO-DO:  Load origin variables in onready (This function is bloated).
+    TO-DOS:
+        - Load origin variables in onready (This function is bloated).
+        - Give focus cam awake or asleep states.
+        
+        - FIX BUNNY FLOOR INSTANCES!!!
+        
     """
 
-    var cam_pos = (vehicle.global_transform.origin - focus_obj.global_transform.origin).normalized() * 4
-    focus_cam.global_transform.origin = focus_obj.global_transform.origin + cam_pos
-    focus_cam.look_at(focus_obj.global_transform.origin, vehicle.gravity_dir * -1)
-    
-    print(cam_pos)
+    if focus_obj:
+
+        focus_obj_pos = focus_obj.global_transform.origin
+
+        focus_cam_pos = (vehicle.global_transform.origin - focus_obj_pos).normalized() * 4
+        focus_cam_pos = focus_cam_pos + focus_obj_pos
+        focus_cam.global_transform.origin = focus_cam_pos
+
+        focus_cam.look_at(focus_obj_pos, vehicle.gravity_dir * -1)
+
+
 
 
 
