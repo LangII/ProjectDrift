@@ -1,6 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/Hud.gd" type="Script" id=1]
+[ext_resource path="res://Textures/yellow_repl_bar.png" type="Texture" id=2]
+[ext_resource path="res://Textures/grey_repl_bar.png" type="Texture" id=3]
+[ext_resource path="res://Textures/blue_repl_bar.png" type="Texture" id=4]
+[ext_resource path="res://Textures/green_repl_bar.png" type="Texture" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -339,7 +343,7 @@ text = "0"
 align = 2
 valign = 1
 
-[node name="ViewportContainer" type="ViewportContainer" parent="."]
+[node name="FocusViewport" type="ViewportContainer" parent="."]
 margin_left = 541.584
 margin_top = 26.0
 margin_right = 589.584
@@ -352,31 +356,80 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+[node name="Viewport" type="Viewport" parent="FocusViewport"]
 size = Vector2( 200, 200 )
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="FocusCamera" type="Camera" parent="ViewportContainer/Viewport"]
+[node name="FocusCamera" type="Camera" parent="FocusViewport/Viewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27147, 0 )
 cull_mask = 2
 
-[node name="MeshInstance" type="MeshInstance" parent="ViewportContainer/Viewport/FocusCamera"]
+[node name="MeshInstance" type="MeshInstance" parent="FocusViewport/Viewport/FocusCamera"]
 transform = Transform( 0.89932, 0.160031, -0.406957, -0.372631, 0.767471, -0.521665, 0.228846, 0.620788, 0.749834, 0, 0, -10.5256 )
 visible = false
 layers = 3
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="Background" type="MeshInstance" parent="ViewportContainer/Viewport/FocusCamera"]
+[node name="Background" type="MeshInstance" parent="FocusViewport/Viewport/FocusCamera"]
 transform = Transform( 10, 0, 0, 0, -4.37114e-08, -10, 0, 1, -4.37114e-07, 0, 0, -12.9087 )
 layers = 2
 cast_shadow = 0
 mesh = SubResource( 6 )
 material/0 = null
 
-[node name="MeshInstance2" type="MeshInstance" parent="ViewportContainer/Viewport/FocusCamera"]
+[node name="MeshInstance2" type="MeshInstance" parent="FocusViewport/Viewport/FocusCamera"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 5, 0, 0, -5.4522 )
 visible = false
 mesh = SubResource( 8 )
 material/0 = null
+
+[node name="Replenishments" type="MarginContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_bottom = -10.0
+grow_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Replenishments"]
+margin_right = 38.0
+margin_bottom = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnginesRepl" type="TextureProgress" parent="Replenishments/HBoxContainer"]
+margin_right = 10.0
+margin_bottom = 100.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+texture_under = ExtResource( 3 )
+texture_progress = ExtResource( 5 )
+fill_mode = 3
+
+[node name="ShieldsRepl" type="TextureProgress" parent="Replenishments/HBoxContainer"]
+margin_left = 14.0
+margin_right = 24.0
+margin_bottom = 100.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+texture_under = ExtResource( 3 )
+texture_progress = ExtResource( 4 )
+fill_mode = 3
+
+[node name="BlastersRepl" type="TextureProgress" parent="Replenishments/HBoxContainer"]
+margin_left = 28.0
+margin_right = 38.0
+margin_bottom = 100.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+texture_under = ExtResource( 3 )
+texture_progress = ExtResource( 2 )
+fill_mode = 3

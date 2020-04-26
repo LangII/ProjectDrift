@@ -137,6 +137,11 @@ func updateReplenishValues(_engines, _shields, _blasters):
     replenish_engines_value.text =  "%7.2f" % replenish_engines_input
     replenish_shields_value.text =  "%7.2f" % replenish_shields_input
     replenish_blasters_value.text = "%7.2f" % replenish_blasters_input
+    
+    $Replenishments/HBoxContainer/EnginesRepl.value = replenish_engines_input
+    $Replenishments/HBoxContainer/ShieldsRepl.value = replenish_shields_input
+    $Replenishments/HBoxContainer/BlastersRepl.value = replenish_blasters_input
+#    print(replenish_engines_input)
 
 func updateFocusNameValue(_value):
 
