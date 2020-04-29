@@ -19,4 +19,3 @@ autostart = true
 [node name="VehicleBolts" type="Spatial" parent="."]
 
 [node name="TargetBolts" type="Spatial" parent="."]
-[connection signal="timeout" from="HalfSecond" to="." method="_on_HalfSecond_timeout"]

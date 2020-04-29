@@ -18,7 +18,7 @@ onready var gameplay = get_node('/root/Gameplay')
 
 onready var body_tag =      controls.gameplay['vehicle']['body']
 # onready var generator_tag = controls.gameplay['vehicle']['generator']
-# onready var engines_tag =   controls.gameplay['vehicle']['engines']
+onready var engines_tag =   controls.gameplay['vehicle']['engines']
 onready var blaster1_tag =   controls.gameplay['vehicle']['blaster1']
 onready var shields_tag =   controls.gameplay['vehicle']['shields']
 
@@ -81,6 +81,10 @@ onready var focus_cam = find_node('FocusCamera')
 onready var focus_obj = null
 onready var focus_cam_pos = Vector3()
 onready var focus_obj_pos = Vector3()
+
+onready var max_speed = controls.engines[engines_tag]['max_speed']
+onready var max_health = controls.body[body_tag]['health']
+onready var max_shields = controls.shields[shields_tag]['battery_capacity']
 ###
 
 
@@ -99,6 +103,13 @@ func _ready():
     blaster1_battery_value.text =    "%7.2f" % blaster1_battery_input
     objective_value.text =          "%6d" % objective_input
 
+    ###
+    $LowerLeft/VBoxContainer/Speedometer.max_value = max_speed
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Health.max_value = max_health
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Health.value = health_input
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Shields.max_value = max_shields
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Shields.value = shields_battery_input
+
 
 
 ####################################################################################################
@@ -107,41 +118,14 @@ func _ready():
 
 # Each function is a Hud variable update.
 
-func updateHealthValue(_value):
-
-    health_input = _value
-    health_value.text = "%7.2f" % health_input
-
-    if health_input <= 0:  gameplay.loseConditionMet()
-
-func updateShieldsBatteryValue(_value):
-
-    shields_battery_input = _value
-    shields_battery_value.text = "%7.2f" % shields_battery_input
-
-func updateSpeedValue(_value):
-
-    speed_input = _value
-    speed_value.text = "%7.2f" % speed_input
+### <- updateSpeedValue()
 
 func updateBlasterBatteryValue(_value):
 
     blaster1_battery_input = _value
     blaster1_battery_value.text = "%7.2f" % blaster1_battery_input
 
-func updateReplenishValues(_engines, _shields, _blasters):
-
-    replenish_engines_input =   _engines
-    replenish_shields_input =   _shields
-    replenish_blasters_input =  _blasters
-    replenish_engines_value.text =  "%7.2f" % replenish_engines_input
-    replenish_shields_value.text =  "%7.2f" % replenish_shields_input
-    replenish_blasters_value.text = "%7.2f" % replenish_blasters_input
-    
-    $Replenishments/HBoxContainer/EnginesRepl.value = replenish_engines_input
-    $Replenishments/HBoxContainer/ShieldsRepl.value = replenish_shields_input
-    $Replenishments/HBoxContainer/BlastersRepl.value = replenish_blasters_input
-#    print(replenish_engines_input)
+### <- updateReplenishValues()
 
 func updateFocusNameValue(_value):
 
@@ -164,6 +148,43 @@ func updateFocusHealthValue(_value):
 E 0:00:01.867   look_at_from_position: Node origin and target are in the same position, look_at() failed.
 """
 
+func updateHealthValue(_value):
+
+    health_input = _value
+    health_value.text = "%7.2f" % health_input
+    
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Health.value = health_input
+
+    if health_input <= 0:  gameplay.loseConditionMet()
+
+func updateShieldsBatteryValue(_value):
+
+    shields_battery_input = _value
+    shields_battery_value.text = "%7.2f" % shields_battery_input
+    
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Shields.value = shields_battery_input
+
+func updateSpeedValue(_value):
+
+    speed_input = _value
+    speed_value.text = "%7.2f" % speed_input
+    
+    $LowerLeft/VBoxContainer/Speedometer.value = speed_input
+
+func updateReplenishValues(_engines, _shields, _blasters):
+
+    replenish_engines_input =   _engines
+    replenish_shields_input =   _shields
+    replenish_blasters_input =  _blasters
+    replenish_engines_value.text =  "%7.2f" % replenish_engines_input
+    replenish_shields_value.text =  "%7.2f" % replenish_shields_input
+    replenish_blasters_value.text = "%7.2f" % replenish_blasters_input
+    
+    $LowerLeft/VBoxContainer/HBoxContainer/HBoxContainer/EnginesRepl.value = replenish_engines_input
+    $LowerLeft/VBoxContainer/HBoxContainer/HBoxContainer/ShieldsRepl.value = replenish_shields_input
+    $LowerLeft/VBoxContainer/HBoxContainer/HBoxContainer/BlastersRepl.value = replenish_blasters_input
+#    print(replenish_engines_input)
+
 func updateFocusViewport(_obj):
 
     if focus_obj:  gameplay.toggleObjectVisualLayer(focus_obj, 1)
@@ -182,6 +203,8 @@ func _process(delta):
         - FIX BUNNY FLOOR INSTANCES!!!
         
     """
+
+    updateSpeedValue(vehicle.linear_velocity.length())
 
     if focus_obj:
 
