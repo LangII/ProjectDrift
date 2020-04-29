@@ -270,8 +270,8 @@ func toggleObjectVisualLayer(_obj, _layer):
                                                                                  ###   SIGNALS   ###
                                                                                  ###################
 
-#func _on_HalfSecond_timeout():
-#
-#    hud.updateSpeedValue(vehicle.linear_velocity.length())
+func _on_HalfSecond_timeout():
+
+    hud.updateSpeedValue(vehicle.linear_velocity.length())
 
     # vehicle.printTransformBasis()

@@ -105,10 +105,13 @@ func _ready():
 
     ###
     $LowerLeft/VBoxContainer/Speedometer.max_value = max_speed
-    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Health.max_value = max_health
-    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Health.value = health_input
-    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Shields.max_value = max_shields
-    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Shields.value = shields_battery_input
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/Health.max_value = max_health
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/Health.value = health_input
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/PanelContainer/HealthValue.text = "%.2f/%.2f" % [health_input, max_health]
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/Shields.max_value = max_shields
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/Shields.value = shields_battery_input
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/PanelContainer/ShieldsValue.text = "%.2f/%.2f" % [shields_battery_input, max_shields]
+    $LowerLeft/VBoxContainer/PanelContainer/SpeedValue.text = "%.2f/%.2f" % [speed_input, max_speed]
 
 
 
@@ -153,7 +156,9 @@ func updateHealthValue(_value):
     health_input = _value
     health_value.text = "%7.2f" % health_input
     
-    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Health.value = health_input
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/Health.value = health_input
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/PanelContainer/HealthValue.text = "%.2f/%.2f" % [health_input, max_health]
+
 
     if health_input <= 0:  gameplay.loseConditionMet()
 
@@ -162,14 +167,20 @@ func updateShieldsBatteryValue(_value):
     shields_battery_input = _value
     shields_battery_value.text = "%7.2f" % shields_battery_input
     
-    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/Shields.value = shields_battery_input
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/Shields.value = shields_battery_input
+    $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/PanelContainer/ShieldsValue.text = "%.2f/%.2f" % [shields_battery_input, max_shields]
+
 
 func updateSpeedValue(_value):
-
+    
     speed_input = _value
     speed_value.text = "%7.2f" % speed_input
     
-    $LowerLeft/VBoxContainer/Speedometer.value = speed_input
+    $LowerLeft/VBoxContainer/PanelContainer/SpeedValue.text = "%.2f/%.2f" % [speed_input, max_speed]
+
+func updateSpeedometer(_value):
+    
+    $LowerLeft/VBoxContainer/Speedometer.value = _value
 
 func updateReplenishValues(_engines, _shields, _blasters):
 
@@ -204,7 +215,7 @@ func _process(_delta):
         
     """
 
-    updateSpeedValue(vehicle.linear_velocity.length())
+    updateSpeedometer(vehicle.linear_velocity.length())
 
     if focus_obj:
 
@@ -215,8 +226,6 @@ func _process(_delta):
         focus_cam.global_transform.origin = focus_cam_pos
 
         focus_cam.look_at(focus_obj_pos, vehicle.gravity_dir * -1)
-
-
 
 
 

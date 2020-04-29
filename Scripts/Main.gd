@@ -13,10 +13,14 @@ extends Node
 
 onready var controls = get_node('/root/Controls')
 
+
+
 func _ready():
 
     if controls.TESTING_no_menu:  changeScene('res://Scenes/Functional/Gameplay.tscn')
     else:  changeScene('res://Scenes/Menus/PartSelection.tscn')
+
+
 
 func changeScene(_scene):
     if get_tree().change_scene(_scene) != OK:
