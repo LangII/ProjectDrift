@@ -14,8 +14,8 @@ extends Node
                                                                                 ####################
 
 ### If 'true' bypass menus and generate game from 'gameplay' values.
-#var TESTING_no_menu = false
-var TESTING_no_menu = true
+var TESTING_no_menu = false
+#var TESTING_no_menu = true
 
 ### If 'true', vehicle takes no damage from target bolts.
 var TESTING_take_no_damage = false
@@ -25,7 +25,7 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 8, # (currently) 64 or less
+    'number_of_targets': 2, # (currently) 64 or less
     'vehicle': {
         'body': 'TestBody01',
         'generator': 'GeneratorYellow',

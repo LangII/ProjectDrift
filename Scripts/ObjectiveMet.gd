@@ -2,6 +2,7 @@
 extends Control
 
 # onready var controls = get_node('/root/Controls')
+onready var main = get_node('/root/Main')
 
 func _ready():
 
@@ -9,5 +10,4 @@ func _ready():
 
 func _on_ButtonReplay_pressed():
 
-    # get_tree().change_scene('res://Scenes/Functional/Gameplay.tscn')
-    get_tree().change_scene('res://Scenes/Menus/PartSelection.tscn')
+    main.changeScene('res://Scenes/Menus/PartSelection.tscn')

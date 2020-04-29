@@ -100,7 +100,7 @@ func _ready():
                                                                               ###   PROCESSING   ###
                                                                               ######################
 
-func _process(delta):
+func _process(_delta):
 
     ### from Discord (Fabian) ...  To try in the future as a better interpolation method.
     # _tween.interpolate_property(self, "transform:basis",

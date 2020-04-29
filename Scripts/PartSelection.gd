@@ -10,6 +10,7 @@ extends Control
                                                                                 ####################
 
 onready var controls = get_node('/root/Controls')
+onready var main = get_node('/root/Main')
 # onready var gameplay = get_node('/root/Gameplay')
 
 onready var Notes = preload('res://Scenes/Menus/PartSelectionNotes.tscn')
@@ -147,4 +148,4 @@ func _on_Play_pressed():
     controls.gameplay['number_of_targets'] = int(turret_count.text)
     controls.global['vehicle']['mouse_sensitivity'] = float(mouse_sensitivity.text)
 
-    get_tree().change_scene('res://Scenes/Functional/Gameplay.tscn')
+    main.changeScene('res://Scenes/Functional/Gameplay.tscn')

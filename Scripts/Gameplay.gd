@@ -18,6 +18,7 @@ extends Node
                                                                                 ####################
 
 onready var controls = get_node('/root/Controls')
+onready var main = get_node('/root/Main')
 
 onready var NUMBER_OF_TARGETS = controls.gameplay['number_of_targets']
 
@@ -137,7 +138,7 @@ func generateTargets():
         # Modification... 'randoms' is now generated to set which targets will be deleted, not
         # which will be generated.
         var randoms = []
-        for i in range(len(targets_array) - NUMBER_OF_TARGETS):
+        for __ in range(len(targets_array) - NUMBER_OF_TARGETS):
             # While-loop is used to continue to generate a 'random' number until a new 'random'
             # number is generated.
             while true:
@@ -223,13 +224,13 @@ func targetBoltHitsVehicleBody(_bolt, _vehicle):
 
 func winConditionMet():
 
-    get_tree().change_scene('res://Scenes/Menus/WinConditionMet.tscn')
+    main.changeScene('res://Scenes/Menus/WinConditionMet.tscn')
 
 
 
 func loseConditionMet():
 
-    get_tree().change_scene('res://Scenes/Menus/LoseConditionMet.tscn')
+    main.changeScene('res://Scenes/Menus/LoseConditionMet.tscn')
 
 
 

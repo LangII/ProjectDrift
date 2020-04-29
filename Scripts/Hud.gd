@@ -193,7 +193,7 @@ func updateFocusViewport(_obj):
 
 
 
-func _process(delta):
+func _process(_delta):
 
     """
     TO-DOS:

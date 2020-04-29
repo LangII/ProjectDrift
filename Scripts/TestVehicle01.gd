@@ -156,7 +156,7 @@ func _unhandled_input(event):
 
 
 
-func _process(delta):
+func _process(_delta):
 
     ###   OBSOLETE   ###
 #    # Clamp vehicle's max speed.
@@ -226,7 +226,7 @@ func _integrate_forces(state):
 
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 
     # Apply gravity.
     var grav_force_dir = applyGravDirToGravForce()

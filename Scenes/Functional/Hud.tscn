@@ -404,7 +404,7 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="LowerLeft"]
 margin_left = 10.0
 margin_right = 196.0
-margin_bottom = 120.0
+margin_bottom = 110.0
 custom_constants/separation = 10
 __meta__ = {
 "_edit_use_anchors_": false
@@ -481,6 +481,7 @@ custom_constants/separation = 10
 margin_right = 125.0
 margin_bottom = 20.0
 step = 0.01
+value = 100.0
 texture_under = ExtResource( 10 )
 texture_progress = ExtResource( 8 )
 
@@ -489,5 +490,6 @@ margin_top = 30.0
 margin_right = 125.0
 margin_bottom = 50.0
 step = 0.01
+value = 100.0
 texture_under = ExtResource( 10 )
 texture_progress = ExtResource( 9 )
