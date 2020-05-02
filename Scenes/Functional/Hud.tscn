@@ -406,7 +406,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LowerLeft"]
 margin_left = 10.0
-margin_right = 251.0
+margin_right = 242.0
 margin_bottom = 140.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -416,7 +416,7 @@ __meta__ = {
 }
 
 [node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer"]
-margin_right = 53.0
+margin_right = 44.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 rect_clip_content = true
@@ -428,14 +428,14 @@ __meta__ = {
 
 [node name="SpeedValue" type="Label" parent="LowerLeft/VBoxContainer/PanelContainer"]
 margin_top = 3.0
-margin_right = 53.0
+margin_right = 44.0
 margin_bottom = 17.0
-text = "000/000"
+text = "000.00"
 valign = 1
 
 [node name="Speedometer" type="TextureProgress" parent="LowerLeft/VBoxContainer"]
 margin_top = 30.0
-margin_right = 241.0
+margin_right = 232.0
 margin_bottom = 80.0
 step = 0.2
 value = 100.0
@@ -451,7 +451,7 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="LowerLeft/VBoxContainer"]
 margin_top = 90.0
-margin_right = 241.0
+margin_right = 232.0
 margin_bottom = 140.0
 custom_constants/separation = 10
 
@@ -497,41 +497,13 @@ fill_mode = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer"]
 margin_left = 61.0
-margin_right = 241.0
+margin_right = 232.0
 margin_bottom = 50.0
 custom_constants/separation = 10
 
-[node name="HealthHBox" type="HBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 180.0
-margin_bottom = 20.0
-custom_constants/separation = 2
-
-[node name="Health" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox"]
-margin_right = 125.0
-margin_bottom = 20.0
-step = 0.01
-value = 100.0
-texture_under = ExtResource( 10 )
-texture_progress = ExtResource( 8 )
-
-[node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox"]
-margin_left = 127.0
-margin_right = 180.0
-margin_bottom = 20.0
-custom_styles/panel = SubResource( 9 )
-
-[node name="HealthValue" type="Label" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/PanelContainer"]
-margin_top = 3.0
-margin_right = 53.0
-margin_bottom = 17.0
-text = "000/000"
-align = 1
-valign = 1
-
 [node name="ShieldsHBox" type="HBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 30.0
-margin_right = 180.0
-margin_bottom = 50.0
+margin_right = 171.0
+margin_bottom = 20.0
 custom_constants/separation = 2
 
 [node name="Shields" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox"]
@@ -544,14 +516,40 @@ texture_progress = ExtResource( 9 )
 
 [node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox"]
 margin_left = 127.0
-margin_right = 180.0
+margin_right = 171.0
 margin_bottom = 20.0
 custom_styles/panel = SubResource( 9 )
 
 [node name="ShieldsValue" type="Label" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/PanelContainer"]
 margin_top = 3.0
-margin_right = 53.0
+margin_right = 44.0
 margin_bottom = 17.0
-text = "000/000"
-align = 1
+text = "000.00"
+valign = 1
+
+[node name="HealthHBox" type="HBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 30.0
+margin_right = 171.0
+margin_bottom = 50.0
+custom_constants/separation = 2
+
+[node name="Health" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox"]
+margin_right = 125.0
+margin_bottom = 20.0
+step = 0.01
+value = 100.0
+texture_under = ExtResource( 10 )
+texture_progress = ExtResource( 8 )
+
+[node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox"]
+margin_left = 127.0
+margin_right = 171.0
+margin_bottom = 20.0
+custom_styles/panel = SubResource( 9 )
+
+[node name="HealthValue" type="Label" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/PanelContainer"]
+margin_top = 3.0
+margin_right = 44.0
+margin_bottom = 17.0
+text = "000.00"
 valign = 1

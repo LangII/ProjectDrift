@@ -274,4 +274,6 @@ func _on_HalfSecond_timeout():
 
     hud.updateSpeedValue(vehicle.linear_velocity.length())
 
-    # vehicle.printTransformBasis()
+#    print(vehicle.MAX_SPEED)
+
+#    vehicle.printTransformBasis()
