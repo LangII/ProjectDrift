@@ -112,6 +112,10 @@ func _ready():
     $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/Shields.value = shields_battery_input
     $LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/PanelContainer/ShieldsValue.text = " %.2f " % shields_battery_input
     $LowerLeft/VBoxContainer/PanelContainer/SpeedValue.text = " %.2f " % speed_input
+    $LowerRight/VBoxContainer/Blaster1HBox/PanelContainer2/Blaster1BoltEnergyValue.text = " (%.2f) " % controls.blasters[blaster1_tag]['energy']
+    $LowerRight/VBoxContainer/Blaster1HBox/PanelContainer/Blaster1Value.text = " %.2f " % blaster1_battery_input
+    $LowerRight/VBoxContainer/Blaster1HBox/Blaster1.value = blaster1_battery_input
+    $UpperLeft/VBoxContainer/Objective/Divider/ObjectiveValue.text = str(objective_input)
 
 
 
@@ -127,6 +131,9 @@ func updateBlasterBatteryValue(_value):
 
     blaster1_battery_input = _value
     blaster1_battery_value.text = "%7.2f" % blaster1_battery_input
+    
+    $LowerRight/VBoxContainer/Blaster1HBox/PanelContainer/Blaster1Value.text = " %.2f " % blaster1_battery_input
+    $LowerRight/VBoxContainer/Blaster1HBox/Blaster1.value = blaster1_battery_input
 
 ### <- updateReplenishValues()
 
@@ -134,12 +141,21 @@ func updateFocusNameValue(_value):
 
     focus_name_input = _value
     focus_name_value.text = "%013s" % str(focus_name_input)
+    
+    $UpperLeft/VBoxContainer/FocusName/Divider/FocusNameValue.text = "%s " % str(focus_name_input)
 
 func updateFocusHealthValue(_value):
 
     focus_health_input = _value
-    if focus_health_input:  focus_health_value.text = "%7.2f" % focus_health_input
-    else:  focus_health_value.text = focus_health_input
+    if focus_health_input:
+        focus_health_value.text = "%7.2f" % focus_health_input
+        
+        $UpperLeft/VBoxContainer/FocusHealth/Divider/FocusHealthValue.text = "%.2f" % focus_health_input
+        
+    else:
+        focus_health_value.text = focus_health_input
+        
+        $UpperLeft/VBoxContainer/FocusHealth/Divider/FocusHealthValue.text = focus_health_input
 
 
 
@@ -237,5 +253,7 @@ func updateObjectiveValue(_value):
 
     objective_input = _value
     objective_value.text = "%6d" % objective_input
+    
+    $UpperLeft/VBoxContainer/Objective/Divider/ObjectiveValue.text = str(objective_input)
 
     if objective_input <= 0:  gameplay.winConditionMet()

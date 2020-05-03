@@ -18,8 +18,8 @@ extends Node
 var TESTING_no_menu = true
 
 ### If 'true', vehicle takes no damage from target bolts.
-var TESTING_take_no_damage = false
-#var TESTING_take_no_damage = true
+#var TESTING_take_no_damage = false
+var TESTING_take_no_damage = true
 
 var gameplay = {
     # 'arena': 'TestArena01',
