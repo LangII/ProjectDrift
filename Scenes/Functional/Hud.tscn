@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scripts/Hud.gd" type="Script" id=1]
 [ext_resource path="res://Textures/grey_repl_bar_02.png" type="Texture" id=2]
@@ -11,9 +11,9 @@
 [ext_resource path="res://Textures/blue_repl_bar_hor_01.png" type="Texture" id=9]
 [ext_resource path="res://Textures/grey_repl_bar_hor_01.png" type="Texture" id=10]
 [ext_resource path="res://Textures/yellow_repl_bar_hor_01.png" type="Texture" id=11]
-
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
+[ext_resource path="res://Textures/grey_repl_bar_hor_thin.png" type="Texture" id=12]
+[ext_resource path="res://Textures/ltblue_repl_bar_hor_thin.png" type="Texture" id=13]
+[ext_resource path="res://Textures/white_repl_bar_hor_thin.png" type="Texture" id=14]
 
 [sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
@@ -26,6 +26,9 @@ albedo_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 [sub_resource type="PlaneMesh" id=6]
 material = SubResource( 7 )
 
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
+
 [sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
@@ -36,8 +39,9 @@ bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1.0
-margin_top = 1.52588e-05
+margin_top = -1.3967
 margin_right = -1.0
+margin_bottom = -1.39673
 mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
@@ -57,6 +61,410 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "+"
 align = 1
+valign = 1
+
+[node name="UpperLeft" type="MarginContainer" parent="."]
+margin_right = 220.0
+margin_bottom = 304.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UpperLeft"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 210.0
+margin_bottom = 294.0
+rect_min_size = Vector2( 200, 0 )
+custom_constants/separation = 3
+
+[node name="FocusViewport" type="PanelContainer" parent="UpperLeft/VBoxContainer"]
+margin_right = 200.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+custom_styles/panel = SubResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="UpperLeft/VBoxContainer/FocusViewport"]
+margin_right = 200.0
+margin_bottom = 200.0
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="UpperLeft/VBoxContainer/FocusViewport/ViewportContainer"]
+size = Vector2( 200, 200 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="FocusCamera" type="Camera" parent="UpperLeft/VBoxContainer/FocusViewport/ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27147, 0 )
+cull_mask = 2
+
+[node name="Background" type="MeshInstance" parent="UpperLeft/VBoxContainer/FocusViewport/ViewportContainer/Viewport/FocusCamera"]
+transform = Transform( 10, 0, 0, 0, -4.37114e-08, -10, 0, 1, -4.37114e-07, 0, 0, -12.9087 )
+layers = 2
+cast_shadow = 0
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="FocusName" type="PanelContainer" parent="UpperLeft/VBoxContainer"]
+show_behind_parent = true
+margin_top = 203.0
+margin_right = 200.0
+margin_bottom = 223.0
+rect_min_size = Vector2( 200, 20 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="UpperLeft/VBoxContainer/FocusName"]
+margin_right = 200.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 14 )
+custom_constants/separation = -1
+
+[node name="Variable" type="Label" parent="UpperLeft/VBoxContainer/FocusName/Divider"]
+margin_top = 3.0
+margin_right = 100.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 100, 0 )
+text = " focus name:"
+valign = 1
+
+[node name="FocusNameValue" type="Label" parent="UpperLeft/VBoxContainer/FocusName/Divider"]
+margin_left = 99.0
+margin_top = 3.0
+margin_right = 194.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 95, 0 )
+align = 2
+valign = 1
+
+[node name="FocusHealth" type="VBoxContainer" parent="UpperLeft/VBoxContainer"]
+margin_top = 226.0
+margin_right = 200.0
+margin_bottom = 250.0
+custom_constants/separation = -1
+
+[node name="PanelContainer" type="PanelContainer" parent="UpperLeft/VBoxContainer/FocusHealth"]
+show_behind_parent = true
+margin_right = 200.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 200, 20 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="UpperLeft/VBoxContainer/FocusHealth/PanelContainer"]
+margin_right = 200.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 14 )
+custom_constants/separation = -1
+
+[node name="Variable" type="Label" parent="UpperLeft/VBoxContainer/FocusHealth/PanelContainer/Divider"]
+margin_top = 3.0
+margin_right = 100.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 100, 0 )
+text = " focus health:"
+valign = 1
+
+[node name="FocusHealthValue" type="Label" parent="UpperLeft/VBoxContainer/FocusHealth/PanelContainer/Divider"]
+margin_left = 99.0
+margin_top = 3.0
+margin_right = 194.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 95, 0 )
+align = 2
+valign = 1
+
+[node name="FocusHealthProgBar" type="TextureProgress" parent="UpperLeft/VBoxContainer/FocusHealth"]
+margin_top = 19.0
+margin_right = 200.0
+margin_bottom = 24.0
+texture_under = ExtResource( 12 )
+texture_progress = ExtResource( 13 )
+
+[node name="PanelContainer" type="PanelContainer" parent="UpperLeft/VBoxContainer"]
+margin_top = 253.0
+margin_right = 200.0
+margin_bottom = 256.0
+rect_min_size = Vector2( 200, 3 )
+custom_styles/panel = SubResource( 11 )
+
+[node name="Objective" type="VBoxContainer" parent="UpperLeft/VBoxContainer"]
+margin_top = 259.0
+margin_right = 200.0
+margin_bottom = 283.0
+custom_constants/separation = -1
+
+[node name="PanelContainer" type="PanelContainer" parent="UpperLeft/VBoxContainer/Objective"]
+show_behind_parent = true
+margin_right = 200.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 200, 20 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="Divider" type="HBoxContainer" parent="UpperLeft/VBoxContainer/Objective/PanelContainer"]
+margin_right = 200.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 14 )
+custom_constants/separation = -1
+
+[node name="Variable" type="Label" parent="UpperLeft/VBoxContainer/Objective/PanelContainer/Divider"]
+margin_top = 3.0
+margin_right = 100.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 100, 0 )
+text = " objective:"
+valign = 1
+
+[node name="ObjectiveValue" type="Label" parent="UpperLeft/VBoxContainer/Objective/PanelContainer/Divider"]
+margin_left = 99.0
+margin_top = 3.0
+margin_right = 194.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 95, 0 )
+align = 2
+valign = 1
+
+[node name="ObjectiveProgBar" type="TextureProgress" parent="UpperLeft/VBoxContainer/Objective"]
+margin_top = 19.0
+margin_right = 200.0
+margin_bottom = 24.0
+value = 50.0
+texture_under = ExtResource( 14 )
+texture_progress = ExtResource( 12 )
+fill_mode = 1
+
+[node name="LowerLeft" type="MarginContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -160.0
+margin_right = 260.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LowerLeft"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 250.0
+margin_bottom = 150.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer"]
+margin_right = 52.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+rect_clip_content = true
+size_flags_horizontal = 0
+custom_styles/panel = SubResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpeedValue" type="Label" parent="LowerLeft/VBoxContainer/PanelContainer"]
+margin_top = 3.0
+margin_right = 52.0
+margin_bottom = 17.0
+text = " 000.00 "
+valign = 1
+
+[node name="Speedometer" type="TextureProgress" parent="LowerLeft/VBoxContainer"]
+margin_top = 30.0
+margin_right = 240.0
+margin_bottom = 80.0
+step = 0.2
+value = 100.0
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 6 )
+fill_mode = 5
+radial_initial_angle = 90.0
+radial_fill_degrees = 90.0
+radial_center_offset = Vector2( -50, 50 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LowerLeft/VBoxContainer"]
+margin_top = 90.0
+margin_right = 240.0
+margin_bottom = 140.0
+custom_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer"]
+margin_right = 51.0
+margin_bottom = 50.0
+custom_constants/separation = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnginesRepl" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_right = 15.0
+margin_bottom = 50.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 3 )
+fill_mode = 3
+
+[node name="ShieldsRepl" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_left = 18.0
+margin_right = 33.0
+margin_bottom = 50.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 5 )
+fill_mode = 3
+
+[node name="BlastersRepl" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_left = 36.0
+margin_right = 51.0
+margin_bottom = 50.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 4 )
+fill_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer"]
+margin_left = 61.0
+margin_right = 240.0
+margin_bottom = 50.0
+custom_constants/separation = 10
+
+[node name="ShieldsHBox" type="HBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 179.0
+margin_bottom = 20.0
+custom_constants/separation = 2
+
+[node name="Shields" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox"]
+margin_right = 125.0
+margin_bottom = 20.0
+step = 0.01
+value = 100.0
+texture_under = ExtResource( 10 )
+texture_progress = ExtResource( 9 )
+
+[node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox"]
+margin_left = 127.0
+margin_right = 179.0
+margin_bottom = 20.0
+custom_styles/panel = SubResource( 9 )
+
+[node name="ShieldsValue" type="Label" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/PanelContainer"]
+margin_top = 3.0
+margin_right = 52.0
+margin_bottom = 17.0
+text = " 000.00 "
+valign = 1
+
+[node name="HealthHBox" type="HBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 30.0
+margin_right = 179.0
+margin_bottom = 50.0
+custom_constants/separation = 2
+
+[node name="Health" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox"]
+margin_right = 125.0
+margin_bottom = 20.0
+step = 0.01
+value = 100.0
+texture_under = ExtResource( 10 )
+texture_progress = ExtResource( 8 )
+
+[node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox"]
+margin_left = 127.0
+margin_right = 179.0
+margin_bottom = 20.0
+custom_styles/panel = SubResource( 9 )
+
+[node name="HealthValue" type="Label" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/PanelContainer"]
+margin_top = 3.0
+margin_right = 52.0
+margin_bottom = 17.0
+text = " 000.00 "
+valign = 1
+
+[node name="LowerRight" type="MarginContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -261.0
+margin_top = -40.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LowerRight"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 251.0
+margin_bottom = 30.0
+
+[node name="Blaster1HBox" type="HBoxContainer" parent="LowerRight/VBoxContainer"]
+margin_right = 241.0
+margin_bottom = 20.0
+custom_constants/separation = 2
+alignment = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="LowerRight/VBoxContainer/Blaster1HBox"]
+margin_right = 52.0
+margin_bottom = 20.0
+custom_styles/panel = SubResource( 9 )
+
+[node name="Blaster1Value" type="Label" parent="LowerRight/VBoxContainer/Blaster1HBox/PanelContainer"]
+margin_top = 3.0
+margin_right = 52.0
+margin_bottom = 17.0
+text = " 000.00 "
+valign = 1
+
+[node name="Blaster1" type="TextureProgress" parent="LowerRight/VBoxContainer/Blaster1HBox"]
+margin_left = 54.0
+margin_right = 179.0
+margin_bottom = 20.0
+step = 0.01
+value = 100.0
+texture_under = ExtResource( 10 )
+texture_progress = ExtResource( 11 )
+fill_mode = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="LowerRight/VBoxContainer/Blaster1HBox"]
+margin_left = 181.0
+margin_right = 241.0
+margin_bottom = 20.0
+custom_styles/panel = SubResource( 9 )
+
+[node name="Blaster1BoltEnergyValue" type="Label" parent="LowerRight/VBoxContainer/Blaster1HBox/PanelContainer2"]
+margin_top = 3.0
+margin_right = 60.0
+margin_bottom = 17.0
+text = " (000.00) "
 valign = 1
 
 [node name="Stats" type="VBoxContainer" parent="."]
@@ -354,381 +762,4 @@ margin_right = 192.0
 margin_bottom = 17.0
 text = "0"
 align = 2
-valign = 1
-
-[node name="UpperLeft" type="MarginContainer" parent="."]
-margin_right = 224.0
-margin_bottom = 292.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/margin_right = 10
-custom_constants/margin_top = 10
-custom_constants/margin_left = 10
-custom_constants/margin_bottom = 10
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UpperLeft"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 214.0
-margin_bottom = 300.0
-rect_min_size = Vector2( 200, 0 )
-custom_constants/separation = 3
-
-[node name="FocusViewport" type="PanelContainer" parent="UpperLeft/VBoxContainer"]
-margin_right = 204.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 200, 200 )
-custom_styles/panel = SubResource( 10 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ViewportContainer" type="ViewportContainer" parent="UpperLeft/VBoxContainer/FocusViewport"]
-margin_right = 204.0
-margin_bottom = 200.0
-stretch = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Viewport" type="Viewport" parent="UpperLeft/VBoxContainer/FocusViewport/ViewportContainer"]
-size = Vector2( 204, 200 )
-handle_input_locally = false
-render_target_update_mode = 3
-
-[node name="FocusCamera" type="Camera" parent="UpperLeft/VBoxContainer/FocusViewport/ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27147, 0 )
-cull_mask = 2
-
-[node name="Background" type="MeshInstance" parent="UpperLeft/VBoxContainer/FocusViewport/ViewportContainer/Viewport/FocusCamera"]
-transform = Transform( 10, 0, 0, 0, -4.37114e-08, -10, 0, 1, -4.37114e-07, 0, 0, -12.9087 )
-layers = 2
-cast_shadow = 0
-mesh = SubResource( 6 )
-material/0 = null
-
-[node name="FocusName" type="PanelContainer" parent="UpperLeft/VBoxContainer"]
-show_behind_parent = true
-margin_top = 203.0
-margin_right = 204.0
-margin_bottom = 223.0
-rect_min_size = Vector2( 200, 20 )
-custom_styles/panel = SubResource( 1 )
-
-[node name="Divider" type="HBoxContainer" parent="UpperLeft/VBoxContainer/FocusName"]
-margin_right = 204.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 0, 14 )
-
-[node name="Variable" type="Label" parent="UpperLeft/VBoxContainer/FocusName/Divider"]
-margin_top = 3.0
-margin_right = 100.0
-margin_bottom = 17.0
-rect_min_size = Vector2( 100, 0 )
-text = " focus name:"
-valign = 1
-
-[node name="FocusNameValue" type="Label" parent="UpperLeft/VBoxContainer/FocusName/Divider"]
-margin_left = 104.0
-margin_top = 3.0
-margin_right = 199.0
-margin_bottom = 17.0
-rect_min_size = Vector2( 95, 0 )
-align = 2
-valign = 1
-
-[node name="FocusHealth" type="PanelContainer" parent="UpperLeft/VBoxContainer"]
-show_behind_parent = true
-margin_top = 226.0
-margin_right = 204.0
-margin_bottom = 246.0
-rect_min_size = Vector2( 200, 20 )
-custom_styles/panel = SubResource( 1 )
-
-[node name="Divider" type="HBoxContainer" parent="UpperLeft/VBoxContainer/FocusHealth"]
-margin_right = 204.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 0, 14 )
-
-[node name="Variable" type="Label" parent="UpperLeft/VBoxContainer/FocusHealth/Divider"]
-margin_top = 3.0
-margin_right = 100.0
-margin_bottom = 17.0
-rect_min_size = Vector2( 100, 0 )
-text = " focus health:"
-valign = 1
-
-[node name="FocusHealthValue" type="Label" parent="UpperLeft/VBoxContainer/FocusHealth/Divider"]
-margin_left = 104.0
-margin_top = 3.0
-margin_right = 199.0
-margin_bottom = 17.0
-rect_min_size = Vector2( 95, 0 )
-align = 2
-valign = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="UpperLeft/VBoxContainer"]
-margin_top = 249.0
-margin_right = 204.0
-margin_bottom = 252.0
-rect_min_size = Vector2( 0, 3 )
-custom_styles/panel = SubResource( 11 )
-
-[node name="Objective" type="PanelContainer" parent="UpperLeft/VBoxContainer"]
-show_behind_parent = true
-margin_top = 255.0
-margin_right = 204.0
-margin_bottom = 275.0
-rect_min_size = Vector2( 200, 20 )
-custom_styles/panel = SubResource( 1 )
-
-[node name="Divider" type="HBoxContainer" parent="UpperLeft/VBoxContainer/Objective"]
-margin_right = 204.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 0, 14 )
-
-[node name="Variable" type="Label" parent="UpperLeft/VBoxContainer/Objective/Divider"]
-margin_top = 3.0
-margin_right = 100.0
-margin_bottom = 17.0
-rect_min_size = Vector2( 100, 0 )
-text = " objective:"
-valign = 1
-
-[node name="ObjectiveValue" type="Label" parent="UpperLeft/VBoxContainer/Objective/Divider"]
-margin_left = 104.0
-margin_top = 3.0
-margin_right = 199.0
-margin_bottom = 17.0
-rect_min_size = Vector2( 95, 0 )
-align = 2
-valign = 1
-
-[node name="LowerLeft" type="MarginContainer" parent="."]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -160.0
-margin_right = 260.0
-custom_constants/margin_right = 10
-custom_constants/margin_top = 10
-custom_constants/margin_left = 10
-custom_constants/margin_bottom = 10
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LowerLeft"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 150.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-custom_constants/separation = 10
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer"]
-margin_right = 52.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 0, 20 )
-rect_clip_content = true
-size_flags_horizontal = 0
-custom_styles/panel = SubResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SpeedValue" type="Label" parent="LowerLeft/VBoxContainer/PanelContainer"]
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 17.0
-text = " 000.00 "
-valign = 1
-
-[node name="Speedometer" type="TextureProgress" parent="LowerLeft/VBoxContainer"]
-margin_top = 30.0
-margin_right = 240.0
-margin_bottom = 80.0
-step = 0.2
-value = 100.0
-texture_under = ExtResource( 7 )
-texture_progress = ExtResource( 6 )
-fill_mode = 5
-radial_initial_angle = 90.0
-radial_fill_degrees = 90.0
-radial_center_offset = Vector2( -50, 50 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="LowerLeft/VBoxContainer"]
-margin_top = 90.0
-margin_right = 240.0
-margin_bottom = 140.0
-custom_constants/separation = 10
-
-[node name="HBoxContainer" type="HBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer"]
-margin_right = 51.0
-margin_bottom = 50.0
-custom_constants/separation = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EnginesRepl" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
-margin_right = 15.0
-margin_bottom = 50.0
-max_value = 1.0
-step = 0.01
-value = 1.0
-texture_under = ExtResource( 2 )
-texture_progress = ExtResource( 3 )
-fill_mode = 3
-
-[node name="ShieldsRepl" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
-margin_left = 18.0
-margin_right = 33.0
-margin_bottom = 50.0
-max_value = 1.0
-step = 0.01
-value = 1.0
-texture_under = ExtResource( 2 )
-texture_progress = ExtResource( 5 )
-fill_mode = 3
-
-[node name="BlastersRepl" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
-margin_left = 36.0
-margin_right = 51.0
-margin_bottom = 50.0
-max_value = 1.0
-step = 0.01
-value = 1.0
-texture_under = ExtResource( 2 )
-texture_progress = ExtResource( 4 )
-fill_mode = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer"]
-margin_left = 61.0
-margin_right = 240.0
-margin_bottom = 50.0
-custom_constants/separation = 10
-
-[node name="ShieldsHBox" type="HBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 179.0
-margin_bottom = 20.0
-custom_constants/separation = 2
-
-[node name="Shields" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox"]
-margin_right = 125.0
-margin_bottom = 20.0
-step = 0.01
-value = 100.0
-texture_under = ExtResource( 10 )
-texture_progress = ExtResource( 9 )
-
-[node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox"]
-margin_left = 127.0
-margin_right = 179.0
-margin_bottom = 20.0
-custom_styles/panel = SubResource( 9 )
-
-[node name="ShieldsValue" type="Label" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/PanelContainer"]
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 17.0
-text = " 000.00 "
-valign = 1
-
-[node name="HealthHBox" type="HBoxContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 30.0
-margin_right = 179.0
-margin_bottom = 50.0
-custom_constants/separation = 2
-
-[node name="Health" type="TextureProgress" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox"]
-margin_right = 125.0
-margin_bottom = 20.0
-step = 0.01
-value = 100.0
-texture_under = ExtResource( 10 )
-texture_progress = ExtResource( 8 )
-
-[node name="PanelContainer" type="PanelContainer" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox"]
-margin_left = 127.0
-margin_right = 179.0
-margin_bottom = 20.0
-custom_styles/panel = SubResource( 9 )
-
-[node name="HealthValue" type="Label" parent="LowerLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/PanelContainer"]
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 17.0
-text = " 000.00 "
-valign = 1
-
-[node name="LowerRight" type="MarginContainer" parent="."]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -261.0
-margin_top = -40.0
-custom_constants/margin_right = 10
-custom_constants/margin_top = 10
-custom_constants/margin_left = 10
-custom_constants/margin_bottom = 10
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LowerRight"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 251.0
-margin_bottom = 30.0
-
-[node name="Blaster1HBox" type="HBoxContainer" parent="LowerRight/VBoxContainer"]
-margin_right = 241.0
-margin_bottom = 20.0
-custom_constants/separation = 2
-alignment = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="LowerRight/VBoxContainer/Blaster1HBox"]
-margin_right = 52.0
-margin_bottom = 20.0
-custom_styles/panel = SubResource( 9 )
-
-[node name="Blaster1Value" type="Label" parent="LowerRight/VBoxContainer/Blaster1HBox/PanelContainer"]
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 17.0
-text = " 000.00 "
-valign = 1
-
-[node name="Blaster1" type="TextureProgress" parent="LowerRight/VBoxContainer/Blaster1HBox"]
-margin_left = 54.0
-margin_right = 179.0
-margin_bottom = 20.0
-step = 0.01
-value = 100.0
-texture_under = ExtResource( 10 )
-texture_progress = ExtResource( 11 )
-fill_mode = 1
-
-[node name="PanelContainer2" type="PanelContainer" parent="LowerRight/VBoxContainer/Blaster1HBox"]
-margin_left = 181.0
-margin_right = 241.0
-margin_bottom = 20.0
-custom_styles/panel = SubResource( 9 )
-
-[node name="Blaster1BoltEnergyValue" type="Label" parent="LowerRight/VBoxContainer/Blaster1HBox/PanelContainer2"]
-margin_top = 3.0
-margin_right = 60.0
-margin_bottom = 17.0
-text = " (000.00) "
 valign = 1

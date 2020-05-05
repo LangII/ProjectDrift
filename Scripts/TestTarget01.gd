@@ -25,6 +25,7 @@ onready var ANGLE_TO_SHOOT =    controls.global['target']['angle_to_shoot']
 onready var AT_REST_TOLERANCE = controls.global['target']['at_rest_tolerance']
 
 # Get target's control variables.
+onready var MAX_HEALTH =        controls.targets[target_tag]['health']
 onready var HEALTH =            controls.targets[target_tag]['health']
 onready var VISIBILITY_RANGE =  controls.targets[target_tag]['visibility_range']
 onready var ROTATION_SPEED =    controls.targets[target_tag]['rotation_speed']

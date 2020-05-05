@@ -172,7 +172,7 @@ func vehicleBoltHitsTargetBody(_bolt, _target):
     if _target.HEALTH <= 0:
         hud.focus_obj = null
         hud.updateObjectiveValue(int(hud.objective_value.text) - 1)
-        hud.updateFocusNameValue('')
+        hud.updateFocusNameValue('', 0)
         hud.updateFocusHealthValue('')
         _target.queue_free()
 
