@@ -2,10 +2,9 @@
 
 
 
-Latest clip, displaying hud development (posted 2020-05-04):
-![](in_action_04.gif)
+Most recent development has been in the gameplay's heads-up-display.
+
+Latest "in action" clip (posted 2020-05-05):
+![](in_action_05.gif)
 
 
-
-The latest "in action" clip (posted 2020-04-24):
-![](in_action_01.gif)
