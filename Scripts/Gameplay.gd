@@ -9,6 +9,14 @@ routed through here.
 
 """
 
+"""
+
+TURNOVER NOTES:
+
+    - Need to move control/location of objective and objective count from Hud to Gameplay.
+
+"""
+
 extends Node
 
 
@@ -170,10 +178,8 @@ func vehicleBoltHitsTargetBody(_bolt, _target):
 
     # Handle '_target' with 0 HEALTH.
     if _target.HEALTH <= 0:
-        hud.focus_obj = null
-        hud.updateObjectiveValue(int(hud.objective_value.text) - 1)
-        hud.updateFocusNameValue('', 0)
-        hud.updateFocusHealthValue('')
+        hud.updateObjectiveValue(hud.objective_input - 1)
+        if _target == hud.focus_obj:  hud.clearFocusObject()
         _target.queue_free()
 
     # Hud update for '_target' that is in "focus".

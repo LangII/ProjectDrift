@@ -206,11 +206,8 @@ func _process(_delta):
     # Focus controls.
     if Input.is_action_just_pressed('ui_focus_prev'):
         var focus = scope.get_collider()
-        if focus != null and focus.get_parent().name == 'Targets':
-            hud.updateFocusNameValue(focus.name, focus.MAX_HEALTH)
-            hud.updateFocusHealthValue(focus.HEALTH)
-
-            hud.updateFocusViewport(focus)
+        # Only perform focus object update if focus is in Targets.
+        if focus != null and focus.get_parent().name == 'Targets':  hud.updateFocusObject(focus)
 
 
 
