@@ -3,6 +3,9 @@
 
 Hud.gd
 
+Currently universal hud.  Need to make and extend from a hud module because the hud laout will be
+dependent on user input of vehicle body and parts selection.
+
 """
 
 extends Control
@@ -32,8 +35,8 @@ onready var blaster1_bolt_energy_input =    controls.blasters[blaster1_tag]['ene
 
 
 ####################################################################################################
-                                                                                    ###   VARS   ###
-                                                                                    ################
+                                                                               ###   NODE REFS   ###
+                                                                               #####################
 
 ### DebugValues node references.
 onready var _debug_values_ = find_node('DebugValues')
@@ -50,12 +53,15 @@ onready var objective_value =           _debug_values_.find_node('ObjectiveValue
 
 ### BottomLeft node references.
 onready var _bottom_left_ = find_node('BottomLeft')
-onready var speed_prog_bar =    _bottom_left_.find_node('SpeedProgBar')
-onready var speed_text =        _bottom_left_.find_node('SpeedText')
-onready var shields_prog_bar =  _bottom_left_.find_node('ShieldsProgBar')
-onready var shields_text =      _bottom_left_.find_node('ShieldsText')
-onready var health_prog_bar =   _bottom_left_.find_node('HealthProgBar')
-onready var health_text =       _bottom_left_.find_node('HealthText')
+onready var speed_prog_bar =            _bottom_left_.find_node('SpeedProgBar')
+onready var speed_text =                _bottom_left_.find_node('SpeedText')
+onready var engines_repl_prog_bar =     _bottom_left_.find_node('EnginesReplProgBar')
+onready var shields_repl_prog_bar =     _bottom_left_.find_node('ShieldsReplProgBar')
+onready var blasters_repl_prog_bar =    _bottom_left_.find_node('BlastersReplProgBar')
+onready var shields_prog_bar =          _bottom_left_.find_node('ShieldsProgBar')
+onready var shields_text =              _bottom_left_.find_node('ShieldsText')
+onready var health_prog_bar =           _bottom_left_.find_node('HealthProgBar')
+onready var health_text =               _bottom_left_.find_node('HealthText')
 
 ### BottomRight node references.
 onready var _bottom_right_ = find_node('BottomRight')
@@ -71,26 +77,32 @@ onready var focus_name_text =       _top_left_.find_node('FocusNameText')
 onready var focus_health_text =     _top_left_.find_node('FocusHealthText')
 onready var focus_health_prog_bar = _top_left_.find_node('FocusHealthProgBar')
 
-### _process() variables.
+
+
+####################################################################################################
+                                                                                    ###   VARS   ###
+                                                                                    ################
+
+### _process()
 onready var vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
 onready var focus_cam = find_node('FocusCamera')
 onready var focus_obj = null
 onready var focus_cam_pos = Vector3()
 onready var focus_obj_pos = Vector3()
 
-
-
+### Value holders.
+onready var focus_name_input = ''
+onready var focus_health_input = 0.0
 onready var speed_input = 0.0
 onready var replenish_engines_input = 0.0
 onready var replenish_shields_input = 0.0
 onready var replenish_blasters_input = 0.0
-onready var focus_name_input = ''
-onready var focus_health_input = 0.0
 
-
-
+### Standardizing text formatting.
 onready var text_format_std = " %.2f "
 onready var text_format_be = " (%.2f) "
+
+
 
 ####################################################################################################
                                                                                    ###   READY   ###
@@ -142,8 +154,15 @@ func _process(_delta):
 
 
 ####################################################################################################
-                                                                                 ###   UPDATES   ###
-                                                                                 ###################
+                                                                           ###   PROCESS FUNCS   ###
+                                                                           #########################
+
+func updateSpeedProgBar(_value):
+    # Called from _process().
+    
+    speed_prog_bar.value = _value
+
+
 
 func updateFocusCamera():
     # Update position and rotation of FocusCamera.
@@ -174,110 +193,112 @@ func updateFocusObject(_obj):
     # Make to-be focus_obj (_obj) the new current focus_obj.
     focus_obj = _obj
     
-    # Update focus_name_input with new focus_obj name.
+
     focus_name_input = focus_obj.name
-    
-    # Update _debug_values_ if needed.
-    if _debug_values_.is_visible():  focus_name_value.text = "%013s" % focus_name_input
-    
-    # Update focus' name, progress bar max value and value.
     focus_name_text.text = "%s " % focus_name_input
     focus_health_prog_bar.max_value = focus_obj.MAX_HEALTH
     updateFocusHealthValue(focus_obj.HEALTH)
+    # Update _debug_values_ if needed.
+    if _debug_values_.is_visible():  focus_name_value.text = "%013s" % focus_name_input
+
+
+
+func updateFocusHealthValue(_value):
+    
+    focus_health_input = _value
+    focus_health_prog_bar.value = focus_health_input
+    # Update focus_health_text, if 0, update to '' not 0.0.
+    if _value == 0:  focus_health_text.text = ''
+    else:  focus_health_text.text = text_format_std.replace(' ', '') % focus_health_input
+    # Update _debug_values_ if needed.    
+    if _debug_values_.is_visible():  focus_health_value.text = "%7.2f" % focus_health_input
 
 
 
 func clearFocusObject():
-    # Reset focus values to no focus values.
+    # Reset all focus values.
     
     # NOTE...  As of right now this is unnecessary.  But, if later down the road it's needed to
     # clearFocusObject() that is not queue_free()'ed as well.'
     if focus_obj:  gameplay.toggleObjectVisualLayer(focus_obj, 1)
     
-    # Reset all focus values to null, '', or 0.0.
     focus_obj = null
-    if _debug_values_.is_visible():  focus_name_value.text = ''
     focus_name_text.text = ''
     focus_health_prog_bar.max_value = 0.0
     updateFocusHealthValue(0.0)
+    # Update _debug_values_ if needed.
+    if _debug_values_.is_visible():  focus_name_value.text = ''
 
 
 
-func updateFocusHealthValue(_value):
-    # Update the health display values of the focus_obj.
+func updateReplenishValues(_engines, _shields, _blasters):
     
-    focus_health_input = _value
-
-    if _debug_values_.is_visible():  focus_health_value.text = "%7.2f" % focus_health_input
-    focus_health_prog_bar.value = focus_health_input
-
-    # Update focus_health_text, if 0, update to '' not 0.0.
-    if _value == 0:  focus_health_text.text = ''
-    else:  focus_health_text.text = text_format_std.replace(' ', '') % focus_health_input
-
-
-
-func updateBlasterBatteryValue(_value):
-
-    blaster1_battery_input = _value
-    blaster1_battery_value.text = "%7.2f" % blaster1_battery_input
-    
-    $BottomRight/VBoxContainer/Blaster1HBox/PanelContainer/Blaster1Text.text = " %.2f " % blaster1_battery_input
-    $BottomRight/VBoxContainer/Blaster1HBox/Blaster1ProgBar.value = blaster1_battery_input
-
-
-
-func updateHealthValue(_value):
-
-    health_input = _value
-    health_value.text = "%7.2f" % health_input
-    $BottomLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/HealthProgBar.value = health_input
-    $BottomLeft/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/PanelContainer/HealthText.text = " %.2f " % health_input
-    if health_input <= 0:  gameplay.loseConditionMet()
-
-
-
-func updateShieldsBatteryValue(_value):
-
-    shields_battery_input = _value
-    shields_battery_value.text = "%7.2f" % shields_battery_input
-    $BottomLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/ShieldsProgBar.value = shields_battery_input
-    $BottomLeft/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox/PanelContainer/ShieldsText.text = " %.2f " % shields_battery_input
+    replenish_engines_input = _engines
+    replenish_shields_input = _shields
+    replenish_blasters_input = _blasters
+    engines_repl_prog_bar.value = replenish_engines_input
+    shields_repl_prog_bar.value = replenish_shields_input
+    blasters_repl_prog_bar.value = replenish_blasters_input
+    # Update _debug_values_ if needed.
+    if _debug_values_.is_visible():
+        replenish_engines_value.text =  "%7.2f" % replenish_engines_input
+        replenish_shields_value.text =  "%7.2f" % replenish_shields_input
+        replenish_blasters_value.text = "%7.2f" % replenish_blasters_input
 
 
 
 func updateSpeedValue(_value):
     
     speed_input = _value
-    speed_value.text = "%7.2f" % speed_input
-    $BottomLeft/VBoxContainer/PanelContainer/SpeedText.text = " %.2f " % speed_input
+    speed_text.text = text_format_std % speed_input
+    # Update _debug_values_ if needed.
+    if _debug_values_.is_visible():  speed_value.text = "%7.2f" % speed_input
 
 
 
-func updateSpeedProgBar(_value):
+func updateHealthValue(_value):
     
-    speed_prog_bar.value = _value
+    health_input = _value
+    health_prog_bar.value = health_input
+    health_text.text = text_format_std % health_input
+    # Update _debug_values_ if needed.
+    if _debug_values_.is_visible():  health_value.text = "%7.2f" % health_input
+    
+    # Trigger loseConditionMet().
+    if health_input <= 0:  gameplay.loseConditionMet()
 
 
 
-func updateReplenishValues(_engines, _shields, _blasters):
+func updateShieldsBatteryValue(_value):
+    
+    shields_battery_input = _value
+    shields_prog_bar.value = shields_battery_input
+    shields_text.text = " %.2f " % shields_battery_input
+    # Update _debug_values_ if needed.
+    if _debug_values_.is_visible():  shields_battery_value.text = "%7.2f" % shields_battery_input
 
-    replenish_engines_input =   _engines
-    replenish_shields_input =   _shields
-    replenish_blasters_input =  _blasters
-    replenish_engines_value.text =  "%7.2f" % replenish_engines_input
-    replenish_shields_value.text =  "%7.2f" % replenish_shields_input
-    replenish_blasters_value.text = "%7.2f" % replenish_blasters_input
-    $BottomLeft/VBoxContainer/HBoxContainer/HBoxContainer/EnginesRepl.value = replenish_engines_input
-    $BottomLeft/VBoxContainer/HBoxContainer/HBoxContainer/ShieldsRepl.value = replenish_shields_input
-    $BottomLeft/VBoxContainer/HBoxContainer/HBoxContainer/BlastersRepl.value = replenish_blasters_input
+
+
+func updateBlasterBatteryValue(_value):
+    
+    blaster1_battery_input = _value
+    blaster1_text.text = text_format_std % blaster1_battery_input
+    blaster1_prog_bar.value = blaster1_battery_input
+    # Update _debug_values_ if needed.
+    if _debug_values_.is_visible():  blaster1_battery_value.text = "%7.2f" % blaster1_battery_input
 
 
 
 func updateObjectiveValue(_value):
+    # Update objective display values.
 
     objective_input = _value
-    objective_value.text = "%6d" % objective_input
-    $TopLeft/VBoxContainer/Objective/PanelContainer/Divider/ObjectiveText.text = str(objective_input)
-    $TopLeft/VBoxContainer/Objective/ObjectiveProgBar.value = objective_input
+    objective_text.text = str(objective_input)
+    objective_prog_bar.value = objective_input
+    # Update _debug_values_ if needed.
+    if _debug_values_.is_visible():  objective_value.text = "%6d" % objective_input
+    
+    # Trigger winConditionMet().
     if objective_input <= 0:  gameplay.winConditionMet()
+
+

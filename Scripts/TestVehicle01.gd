@@ -123,6 +123,10 @@ func _ready():
 
 
 
+####################################################################################################
+                                                                             ###   READY FUNCS   ###
+                                                                             #######################
+
 func assignPartValues():
     """
     Needed for reassigning variables...  Variables cannot be designated in _ready() because their
@@ -136,8 +140,8 @@ func assignPartValues():
 
 
 ####################################################################################################
-                                                                              ###   PROCESSING   ###
-                                                                              ######################
+                                                                                 ###   PROCESS   ###
+                                                                                 ###################
 
 func _unhandled_input(event):
 
@@ -179,9 +183,9 @@ func _process(_delta):
     barrel1_pivot.rotation_degrees.y = -90
     barrel1_pivot.rotation_degrees.x = clamp(barrel1_pivot.rotation_degrees.x, 0, 90)
 
-    ########################
-    ###   INPUT EVENTS   ###
-    ########################
+    ##############################
+    ###   INPUT EVENTS   >>>   ###
+    ##############################
 
     # Blaster / Bolt controls.
     if Input.is_action_pressed('ui_accept'):
@@ -208,6 +212,10 @@ func _process(_delta):
         var focus = scope.get_collider()
         # Only perform focus object update if focus is in Targets.
         if focus != null and focus.get_parent().name == 'Targets':  hud.updateFocusObject(focus)
+    
+    ##############################
+    ###   <<<   INPUT EVENTS   ###
+    ##############################
 
 
 
@@ -235,6 +243,10 @@ func _physics_process(_delta):
     apply_central_impulse(vel_dir)
 
 
+
+####################################################################################################
+                                                                           ###   PROCESS FUNCS   ###
+                                                                           #########################
 
 func applyGravDirToGravForce():
     # With the changing of direction of gravity, gravity has to be manually applied via function.

@@ -6,6 +6,9 @@
 margin_right = 1280.0
 margin_bottom = 720.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_left = 0.5
@@ -16,16 +19,17 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_right = 219.0
+margin_left = 29.0
+margin_right = 190.0
 margin_bottom = 123.0
 grow_horizontal = 2
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_right = 219.0
+margin_right = 161.0
 margin_bottom = 99.0
 text = "You did it!
 
-Metaphorical high fives all around!
+Give yourself a high five!!
 
 So...  Wanna play again?
 "
@@ -34,7 +38,7 @@ valign = 1
 
 [node name="ButtonReplay" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 103.0
-margin_right = 219.0
+margin_right = 161.0
 margin_bottom = 123.0
 text = "yes"
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonReplay" to="." method="_on_ButtonReplay_pressed"]

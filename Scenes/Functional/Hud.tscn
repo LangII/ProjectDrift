@@ -78,7 +78,7 @@ __meta__ = {
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 210.0
-margin_bottom = 294.0
+margin_bottom = 299.0
 rect_min_size = Vector2( 200, 0 )
 custom_constants/separation = 3
 
@@ -149,7 +149,7 @@ valign = 1
 [node name="FocusHealth" type="VBoxContainer" parent="TopLeft/VBoxContainer"]
 margin_top = 226.0
 margin_right = 200.0
-margin_bottom = 250.0
+margin_bottom = 253.0
 custom_constants/separation = -1
 
 [node name="PanelContainer" type="PanelContainer" parent="TopLeft/VBoxContainer/FocusHealth"]
@@ -185,21 +185,21 @@ valign = 1
 [node name="FocusHealthProgBar" type="TextureProgress" parent="TopLeft/VBoxContainer/FocusHealth"]
 margin_top = 19.0
 margin_right = 200.0
-margin_bottom = 24.0
+margin_bottom = 27.0
 texture_under = ExtResource( 12 )
 texture_progress = ExtResource( 13 )
 
 [node name="PanelContainer" type="PanelContainer" parent="TopLeft/VBoxContainer"]
-margin_top = 253.0
+margin_top = 256.0
 margin_right = 200.0
-margin_bottom = 256.0
+margin_bottom = 259.0
 rect_min_size = Vector2( 200, 3 )
 custom_styles/panel = SubResource( 11 )
 
 [node name="Objective" type="VBoxContainer" parent="TopLeft/VBoxContainer"]
-margin_top = 259.0
+margin_top = 262.0
 margin_right = 200.0
-margin_bottom = 283.0
+margin_bottom = 289.0
 custom_constants/separation = -1
 
 [node name="PanelContainer" type="PanelContainer" parent="TopLeft/VBoxContainer/Objective"]
@@ -235,7 +235,7 @@ valign = 1
 [node name="ObjectiveProgBar" type="TextureProgress" parent="TopLeft/VBoxContainer/Objective"]
 margin_top = 19.0
 margin_right = 200.0
-margin_bottom = 24.0
+margin_bottom = 27.0
 value = 100.0
 texture_under = ExtResource( 14 )
 texture_progress = ExtResource( 12 )
@@ -314,7 +314,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="EnginesRepl" type="TextureProgress" parent="BottomLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="EnginesReplProgBar" type="TextureProgress" parent="BottomLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
 margin_right = 15.0
 margin_bottom = 50.0
 max_value = 1.0
@@ -324,7 +324,7 @@ texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 3 )
 fill_mode = 3
 
-[node name="ShieldsRepl" type="TextureProgress" parent="BottomLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="ShieldsReplProgBar" type="TextureProgress" parent="BottomLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
 margin_left = 18.0
 margin_right = 33.0
 margin_bottom = 50.0
@@ -335,7 +335,7 @@ texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 5 )
 fill_mode = 3
 
-[node name="BlastersRepl" type="TextureProgress" parent="BottomLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="BlastersReplProgBar" type="TextureProgress" parent="BottomLeft/VBoxContainer/HBoxContainer/HBoxContainer"]
 margin_left = 36.0
 margin_right = 51.0
 margin_bottom = 50.0
@@ -468,6 +468,7 @@ text = " (000.00) "
 valign = 1
 
 [node name="DebugValues" type="VBoxContainer" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -240.0

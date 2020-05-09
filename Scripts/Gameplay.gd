@@ -7,28 +7,38 @@ Gameplay.gd
 individual functions.  But any functionality that expands outside of an individual object, must be
 routed through here.
 
-"""
 
-"""
 
 TURNOVER NOTES:
 
     - Need to move control/location of objective and objective count from Hud to Gameplay.
+    - As well as winConditionMet() and loseConditionMet()...  To be moved to Gameplay.
 
 """
 
 extends Node
 
-
+### Singletons.
+onready var controls = get_node('/root/Controls')
+onready var main = get_node('/root/Main')
 
 ####################################################################################################
                                                                                 ###   CONTROLS   ###
                                                                                 ####################
 
-onready var controls = get_node('/root/Controls')
-onready var main = get_node('/root/Main')
-
+### Constants.
 onready var NUMBER_OF_TARGETS = controls.gameplay['number_of_targets']
+
+### Arena and entity tags.
+onready var arena_tag =     controls.gameplay['arena']
+onready var target_tag =    controls.gameplay['targets']
+
+### Vehicle body and parts tags.
+onready var body_tag =      controls.gameplay['vehicle']['body']
+onready var generator_tag = controls.gameplay['vehicle']['generator']
+onready var engines_tag =   controls.gameplay['vehicle']['engines']
+onready var shields_tag =   controls.gameplay['vehicle']['shields']
+onready var blaster1_tag =  controls.gameplay['vehicle']['blaster1']
 
 
 
@@ -36,33 +46,18 @@ onready var NUMBER_OF_TARGETS = controls.gameplay['number_of_targets']
                                                                              ###   SCENE LOADS   ###
                                                                              #######################
 
-onready var arena_tag = controls.gameplay['arena']
-onready var Arena = load('res://Scenes/Arenas/%s.tscn' % arena_tag)
-
-onready var body_tag = controls.gameplay['vehicle']['body']
-onready var Body = load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag)
-
-onready var generator_tag = controls.gameplay['vehicle']['generator']
+onready var Arena =     load('res://Scenes/Arenas/%s.tscn' % arena_tag)
+onready var Target =    load('res://Scenes/Functional/Entities/%s.tscn' % target_tag)
+onready var Body =      load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag)
 onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tscn' % generator_tag)
-
-onready var engines_tag = controls.gameplay['vehicle']['engines']
-onready var Engines = load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
-
-onready var shields_tag = controls.gameplay['vehicle']['shields']
-onready var Shields = load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
-
-onready var target_tag = controls.gameplay['targets']
-onready var Target = load('res://Scenes/Functional/Entities/%s.tscn' % target_tag)
-
-""" Optional vehicle part scene tags. (not mandatory scenes) """
-
-onready var blaster1_tag = controls.gameplay['vehicle']['blaster1']
+onready var Engines =   load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
+onready var Shields =   load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
 
 
 
 ####################################################################################################
-                                                                               ###   FUNC VARS   ###
-                                                                               #####################
+                                                                                    ###   VARS   ###
+                                                                                    ################
 
 var vehicle
 var hud
@@ -103,6 +98,10 @@ func _ready():
     generateTargets()
 
 
+
+####################################################################################################
+                                                                             ###   READY FUNCS   ###
+                                                                             #######################
 
 func instanceVehicleParts():
     """
@@ -167,9 +166,8 @@ func generateTargets():
 
 
 ####################################################################################################
-                                                                              ###   PROCESSING   ###
-                                                                              ######################
-
+                                                                           ###   PROCESS FUNCS   ###
+                                                                           #########################
 
 func vehicleBoltHitsTargetBody(_bolt, _target):
     # Anonymously handle vehicle bolt to target body collisions.
@@ -228,24 +226,6 @@ func targetBoltHitsVehicleBody(_bolt, _vehicle):
 
 
 
-func winConditionMet():
-
-    main.changeScene('res://Scenes/Menus/WinConditionMet.tscn')
-
-
-
-func loseConditionMet():
-
-    main.changeScene('res://Scenes/Menus/LoseConditionMet.tscn')
-
-
-
-####################################
-"""   UNDER CONSTRUCTION   >>>   """
-####################################
-
-
-
 func toggleObjectVisualLayer(_obj, _layer):
     # For all children/grandchildren of _obj, if MeshInstance, toggle VisualInstance _layer.
 
@@ -266,9 +246,15 @@ func toggleObjectVisualLayer(_obj, _layer):
 
 
 
-####################################
-"""   <<<   UNDER CONSTRUCTION   """
-####################################
+func winConditionMet():
+
+    main.changeScene('res://Scenes/Menus/WinConditionMet.tscn')
+
+
+
+func loseConditionMet():
+
+    main.changeScene('res://Scenes/Menus/LoseConditionMet.tscn')
 
 
 
