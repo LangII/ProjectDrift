@@ -7,7 +7,7 @@
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/InversionConcaveA.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/WallB.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Functional/Entities/TestTarget01.tscn" type="PackedScene" id=7]
-[ext_resource path="res://background_01_02.png" type="Texture" id=8]
+[ext_resource path="res://Textures/background_01_02.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/FloorCorner.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/Arenas/BunnyComponents/FloorEdge.tscn" type="PackedScene" id=10]
 
