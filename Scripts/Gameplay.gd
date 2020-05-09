@@ -51,7 +51,6 @@ onready var Target =    load('res://Scenes/Functional/Entities/%s.tscn' % target
 onready var Body =      load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag)
 onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tscn' % generator_tag)
 onready var Engines =   load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
-onready var Shields =   load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
 
 
 
@@ -79,22 +78,31 @@ func _ready():
 
     # BLOCK...  Build vehicle, start with body.
     var body = Body.instance()
+    
     # Get vehicle_spawners and randomly select spawner for vehicle spawn point.
     var vehicle_spawners = get_node('/root/Gameplay/%s/VehicleSpawners' % arena_tag).get_children()
     body.global_transform = vehicle_spawners[randi() % len(vehicle_spawners)].global_transform
+    
     # Orient vehicle according to spawner, orientation also resets gravity direction.
     if body.transform.basis.y.z == 1:  body.gravity_dir = Vector3.FORWARD
+    
     # Child body to Gameplay/Vehicles container.
     $Vehicles.add_child(body)
+    
     # Get true vehicle variable for referencing.
     vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
+    
     # Child parts.
     instanceVehicleParts()
+    
     # (see function's comments)
     vehicle.assignPartValues()
+    
     # Assign hud after vehicle build is complete.
     hud = vehicle.get_node('NonSpatial/Hud')
-
+    
+    adjustForOptionalParts()
+    
     generateTargets()
 
 
@@ -111,13 +119,15 @@ func instanceVehicleParts():
     var generator_slot = vehicle.find_node('GeneratorPos')
     generator_slot.add_child(Generator.instance())
 
-    var shields_slot = vehicle.find_node('ShieldsPos')
-    shields_slot.add_child(Shields.instance())
-
     var engines_suffixes = ['Fr', 'Br', 'Bl', 'Fl']
     for suffix in engines_suffixes:
         var engine_slot = vehicle.find_node('Engine%sPos' % suffix)
         engine_slot.add_child(Engines.instance())
+        
+    if shields_tag:
+        var Shields = load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
+        var shields_slot = vehicle.find_node('ShieldsPos')
+        shields_slot.add_child(Shields.instance())
 
     # Blaster1 is wrapped in an if conditional because it's the only current part that is optional.
     if blaster1_tag:
@@ -127,8 +137,22 @@ func instanceVehicleParts():
 
 
 
+func adjustForOptionalParts():
+    """
+    These adjustment calls need to be made after the scenes are instanced.  That's why these are
+    called in a seperate function that is called at the end of Gameplay's _ready().
+    """
+
+    if not shields_tag:
+        vehicle.adjustForNoShields()
+        hud.adjustForNoShields()
+
+
+
 func generateTargets():
-    """ Randomly generate targets. """
+    """
+    Randomly generate targets.
+    """
     
     # Handle random target generation.
     targets = get_node(arena_tag + '/Targets')

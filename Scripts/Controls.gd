@@ -33,6 +33,7 @@ var gameplay = {
         'blaster1': 'BlasterYellow',
 #        'blaster1': '',
         'shields': 'ShieldsYellow',
+#        'shields': '',
     },
 }
 
@@ -133,6 +134,11 @@ var shields = {
         'density': 0.05,
         'concentration': 0.02, # (perc)
         'battery_capacity': 50.00,
+    },
+    '': {
+        'density': 0.0,
+        'concentration': 0.00, # (perc)
+        'battery_capacity': 0.0,
     },
 }
 

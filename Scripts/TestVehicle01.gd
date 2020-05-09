@@ -67,6 +67,11 @@ onready var replenish_sets = [
     {'engines': 0.10, 'shields': 0.80, 'blasters': 0.10},
     {'engines': 0.10, 'shields': 0.10, 'blasters': 0.80},
 ]
+onready var no_shields_replenish_sets = [
+    {'engines': 0.50, 'shields': 0.00, 'blasters': 0.50},
+    {'engines': 0.90, 'shields': 0.00, 'blasters': 0.10},
+    {'engines': 0.10, 'shields': 0.00, 'blasters': 0.90},
+]
 onready var repl_set_pointer = 0
 
 ### Blaster / Bolt.
@@ -136,6 +141,23 @@ func assignPartValues():
 
     barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
     bolt1_spawn = barrel1_pivot.get_node('BoltSpawn')
+
+
+
+func adjustForNoShields():
+    """
+    Reassignments made to generator replenishment values.  There is no need to make any other
+    adjustments to energy or health transfer values.  That is handled in the math.
+    """
+    
+    # Reassign replenish_sets.
+    replenish_sets = no_shields_replenish_sets
+    # Reassign initial values individual replenish values.
+    replenish_engines = replenish_sets[repl_set_pointer]['engines']
+    replenish_shields = replenish_sets[repl_set_pointer]['shields']
+    replenish_blasters = replenish_sets[repl_set_pointer]['blasters']
+    # Reset initial hud replenish values.
+    hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
 
 
 

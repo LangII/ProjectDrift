@@ -6,6 +6,10 @@ Hud.gd
 Currently universal hud.  Need to make and extend from a hud module because the hud laout will be
 dependent on user input of vehicle body and parts selection.
 
+TURNOVER NOTES:
+    - Have implemented suffix of '*' on node names to note that node as a node referenced in script.
+    Should implement this for all scripts.
+
 """
 
 extends Control
@@ -39,43 +43,44 @@ onready var blaster1_bolt_energy_input =    controls.blasters[blaster1_tag]['ene
                                                                                #####################
 
 ### DebugValues node references.
-onready var _debug_values_ = find_node('DebugValues')
-onready var health_value =              _debug_values_.find_node('HealthValue')
-onready var shields_battery_value =     _debug_values_.find_node('ShieldsBatteryValue')
-onready var speed_value =               _debug_values_.find_node('SpeedValue')
-onready var blaster1_battery_value =    _debug_values_.find_node('BlasterBatteryValue')
-onready var replenish_engines_value =   _debug_values_.find_node('ReplenishEnginesValue')
-onready var replenish_shields_value =   _debug_values_.find_node('ReplenishShieldsValue')
-onready var replenish_blasters_value =  _debug_values_.find_node('ReplenishBlastersValue')
-onready var focus_name_value =          _debug_values_.find_node('FocusNameValue')
-onready var focus_health_value =        _debug_values_.find_node('FocusHealthValue')
-onready var objective_value =           _debug_values_.find_node('ObjectiveValue')
+onready var _debug_values_ = find_node('DebugValues*')
+onready var health_value =              _debug_values_.find_node('HealthValue*')
+onready var shields_battery_value =     _debug_values_.find_node('ShieldsBatteryValue*')
+onready var speed_value =               _debug_values_.find_node('SpeedValue*')
+onready var blaster1_battery_value =    _debug_values_.find_node('BlasterBatteryValue*')
+onready var replenish_engines_value =   _debug_values_.find_node('ReplenishEnginesValue*')
+onready var replenish_shields_value =   _debug_values_.find_node('ReplenishShieldsValue*')
+onready var replenish_blasters_value =  _debug_values_.find_node('ReplenishBlastersValue*')
+onready var focus_name_value =          _debug_values_.find_node('FocusNameValue*')
+onready var focus_health_value =        _debug_values_.find_node('FocusHealthValue*')
+onready var objective_value =           _debug_values_.find_node('ObjectiveValue*')
 
 ### BottomLeft node references.
-onready var _bottom_left_ = find_node('BottomLeft')
-onready var speed_prog_bar =            _bottom_left_.find_node('SpeedProgBar')
-onready var speed_text =                _bottom_left_.find_node('SpeedText')
-onready var engines_repl_prog_bar =     _bottom_left_.find_node('EnginesReplProgBar')
-onready var shields_repl_prog_bar =     _bottom_left_.find_node('ShieldsReplProgBar')
-onready var blasters_repl_prog_bar =    _bottom_left_.find_node('BlastersReplProgBar')
-onready var shields_prog_bar =          _bottom_left_.find_node('ShieldsProgBar')
-onready var shields_text =              _bottom_left_.find_node('ShieldsText')
-onready var health_prog_bar =           _bottom_left_.find_node('HealthProgBar')
-onready var health_text =               _bottom_left_.find_node('HealthText')
+onready var _bottom_left_ = find_node('BottomLeft*')
+onready var speed_prog_bar =            _bottom_left_.find_node('SpeedProgBar*')
+onready var speed_text =                _bottom_left_.find_node('SpeedText*')
+onready var engines_repl_prog_bar =     _bottom_left_.find_node('EnginesReplProgBar*')
+onready var shields_hbox =              _bottom_left_.find_node('ShieldsHBox*')
+onready var shields_repl_prog_bar =     _bottom_left_.find_node('ShieldsReplProgBar*')
+onready var blasters_repl_prog_bar =    _bottom_left_.find_node('BlastersReplProgBar*')
+onready var shields_prog_bar =          _bottom_left_.find_node('ShieldsProgBar*')
+onready var shields_text =              _bottom_left_.find_node('ShieldsText*')
+onready var health_prog_bar =           _bottom_left_.find_node('HealthProgBar*')
+onready var health_text =               _bottom_left_.find_node('HealthText*')
 
 ### BottomRight node references.
-onready var _bottom_right_ = find_node('BottomRight')
-onready var blaster1_text =             _bottom_right_.find_node('Blaster1Text')
-onready var blaster1_prog_bar =         _bottom_right_.find_node('Blaster1ProgBar')
-onready var blaster1_bolt_energy_text = _bottom_right_.find_node('Blaster1BoltEnergyText')
+onready var _bottom_right_ = find_node('BottomRight*')
+onready var blaster1_text =             _bottom_right_.find_node('Blaster1Text*')
+onready var blaster1_prog_bar =         _bottom_right_.find_node('Blaster1ProgBar*')
+onready var blaster1_bolt_energy_text = _bottom_right_.find_node('Blaster1BoltEnergyText*')
 
 ### TopLeft node references.
-onready var _top_left_ = find_node('TopLeft')
-onready var objective_text =        _top_left_.find_node('ObjectiveText')
-onready var objective_prog_bar =    _top_left_.find_node('ObjectiveProgBar')
-onready var focus_name_text =       _top_left_.find_node('FocusNameText')
-onready var focus_health_text =     _top_left_.find_node('FocusHealthText')
-onready var focus_health_prog_bar = _top_left_.find_node('FocusHealthProgBar')
+onready var _top_left_ = find_node('TopLeft*')
+onready var objective_text =        _top_left_.find_node('ObjectiveText*')
+onready var objective_prog_bar =    _top_left_.find_node('ObjectiveProgBar*')
+onready var focus_name_text =       _top_left_.find_node('FocusNameText*')
+onready var focus_health_text =     _top_left_.find_node('FocusHealthText*')
+onready var focus_health_prog_bar = _top_left_.find_node('FocusHealthProgBar*')
 
 
 
@@ -85,7 +90,7 @@ onready var focus_health_prog_bar = _top_left_.find_node('FocusHealthProgBar')
 
 ### _process()
 onready var vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
-onready var focus_cam = find_node('FocusCamera')
+onready var focus_cam = find_node('FocusCamera*')
 onready var focus_obj = null
 onready var focus_cam_pos = Vector3()
 onready var focus_obj_pos = Vector3()
@@ -120,6 +125,10 @@ func _ready():
     health_prog_bar.value =         health_input
     health_text.text =              text_format_std % health_input
     
+    """
+    NEED TO...  Set replenish progress bars correctly.  Issue with no shields on initiation.
+    """
+    
     # Set initial BottomRight values.
     blaster1_text.text =                text_format_std % blaster1_battery_input
     blaster1_prog_bar.max_value =       blaster1_battery_input
@@ -138,6 +147,16 @@ func _ready():
         shields_battery_value.text =    "%7.2f" % shields_battery_input
         speed_value.text =              "%7.2f" % speed_input
         blaster1_battery_value.text =   "%7.2f" % blaster1_battery_input
+
+
+
+####################################################################################################
+                                                                             ###   READY FUNCS   ###
+                                                                             #######################
+
+func adjustForNoShields():
+    
+    shields_hbox.visible = false
 
 
 
