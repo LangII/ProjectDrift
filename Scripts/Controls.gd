@@ -28,11 +28,14 @@ var gameplay = {
     'number_of_targets': 4, # (currently) 64 or less
     'vehicle': {
         'body': 'TestBody01',
-        'generator': 'GeneratorYellow',
+#        'generator': 'GeneratorYellow',
+        'generator': 'GeneratorGreen',
         'engines': 'EnginesYellow',
-        'blaster1': 'BlasterYellow',
-#        'blaster1': '',
-        'shields': 'ShieldsYellow',
+#        'engines': 'EnginesGreen',
+#        'blaster1': 'BlasterYellow',
+        'blaster1': 'BlasterGreen',
+#        'shields': 'ShieldsYellow',
+        'shields': 'ShieldsGreen',
 #        'shields': '',
     },
 }
@@ -72,6 +75,9 @@ var body = {
     'TestBody01': {
         'health': 20.00,
         'armor': 0.05,
+        'blaster_slots': [
+            'blaster1',
+        ]
     },
 }
 
@@ -114,14 +120,14 @@ var blasters = {
         'cool_down': 0.35,
         'battery_capacity': 80.00,
     },
-    '': {
-        'bolt_scene': '',
-        'bolt_model': '',
-        'energy': 0.00,
-        'bolt_speed': 0.00,
-        'cool_down': 0.00,
-        'battery_capacity': 0.00,
-    },
+#    '': {
+#        'bolt_scene': '',
+#        'bolt_model': '',
+#        'energy': 0.00,
+#        'bolt_speed': 0.00,
+#        'cool_down': 0.00,
+#        'battery_capacity': 0.00,
+#    },
 }
 
 var shields = {

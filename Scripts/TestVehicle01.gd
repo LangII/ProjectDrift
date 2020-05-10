@@ -139,8 +139,8 @@ func assignPartValues():
     after nodes they're pointing to are made children in Gameplay.gd.
     """
 
-    barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot' % blaster1_tag)
-    bolt1_spawn = barrel1_pivot.get_node('BoltSpawn')
+    barrel1_pivot = get_node('Parts/Blaster1Pos/%s/BarrelPivot*' % blaster1_tag)
+    bolt1_spawn = barrel1_pivot.get_node('BoltSpawn*')
 
 
 
@@ -165,23 +165,6 @@ func adjustForNoShields():
                                                                                  ###   PROCESS   ###
                                                                                  ###################
 
-func _unhandled_input(event):
-
-    # BLOCK ... Vehicle mouse controls (while mouse is captured).
-    # Only perform vehicle mouse controls if 'mouse_motion' and 'mouse_captured' are True.
-    var mouse_motion = event is InputEventMouseMotion
-    var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
-    if mouse_motion and mouse_captured:
-
-        rot_force = -event.relative.x * MOUSE_SENSITIVITY * SPIN
-
-        # Mouse motion on the y-axis translates to camera ('pivot') motion on the z-axis.
-        camera_pivot.rotate_z(-event.relative.y * MOUSE_SENSITIVITY * MOUSE_VERT_DAMP)
-        # Have to apply 'clamp' to prevent extreme camera positions.
-        camera_pivot.rotation.z = clamp(camera_pivot.rotation.z, -1.2, 0.6)
-
-
-
 func _process(_delta):
 
     ###   OBSOLETE   ###
@@ -205,9 +188,57 @@ func _process(_delta):
     barrel1_pivot.rotation_degrees.y = -90
     barrel1_pivot.rotation_degrees.x = clamp(barrel1_pivot.rotation_degrees.x, 0, 90)
 
-    ##############################
-    ###   INPUT EVENTS   >>>   ###
-    ##############################
+    nonPhysicsInputEvents()
+
+
+
+func _physics_process(_delta):
+
+    # Apply gravity.
+    var grav_force_dir = applyGravDirToGravForce()
+    apply_central_impulse(grav_force_dir)
+
+    # Apply player input force.
+    var vel = getWasdInput()
+    var vel_dir = applyGravToVel(vel)
+    apply_central_impulse(vel_dir)
+
+
+
+func _integrate_forces(state):
+
+    # Physics processing method of clamping speed.
+    if state.linear_velocity.length() > MAX_SPEED:
+        state.linear_velocity = state.linear_velocity.normalized() * MAX_SPEED
+    
+    # Handle rotation with applied gravity.
+    var rot_force_dir = applyGravToRotForce()
+    apply_torque_impulse(rot_force_dir)
+
+
+
+func _unhandled_input(event):
+
+    # BLOCK ... Vehicle mouse controls (while mouse is captured).
+    # Only perform vehicle mouse controls if 'mouse_motion' and 'mouse_captured' are True.
+    var mouse_motion = event is InputEventMouseMotion
+    var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+    if mouse_motion and mouse_captured:
+
+        rot_force = -event.relative.x * MOUSE_SENSITIVITY * SPIN
+
+        # Mouse motion on the y-axis translates to camera ('pivot') motion on the z-axis.
+        camera_pivot.rotate_z(-event.relative.y * MOUSE_SENSITIVITY * MOUSE_VERT_DAMP)
+        # Have to apply 'clamp' to prevent extreme camera positions.
+        camera_pivot.rotation.z = clamp(camera_pivot.rotation.z, -1.2, 0.6)
+
+
+
+####################################################################################################
+                                                                           ###   PROCESS FUNCS   ###
+                                                                           #########################
+
+func nonPhysicsInputEvents():
 
     # Blaster / Bolt controls.
     if Input.is_action_pressed('ui_accept'):
@@ -234,41 +265,8 @@ func _process(_delta):
         var focus = scope.get_collider()
         # Only perform focus object update if focus is in Targets.
         if focus != null and focus.get_parent().name == 'Targets':  hud.updateFocusObject(focus)
-    
-    ##############################
-    ###   <<<   INPUT EVENTS   ###
-    ##############################
 
 
-
-func _integrate_forces(state):
-
-    # Physics processing method of clamping speed.
-    if state.linear_velocity.length() > MAX_SPEED:
-        state.linear_velocity = state.linear_velocity.normalized() * MAX_SPEED
-    
-    # Handle rotation with applied gravity.
-    var rot_force_dir = applyGravToRotForce()
-    apply_torque_impulse(rot_force_dir)
-
-
-
-func _physics_process(_delta):
-
-    # Apply gravity.
-    var grav_force_dir = applyGravDirToGravForce()
-    apply_central_impulse(grav_force_dir)
-
-    # Apply player input force.
-    var vel = getWasdInput()
-    var vel_dir = applyGravToVel(vel)
-    apply_central_impulse(vel_dir)
-
-
-
-####################################################################################################
-                                                                           ###   PROCESS FUNCS   ###
-                                                                           #########################
 
 func applyGravDirToGravForce():
     # With the changing of direction of gravity, gravity has to be manually applied via function.

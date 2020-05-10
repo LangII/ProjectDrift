@@ -15,24 +15,24 @@
 [ext_resource path="res://Textures/ltblue_repl_bar_hor_thin.png" type="Texture" id=13]
 [ext_resource path="res://Textures/white_repl_bar_hor_thin.png" type="Texture" id=14]
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
 flags_do_not_receive_shadows = true
 albedo_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
-[sub_resource type="PlaneMesh" id=6]
-material = SubResource( 7 )
+[sub_resource type="PlaneMesh" id=3]
+material = SubResource( 2 )
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
-[sub_resource type="StyleBoxFlat" id=11]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
 [node name="Hud" type="Control"]
@@ -86,7 +86,7 @@ custom_constants/separation = 3
 margin_right = 200.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 200, 200 )
-custom_styles/panel = SubResource( 10 )
+custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -106,13 +106,15 @@ render_target_update_mode = 3
 
 [node name="FocusCamera*" type="Camera" parent="TopLeft*/VBoxContainer/FocusViewport/ViewportContainer/Viewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27147, 0 )
+visible = false
 cull_mask = 2
 
-[node name="Background" type="MeshInstance" parent="TopLeft*/VBoxContainer/FocusViewport/ViewportContainer/Viewport/FocusCamera*"]
+[node name="Background*" type="MeshInstance" parent="TopLeft*/VBoxContainer/FocusViewport/ViewportContainer/Viewport/FocusCamera*"]
 transform = Transform( 10, 0, 0, 0, -4.37114e-08, -10, 0, 1, -4.37114e-07, 0, 0, -12.9087 )
+visible = false
 layers = 2
 cast_shadow = 0
-mesh = SubResource( 6 )
+mesh = SubResource( 3 )
 material/0 = null
 
 [node name="FocusName" type="PanelContainer" parent="TopLeft*/VBoxContainer"]
@@ -121,7 +123,7 @@ margin_top = 203.0
 margin_right = 200.0
 margin_bottom = 223.0
 rect_min_size = Vector2( 200, 20 )
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="TopLeft*/VBoxContainer/FocusName"]
 margin_right = 200.0
@@ -157,7 +159,7 @@ show_behind_parent = true
 margin_right = 200.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 200, 20 )
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="TopLeft*/VBoxContainer/FocusHealth/PanelContainer"]
 margin_right = 200.0
@@ -194,7 +196,7 @@ margin_top = 256.0
 margin_right = 200.0
 margin_bottom = 259.0
 rect_min_size = Vector2( 200, 3 )
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 5 )
 
 [node name="Objective" type="VBoxContainer" parent="TopLeft*/VBoxContainer"]
 margin_top = 262.0
@@ -207,7 +209,7 @@ show_behind_parent = true
 margin_right = 200.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 200, 20 )
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="TopLeft*/VBoxContainer/Objective/PanelContainer"]
 margin_right = 200.0
@@ -272,7 +274,7 @@ margin_bottom = 20.0
 rect_min_size = Vector2( 0, 20 )
 rect_clip_content = true
 size_flags_horizontal = 0
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -370,7 +372,7 @@ texture_progress = ExtResource( 9 )
 margin_left = 127.0
 margin_right = 179.0
 margin_bottom = 20.0
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 6 )
 
 [node name="ShieldsText*" type="Label" parent="BottomLeft*/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox*/PanelContainer"]
 margin_top = 3.0
@@ -397,7 +399,7 @@ texture_progress = ExtResource( 8 )
 margin_left = 127.0
 margin_right = 179.0
 margin_bottom = 20.0
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 6 )
 
 [node name="HealthText*" type="Label" parent="BottomLeft*/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/PanelContainer"]
 margin_top = 3.0
@@ -436,7 +438,7 @@ alignment = 2
 [node name="PanelContainer" type="PanelContainer" parent="BottomRight*/VBoxContainer/Blaster1HBox"]
 margin_right = 52.0
 margin_bottom = 20.0
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 6 )
 
 [node name="Blaster1Text*" type="Label" parent="BottomRight*/VBoxContainer/Blaster1HBox/PanelContainer"]
 margin_top = 3.0
@@ -459,7 +461,7 @@ fill_mode = 1
 margin_left = 181.0
 margin_right = 241.0
 margin_bottom = 20.0
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 6 )
 
 [node name="Blaster1BoltEnergyText*" type="Label" parent="BottomRight*/VBoxContainer/Blaster1HBox/PanelContainer2"]
 margin_top = 3.0
@@ -482,7 +484,7 @@ __meta__ = {
 show_behind_parent = true
 margin_right = 240.0
 margin_bottom = 20.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/Health"]
 margin_right = 240.0
@@ -511,7 +513,7 @@ show_behind_parent = true
 margin_top = 24.0
 margin_right = 240.0
 margin_bottom = 44.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/ShieldsBattery"]
 margin_right = 240.0
@@ -540,7 +542,7 @@ show_behind_parent = true
 margin_top = 48.0
 margin_right = 240.0
 margin_bottom = 68.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/Speed"]
 margin_right = 240.0
@@ -569,7 +571,7 @@ show_behind_parent = true
 margin_top = 72.0
 margin_right = 240.0
 margin_bottom = 92.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/BlasterBattery"]
 margin_right = 240.0
@@ -598,7 +600,7 @@ show_behind_parent = true
 margin_top = 96.0
 margin_right = 240.0
 margin_bottom = 116.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/ReplenishEngines"]
 margin_right = 240.0
@@ -627,7 +629,7 @@ show_behind_parent = true
 margin_top = 120.0
 margin_right = 240.0
 margin_bottom = 140.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/ReplenishShields"]
 margin_right = 240.0
@@ -656,7 +658,7 @@ show_behind_parent = true
 margin_top = 144.0
 margin_right = 240.0
 margin_bottom = 164.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/ReplenishBlasters"]
 margin_right = 240.0
@@ -685,7 +687,7 @@ show_behind_parent = true
 margin_top = 168.0
 margin_right = 240.0
 margin_bottom = 188.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/FocusName"]
 margin_right = 240.0
@@ -713,7 +715,7 @@ show_behind_parent = true
 margin_top = 192.0
 margin_right = 240.0
 margin_bottom = 212.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/FocusHealth"]
 margin_right = 240.0
@@ -741,7 +743,7 @@ show_behind_parent = true
 margin_top = 216.0
 margin_right = 240.0
 margin_bottom = 236.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Divider" type="HBoxContainer" parent="DebugValues*/Objective"]
 margin_right = 240.0

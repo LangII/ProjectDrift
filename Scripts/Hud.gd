@@ -91,6 +91,7 @@ onready var focus_health_prog_bar = _top_left_.find_node('FocusHealthProgBar*')
 ### _process()
 onready var vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
 onready var focus_cam = find_node('FocusCamera*')
+onready var focus_cam_background = focus_cam.find_node('Background*')
 onready var focus_obj = null
 onready var focus_cam_pos = Vector3()
 onready var focus_obj_pos = Vector3()
@@ -125,10 +126,6 @@ func _ready():
     health_prog_bar.value =         health_input
     health_text.text =              text_format_std % health_input
     
-    """
-    NEED TO...  Set replenish progress bars correctly.  Issue with no shields on initiation.
-    """
-    
     # Set initial BottomRight values.
     blaster1_text.text =                text_format_std % blaster1_battery_input
     blaster1_prog_bar.max_value =       blaster1_battery_input
@@ -147,6 +144,10 @@ func _ready():
         shields_battery_value.text =    "%7.2f" % shields_battery_input
         speed_value.text =              "%7.2f" % speed_input
         blaster1_battery_value.text =   "%7.2f" % blaster1_battery_input
+    
+    # Make visible because these nodes are default set to invisible for easier editing.
+    focus_cam.visible = true
+    focus_cam_background.visible = true
 
 
 
