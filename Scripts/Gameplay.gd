@@ -38,7 +38,8 @@ onready var body_tag =      controls.gameplay['vehicle']['body']
 onready var generator_tag = controls.gameplay['vehicle']['generator']
 onready var engines_tag =   controls.gameplay['vehicle']['engines']
 onready var shields_tag =   controls.gameplay['vehicle']['shields']
-onready var blaster1_tag =  controls.gameplay['vehicle']['blaster1']
+#onready var blaster1_tag =  controls.gameplay['vehicle']['blaster1']
+onready var blaster_tags = []
 
 
 
@@ -92,6 +93,8 @@ func _ready():
     # Get true vehicle variable for referencing.
     vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
     
+    generateBlasterTags()
+    
     # Child parts.
     instanceVehicleParts()
     
@@ -100,8 +103,10 @@ func _ready():
     
     # Assign hud after vehicle build is complete.
     hud = vehicle.get_node('NonSpatial/Hud')
+#    if body_tag == 'TestBody01':  hud = vehicle.get_node('NonSpatial/Hud01')
+#    elif body_tag == 'TestBody02':  hud = vehicle.get_node('NonSpatial/Hud02')
     
-    adjustForOptionalParts()
+    adjustForOptionalVehicleParts()
     
     generateTargets()
 
@@ -110,6 +115,21 @@ func _ready():
 ####################################################################################################
                                                                              ###   READY FUNCS   ###
                                                                              #######################
+
+func generateBlasterTags():
+
+#    for blaster in controls.body[body_tag]['blaster_slots']:
+
+    var blaster_slots = controls.body[body_tag]['blaster_slots']
+
+    for i in range(blaster_slots.size()):
+        blaster_tags += [controls.gameplay['vehicle'][blaster_slots[i]]]
+        
+#    for i in blaster_tags:
+#        print(i)
+#    get_tree().quit()
+
+
 
 func instanceVehicleParts():
     """
@@ -129,15 +149,23 @@ func instanceVehicleParts():
         var shields_slot = vehicle.find_node('ShieldsPos')
         shields_slot.add_child(Shields.instance())
 
-    # Blaster1 is wrapped in an if conditional because it's the only current part that is optional.
-    if blaster1_tag:
-        var Blaster1 = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster1_tag)
-        var blaster1_slot = vehicle.find_node('Blaster1Pos')
-        blaster1_slot.add_child(Blaster1.instance())
+#    # Blaster1 is wrapped in an if conditional because it's the only current part that is optional.
+#    if blaster1_tag:
+#        var Blaster1 = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster1_tag)
+#        var blaster1_slot = vehicle.find_node('Blaster1Pos')
+#        blaster1_slot.add_child(Blaster1.instance())
+
+    if blaster_tags:
+        for i in range(blaster_tags.size()):
+            var blaster_tag = blaster_tags[i]
+            if not blaster_tag:  continue
+            var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
+            var blaster_slot = vehicle.find_node('Blaster%sPos' % str(i + 1))
+            blaster_slot.add_child(Blaster.instance())
 
 
 
-func adjustForOptionalParts():
+func adjustForOptionalVehicleParts():
     """
     These adjustment calls need to be made after the scenes are instanced.  That's why these are
     called in a seperate function that is called at the end of Gameplay's _ready().
@@ -146,6 +174,8 @@ func adjustForOptionalParts():
     if not shields_tag:
         vehicle.adjustForNoShields()
         hud.adjustForNoShields()
+    
+    hud.adjustForBlasters()
 
 
 

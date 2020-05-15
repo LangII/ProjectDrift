@@ -10,7 +10,7 @@
 [ext_resource path="res://Textures/ltblue_repl_bar_hor_01.png" type="Texture" id=8]
 [ext_resource path="res://Textures/blue_repl_bar_hor_01.png" type="Texture" id=9]
 [ext_resource path="res://Textures/grey_repl_bar_hor_01.png" type="Texture" id=10]
-[ext_resource path="res://Textures/yellow_repl_bar_hor_01.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/Functional/Blaster1Box.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Textures/grey_repl_bar_hor_thin.png" type="Texture" id=12]
 [ext_resource path="res://Textures/ltblue_repl_bar_hor_thin.png" type="Texture" id=13]
 [ext_resource path="res://Textures/white_repl_bar_hor_thin.png" type="Texture" id=14]
@@ -423,52 +423,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BottomRight*"]
+[node name="BlastersContainer*" type="VBoxContainer" parent="BottomRight*"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 251.0
 margin_bottom = 30.0
 
-[node name="Blaster1HBox" type="HBoxContainer" parent="BottomRight*/VBoxContainer"]
-margin_right = 241.0
-margin_bottom = 20.0
-custom_constants/separation = 2
-alignment = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="BottomRight*/VBoxContainer/Blaster1HBox"]
-margin_right = 52.0
-margin_bottom = 20.0
-custom_styles/panel = SubResource( 6 )
-
-[node name="Blaster1Text*" type="Label" parent="BottomRight*/VBoxContainer/Blaster1HBox/PanelContainer"]
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 17.0
-text = " 000.00 "
-valign = 1
-
-[node name="Blaster1ProgBar*" type="TextureProgress" parent="BottomRight*/VBoxContainer/Blaster1HBox"]
-margin_left = 54.0
-margin_right = 179.0
-margin_bottom = 20.0
-step = 0.01
-value = 100.0
-texture_under = ExtResource( 10 )
-texture_progress = ExtResource( 11 )
-fill_mode = 1
-
-[node name="PanelContainer2" type="PanelContainer" parent="BottomRight*/VBoxContainer/Blaster1HBox"]
-margin_left = 181.0
-margin_right = 241.0
-margin_bottom = 20.0
-custom_styles/panel = SubResource( 6 )
-
-[node name="Blaster1BoltEnergyText*" type="Label" parent="BottomRight*/VBoxContainer/Blaster1HBox/PanelContainer2"]
-margin_top = 3.0
-margin_right = 60.0
-margin_bottom = 17.0
-text = " (000.00) "
-valign = 1
+[node name="Blaster1Box" parent="BottomRight*/BlastersContainer*" instance=ExtResource( 11 )]
 
 [node name="DebugValues*" type="VBoxContainer" parent="."]
 visible = false

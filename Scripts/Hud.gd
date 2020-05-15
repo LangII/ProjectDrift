@@ -161,6 +161,48 @@ func adjustForNoShields():
 
 
 
+func adjustForBlasters():
+    
+    # Get blaster_tags, a dict of keys as blaster ref names and values as blaster tags.
+    var blaster_tags = {}
+    for blaster in controls.body[body_tag]['blaster_slots']:
+        var blaster_tag = controls.gameplay['vehicle'][blaster]
+        blaster_tags[blaster] = blaster_tag
+    
+    # Handle no blasters.
+    var empty_counter = 0
+    for value in blaster_tags.values():
+        if value == '':  empty_counter += 1
+    if empty_counter == len(blaster_tags):
+        noBlasters()
+        return
+    
+    var blasters_container = _bottom_right_.find_node('BlastersContainer*')
+    var blaster_counter = 0
+    for key in blaster_tags.keys():
+        var value = blaster_tags[key]
+        
+        if value == '':  continue
+        blaster_counter += 1
+        if blaster_counter == 1:  continue
+        
+        var blaster_box = preload('res://Scenes/Functional/Blaster1Box.tscn').instance()
+        blaster_box.find_node('Blaster1Text*').name = 'Blaster%sText*' % blaster_counter
+        blaster_box.find_node('Blaster1ProgBar*').name = 'Blaster%sProgBar*' % blaster_counter
+        blaster_box.find_node('Blaster1BoltEnergyText*').name = 'Blaster%sBoltEnergyText*' % blaster_counter
+
+        blasters_container.add_child(blaster_box)
+
+        get_tree().quit()
+
+
+
+func noBlasters():
+    
+    pass
+
+
+
 ####################################################################################################
                                                                                  ###   PROCESS   ###
                                                                                  ###################

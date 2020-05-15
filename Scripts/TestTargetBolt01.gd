@@ -26,7 +26,7 @@ onready var timer = $Timer
 
 var vel = Vector3()
 
-onready var hud = get_node('/root/Gameplay/Vehicles/%s/NonSpatial/Hud' % body_tag)
+#onready var hud = get_node('/root/Gameplay/Vehicles/%s/NonSpatial/Hud' % body_tag)
 
 onready var temp_bug_fix = $TempBugFix
 
