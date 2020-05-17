@@ -208,6 +208,7 @@ func _process(_delta):
     if scope.is_colliding():  pointing_at = scope.get_collision_point()
     else:  pointing_at = look_default.global_transform.origin
     bolt1_spawn.look_at(pointing_at, Vector3.UP)
+    bolt2_spawn.look_at(pointing_at, Vector3.UP)
 
     ###   NEED TO FIX   ###
     # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
@@ -219,6 +220,11 @@ func _process(_delta):
         barrel1_pivot.look_at(pointing_at, gravity_dir * -1)
         barrel1_pivot.rotation_degrees.y = -90
         barrel1_pivot.rotation_degrees.x = clamp(barrel1_pivot.rotation_degrees.x, 0, 90)
+    # Point barrel2_pivot at pointing_at.
+    if blaster2_tag:
+        barrel2_pivot.look_at(pointing_at, gravity_dir * -1)
+        barrel2_pivot.rotation_degrees.y = -90
+        barrel2_pivot.rotation_degrees.x = clamp(barrel2_pivot.rotation_degrees.x, 0, 90)
 
     nonPhysicsInputEvents()
 

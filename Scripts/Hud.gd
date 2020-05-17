@@ -16,7 +16,7 @@ extends Control
 
 # Singletons.
 onready var controls =  get_node('/root/Controls')
-onready var gameplay =  get_node('/root/Gameplay')
+onready var gameplay =  get_node('/root/Main/Gameplay')
 
 ####################################################################################################
                                                                                 ###   CONTROLS   ###
@@ -74,6 +74,10 @@ onready var blaster1_text =             _bottom_right_.find_node('Blaster1Text*'
 onready var blaster1_prog_bar =         _bottom_right_.find_node('Blaster1ProgBar*')
 onready var blaster1_bolt_energy_text = _bottom_right_.find_node('Blaster1BoltEnergyText*')
 
+onready var blaster_texts = []
+onready var blaster_prog_bars = []
+onready var blaster_bolt_energy_texts = []
+
 ### TopLeft node references.
 onready var _top_left_ = find_node('TopLeft*')
 onready var objective_text =        _top_left_.find_node('ObjectiveText*')
@@ -89,7 +93,7 @@ onready var focus_health_prog_bar = _top_left_.find_node('FocusHealthProgBar*')
                                                                                     ################
 
 ### _process()
-onready var vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
+onready var vehicle = get_node('/root/Main/Gameplay/Vehicles/%s' % body_tag)
 onready var focus_cam = find_node('FocusCamera*')
 onready var focus_cam_background = focus_cam.find_node('Background*')
 onready var focus_obj = null
@@ -115,6 +119,8 @@ onready var text_format_be = " (%.2f) "
                                                                                    #################
 
 func _ready():
+    
+    print("\n>>> [%s] (scripted) scene entering tree" % name)
     
     # Set initial BottomLeft values.
     speed_prog_bar.max_value =      max_speed
@@ -179,21 +185,20 @@ func adjustForBlasters():
     
     var blasters_container = _bottom_right_.find_node('BlastersContainer*')
     var blaster_counter = 0
-    for key in blaster_tags.keys():
-        var value = blaster_tags[key]
-        
-        if value == '':  continue
+    for blaster in blaster_tags:
         blaster_counter += 1
-        if blaster_counter == 1:  continue
+        if blaster == '' or blaster_counter == 1:  continue
         
         var blaster_box = preload('res://Scenes/Functional/Blaster1Box.tscn').instance()
-        blaster_box.find_node('Blaster1Text*').name = 'Blaster%sText*' % blaster_counter
-        blaster_box.find_node('Blaster1ProgBar*').name = 'Blaster%sProgBar*' % blaster_counter
-        blaster_box.find_node('Blaster1BoltEnergyText*').name = 'Blaster%sBoltEnergyText*' % blaster_counter
+        var blaster_box_nodes = ['Blaster%sText*', 'Blaster%sProgBar*', 'Blaster%sBoltEnergyText*']
+        for node in blaster_box_nodes:
+            blaster_box.find_node(node % str(1)).name = node % blaster_counter
 
         blasters_container.add_child(blaster_box)
+    
+    
 
-        get_tree().quit()
+#        get_tree().quit()
 
 
 

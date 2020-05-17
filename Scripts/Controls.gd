@@ -18,18 +18,19 @@ extends Node
 var TESTING_no_menu = true
 
 ### If 'true', vehicle takes no damage from target bolts.
-var TESTING_take_no_damage = false
-#var TESTING_take_no_damage = true
+#var TESTING_take_no_damage = false
+var TESTING_take_no_damage = true
 
 var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 4, # (currently) 64 or less
+    'number_of_targets': 0, # (currently) 64 or less
     'vehicle': {
 
 #        'body': 'TestBody01',
-        'body': 'TestBody02',
+#        'body': 'TestBody02',
+        'body': 'BodyWhiteWithYellow',
 
 #        'generator': 'GeneratorYellow',
         'generator': 'GeneratorGreen',
@@ -39,14 +40,15 @@ var gameplay = {
 
 #        'shields': 'ShieldsYellow',
         'shields': 'ShieldsGreen',
-#        'shields': '',
+#        'shields': '_',
 
         'blaster1': 'BlasterYellow',
 #        'blaster1': 'BlasterGreen',
-#        'blaster1': '',
+#        'blaster1': '_',
 
 #        'blaster2': 'BlasterYellow',
         'blaster2': 'BlasterGreen',
+#        'blaster2': '_',
     },
 }
 
@@ -97,6 +99,14 @@ var body = {
             'blaster2',
         ]
     },
+    'BodyWhiteWithYellow': {
+        'health': 15.00,
+        'armor': 0.04,
+        'blaster_slots': [
+            'blaster1',
+            'blaster2',
+        ]
+    },
 }
 
 var generators = {
@@ -138,7 +148,7 @@ var blasters = {
         'cool_down': 0.35,
         'battery_capacity': 80.00,
     },
-    '': {
+    '_': {
         'bolt_scene': '',
         'bolt_model': '',
         'energy': 0.00,
@@ -159,7 +169,7 @@ var shields = {
         'concentration': 0.02, # (perc)
         'battery_capacity': 50.00,
     },
-    '': {
+    '_': {
         'density': 0.0,
         'concentration': 0.00, # (perc)
         'battery_capacity': 0.0,

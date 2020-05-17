@@ -18,9 +18,8 @@ TURNOVER NOTES:
 
 extends Node
 
-### Singletons.
-onready var controls = get_node('/root/Controls')
 onready var main = get_node('/root/Main')
+onready var controls = get_node('/root/Controls')
 
 ####################################################################################################
                                                                                 ###   CONTROLS   ###
@@ -47,7 +46,7 @@ onready var blaster_tags = []
                                                                              ###   SCENE LOADS   ###
                                                                              #######################
 
-onready var Arena =     load('res://Scenes/Arenas/%s.tscn' % arena_tag)
+#onready var Arena =     load('res://Scenes/Arenas/%s.tscn' % arena_tag)
 onready var Target =    load('res://Scenes/Functional/Entities/%s.tscn' % target_tag)
 onready var Body =      load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag)
 onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tscn' % generator_tag)
@@ -71,50 +70,66 @@ var targets_array
                                                                                    #################
 
 func _ready():
-
+    
+    print("\n>>> [%s] (scripted) scene entering tree" % name)
+    
     randomize()
 
-    # Instance 'arena' as child of 'Gameplay'.
-    add_child(Arena.instance())
+    var arena = generateArena(arena_tag)
 
     # BLOCK...  Build vehicle, start with body.
     var body = Body.instance()
     
-    # Get vehicle_spawners and randomly select spawner for vehicle spawn point.
-    var vehicle_spawners = get_node('/root/Gameplay/%s/VehicleSpawners' % arena_tag).get_children()
+    # Get vehicle_spawners, randomly select spawner for vehicle spawn point, and rotate vehicle to
+    # align with spawn point.
+    var vehicle_spawners = arena.get_node('VehicleSpawners').get_children()
     body.global_transform = vehicle_spawners[randi() % len(vehicle_spawners)].global_transform
-    
-    # Orient vehicle according to spawner, orientation also resets gravity direction.
     if body.transform.basis.y.z == 1:  body.gravity_dir = Vector3.FORWARD
-    
-    # Child body to Gameplay/Vehicles container.
-    $Vehicles.add_child(body)
-    
+    var vehicles = get_node('Vehicles')
+    vehicles.add_child(body)
+
     # Get true vehicle variable for referencing.
-    vehicle = get_node('/root/Gameplay/Vehicles/%s' % body_tag)
-    
-    generateBlasterTags()
-    
-    # Child parts.
-    instanceVehicleParts()
-    
-    # (see function's comments)
-    vehicle.assignPartValues()
-    
-    # Assign hud after vehicle build is complete.
-    hud = vehicle.get_node('NonSpatial/Hud')
-#    if body_tag == 'TestBody01':  hud = vehicle.get_node('NonSpatial/Hud01')
-#    elif body_tag == 'TestBody02':  hud = vehicle.get_node('NonSpatial/Hud02')
-    
-    adjustForOptionalVehicleParts()
-    
-    generateTargets()
+    vehicle = get_node('/root/Main/Gameplay/Vehicles/%s' % body_tag)
+
+    get_tree().quit()
+
+#    generateBlasterTags()   # <--  Do in Vehicle.gd.
+#
+#    # Child parts.
+#    instanceVehicleParts()   # <--  Do in Vehicle.gd.
+#
+#    # (see function's comments)
+#    vehicle.assignPartValues()   # <--  Do in Vehicle.gd.
+#
+#    # Assign hud after vehicle build is complete.
+#    hud = vehicle.get_node('NonSpatial/Hud')
+##    if body_tag == 'TestBody01':  hud = vehicle.get_node('NonSpatial/Hud01')
+##    elif body_tag == 'TestBody02':  hud = vehicle.get_node('NonSpatial/Hud02')
+#
+#    adjustForOptionalVehicleParts()   # <--  Do in Vehicle.gd.
+#
+#    generateTargets()
 
 
 
 ####################################################################################################
                                                                              ###   READY FUNCS   ###
                                                                              #######################
+
+
+func generateArena(_arena_tag):
+    """
+    Load arena scene from _arena_tag, instance scene and add to tree as child, then return arena_
+    as reference to arena node.
+    """
+    
+    var Arena = load('res://Scenes/Arenas/%s.tscn' % _arena_tag)
+    add_child(Arena.instance())
+    var arena_ = get_node(_arena_tag)
+    
+    return arena_
+
+
 
 func generateBlasterTags():
 

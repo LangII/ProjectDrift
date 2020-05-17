@@ -51,7 +51,7 @@ onready var awake = false
 onready var obj_visible = null
 onready var targeting = Vector3()
 onready var angle_to_targeting = 0.0
-onready var target_bolts = get_node('/root/Gameplay/TargetBolts')
+onready var target_bolts = get_node('/root/Main/Gameplay/TargetBolts')
 onready var targeting_dir = Vector3()
 
 

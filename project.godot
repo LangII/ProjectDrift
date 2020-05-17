@@ -16,12 +16,11 @@ _global_script_class_icons={
 [application]
 
 config/name="ProjectDrift"
-run/main_scene="res://Scenes/Testing/Main.tscn"
+run/main_scene="res://Scenes/Functional/Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Main="*res://Scripts/Main.gd"
 Controls="*res://Scripts/Controls.gd"
 
 [display]
