@@ -48,7 +48,7 @@ onready var blaster_tags = []
 
 #onready var Arena =     load('res://Scenes/Arenas/%s.tscn' % arena_tag)
 onready var Target =    load('res://Scenes/Functional/Entities/%s.tscn' % target_tag)
-onready var Body =      load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag)
+#onready var Body =      load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag)
 onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tscn' % generator_tag)
 onready var Engines =   load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
 
@@ -58,6 +58,12 @@ onready var Engines =   load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' 
                                                                                     ###   VARS   ###
                                                                                     ################
 
+onready var _vehicles_ = get_node('Vehicles')
+onready var _targets_ = get_node('Targets')
+onready var _vehicle_bolts_ = get_node('VehicleBolts')
+onready var _target_bolts_ = get_node('TargetBolts')
+
+var arena
 var vehicle
 var hud
 var targets
@@ -71,44 +77,17 @@ var targets_array
 
 func _ready():
     
-    print("\n>>> [%s] (scripted) scene entering tree" % name)
+    print("\n>>> [%s] scripted scene entering tree" % name)
     
     randomize()
 
-    var arena = generateArena(arena_tag)
-
-    # BLOCK...  Build vehicle, start with body.
-    var body = Body.instance()
+    arena = generateArena()
     
-    # Get vehicle_spawners, randomly select spawner for vehicle spawn point, and rotate vehicle to
-    # align with spawn point.
-    var vehicle_spawners = arena.get_node('VehicleSpawners').get_children()
-    body.global_transform = vehicle_spawners[randi() % len(vehicle_spawners)].global_transform
-    if body.transform.basis.y.z == 1:  body.gravity_dir = Vector3.FORWARD
-    var vehicles = get_node('Vehicles')
-    vehicles.add_child(body)
+    vehicle = generateVehicle()
 
-    # Get true vehicle variable for referencing.
-    vehicle = get_node('/root/Main/Gameplay/Vehicles/%s' % body_tag)
-
-    get_tree().quit()
-
-#    generateBlasterTags()   # <--  Do in Vehicle.gd.
-#
-#    # Child parts.
-#    instanceVehicleParts()   # <--  Do in Vehicle.gd.
-#
-#    # (see function's comments)
-#    vehicle.assignPartValues()   # <--  Do in Vehicle.gd.
-#
-#    # Assign hud after vehicle build is complete.
-#    hud = vehicle.get_node('NonSpatial/Hud')
-##    if body_tag == 'TestBody01':  hud = vehicle.get_node('NonSpatial/Hud01')
-##    elif body_tag == 'TestBody02':  hud = vehicle.get_node('NonSpatial/Hud02')
-#
-#    adjustForOptionalVehicleParts()   # <--  Do in Vehicle.gd.
-#
-#    generateTargets()
+    hud = vehicle.find_node('NonSpatial*').find_node('Hud')
+    
+    generateTargets()
 
 
 
@@ -117,17 +96,42 @@ func _ready():
                                                                              #######################
 
 
-func generateArena(_arena_tag):
+func generateArena():
     """
-    Load arena scene from _arena_tag, instance scene and add to tree as child, then return arena_
+    Load arena scene from arena_tag, instance scene and add to tree as child, then return arena_
     as reference to arena node.
     """
-    
-    var Arena = load('res://Scenes/Arenas/%s.tscn' % _arena_tag)
-    add_child(Arena.instance())
-    var arena_ = get_node(_arena_tag)
+
+    add_child(load('res://Scenes/Arenas/%s.tscn' % arena_tag).instance())
+    var arena_ = get_node(arena_tag)
     
     return arena_
+
+
+
+func generateVehicle():
+    """
+    Generate vehicle from body_tag under vehicles.
+    """
+    
+    var body = load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag).instance()
+    
+    # Assign vehicle to tree under vehicles.
+    _vehicles_.add_child(body)
+    
+    # If testing, spawn vehicle at random.  Else, spawn at first spawn point.
+    var vehicle_spawners = arena.get_node('VehicleSpawners').get_children()
+    if not controls.TESTING_no_menu:
+        body.global_transform = vehicle_spawners[randi() % len(vehicle_spawners)].global_transform
+    else:
+        body.global_transform = vehicle_spawners[0].global_transform
+    
+    # Adjust vehicle's gravity direction if needed.
+    if body.transform.basis.y.z == 1:  body.gravity_dir = Vector3.FORWARD
+    
+    # Return vehicle reference.
+    var vehicle_ = _vehicles_.get_node(body_tag)
+    return vehicle_
 
 
 
@@ -227,7 +231,7 @@ func generateTargets():
 
         for target in targets.get_children():
             target.get_parent().remove_child(target)
-            get_node('/root/Gameplay/Targets').add_child(target)
+            get_node('/root/Main/Gameplay/Targets').add_child(target)
 
     # Delete no longer needed container.
     targets.queue_free()
@@ -338,3 +342,46 @@ func _on_HalfSecond_timeout():
 #    print(vehicle.MAX_SPEED)
 
 #    vehicle.printTransformBasis()
+
+
+
+####################################################################################################
+                                                                                ###   OBSOLETE   ###
+                                                                                ####################
+
+""" _ready() (2020-05-21) """
+#    # BLOCK...  Build vehicle, start with body.
+#    var body = Body.instance()
+#
+#    # Get vehicle_spawners, randomly select spawner for vehicle spawn point, and rotate vehicle to
+#    # align with spawn point.
+#    var vehicle_spawners = arena.get_node('VehicleSpawners').get_children()
+#    body.global_transform = vehicle_spawners[randi() % len(vehicle_spawners)].global_transform
+#    if body.transform.basis.y.z == 1:  body.gravity_dir = Vector3.FORWARD
+#    var vehicles = get_node('Vehicles')
+#    vehicles.add_child(body)
+#
+#    # Get true vehicle variable for referencing.
+#    vehicle = get_node('/root/Main/Gameplay/Vehicles/%s' % body_tag)
+
+#    get_tree().quit()
+
+#    generateBlasterTags()   # <--  Do in Vehicle.gd.
+#
+#    # Child parts.
+#    instanceVehicleParts()   # <--  Do in Vehicle.gd.
+#
+#    # (see function's comments)
+#    vehicle.assignPartValues()   # <--  Do in Vehicle.gd.
+#
+#    # Assign hud after vehicle build is complete.
+##    if body_tag == 'TestBody01':  hud = vehicle.get_node('NonSpatial/Hud01')
+##    elif body_tag == 'TestBody02':  hud = vehicle.get_node('NonSpatial/Hud02')
+#
+#    adjustForOptionalVehicleParts()   # <--  Do in Vehicle.gd.
+
+
+
+
+
+

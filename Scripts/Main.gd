@@ -17,7 +17,7 @@ onready var controls = get_node('/root/Controls')
 
 func _ready():
     
-    print("\n>>> [%s] (scripted) scene entering tree" % name)
+    print("\n>>> [%s] scripted scene entering tree" % name)
 
     if controls.TESTING_no_menu:
         var gameplay = preload('res://Scenes/Functional/Gameplay.tscn')

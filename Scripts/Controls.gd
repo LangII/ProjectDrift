@@ -25,7 +25,7 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 0, # (currently) 64 or less
+    'number_of_targets': 4, # (currently) 64 or less
     'vehicle': {
 
 #        'body': 'TestBody01',
@@ -40,15 +40,15 @@ var gameplay = {
 
 #        'shields': 'ShieldsYellow',
         'shields': 'ShieldsGreen',
-#        'shields': '_',
+#        'shields': '',
 
-        'blaster1': 'BlasterYellow',
-#        'blaster1': 'BlasterGreen',
-#        'blaster1': '_',
+        'blaster1': 'BlasterWhite',
+#        'blaster1': 'BlasterWhiteWithYellow',
+#        'blaster1': '',
 
-#        'blaster2': 'BlasterYellow',
-        'blaster2': 'BlasterGreen',
-#        'blaster2': '_',
+#        'blaster2': 'BlasterWhite',
+        'blaster2': 'BlasterWhiteWithYellow',
+#        'blaster2': '',
     },
 }
 
@@ -132,25 +132,19 @@ var engines = {
 }
 
 var blasters = {
-    'BlasterYellow': {
-        'bolt_scene': 'VehicleBoltScene01',
-        'bolt_model': 'BoltModelYellow',
+    'BlasterWhite': {
         'energy': 6.00,
         'bolt_speed': 50.00,
         'cool_down': 0.30,
         'battery_capacity': 100.00,
     },
-    'BlasterGreen': {
-        'bolt_scene': 'VehicleBoltScene01',
-        'bolt_model': 'BoltModelGreen',
+    'BlasterWhiteWithYellow': {
         'energy': 8.00,
         'bolt_speed': 40.00,
         'cool_down': 0.35,
         'battery_capacity': 80.00,
     },
-    '_': {
-        'bolt_scene': '',
-        'bolt_model': '',
+    '': {
         'energy': 0.00,
         'bolt_speed': 0.00,
         'cool_down': 0.00,
@@ -169,7 +163,7 @@ var shields = {
         'concentration': 0.02, # (perc)
         'battery_capacity': 50.00,
     },
-    '_': {
+    '': {
         'density': 0.0,
         'concentration': 0.00, # (perc)
         'battery_capacity': 0.0,
@@ -194,3 +188,35 @@ var targets = {
         'bolt_speed': 40.00,
     },
 }
+
+
+
+####################################################################################################
+                                                                                ###   OBSOLETE   ###
+                                                                                ####################
+
+""" from var blasters (2020-05-21) """
+#    'BlasterYellow': {
+#        'bolt_scene': 'VehicleBoltScene01',
+#        'bolt_model': 'BoltModelYellow',
+#        'energy': 6.00,
+#        'bolt_speed': 50.00,
+#        'cool_down': 0.30,
+#        'battery_capacity': 100.00,
+#    },
+#    'BlasterGreen': {
+#        'bolt_scene': 'VehicleBoltScene01',
+#        'bolt_model': 'BoltModelGreen',
+#        'energy': 8.00,
+#        'bolt_speed': 40.00,
+#        'cool_down': 0.35,
+#        'battery_capacity': 80.00,
+#    },
+
+
+
+
+
+
+
+

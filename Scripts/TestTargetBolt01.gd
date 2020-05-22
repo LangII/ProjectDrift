@@ -3,7 +3,7 @@ extends Area
 
 onready var controls = get_node('/root/Controls')
 
-onready var gameplay = get_node('/root/Gameplay')
+onready var gameplay = get_node('/root/Main/Gameplay')
 
 onready var body_tag = controls.gameplay['vehicle']['body']
 

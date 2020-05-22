@@ -120,7 +120,7 @@ onready var text_format_be = " (%.2f) "
 
 func _ready():
     
-    print("\n>>> [%s] (scripted) scene entering tree" % name)
+    print("\n>>> [%s] scripted scene entering tree" % name)
     
     # Set initial BottomLeft values.
     speed_prog_bar.max_value =      max_speed
