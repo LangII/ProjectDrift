@@ -25,16 +25,35 @@ onready var gameplay =  get_node('/root/Main/Gameplay')
 ### Controls tags.
 onready var body_tag =      controls.gameplay['vehicle']['body']
 onready var engines_tag =   controls.gameplay['vehicle']['engines']
-onready var blaster1_tag =  controls.gameplay['vehicle']['blaster1']
 onready var shields_tag =   controls.gameplay['vehicle']['shields']
+
+###
+onready var blaster1_tag =  controls.gameplay['vehicle']['blaster1']
+###
+
+###
+var blaster_tags = []
+###
 
 ### Set initial values from controls.
 onready var objective_input =               controls.gameplay['number_of_targets']
 onready var max_speed =                     controls.engines[engines_tag]['max_speed']
 onready var health_input =                  controls.body[body_tag]['health']
 onready var shields_battery_input =         controls.shields[shields_tag]['battery_capacity']
+
+###
 onready var blaster1_battery_input =        controls.blasters[blaster1_tag]['battery_capacity']
 onready var blaster1_bolt_energy_input =    controls.blasters[blaster1_tag]['energy']
+###
+
+###
+var blaster_battery_inputs = []
+var blaster_bolt_energy_inputs = []
+###
+
+###
+onready var BLASTER_SLOTS = controls.body[body_tag]['blaster_slots']
+###
 
 
 
@@ -68,15 +87,20 @@ onready var shields_text =              _bottom_left_.find_node('ShieldsText*')
 onready var health_prog_bar =           _bottom_left_.find_node('HealthProgBar*')
 onready var health_text =               _bottom_left_.find_node('HealthText*')
 
+###
 ### BottomRight node references.
 onready var _bottom_right_ = find_node('BottomRight*')
 onready var blaster1_text =             _bottom_right_.find_node('Blaster1Text*')
 onready var blaster1_prog_bar =         _bottom_right_.find_node('Blaster1ProgBar*')
 onready var blaster1_bolt_energy_text = _bottom_right_.find_node('Blaster1BoltEnergyText*')
+###
 
-onready var blaster_texts = []
-onready var blaster_prog_bars = []
-onready var blaster_bolt_energy_texts = []
+###
+var blaster_texts = []
+var blaster_prog_bars = []
+var blaster_bolt_energy_texts = []
+var blaster_cur_texts = []
+###
 
 ### TopLeft node references.
 onready var _top_left_ = find_node('TopLeft*')
@@ -107,10 +131,11 @@ onready var speed_input = 0.0
 onready var replenish_engines_input = 0.0
 onready var replenish_shields_input = 0.0
 onready var replenish_blasters_input = 0.0
+onready var blaster_cur_input = 0
 
 ### Standardizing text formatting.
-onready var text_format_std = " %.2f "
-onready var text_format_be = " (%.2f) "
+onready var text_format_std = "%.2f"
+onready var text_format_be = "(%.2f)"
 
 
 
@@ -154,6 +179,20 @@ func _ready():
     # Make visible because these nodes are default set to invisible for easier editing.
     focus_cam.visible = true
     focus_cam_background.visible = true
+    
+    generateExpandableTags()
+    
+    if not shields_tag:  adjustNodesForNoShields()
+    
+    adjustNodesForBlasters()
+
+    generateExpandableControlVars()
+
+    generateExpandableNodeRefs()
+    
+    setInitialValuesOfExpandables()
+
+    updateBlasterCurrentValue(blaster_cur_input)
 
 
 
@@ -161,44 +200,98 @@ func _ready():
                                                                              ###   READY FUNCS   ###
                                                                              #######################
 
-func adjustForNoShields():
+func generateExpandableTags():
+    
+    for blaster in BLASTER_SLOTS:
+        blaster_tags += [ controls.gameplay['vehicle'][blaster] ]
+
+
+
+func adjustNodesForNoShields():
     
     shields_hbox.visible = false
 
 
 
-func adjustForBlasters():
+func adjustNodesForBlasters():
     
-    # Get blaster_tags, a dict of keys as blaster ref names and values as blaster tags.
-    var blaster_tags = {}
-    for blaster in controls.body[body_tag]['blaster_slots']:
-        var blaster_tag = controls.gameplay['vehicle'][blaster]
-        blaster_tags[blaster] = blaster_tag
+#    # Get blaster_tags, a dict of keys as blaster ref names and values as blaster tags.
+#    var blaster_tags = {}
+#    for blaster in controls.body[body_tag]['blaster_slots']:
+#        var blaster_tag = controls.gameplay['vehicle'][blaster]
+#        blaster_tags[blaster] = blaster_tag
     
-    # Handle no blasters.
-    var empty_counter = 0
-    for value in blaster_tags.values():
-        if value == '':  empty_counter += 1
-    if empty_counter == len(blaster_tags):
-        noBlasters()
-        return
+#    # Handle no blasters.
+#    var empty_counter = 0
+#    for value in blaster_tags.values():
+#        if value == '':  empty_counter += 1
+#    if empty_counter == len(blaster_tags):
+#        noBlasters()
+#        return
     
+    # BLOCK...  Multiply blaster containers in BottomRight per blaster.
     var blasters_container = _bottom_right_.find_node('BlastersContainer*')
     var blaster_counter = 0
     for blaster in blaster_tags:
         blaster_counter += 1
         if blaster == '' or blaster_counter == 1:  continue
-        
+        # Get container scene and adjust names of node children per counter.
         var blaster_box = preload('res://Scenes/Functional/Blaster1Box.tscn').instance()
-        var blaster_box_nodes = ['Blaster%sText*', 'Blaster%sProgBar*', 'Blaster%sBoltEnergyText*']
+        var blaster_box_nodes = [
+            'Blaster%sCurrentContainer*', 'Blaster%sText*', 'Blaster%sProgBar*', 'Blaster%sBoltEnergyText*'
+        ]
         for node in blaster_box_nodes:
             blaster_box.find_node(node % str(1)).name = node % blaster_counter
-
+        # Change name per counter and add as child.
+        blaster_box.name = 'Blaster%sBox*' % blaster_counter
         blasters_container.add_child(blaster_box)
-    
-    
 
-#        get_tree().quit()
+
+
+func generateExpandableControlVars():
+    
+    
+#   onready var blaster1_battery_input =        controls.blasters[blaster1_tag]['battery_capacity']
+#   onready var blaster1_bolt_energy_input =    controls.blasters[blaster1_tag]['energy']
+    
+    for blaster_tag in blaster_tags:
+        blaster_battery_inputs += [ controls.blasters[blaster_tag]['battery_capacity'] ]
+        blaster_bolt_energy_inputs += [ controls.blasters[blaster_tag]['energy'] ]
+
+
+
+func generateExpandableNodeRefs():
+    
+#onready var blaster1_text =             _bottom_right_.find_node('Blaster1Text*')
+#onready var blaster1_prog_bar =         _bottom_right_.find_node('Blaster1ProgBar*')
+#onready var blaster1_bolt_energy_text = _bottom_right_.find_node('Blaster1BoltEnergyText*')
+    
+    for i in range(blaster_tags.size()):
+        var blaster_text_str = 'Blaster%sText*'
+        blaster_texts += [ _bottom_right_.find_node(blaster_text_str % str(i + 1), true, false) ]
+        var blaster_prog_bar_str = 'Blaster%sProgBar*'
+        blaster_prog_bars += [ _bottom_right_.find_node(blaster_prog_bar_str % str(i + 1), true, false) ]
+        var blaster_bolt_energy_text_str = 'Blaster%sBoltEnergyText*'
+        blaster_bolt_energy_texts += [ _bottom_right_.find_node(blaster_bolt_energy_text_str % str(i + 1), true, false) ]
+        var blaster_cur_text_str = 'Blaster%sCurrentContainer*'
+        blaster_cur_texts += [ _bottom_right_.find_node(blaster_cur_text_str % str(i + 1), true, false) ]
+
+
+
+func setInitialValuesOfExpandables():
+    
+#    # Set initial BottomRight values.
+#    blaster1_text.text =                text_format_std % blaster1_battery_input
+#    blaster1_prog_bar.max_value =       blaster1_battery_input
+#    blaster1_prog_bar.value =           blaster1_battery_input
+#    blaster1_bolt_energy_text.text =    text_format_be % blaster1_bolt_energy_input
+    
+    for i in range(BLASTER_SLOTS.size()):
+        blaster_texts[i].text = text_format_std % blaster_battery_inputs[i]
+        blaster_prog_bars[i].max_value = blaster_battery_inputs[i]
+        blaster_prog_bars[i].value = blaster_battery_inputs[i]
+        blaster_bolt_energy_texts[i].text = text_format_be % blaster_bolt_energy_inputs[i]
+
 
 
 
@@ -340,19 +433,32 @@ func updateShieldsBatteryValue(_value):
     
     shields_battery_input = _value
     shields_prog_bar.value = shields_battery_input
-    shields_text.text = " %.2f " % shields_battery_input
+    shields_text.text = text_format_std % shields_battery_input
     # Update _debug_values_ if needed.
     if _debug_values_.is_visible():  shields_battery_value.text = "%7.2f" % shields_battery_input
 
 
 
-func updateBlasterBatteryValue(_value):
+func updateBlasterBatteryValue(_cur_blaster, _value):
     
-    blaster1_battery_input = _value
-    blaster1_text.text = text_format_std % blaster1_battery_input
-    blaster1_prog_bar.value = blaster1_battery_input
+#    blaster1_battery_input = _value
+#    blaster1_text.text = text_format_std % blaster1_battery_input
+#    blaster1_prog_bar.value = blaster1_battery_input
+    
+    blaster_battery_inputs[_cur_blaster] = _value
+    blaster_texts[_cur_blaster].text = text_format_std % blaster_battery_inputs[_cur_blaster]
+    blaster_prog_bars[_cur_blaster].value = blaster_battery_inputs[_cur_blaster]
+    
     # Update _debug_values_ if needed.
-    if _debug_values_.is_visible():  blaster1_battery_value.text = "%7.2f" % blaster1_battery_input
+#    if _debug_values_.is_visible():  blaster1_battery_value.text = "%7.2f" % blaster1_battery_input
+
+
+
+func updateBlasterCurrentValue(_value):
+    
+    blaster_cur_input = _value
+    for each in blaster_cur_texts:  each.visible = false
+    blaster_cur_texts[blaster_cur_input].visible = true
 
 
 

@@ -34,7 +34,7 @@ func _ready():
     timer.start()
 
 func getBlasterTag():
-    # blaster_tag is based on scene's root node name.  The node names get altered by the engine.
+    # blaster_tag is based on scene's root node name.  The node names get renamed by the engine.
     # getBlasterTag() returns blaster_tag regardless of the engine's renaming.
     
     var blaster_tag_

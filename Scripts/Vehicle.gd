@@ -57,7 +57,7 @@ onready var BOLT_ENERGIES = []
                                                                                ###   NODE REFS   ###
                                                                                #####################
 
-# Container nodes.
+### Container nodes.
 onready var _non_spatial_ = find_node('NonSpatial*')
 onready var _parts_ = find_node('Parts*')
 
@@ -158,6 +158,11 @@ func _ready():
     setNodeRefValues()
     
     setExpandableNodeRefValues()
+    
+    setReplenishSets()
+    hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
+    
+    print("\n>>> [%s] ready..." % name)
 
 
 
@@ -282,6 +287,16 @@ func setExpandableNodeRefValues():
 
 
 
+func setReplenishSets():
+    
+    if not shields_tag:  replenish_sets = no_shields_replenish_sets
+    
+    replenish_engines =     replenish_sets[cur_repl_set]['engines']
+    replenish_shields =     replenish_sets[cur_repl_set]['shields']
+    replenish_blasters =    replenish_sets[cur_repl_set]['blasters']
+
+
+
 ####################################################################################################
                                                                                  ###   PROCESS   ###
                                                                                  ###################
@@ -359,17 +374,27 @@ func _unhandled_input(event):
     
     
     """
-    Need to document...
+    TURNOVER:
+    
+    - So far it appears as if the builds and connections of the blaster expansions are working
+    correctly.  But I can't say 100%.  It appears as if all that's left is the functionality of the
+    hud's blaster expansion as well as the vehicle's generator replenishment.
+    
+    - Will still need like blaster linking and blaster replenishment options.
     """
     
-    if event is InputEventMouseButton:
-        if event.is_pressed():
-            if event.button_index == BUTTON_WHEEL_UP:
-                if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
-                else:  cur_blaster = 0
-            if event.button_index == BUTTON_WHEEL_DOWN:
-                if cur_blaster != 0:  cur_blaster -= 1
-                else:  cur_blaster = len(BLASTER_SLOTS) - 1
+    """
+    TO-DO:  document...
+    """
+    
+    if event is InputEventMouseButton and event.is_pressed():
+        if event.button_index == BUTTON_WHEEL_UP:
+            if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
+            else:  cur_blaster = 0
+        if event.button_index == BUTTON_WHEEL_DOWN:
+            if cur_blaster != 0:  cur_blaster -= 1
+            else:  cur_blaster = len(BLASTER_SLOTS) - 1
+        hud.updateBlasterCurrentValue(cur_blaster)
 
 
 
@@ -393,7 +418,11 @@ func nonPhysicsInputEvents():
             
             bolt.spawn(bolt_spawns[cur_blaster].global_transform)
             blaster_batteries[cur_blaster] -= BOLT_ENERGIES[cur_blaster]
-            hud.updateBlasterBatteryValue(blaster_batteries[cur_blaster])
+            
+            ###
+            hud.updateBlasterBatteryValue(cur_blaster, blaster_batteries[cur_blaster])
+            ###
+            
             blaster_cool_downs[cur_blaster].start()
             blaster_cooled_downs[cur_blaster] = false
 
@@ -489,15 +518,48 @@ func _on_GeneratorRate_timeout():
     """
     TO-DOS:  Need to update for multiple blasters.
     """
-    pass
+#    pass
 #    if blaster1_battery < BLASTER1_BATTERY_CAPACITY:
 #        blaster1_battery += REPLENISH * replenish_blasters
 #        blaster1_battery = clamp(blaster1_battery, 0, BLASTER1_BATTERY_CAPACITY)
 #        hud.updateBlasterBatteryValue(blaster1_battery)
-#    if shields_battery < SHIELDS_BATTERY_CAPACITY:
-#        shields_battery += REPLENISH * replenish_shields * SHIELDS_CONCENTRATION
-#        shields_battery = clamp(shields_battery, 0, SHIELDS_BATTERY_CAPACITY)
-#        hud.updateShieldsBatteryValue(shields_battery)
+
+    var replenish_each_blaster = getReplEachBlaster()
+
+    for i in range(blaster_tags.size()):
+        if blaster_batteries[i] < BLASTER_BATTERY_CAPACITIES[i]:
+            blaster_batteries[i] += REPLENISH * replenish_blasters * replenish_each_blaster[i]
+            blaster_batteries[i] = clamp(blaster_batteries[i], 0, BLASTER_BATTERY_CAPACITIES[i])
+            hud.updateBlasterBatteryValue(i, blaster_batteries[i])
+
+    if shields_battery < SHIELDS_BATTERY_CAPACITY:
+        shields_battery += REPLENISH * replenish_shields * SHIELDS_CONCENTRATION
+        shields_battery = clamp(shields_battery, 0, SHIELDS_BATTERY_CAPACITY)
+        hud.updateShieldsBatteryValue(shields_battery)
+
+func getReplEachBlaster():
+    
+    var repl_each = []
+    
+    for i in range(blaster_tags.size()):  repl_each += [ 1 / float(blaster_tags.size()) ]
+    
+    for i in range(blaster_tags.size()):
+        if blaster_batteries[i] == BLASTER_BATTERY_CAPACITIES[i]:
+            
+            ###
+            for each_i in range(len(repl_each)):
+                if i == each_i:  continue
+                repl_each[each_i] += float(repl_each[i]) / (blaster_tags.size() - 1)
+            ###
+            
+            repl_each[i] = 0
+            
+    
+#    print("len(blaster_tags) = ", len(blaster_tags))
+#    print("1 / len(blaster_tags) = ", 1 % len(blaster_tags))
+#    print("\n", repl_each)
+    
+    return repl_each
 
 
 

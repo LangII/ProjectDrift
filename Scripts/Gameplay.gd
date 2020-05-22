@@ -84,10 +84,13 @@ func _ready():
     arena = generateArena()
     
     vehicle = generateVehicle()
-
+    
+    # Reference hud after vehicle is generated.
     hud = vehicle.find_node('NonSpatial*').find_node('Hud')
     
     generateTargets()
+    
+    print("\n>>> [%s] ready...  [%s] starting..." % [name, name])
 
 
 
@@ -363,9 +366,9 @@ func _on_HalfSecond_timeout():
 #
 #    # Get true vehicle variable for referencing.
 #    vehicle = get_node('/root/Main/Gameplay/Vehicles/%s' % body_tag)
-
+#
 #    get_tree().quit()
-
+#
 #    generateBlasterTags()   # <--  Do in Vehicle.gd.
 #
 #    # Child parts.

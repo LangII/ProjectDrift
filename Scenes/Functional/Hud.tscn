@@ -271,7 +271,7 @@ __meta__ = {
 [node name="PanelContainer" type="PanelContainer" parent="BottomLeft*/VBoxContainer"]
 margin_right = 52.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 0, 20 )
+rect_min_size = Vector2( 52, 20 )
 rect_clip_content = true
 size_flags_horizontal = 0
 custom_styles/panel = SubResource( 6 )
@@ -284,6 +284,7 @@ margin_top = 3.0
 margin_right = 52.0
 margin_bottom = 17.0
 text = " 000.00 "
+align = 1
 valign = 1
 
 [node name="SpeedProgBar*" type="TextureProgress" parent="BottomLeft*/VBoxContainer"]
@@ -372,13 +373,15 @@ texture_progress = ExtResource( 9 )
 margin_left = 127.0
 margin_right = 179.0
 margin_bottom = 20.0
+rect_min_size = Vector2( 52, 20 )
 custom_styles/panel = SubResource( 6 )
 
 [node name="ShieldsText*" type="Label" parent="BottomLeft*/VBoxContainer/HBoxContainer/VBoxContainer/ShieldsHBox*/PanelContainer"]
 margin_top = 3.0
 margin_right = 52.0
 margin_bottom = 17.0
-text = " 000.00 "
+text = "000.00"
+align = 1
 valign = 1
 
 [node name="HealthHBox" type="HBoxContainer" parent="BottomLeft*/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -399,13 +402,15 @@ texture_progress = ExtResource( 8 )
 margin_left = 127.0
 margin_right = 179.0
 margin_bottom = 20.0
+rect_min_size = Vector2( 52, 20 )
 custom_styles/panel = SubResource( 6 )
 
 [node name="HealthText*" type="Label" parent="BottomLeft*/VBoxContainer/HBoxContainer/VBoxContainer/HealthHBox/PanelContainer"]
 margin_top = 3.0
 margin_right = 52.0
 margin_bottom = 17.0
-text = " 000.00 "
+text = "000.00"
+align = 1
 valign = 1
 
 [node name="BottomRight*" type="MarginContainer" parent="."]
@@ -427,11 +432,11 @@ __meta__ = {
 [node name="BlastersContainer*" type="VBoxContainer" parent="BottomRight*"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 251.0
+margin_right = 259.0
 margin_bottom = 30.0
 grow_vertical = 0
 
-[node name="Blaster1Box" parent="BottomRight*/BlastersContainer*" instance=ExtResource( 11 )]
+[node name="Blaster1Box*" parent="BottomRight*/BlastersContainer*" instance=ExtResource( 11 )]
 
 [node name="DebugValues*" type="VBoxContainer" parent="."]
 visible = false
