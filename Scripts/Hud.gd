@@ -234,7 +234,7 @@ func adjustNodesForBlasters():
     var blaster_counter = 0
     for blaster in blaster_tags:
         blaster_counter += 1
-        if blaster == '' or blaster_counter == 1:  continue
+        if blaster_counter == 1:  continue
         # Get container scene and adjust names of node children per counter.
         var blaster_box = preload('res://Scenes/Functional/Blaster1Box.tscn').instance()
         var blaster_box_nodes = [
@@ -266,7 +266,7 @@ func generateExpandableNodeRefs():
 #onready var blaster1_prog_bar =         _bottom_right_.find_node('Blaster1ProgBar*')
 #onready var blaster1_bolt_energy_text = _bottom_right_.find_node('Blaster1BoltEnergyText*')
     
-    for i in range(blaster_tags.size()):
+    for i in range(len(blaster_tags)):
         var blaster_text_str = 'Blaster%sText*'
         blaster_texts += [ _bottom_right_.find_node(blaster_text_str % str(i + 1), true, false) ]
         var blaster_prog_bar_str = 'Blaster%sProgBar*'
@@ -286,7 +286,7 @@ func setInitialValuesOfExpandables():
 #    blaster1_prog_bar.value =           blaster1_battery_input
 #    blaster1_bolt_energy_text.text =    text_format_be % blaster1_bolt_energy_input
     
-    for i in range(BLASTER_SLOTS.size()):
+    for i in range(len(BLASTER_SLOTS)):
         blaster_texts[i].text = text_format_std % blaster_battery_inputs[i]
         blaster_prog_bars[i].max_value = blaster_battery_inputs[i]
         blaster_prog_bars[i].value = blaster_battery_inputs[i]

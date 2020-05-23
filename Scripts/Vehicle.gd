@@ -125,6 +125,10 @@ onready var shields_battery = SHIELDS_BATTERY_CAPACITY
 
 
 
+var has_blasters
+
+
+
 ####################################################################################################
                                                                                    ###   READY   ###
                                                                                    #################
@@ -175,8 +179,15 @@ func generateExpandableTags():
     Generate expandable tags.
     """
     
+    has_blasters = false
+    
     for blaster in BLASTER_SLOTS:
-        blaster_tags += [ controls.gameplay['vehicle'][blaster] ]
+        
+        var blaster_tag = controls.gameplay['vehicle'][blaster]
+        
+        blaster_tags += [ blaster_tag ]
+        
+        if blaster_tag != '':  has_blasters = true
 
 
 
@@ -204,7 +215,7 @@ func instancePartModels():
         shields_pos.add_child(Shields.instance())
     
     # If applicable, instance blasters models.
-    for i in range(blaster_tags.size()):
+    for i in range(len(blaster_tags)):
         var blaster_tag = blaster_tags[i]
         if blaster_tag:
             var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
@@ -231,7 +242,7 @@ func generateExpandableWorkingVars():
     generateExpandableControlVars().
     """
 
-    for i in range(blaster_tags.size()):
+    for i in range(len(blaster_tags)):
         var blaster_tag = blaster_tags[i]
         
         if blaster_tag:
@@ -250,11 +261,11 @@ func generateExpandableWorkingVars():
             Bolts += [ load('res://Scenes/Functional/Projectiles/%s.tscn' % bolt_tag) ]
         
         else:
-            barrel_pivots +=        [ '' ]
-            bolt_spawns +=          [ '' ]
-            blaster_cooled_downs += [ '' ]
-            blaster_batteries +=    [ '' ]
-            Bolts +=                [ '' ]
+            barrel_pivots +=        [ null ]
+            bolt_spawns +=          [ null ]
+            blaster_cooled_downs += [ null ]
+            blaster_batteries +=    [ 0 ]
+            Bolts +=                [ null ]
 
 
 
@@ -263,7 +274,7 @@ func generateExpandableNodeRefs():
     Generate expandable node references.  Must succeed generateExpandableTags().
     """
     
-    for i in range(BLASTER_SLOTS.size()):
+    for i in range(len(BLASTER_SLOTS)):
         blaster_cool_downs += [ _non_spatial_.find_node('Blaster%sCoolDown*' % str(i + 1)) ]
 
 
@@ -282,7 +293,7 @@ func setExpandableNodeRefValues():
     Set dynamic values of nodes from expandable node groups. 
     """
     
-    for i in range(BLASTER_SLOTS.size()):
+    for i in range(len(BLASTER_SLOTS)):
         blaster_cool_downs[i].wait_time = BLASTER_COOL_DOWNS[i]
 
 
@@ -290,6 +301,8 @@ func setExpandableNodeRefValues():
 func setReplenishSets():
     
     if not shields_tag:  replenish_sets = no_shields_replenish_sets
+    if not has_blasters:  replenish_sets = no_blasters_replenish_sets
+    if not shields_tag and not has_blasters:  replenish_sets = only_engines_replenish_sets
     
     replenish_engines =     replenish_sets[cur_repl_set]['engines']
     replenish_shields =     replenish_sets[cur_repl_set]['shields']
@@ -308,23 +321,25 @@ func _process(_delta):
 #    if linear_velocity.length() > MAX_SPEED:
 #        linear_velocity = linear_velocity.normalized() * MAX_SPEED
 
-    # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to
-    # ensure that whatever is in the player's crosshairs is the point that will be shot at.
-    if scope.is_colliding():  pointing_at = scope.get_collision_point()
-    else:  pointing_at = look_default.global_transform.origin
-    bolt_spawns[cur_blaster].look_at(pointing_at, Vector3.UP)
+#    print("has_blasters = ", has_blasters)
+    if has_blasters:
+        # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to
+        # ensure that whatever is in the player's crosshairs is the point that will be shot at.
+        if scope.is_colliding():  pointing_at = scope.get_collision_point()
+        else:  pointing_at = look_default.global_transform.origin
+        bolt_spawns[cur_blaster].look_at(pointing_at, Vector3.UP)
 
-    ###   NEED TO FIX   ###
-    # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
-    # on local or parent rotation.  Can see the issue in the barrel's rotation while vehicle is on
-    # a gravity inversion slope.
+        ###   NEED TO FIX   ###
+        # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
+        # on local or parent rotation.  Can see the issue in the barrel's rotation while vehicle is on
+        # a gravity inversion slope.
 
-    # Point barrel1_pivot at pointing_at.
-    barrel_pivots[cur_blaster].look_at(pointing_at, gravity_dir * -1)
-    barrel_pivots[cur_blaster].rotation_degrees.y = -90
-    barrel_pivots[cur_blaster].rotation_degrees.x = clamp(
-        barrel_pivots[cur_blaster].rotation_degrees.x, 0, 90
-    )
+        # Point barrel_pivot at pointing_at.
+        barrel_pivots[cur_blaster].look_at(pointing_at, gravity_dir * -1)
+        barrel_pivots[cur_blaster].rotation_degrees.y = -90
+        barrel_pivots[cur_blaster].rotation_degrees.x = clamp(
+            barrel_pivots[cur_blaster].rotation_degrees.x, 0, 90
+        )
 
     nonPhysicsInputEvents()
 
@@ -391,9 +406,17 @@ func _unhandled_input(event):
         if event.button_index == BUTTON_WHEEL_UP:
             if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
             else:  cur_blaster = 0
+            if blaster_tags[cur_blaster] == '':
+                if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
+                else:  cur_blaster = 0
+
         if event.button_index == BUTTON_WHEEL_DOWN:
             if cur_blaster != 0:  cur_blaster -= 1
             else:  cur_blaster = len(BLASTER_SLOTS) - 1
+            if blaster_tags[cur_blaster] == '':
+                if cur_blaster != 0:  cur_blaster -= 1
+                else:  cur_blaster = len(BLASTER_SLOTS) - 1
+            
         hud.updateBlasterCurrentValue(cur_blaster)
 
 
@@ -405,7 +428,7 @@ func _unhandled_input(event):
 func nonPhysicsInputEvents():
 
     # Blaster / Bolt controls.
-    if Input.is_action_pressed('ui_accept'):
+    if Input.is_action_pressed('ui_accept') and has_blasters:
 #        if bolt1_tag and blaster1_cooled_down and (blaster1_battery >= BOLT1_ENERGY):
         if blaster_cooled_downs[cur_blaster] and (blaster_batteries[cur_blaster] >= BOLT_ENERGIES[cur_blaster]):
 #            var bolt = Bolts[cur_blaster].instance().init(blaster_tags[cur_blaster])
@@ -526,7 +549,7 @@ func _on_GeneratorRate_timeout():
 
     var replenish_each_blaster = getReplEachBlaster()
 
-    for i in range(blaster_tags.size()):
+    for i in range(len(blaster_tags)):
         if blaster_batteries[i] < BLASTER_BATTERY_CAPACITIES[i]:
             blaster_batteries[i] += REPLENISH * replenish_blasters * replenish_each_blaster[i]
             blaster_batteries[i] = clamp(blaster_batteries[i], 0, BLASTER_BATTERY_CAPACITIES[i])
@@ -541,15 +564,15 @@ func getReplEachBlaster():
     
     var repl_each = []
     
-    for i in range(blaster_tags.size()):  repl_each += [ 1 / float(blaster_tags.size()) ]
+    for i in range(len(blaster_tags)):  repl_each += [ 1 / float(len(blaster_tags)) ]
     
-    for i in range(blaster_tags.size()):
+    for i in range(len(blaster_tags)):
         if blaster_batteries[i] == BLASTER_BATTERY_CAPACITIES[i]:
             
             ###
             for each_i in range(len(repl_each)):
                 if i == each_i:  continue
-                repl_each[each_i] += float(repl_each[i]) / (blaster_tags.size() - 1)
+                repl_each[each_i] += float(repl_each[i]) / (len(blaster_tags) - 1)
             ###
             
             repl_each[i] = 0

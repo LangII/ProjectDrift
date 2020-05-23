@@ -25,7 +25,7 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 8, # (currently) 64 or less
+    'number_of_targets': 4, # (currently) 64 or less
     'vehicle': {
 
 #        'body': 'TestBody01',
@@ -46,8 +46,8 @@ var gameplay = {
 #        'blaster1': 'BlasterWhiteWithYellow',
 #        'blaster1': '',
 
-#        'blaster2': 'BlasterWhite',
-        'blaster2': 'BlasterWhiteWithYellow',
+        'blaster2': 'BlasterWhite',
+#        'blaster2': 'BlasterWhiteWithYellow',
 #        'blaster2': '',
     },
 }
