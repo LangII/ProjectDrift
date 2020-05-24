@@ -30,6 +30,7 @@ onready var SPIN_DAMP =             controls.global['vehicle']['spin_damp']
 onready var MOUSE_SENSITIVITY =     controls.global['vehicle']['mouse_sensitivity']
 onready var MOUSE_VERT_DAMP =       controls.global['vehicle']['mouse_vert_damp']
 
+### (still not sure if I might need this at some point)
 # onready var REST_LINEAR_DAMP =      controls.global['vehicle']['rest_linear_damp']
 
 ### Get parts' control variables.
@@ -50,23 +51,19 @@ onready var BOLT_ENERGIES = []
 
 
 
-
-
-
 ####################################################################################################
                                                                                ###   NODE REFS   ###
                                                                                #####################
 
-### Container nodes.
-onready var _non_spatial_ = find_node('NonSpatial*')
+### Container node references.
 onready var _parts_ = find_node('Parts*')
-
+onready var _non_spatial_ = find_node('NonSpatial*')
+### Node references.
 onready var hud = _non_spatial_.find_node('Hud')
 onready var generator_rate = _non_spatial_.find_node('GeneratorRate*')
 onready var camera_pivot = find_node('CameraPivot*')
 onready var scope = camera_pivot.find_node('Scope*')
 onready var look_default = camera_pivot.find_node('LookDefault*')
-
 ### (expandables)
 onready var blaster_cool_downs = []
 
@@ -97,11 +94,6 @@ onready var only_engines_replenish_sets = [
     {'engines': 1.00, 'shields': 0.00, 'blasters': 0.00},
 ]
 
-"""
-TO-DOS:  Maybe set replenishment values in a ready func.  Initiating them now, then resetting later
-based on no-shields or no-blasters is a waste.
-"""
-
 ### Working vars.
 onready var cur_repl_set = 0
 onready var cur_blaster = 0
@@ -109,6 +101,7 @@ onready var pointing_at = Vector3()
 onready var rot_force = 0.0
 onready var gravity_force = 2.00
 onready var gravity_dir = Vector3.DOWN
+onready var has_blasters
 ### (expandables)
 onready var barrel_pivots = []
 onready var bolt_spawns = []
@@ -122,10 +115,6 @@ onready var replenish_shields =     replenish_sets[cur_repl_set]['shields']
 onready var replenish_blasters =    replenish_sets[cur_repl_set]['blasters']
 ### Initialize shields var.
 onready var shields_battery = SHIELDS_BATTERY_CAPACITY
-
-
-
-var has_blasters
 
 
 
@@ -150,6 +139,8 @@ func _ready():
     
     # Among variable generations and model instancing, tags have to come first.
     generateExpandableTags()
+    
+    setHasBlasters()
     
     instancePartModels()
     
@@ -179,15 +170,21 @@ func generateExpandableTags():
     Generate expandable tags.
     """
     
-    has_blasters = false
-    
     for blaster in BLASTER_SLOTS:
-        
-        var blaster_tag = controls.gameplay['vehicle'][blaster]
-        
-        blaster_tags += [ blaster_tag ]
-        
-        if blaster_tag != '':  has_blasters = true
+        blaster_tags += [ controls.gameplay['vehicle'][blaster] ]
+
+
+
+func setHasBlasters():
+    """
+    Determine value of has_blasters.
+    """
+    
+    has_blasters = false
+    for blaster_tag in blaster_tags:
+        if blaster_tag != '':
+            has_blasters = true
+            break
 
 
 
@@ -299,6 +296,9 @@ func setExpandableNodeRefValues():
 
 
 func setReplenishSets():
+    """
+    Set replenish_sets based on shields_tag and has_blasters.
+    """
     
     if not shields_tag:  replenish_sets = no_shields_replenish_sets
     if not has_blasters:  replenish_sets = no_blasters_replenish_sets
@@ -316,30 +316,7 @@ func setReplenishSets():
 
 func _process(_delta):
 
-    ###   OBSOLETE   ###
-#    # Clamp vehicle's max speed. 
-#    if linear_velocity.length() > MAX_SPEED:
-#        linear_velocity = linear_velocity.normalized() * MAX_SPEED
-
-#    print("has_blasters = ", has_blasters)
-    if has_blasters:
-        # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to
-        # ensure that whatever is in the player's crosshairs is the point that will be shot at.
-        if scope.is_colliding():  pointing_at = scope.get_collision_point()
-        else:  pointing_at = look_default.global_transform.origin
-        bolt_spawns[cur_blaster].look_at(pointing_at, Vector3.UP)
-
-        ###   NEED TO FIX   ###
-        # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
-        # on local or parent rotation.  Can see the issue in the barrel's rotation while vehicle is on
-        # a gravity inversion slope.
-
-        # Point barrel_pivot at pointing_at.
-        barrel_pivots[cur_blaster].look_at(pointing_at, gravity_dir * -1)
-        barrel_pivots[cur_blaster].rotation_degrees.y = -90
-        barrel_pivots[cur_blaster].rotation_degrees.x = clamp(
-            barrel_pivots[cur_blaster].rotation_degrees.x, 0, 90
-        )
+    if has_blasters:  setTargetting()
 
     nonPhysicsInputEvents()
 
@@ -372,52 +349,10 @@ func _integrate_forces(state):
 
 func _unhandled_input(event):
     # Handling of mouse input.
-
-    # BLOCK ... Vehicle mouse controls (while mouse is captured).
-    # Only perform vehicle mouse controls if 'mouse_motion' and 'mouse_captured' are True.
-    var mouse_motion = event is InputEventMouseMotion
-    var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
-    if mouse_motion and mouse_captured:
-
-        rot_force = -event.relative.x * MOUSE_SENSITIVITY * SPIN
-
-        # Mouse motion on the y-axis translates to camera ('pivot') motion on the z-axis.
-        camera_pivot.rotate_z(-event.relative.y * MOUSE_SENSITIVITY * MOUSE_VERT_DAMP)
-        # Have to apply 'clamp' to prevent extreme camera positions.
-        camera_pivot.rotation.z = clamp(camera_pivot.rotation.z, -1.2, 0.6)
     
+    handleMouseMotion(event)
     
-    
-    """
-    TURNOVER:
-    
-    - So far it appears as if the builds and connections of the blaster expansions are working
-    correctly.  But I can't say 100%.  It appears as if all that's left is the functionality of the
-    hud's blaster expansion as well as the vehicle's generator replenishment.
-    
-    - Will still need like blaster linking and blaster replenishment options.
-    """
-    
-    """
-    TO-DO:  document...
-    """
-    
-    if event is InputEventMouseButton and event.is_pressed():
-        if event.button_index == BUTTON_WHEEL_UP:
-            if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
-            else:  cur_blaster = 0
-            if blaster_tags[cur_blaster] == '':
-                if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
-                else:  cur_blaster = 0
-
-        if event.button_index == BUTTON_WHEEL_DOWN:
-            if cur_blaster != 0:  cur_blaster -= 1
-            else:  cur_blaster = len(BLASTER_SLOTS) - 1
-            if blaster_tags[cur_blaster] == '':
-                if cur_blaster != 0:  cur_blaster -= 1
-                else:  cur_blaster = len(BLASTER_SLOTS) - 1
-            
-        hud.updateBlasterCurrentValue(cur_blaster)
+    handleMouseScrollWheel(event)
 
 
 
@@ -425,32 +360,44 @@ func _unhandled_input(event):
                                                                            ###   PROCESS FUNCS   ###
                                                                            #########################
 
+func setTargetting():
+    # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to
+    # ensure that whatever is in the player's crosshairs is the point that will be shot at.
+    
+    if scope.is_colliding():  pointing_at = scope.get_collision_point()
+    else:  pointing_at = look_default.global_transform.origin
+    bolt_spawns[cur_blaster].look_at(pointing_at, Vector3.UP)
+    
+    ###   NEED TO FIX   ###
+    # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
+    # on local or parent rotation.  Can see the issue in the barrel's rotation while vehicle is on
+    # a gravity inversion slope.
+    
+    # Point barrel_pivot at pointing_at.
+    barrel_pivots[cur_blaster].look_at(pointing_at, gravity_dir * -1)
+    barrel_pivots[cur_blaster].rotation_degrees.y = -90
+    barrel_pivots[cur_blaster].rotation_degrees.x = clamp(
+        barrel_pivots[cur_blaster].rotation_degrees.x, 0, 90
+    )
+
+
+
 func nonPhysicsInputEvents():
 
     # Blaster / Bolt controls.
     if Input.is_action_pressed('ui_accept') and has_blasters:
-#        if bolt1_tag and blaster1_cooled_down and (blaster1_battery >= BOLT1_ENERGY):
-        if blaster_cooled_downs[cur_blaster] and (blaster_batteries[cur_blaster] >= BOLT_ENERGIES[cur_blaster]):
-#            var bolt = Bolts[cur_blaster].instance().init(blaster_tags[cur_blaster])
-            var bolt = Bolts[cur_blaster].instance()
-            
-#            print(bolt.name)
-            
-            # I think this should be handled in Gameplay.gd.
-            get_node('/root/Main/Gameplay/VehicleBolts').add_child(bolt)
-            
-            bolt.spawn(bolt_spawns[cur_blaster].global_transform)
-            blaster_batteries[cur_blaster] -= BOLT_ENERGIES[cur_blaster]
-            
-            ###
-            hud.updateBlasterBatteryValue(cur_blaster, blaster_batteries[cur_blaster])
-            ###
-            
-            blaster_cool_downs[cur_blaster].start()
-            blaster_cooled_downs[cur_blaster] = false
-
-#    if Input.is_action_pressed('ui_page_up'):
-#        print("wheel working")
+        if blaster_cooled_downs[cur_blaster]:
+            if blaster_batteries[cur_blaster] >= BOLT_ENERGIES[cur_blaster]:
+                var bolt = Bolts[cur_blaster].instance()
+                ###
+                # I think this should be handled in Gameplay.gd.
+                get_node('/root/Main/Gameplay/VehicleBolts').add_child(bolt)
+                ###
+                bolt.spawn(bolt_spawns[cur_blaster].global_transform)
+                blaster_batteries[cur_blaster] -= BOLT_ENERGIES[cur_blaster]
+                hud.updateBlasterBatteryValue(cur_blaster, blaster_batteries[cur_blaster])
+                blaster_cool_downs[cur_blaster].start()
+                blaster_cooled_downs[cur_blaster] = false
 
     # Replenish controls.
     if Input.is_action_just_pressed('ui_focus_next'):
@@ -530,6 +477,43 @@ func getWasdInput():
 
 
 
+func handleMouseMotion(_event):
+    # Vehicle mouse controls (while mouse is captured).  Only perform vehicle mouse controls if
+    # 'mouse_motion' and 'mouse_captured' are True.
+    
+    var mouse_motion = _event is InputEventMouseMotion
+    var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+    if mouse_motion and mouse_captured:
+        rot_force = -_event.relative.x * MOUSE_SENSITIVITY * SPIN
+        # Mouse motion on the y-axis translates to camera ('pivot') motion on the z-axis.
+        camera_pivot.rotate_z(-_event.relative.y * MOUSE_SENSITIVITY * MOUSE_VERT_DAMP)
+        # Have to apply 'clamp' to prevent extreme camera positions.
+        camera_pivot.rotation.z = clamp(camera_pivot.rotation.z, -1.2, 0.6)
+
+
+
+func handleMouseScrollWheel(_event):
+    # Mouse scroll wheel controls blaster selection.  Conditionals are 
+    
+    if _event is InputEventMouseButton and _event.is_pressed():
+        if _event.button_index == BUTTON_WHEEL_UP:
+            if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
+            else:  cur_blaster = 0
+            if blaster_tags[cur_blaster] == '':
+                if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
+                else:  cur_blaster = 0
+    
+        if _event.button_index == BUTTON_WHEEL_DOWN:
+            if cur_blaster != 0:  cur_blaster -= 1
+            else:  cur_blaster = len(BLASTER_SLOTS) - 1
+            if blaster_tags[cur_blaster] == '':
+                if cur_blaster != 0:  cur_blaster -= 1
+                else:  cur_blaster = len(BLASTER_SLOTS) - 1
+        
+    hud.updateBlasterCurrentValue(cur_blaster)
+
+
+
 ####################################################################################################
                                                                                  ###   SIGNALS   ###
                                                                                  ###################
@@ -537,15 +521,6 @@ func getWasdInput():
 func _on_GeneratorRate_timeout():
     # Regulate blaster battery and shields battery replenishment.  Only replenish if battery is not
     # full.  If replenishment overfills battery, clamp it.  Then update Hud.
-
-    """
-    TO-DOS:  Need to update for multiple blasters.
-    """
-#    pass
-#    if blaster1_battery < BLASTER1_BATTERY_CAPACITY:
-#        blaster1_battery += REPLENISH * replenish_blasters
-#        blaster1_battery = clamp(blaster1_battery, 0, BLASTER1_BATTERY_CAPACITY)
-#        hud.updateBlasterBatteryValue(blaster1_battery)
 
     var replenish_each_blaster = getReplEachBlaster()
 
@@ -560,29 +535,28 @@ func _on_GeneratorRate_timeout():
         shields_battery = clamp(shields_battery, 0, SHIELDS_BATTERY_CAPACITY)
         hud.updateShieldsBatteryValue(shields_battery)
 
+
+
 func getReplEachBlaster():
+    # repl_each_ is an array of perc who's sum = 100%.  Each value represents how much of the
+    # generator replenishment that blaster receives.
     
-    var repl_each = []
+    # First set each value of repl_each_ to an even perc value based on count of blaster_tags.
+    var repl_each_ = []
+    for _i in range(len(blaster_tags)):  repl_each_ += [ 1 / float(len(blaster_tags)) ]
     
-    for i in range(len(blaster_tags)):  repl_each += [ 1 / float(len(blaster_tags)) ]
-    
+    # BLOCK...  Adjust values of repl_each_ so that blaster batteries that are full do not get
+    # replenished unnecessarily.
     for i in range(len(blaster_tags)):
+        # Check if i blaster battery is full.  If so, distribute repl value from i battery to the
+        # rest of the batteries and reset i battery value to 0.
         if blaster_batteries[i] == BLASTER_BATTERY_CAPACITIES[i]:
-            
-            ###
-            for each_i in range(len(repl_each)):
+            for each_i in range(len(repl_each_)):
                 if i == each_i:  continue
-                repl_each[each_i] += float(repl_each[i]) / (len(blaster_tags) - 1)
-            ###
-            
-            repl_each[i] = 0
-            
-    
-#    print("len(blaster_tags) = ", len(blaster_tags))
-#    print("1 / len(blaster_tags) = ", 1 % len(blaster_tags))
-#    print("\n", repl_each)
-    
-    return repl_each
+                repl_each_[each_i] += float(repl_each_[i]) / (len(blaster_tags) - 1)
+            repl_each_[i] = 0
+
+    return repl_each_
 
 
 
@@ -596,3 +570,13 @@ func _on_Blaster2CoolDown_timeout():
     
     blaster_cooled_downs[1] = true
 
+
+
+####################################################################################################
+                                                                                ###   OBSOLETE   ###
+                                                                                ####################
+
+""" from _process() (2020-05-23) """
+#    # Clamp vehicle's max speed. 
+#    if linear_velocity.length() > MAX_SPEED:
+#        linear_velocity = linear_velocity.normalized() * MAX_SPEED

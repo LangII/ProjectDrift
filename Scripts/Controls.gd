@@ -10,8 +10,8 @@ extends Node
 
 
 ####################################################################################################
-                                                                                ###   GAMEPLAY   ###
-                                                                                ####################
+                                                                            ###   TESTING VARS   ###
+                                                                            ########################
 
 ### If 'true' bypass menus and generate game from 'gameplay' values.
 #var TESTING_no_menu = false
@@ -21,6 +21,12 @@ var TESTING_no_menu = true
 var TESTING_take_no_damage = false
 #var TESTING_take_no_damage = true
 
+
+
+####################################################################################################
+                                                                                ###   GAMEPLAY   ###
+                                                                                ####################
+
 var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
@@ -28,8 +34,6 @@ var gameplay = {
     'number_of_targets': 0, # (currently) 64 or less
     'vehicle': {
 
-#        'body': 'TestBody01',
-#        'body': 'TestBody02',
         'body': 'BodyWhiteWithYellow',
 
 #        'generator': 'GeneratorYellow',
@@ -46,8 +50,8 @@ var gameplay = {
 #        'blaster1': 'BlasterWhiteWithYellow',
 #        'blaster1': '',
 
-        'blaster2': 'BlasterWhite',
-#        'blaster2': 'BlasterWhiteWithYellow',
+#        'blaster2': 'BlasterWhite',
+        'blaster2': 'BlasterWhiteWithYellow',
 #        'blaster2': '',
     },
 }
@@ -84,21 +88,6 @@ var global = {
                                                                            #########################
 
 var body = {
-    'TestBody01': {
-        'health': 20.00,
-        'armor': 0.05,
-        'blaster_slots': [
-            'blaster1',
-        ]
-    },
-    'TestBody02': {
-        'health': 15.00,
-        'armor': 0.04,
-        'blaster_slots': [
-            'blaster1',
-            'blaster2',
-        ]
-    },
     'BodyWhiteWithYellow': {
         'health': 15.00,
         'armor': 0.04,
@@ -194,6 +183,23 @@ var targets = {
 ####################################################################################################
                                                                                 ###   OBSOLETE   ###
                                                                                 ####################
+
+""" from var body (2020-05-24) """
+#    'TestBody01': {
+#        'health': 20.00,
+#        'armor': 0.05,
+#        'blaster_slots': [
+#            'blaster1',
+#        ]
+#    },
+#    'TestBody02': {
+#        'health': 15.00,
+#        'armor': 0.04,
+#        'blaster_slots': [
+#            'blaster1',
+#            'blaster2',
+#        ]
+#    },
 
 """ from var blasters (2020-05-21) """
 #    'BlasterYellow': {

@@ -24,7 +24,7 @@ margin_bottom = 20.0
 rect_min_size = Vector2( 16, 20 )
 custom_styles/panel = SubResource( 2 )
 
-[node name="Blaster1CurrentText*" type="Label" parent="Blaster1CurrentContainer*"]
+[node name="BlasterCurrentText" type="Label" parent="Blaster1CurrentContainer*"]
 margin_top = 3.0
 margin_right = 16.0
 margin_bottom = 17.0
