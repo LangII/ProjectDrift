@@ -468,8 +468,8 @@ func handleInputOther():
                 blaster_cool_downs[cur_blaster].start()
                 blaster_cooled_downs[cur_blaster] = false
 
-    # Replenish controls.
-    if Input.is_action_just_pressed('change_replenish_set'):
+    # Change replenish set.
+    if Input.is_action_just_pressed('change_repl_set'):
         if cur_repl_set <= len(replenish_sets) - 2:  cur_repl_set += 1
         else:  cur_repl_set = 0
         replenish_engines =     replenish_sets[cur_repl_set]['engines']
