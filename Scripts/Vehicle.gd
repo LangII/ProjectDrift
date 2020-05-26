@@ -350,9 +350,9 @@ func _integrate_forces(state):
 func _unhandled_input(event):
     # Handling of mouse input.
     
-    handleMouseInputMotion(event)
+    handleInputMouseMotion(event)
     
-    handleMouseInputWheel(event)
+    handleInputMouseWheel(event)
 
 
 
@@ -428,7 +428,7 @@ func applyGravToVel(_vel):
 
 
 #######################
-###   INPUT   >>>   ###
+"""   INPUT   >>>   """
 #######################
 
 
@@ -485,7 +485,7 @@ func handleInputOther():
 
 
 
-func handleMouseInputMotion(_event):
+func handleInputMouseMotion(_event):
     # Vehicle mouse controls (while mouse is captured).  Only perform vehicle mouse controls if
     # 'mouse_motion' and 'mouse_captured' are True.
     
@@ -500,7 +500,7 @@ func handleMouseInputMotion(_event):
 
 
 
-func handleMouseInputWheel(_event):
+func handleInputMouseWheel(_event):
     # Handle mouse buttons input events.
 
     if _event is InputEventMouseButton and _event.is_pressed():
@@ -533,7 +533,7 @@ func handleMouseInputWheel(_event):
 
 
 #######################
-###   <<<   INPUT   ###
+"""   <<<   INPUT   """
 #######################
 
 
