@@ -31,9 +31,10 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 0, # (currently) 64 or less
+    'number_of_targets': 4, # (currently) 64 or less
     'vehicle': {
 
+#        'body': 'BodyWhite',
         'body': 'BodyWhiteWithYellow',
 
 #        'generator': 'GeneratorYellow',
@@ -88,6 +89,13 @@ var global = {
                                                                            #########################
 
 var body = {
+    'BodyWhite': {
+        'health': 20.00,
+        'armor': 0.05,
+        'blaster_slots': [
+            'blaster1',
+        ]
+    },
     'BodyWhiteWithYellow': {
         'health': 15.00,
         'armor': 0.04,

@@ -318,7 +318,7 @@ func _process(_delta):
 
     if has_blasters:  setTargetting()
 
-    nonPhysicsInputEvents()
+    handleInputOther()
 
 
 
@@ -329,7 +329,7 @@ func _physics_process(_delta):
     apply_central_impulse(grav_force_dir)
 
     # Apply player input force.
-    var vel = getWasdInput()
+    var vel = getInputWasd()
     var vel_dir = applyGravToVel(vel)
     apply_central_impulse(vel_dir)
 
@@ -350,9 +350,9 @@ func _integrate_forces(state):
 func _unhandled_input(event):
     # Handling of mouse input.
     
-    handleMouseMotion(event)
+    handleMouseInputMotion(event)
     
-    handleMouseScrollWheel(event)
+    handleMouseInputWheel(event)
 
 
 
@@ -379,40 +379,6 @@ func setTargetting():
     barrel_pivots[cur_blaster].rotation_degrees.x = clamp(
         barrel_pivots[cur_blaster].rotation_degrees.x, 0, 90
     )
-
-
-
-func nonPhysicsInputEvents():
-
-    # Blaster / Bolt controls.
-    if Input.is_action_pressed('ui_accept') and has_blasters:
-        if blaster_cooled_downs[cur_blaster]:
-            if blaster_batteries[cur_blaster] >= BOLT_ENERGIES[cur_blaster]:
-                var bolt = Bolts[cur_blaster].instance()
-                ###
-                # I think this should be handled in Gameplay.gd.
-                get_node('/root/Main/Gameplay/VehicleBolts').add_child(bolt)
-                ###
-                bolt.spawn(bolt_spawns[cur_blaster].global_transform)
-                blaster_batteries[cur_blaster] -= BOLT_ENERGIES[cur_blaster]
-                hud.updateBlasterBatteryValue(cur_blaster, blaster_batteries[cur_blaster])
-                blaster_cool_downs[cur_blaster].start()
-                blaster_cooled_downs[cur_blaster] = false
-
-    # Replenish controls.
-    if Input.is_action_just_pressed('ui_focus_next'):
-        if cur_repl_set <= len(replenish_sets) - 2:  cur_repl_set += 1
-        else:  cur_repl_set = 0
-        replenish_engines =     replenish_sets[cur_repl_set]['engines']
-        replenish_shields =     replenish_sets[cur_repl_set]['shields']
-        replenish_blasters =    replenish_sets[cur_repl_set]['blasters']
-        hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
-
-    # Focus controls.
-    if Input.is_action_just_pressed('ui_focus_prev'):
-        var focus = scope.get_collider()
-        # Only perform focus object update if focus is in Targets.
-        if focus != null and focus.get_parent().name == 'Targets':  hud.updateFocusObject(focus)
 
 
 
@@ -461,7 +427,13 @@ func applyGravToVel(_vel):
 
 
 
-func getWasdInput():
+#######################
+###   INPUT   >>>   ###
+#######################
+
+
+
+func getInputWasd():
     # WASD controls; primary user input of force on vehicle.
 
     var wasd_vel_ = Vector3()
@@ -477,7 +449,43 @@ func getWasdInput():
 
 
 
-func handleMouseMotion(_event):
+func handleInputOther():
+
+    # Blaster / Bolt controls.
+    if Input.is_action_pressed('blaster_shoot') and has_blasters:
+        if blaster_cooled_downs[cur_blaster]:
+            if blaster_batteries[cur_blaster] >= BOLT_ENERGIES[cur_blaster]:
+                var bolt = Bolts[cur_blaster].instance()
+                
+                ###
+                # I think this should be handled in Gameplay.gd.
+                get_node('/root/Main/Gameplay/VehicleBolts').add_child(bolt)
+                ###
+                
+                bolt.spawn(bolt_spawns[cur_blaster].global_transform)
+                blaster_batteries[cur_blaster] -= BOLT_ENERGIES[cur_blaster]
+                hud.updateBlasterBatteryValue(cur_blaster, blaster_batteries[cur_blaster])
+                blaster_cool_downs[cur_blaster].start()
+                blaster_cooled_downs[cur_blaster] = false
+
+    # Replenish controls.
+    if Input.is_action_just_pressed('change_replenish_set'):
+        if cur_repl_set <= len(replenish_sets) - 2:  cur_repl_set += 1
+        else:  cur_repl_set = 0
+        replenish_engines =     replenish_sets[cur_repl_set]['engines']
+        replenish_shields =     replenish_sets[cur_repl_set]['shields']
+        replenish_blasters =    replenish_sets[cur_repl_set]['blasters']
+        hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
+
+    # Focus controls.
+    if Input.is_action_just_pressed('trigger_focus'):
+        var focus = scope.get_collider()
+        # Only perform focus object update if focus is in Targets.
+        if focus != null and focus.get_parent().name == 'Targets':  hud.updateFocusObject(focus)
+
+
+
+func handleMouseInputMotion(_event):
     # Vehicle mouse controls (while mouse is captured).  Only perform vehicle mouse controls if
     # 'mouse_motion' and 'mouse_captured' are True.
     
@@ -492,17 +500,27 @@ func handleMouseMotion(_event):
 
 
 
-func handleMouseScrollWheel(_event):
-    # Mouse scroll wheel controls blaster selection.  Conditionals are 
-    
+func handleMouseInputWheel(_event):
+    # Handle mouse buttons input events.
+
     if _event is InputEventMouseButton and _event.is_pressed():
+
+        """
+        TO-DO:  The current check for an empty cur_blaster will only work if there is only a
+        single empty cur_blaster at a time.  If there are 2 empty cur_blasters in a row then this
+        will break.  Need to update to a while loop.
+        """
+
+        # BLOCK...  Handle scroll wheel input events.
         if _event.button_index == BUTTON_WHEEL_UP:
             if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
             else:  cur_blaster = 0
+            # After each cur_blaster change, the process is repeated if the cur_blaster is changed
+            # to an empty cur_blaster.  (same for BUTTON_WHEEL_DOWN)
             if blaster_tags[cur_blaster] == '':
                 if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
                 else:  cur_blaster = 0
-    
+        # (same)
         if _event.button_index == BUTTON_WHEEL_DOWN:
             if cur_blaster != 0:  cur_blaster -= 1
             else:  cur_blaster = len(BLASTER_SLOTS) - 1
@@ -510,7 +528,13 @@ func handleMouseScrollWheel(_event):
                 if cur_blaster != 0:  cur_blaster -= 1
                 else:  cur_blaster = len(BLASTER_SLOTS) - 1
         
-    hud.updateBlasterCurrentValue(cur_blaster)
+        hud.updateBlasterCurrentValue(cur_blaster)
+
+
+
+#######################
+###   <<<   INPUT   ###
+#######################
 
 
 
