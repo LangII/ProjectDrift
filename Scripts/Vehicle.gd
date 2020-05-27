@@ -101,7 +101,9 @@ onready var pointing_at = Vector3()
 onready var rot_force = 0.0
 onready var gravity_force = 2.00
 onready var gravity_dir = Vector3.DOWN
-onready var has_blasters
+onready var has_shields = true
+onready var has_blasters = true
+onready var replenish = {}
 ### (expandables)
 onready var barrel_pivots = []
 onready var bolt_spawns = []
@@ -109,10 +111,6 @@ onready var blaster_cooled_downs = []
 onready var blaster_batteries = []
 onready var Bolts = []
 
-### Initialize replenishment values as first set from 'replenish_sets'.
-onready var replenish_engines =     replenish_sets[cur_repl_set]['engines']
-onready var replenish_shields =     replenish_sets[cur_repl_set]['shields']
-onready var replenish_blasters =    replenish_sets[cur_repl_set]['blasters']
 ### Initialize shields var.
 onready var shields_battery = SHIELDS_BATTERY_CAPACITY
 
@@ -140,6 +138,8 @@ func _ready():
     # Among variable generations and model instancing, tags have to come first.
     generateExpandableTags()
     
+    setHasShields()
+    
     setHasBlasters()
     
     instancePartModels()
@@ -155,7 +155,8 @@ func _ready():
     setExpandableNodeRefValues()
     
     setReplenishSets()
-    hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
+    
+    hud.updateReplenishValues(replenish['engines'], replenish['shields'], replenish['blasters'])
     
     print("\n>>> [%s] ready..." % name)
 
@@ -172,6 +173,15 @@ func generateExpandableTags():
     
     for blaster in BLASTER_SLOTS:
         blaster_tags += [ controls.gameplay['vehicle'][blaster] ]
+
+
+
+func setHasShields():
+    """
+    Determine value of has_shields.
+    """
+    
+    if not shields_tag:  has_shields = false
 
 
 
@@ -206,7 +216,7 @@ func instancePartModels():
         engine_pos.add_child(Engines.instance())
     
     # If applicable, instance shields model.
-    if shields_tag:
+    if has_shields:
         var Shields = load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
         var shields_pos = _parts_.find_node('ShieldsPos*')
         shields_pos.add_child(Shields.instance())
@@ -297,16 +307,16 @@ func setExpandableNodeRefValues():
 
 func setReplenishSets():
     """
-    Set replenish_sets based on shields_tag and has_blasters.
+    Set replenish_sets based on has_shields and has_blasters.
     """
     
-    if not shields_tag:  replenish_sets = no_shields_replenish_sets
+    if not has_shields:  replenish_sets = no_shields_replenish_sets
     if not has_blasters:  replenish_sets = no_blasters_replenish_sets
-    if not shields_tag and not has_blasters:  replenish_sets = only_engines_replenish_sets
+    if not has_shields and not has_blasters:  replenish_sets = only_engines_replenish_sets
     
-    replenish_engines =     replenish_sets[cur_repl_set]['engines']
-    replenish_shields =     replenish_sets[cur_repl_set]['shields']
-    replenish_blasters =    replenish_sets[cur_repl_set]['blasters']
+    replenish['engines'] =     replenish_sets[cur_repl_set]['engines']
+    replenish['shields'] =     replenish_sets[cur_repl_set]['shields']
+    replenish['blasters'] =    replenish_sets[cur_repl_set]['blasters']
 
 
 
@@ -384,29 +394,29 @@ func setTargetting():
 
 func applyGravDirToGravForce():
     # With the changing of direction of gravity, gravity has to be manually applied via function.
-
+    
     var applied_grav_ = Vector3()
     for axis in range(3):  applied_grav_[axis] = gravity_dir[axis] * GRAVITY_FORCE
-
+    
     return applied_grav_
 
 
 
 func applyGravToRotForce():
     # With the changing of direction of gravity, gravity has to be manually applied via function.
-
+    
     var applied_rot_force_ = Vector3()
     for axis in range(3):  applied_rot_force_[axis] = -gravity_dir[axis] * rot_force
-
+    
     return applied_rot_force_
 
 
 
 func applyGravToVel(_vel):
     # With the changing of direction of gravity, gravity has to be manually applied via function.
-
+    
     var applied_vel_ = Vector3()
-
+    
     # Gravity is applied specifically to each rotational direction based on gravity's direction in
     # 3D space.
     match gravity_dir:
@@ -422,7 +432,7 @@ func applyGravToVel(_vel):
             var vel_rotation = -rotation.x
             if rotation.z <= 0:  vel_rotation = -vel_rotation + deg2rad(180)
             applied_vel_ = _vel.rotated(transform.basis.y, vel_rotation)
-
+    
     return applied_vel_
 
 
@@ -435,22 +445,22 @@ func applyGravToVel(_vel):
 
 func getInputWasd():
     # WASD controls; primary user input of force on vehicle.
-
+    
     var wasd_vel_ = Vector3()
-
+    
     # With 'THRUST', apply WASD up/down input to 'vel' x-axis (forward/backward).
-    if Input.is_action_pressed('ui_up'):	wasd_vel_ += Vector3(+THRUST * replenish_engines, 0, 0)
-    if Input.is_action_pressed('ui_down'):	wasd_vel_ += Vector3(-THRUST * replenish_engines, 0, 0)
+    if Input.is_action_pressed('ui_up'):	wasd_vel_ += Vector3(+THRUST * replenish['engines'], 0, 0)
+    if Input.is_action_pressed('ui_down'):	wasd_vel_ += Vector3(-THRUST * replenish['engines'], 0, 0)
     # With 'THRUST', apply WASD left/right input to 'vel' z-axis (left/right).
-    if Input.is_action_pressed('ui_left'):	wasd_vel_ += Vector3(0, 0, -THRUST * replenish_engines)
-    if Input.is_action_pressed('ui_right'):	wasd_vel_ += Vector3(0, 0, +THRUST * replenish_engines)
-
+    if Input.is_action_pressed('ui_left'):	wasd_vel_ += Vector3(0, 0, -THRUST * replenish['engines'])
+    if Input.is_action_pressed('ui_right'):	wasd_vel_ += Vector3(0, 0, +THRUST * replenish['engines'])
+    
     return wasd_vel_
 
 
 
 func handleInputOther():
-
+    
     # Blaster / Bolt controls.
     if Input.is_action_pressed('blaster_shoot') and has_blasters:
         if blaster_cooled_downs[cur_blaster]:
@@ -467,21 +477,86 @@ func handleInputOther():
                 hud.updateBlasterBatteryValue(cur_blaster, blaster_batteries[cur_blaster])
                 blaster_cool_downs[cur_blaster].start()
                 blaster_cooled_downs[cur_blaster] = false
-
+    
     # Change replenish set.
     if Input.is_action_just_pressed('change_repl_set'):
         if cur_repl_set <= len(replenish_sets) - 2:  cur_repl_set += 1
         else:  cur_repl_set = 0
-        replenish_engines =     replenish_sets[cur_repl_set]['engines']
-        replenish_shields =     replenish_sets[cur_repl_set]['shields']
-        replenish_blasters =    replenish_sets[cur_repl_set]['blasters']
-        hud.updateReplenishValues(replenish_engines, replenish_shields, replenish_blasters)
-
+        replenish['engines'] =     replenish_sets[cur_repl_set]['engines']
+        replenish['shields'] =     replenish_sets[cur_repl_set]['shields']
+        replenish['blasters'] =    replenish_sets[cur_repl_set]['blasters']
+        hud.updateReplenishValues(replenish['engines'], replenish['shields'], replenish['blasters'])
+    
+    # Change replenish each (pos).
+    if not Input.is_action_pressed('repl_shift'):
+        if Input.is_action_just_pressed('repl_engines'):
+            changeReplEach('pos', 'engines')
+        if Input.is_action_just_pressed('repl_shields') and has_shields:
+            changeReplEach('pos', 'shields')
+        if Input.is_action_just_pressed('repl_blasters') and has_blasters:
+            changeReplEach('pos', 'blasters')
+    # Change replenish each (neg).
+    if Input.is_action_pressed('repl_shift'):
+        if Input.is_action_just_pressed('repl_engines'):
+            changeReplEach('neg', 'engines')
+        if Input.is_action_just_pressed('repl_shields') and has_shields:
+            changeReplEach('neg', 'shields')
+        if Input.is_action_just_pressed('repl_blasters') and has_blasters:
+            changeReplEach('neg', 'blasters')
+    
     # Focus controls.
     if Input.is_action_just_pressed('trigger_focus'):
         var focus = scope.get_collider()
         # Only perform focus object update if focus is in Targets.
         if focus != null and focus.get_parent().name == 'Targets':  hud.updateFocusObject(focus)
+
+
+
+func changeReplEach(_dir, _each):
+    """
+    _dir = Dictates positive or negative value change of replenish[_each].
+    _each = Which replenish value is directly adjusted.
+    Functionality allowing player to manually change the replenishment values.
+    """
+    
+    """
+    There HAS to be a better way to do this.
+    """
+    
+    # Ignore if replenish[_each] is capped.
+    if _dir == 'pos' and replenish[_each] == 1.00:  return
+    if _dir == 'neg' and replenish[_each] == 0.00:  return
+    
+    var replenishes = ['engines', 'shields', 'blasters']
+    var others = []
+    for each in replenishes:
+        if each != _each:  others += [ each ]
+    
+    match _dir:
+        'pos':
+            if replenish[_each] >= 0.90:
+                replenish[_each] = 1.00
+                for other in others:  replenish[other] = 0.00
+            else:
+                replenish[_each] += 0.10
+                for other in others:
+                    replenish[other] -= (0.10 / len(others))
+                    if replenish[other] < 0.00:
+                        replenish[_each] += replenish[other]
+                        replenish[other] = 0.00
+        'neg':
+            if replenish[_each] <= 0.10:
+                for other in others:  replenish[other] += (replenish[_each] / len(others))
+                replenish[_each] = 0.00
+            else:
+                replenish[_each] -= 0.10
+                for other in others:
+                    replenish[other] += (0.10 / len(others))
+                    if replenish[other] > 1.00:
+                        replenish[_each] += (replenish[other] - 1.00)
+                        replenish[other] = 0.00
+    
+    hud.updateReplenishValues(replenish['engines'], replenish['shields'], replenish['blasters'])
 
 
 
@@ -502,15 +577,15 @@ func handleInputMouseMotion(_event):
 
 func handleInputMouseWheel(_event):
     # Handle mouse buttons input events.
-
+    
     if _event is InputEventMouseButton and _event.is_pressed():
-
+        
         """
         TO-DO:  The current check for an empty cur_blaster will only work if there is only a
         single empty cur_blaster at a time.  If there are 2 empty cur_blasters in a row then this
         will break.  Need to update to a while loop.
         """
-
+        
         # BLOCK...  Handle scroll wheel input events.
         if _event.button_index == BUTTON_WHEEL_UP:
             if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
@@ -550,12 +625,12 @@ func _on_GeneratorRate_timeout():
 
     for i in range(len(blaster_tags)):
         if blaster_batteries[i] < BLASTER_BATTERY_CAPACITIES[i]:
-            blaster_batteries[i] += REPLENISH * replenish_blasters * replenish_each_blaster[i]
+            blaster_batteries[i] += REPLENISH * replenish['blasters'] * replenish_each_blaster[i]
             blaster_batteries[i] = clamp(blaster_batteries[i], 0, BLASTER_BATTERY_CAPACITIES[i])
             hud.updateBlasterBatteryValue(i, blaster_batteries[i])
 
     if shields_battery < SHIELDS_BATTERY_CAPACITY:
-        shields_battery += REPLENISH * replenish_shields * SHIELDS_CONCENTRATION
+        shields_battery += REPLENISH * replenish['shields'] * SHIELDS_CONCENTRATION
         shields_battery = clamp(shields_battery, 0, SHIELDS_BATTERY_CAPACITY)
         hud.updateShieldsBatteryValue(shields_battery)
 
