@@ -18,8 +18,8 @@ extends Node
 var TESTING_no_menu = true
 
 ### If 'true', vehicle takes no damage from target bolts.
-var TESTING_take_no_damage = false
-#var TESTING_take_no_damage = true
+#var TESTING_take_no_damage = false
+var TESTING_take_no_damage = true
 
 
 
@@ -31,11 +31,12 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 16, # (currently) 64 or less
+    'number_of_targets': 8, # (currently) 64 or less
     'vehicle': {
 
 #        'body': 'BodyWhite',
-        'body': 'BodyWhiteWithYellow',
+#        'body': 'BodyWhiteWithYellow',
+        'body': 'BodyWhiteWithOrange',
 
 #        'generator': 'GeneratorYellow',
         'generator': 'GeneratorGreen',
@@ -51,9 +52,13 @@ var gameplay = {
 #        'blaster1': 'BlasterWhiteWithYellow',
 #        'blaster1': '',
 
-#        'blaster2': 'BlasterWhite',
-        'blaster2': 'BlasterWhiteWithYellow',
+        'blaster2': 'BlasterWhite',
+#        'blaster2': 'BlasterWhiteWithYellow',
 #        'blaster2': '',
+
+#        'blaster3': 'BlasterWhite',
+        'blaster3': 'BlasterWhiteWithYellow',
+#        'blaster3': '',
     },
 }
 
@@ -92,17 +97,17 @@ var body = {
     'BodyWhite': {
         'health': 20.00,
         'armor': 0.05,
-        'blaster_slots': [
-            'blaster1',
-        ]
+        'blaster_slots': ['blaster1',]
     },
     'BodyWhiteWithYellow': {
         'health': 15.00,
         'armor': 0.04,
-        'blaster_slots': [
-            'blaster1',
-            'blaster2',
-        ]
+        'blaster_slots': ['blaster1', 'blaster2',]
+    },
+    'BodyWhiteWithOrange': {
+        'health': 18.00,
+        'armor': 0.02,
+        'blaster_slots': ['blaster1', 'blaster2', 'blaster3',]
     },
 }
 

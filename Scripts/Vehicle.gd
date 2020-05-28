@@ -449,11 +449,15 @@ func getInputWasd():
     var wasd_vel_ = Vector3()
     
     # With 'THRUST', apply WASD up/down input to 'vel' x-axis (forward/backward).
-    if Input.is_action_pressed('ui_up'):	wasd_vel_ += Vector3(+THRUST * replenish['engines'], 0, 0)
-    if Input.is_action_pressed('ui_down'):	wasd_vel_ += Vector3(-THRUST * replenish['engines'], 0, 0)
+    if Input.is_action_pressed('ui_up'):
+        wasd_vel_ += Vector3(+THRUST * replenish['engines'], 0, 0)
+    if Input.is_action_pressed('ui_down'):
+        wasd_vel_ += Vector3(-THRUST * replenish['engines'], 0, 0)
     # With 'THRUST', apply WASD left/right input to 'vel' z-axis (left/right).
-    if Input.is_action_pressed('ui_left'):	wasd_vel_ += Vector3(0, 0, -THRUST * replenish['engines'])
-    if Input.is_action_pressed('ui_right'):	wasd_vel_ += Vector3(0, 0, +THRUST * replenish['engines'])
+    if Input.is_action_pressed('ui_left'):
+        wasd_vel_ += Vector3(0, 0, -THRUST * replenish['engines'])
+    if Input.is_action_pressed('ui_right'):
+        wasd_vel_ += Vector3(0, 0, +THRUST * replenish['engines'])
     
     return wasd_vel_
 
@@ -503,6 +507,16 @@ func handleInputOther():
             changeReplEach('neg', 'shields')
         if Input.is_action_just_pressed('repl_blasters') and has_blasters:
             changeReplEach('neg', 'blasters')
+        
+        # Force replenishments all back to even.
+        if Input.is_action_pressed('change_repl_set'):
+            cur_repl_set = 0
+            replenish['engines'] =     replenish_sets[cur_repl_set]['engines']
+            replenish['shields'] =     replenish_sets[cur_repl_set]['shields']
+            replenish['blasters'] =    replenish_sets[cur_repl_set]['blasters']
+            hud.updateReplenishValues(
+                replenish['engines'], replenish['shields'], replenish['blasters']
+            )
     
     # Focus controls.
     if Input.is_action_just_pressed('trigger_focus'):
@@ -587,7 +601,7 @@ func handleInputMouseWheel(_event):
         """
         
         # BLOCK...  Handle scroll wheel input events.
-        if _event.button_index == BUTTON_WHEEL_UP:
+        if _event.button_index == BUTTON_WHEEL_DOWN:
             if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
             else:  cur_blaster = 0
             # After each cur_blaster change, the process is repeated if the cur_blaster is changed
@@ -596,7 +610,7 @@ func handleInputMouseWheel(_event):
                 if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
                 else:  cur_blaster = 0
         # (same)
-        if _event.button_index == BUTTON_WHEEL_DOWN:
+        if _event.button_index == BUTTON_WHEEL_UP:
             if cur_blaster != 0:  cur_blaster -= 1
             else:  cur_blaster = len(BLASTER_SLOTS) - 1
             if blaster_tags[cur_blaster] == '':
@@ -668,6 +682,12 @@ func _on_Blaster1CoolDown_timeout():
 func _on_Blaster2CoolDown_timeout():
     
     blaster_cooled_downs[1] = true
+
+
+
+func _on_Blaster3CoolDown_timeout():
+    
+    blaster_cooled_downs[2] = true
 
 
 
