@@ -13,7 +13,7 @@ albedo_color = Color( 0, 1, 0, 1 )
 [sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 0, 0.627451, 0, 1 )
 
-[node name="ShieldsGreen" type="Spatial"]
+[node name="ShieldsWhiteWithYellow" type="Spatial"]
 
 [node name="GeneratorSlot" parent="." instance=ExtResource( 1 )]
 visible = false

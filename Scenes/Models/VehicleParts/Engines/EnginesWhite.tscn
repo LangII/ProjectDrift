@@ -10,9 +10,10 @@ albedo_color = Color( 1, 1, 0, 1 )
 [sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.784314, 0.784314, 0, 1 )
 
-[node name="EnginesYellow" type="Spatial"]
+[node name="EnginesWhite" type="Spatial"]
 
 [node name="EnginesSlot" parent="." instance=ExtResource( 1 )]
+visible = false
 
 [node name="MeshInstance1" type="MeshInstance" parent="."]
 transform = Transform( 0.35, 0, 0, 0, 0.1, 0, 0, 0, 0.35, 0.19, -0.02, 0.19 )

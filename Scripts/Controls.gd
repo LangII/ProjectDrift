@@ -38,26 +38,29 @@ var gameplay = {
 #        'body': 'BodyWhiteWithYellow',
         'body': 'BodyWhiteWithOrange',
 
-#        'generator': 'GeneratorYellow',
-        'generator': 'GeneratorGreen',
+#        'generator': 'GeneratorWhite',
+        'generator': 'GeneratorWhiteWithYellow',
 
-        'engines': 'EnginesYellow',
-#        'engines': 'EnginesGreen',
+#        'engines': 'EnginesWhite',
+        'engines': 'EnginesWhiteWithYellow',
 
-#        'shields': 'ShieldsYellow',
-        'shields': 'ShieldsGreen',
+#        'shields': 'ShieldsWhite',
+        'shields': 'ShieldsWhiteWithYellow',
 #        'shields': '',
 
-        'blaster1': 'BlasterWhite',
-#        'blaster1': 'BlasterWhiteWithYellow',
+#        'blaster1': 'BlasterWhite',
+        'blaster1': 'BlasterWhiteWithYellow',
+#        'blaster1': 'BlasterWhiteWithOrange',
 #        'blaster1': '',
 
-        'blaster2': 'BlasterWhite',
-#        'blaster2': 'BlasterWhiteWithYellow',
+#        'blaster2': 'BlasterWhite',
+        'blaster2': 'BlasterWhiteWithYellow',
+#        'blaster2': 'BlasterWhiteWithOrange',
 #        'blaster2': '',
 
 #        'blaster3': 'BlasterWhite',
         'blaster3': 'BlasterWhiteWithYellow',
+#        'blaster3': 'BlasterWhiteWithOrange',
 #        'blaster3': '',
     },
 }
@@ -112,24 +115,42 @@ var body = {
 }
 
 var generators = {
-    'GeneratorYellow': {
+    'GeneratorWhite': {
         'rate': 0.80,
         'replenish': 8.00,
     },
-    'GeneratorGreen': {
+    'GeneratorWhiteWithYellow': {
         'rate': 0.40,
         'replenish': 4.00,
     },
 }
 
 var engines = {
-    'EnginesYellow': {
+    'EnginesWhite': {
+        'thrust': 22.00,
+        'max_speed': 12.00,
+    },
+    'EnginesWhiteWithYellow': {
         'thrust': 16.00,
         'max_speed': 18.00,
     },
-    'EnginesGreen': {
-        'thrust': 22.00,
-        'max_speed': 12.00,
+}
+
+var shields = {
+    'ShieldsWhite': {
+        'density': 0.02,
+        'concentration': 0.05, # (perc)
+        'battery_capacity': 40.00,
+    },
+    'ShieldsWhiteWithYellow': {
+        'density': 0.05,
+        'concentration': 0.02, # (perc)
+        'battery_capacity': 50.00,
+    },
+    '': {
+        'density': 0.0,
+        'concentration': 0.00, # (perc)
+        'battery_capacity': 0.0,
     },
 }
 
@@ -146,29 +167,17 @@ var blasters = {
         'cool_down': 0.35,
         'battery_capacity': 80.00,
     },
+    'BlasterWhiteWithOrange': {
+        'energy': 5.00,
+        'bolt_speed': 55.00,
+        'cool_down': 0.20,
+        'battery_capacity': 70.00,
+    },
     '': {
         'energy': 0.00,
         'bolt_speed': 0.00,
         'cool_down': 0.00,
         'battery_capacity': 0.00,
-    },
-}
-
-var shields = {
-    'ShieldsYellow': {
-        'density': 0.02,
-        'concentration': 0.05, # (perc)
-        'battery_capacity': 40.00,
-    },
-    'ShieldsGreen': {
-        'density': 0.05,
-        'concentration': 0.02, # (perc)
-        'battery_capacity': 50.00,
-    },
-    '': {
-        'density': 0.0,
-        'concentration': 0.00, # (perc)
-        'battery_capacity': 0.0,
     },
 }
 
