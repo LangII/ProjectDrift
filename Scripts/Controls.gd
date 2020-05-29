@@ -54,14 +54,17 @@ var gameplay = {
 #        'blaster1': '',
 
 #        'blaster2': 'BlasterWhite',
-        'blaster2': 'BlasterWhiteWithYellow',
-#        'blaster2': 'BlasterWhiteWithOrange',
+#        'blaster2': 'BlasterWhiteWithYellow',
+        'blaster2': 'BlasterWhiteWithOrange',
 #        'blaster2': '',
 
 #        'blaster3': 'BlasterWhite',
-        'blaster3': 'BlasterWhiteWithYellow',
+#        'blaster3': 'BlasterWhiteWithYellow',
 #        'blaster3': 'BlasterWhiteWithOrange',
 #        'blaster3': '',
+
+        'missilelauncher1': 'MissileLauncherWhite',
+#        'missilelauncher1': 'MissileLauncher',
     },
 }
 
@@ -100,17 +103,18 @@ var body = {
     'BodyWhite': {
         'health': 20.00,
         'armor': 0.05,
-        'blaster_slots': ['blaster1',]
+        'blaster_slots': ['blaster1',],
     },
     'BodyWhiteWithYellow': {
         'health': 15.00,
         'armor': 0.04,
-        'blaster_slots': ['blaster1', 'blaster2',]
+        'blaster_slots': ['blaster1', 'blaster2',],
     },
     'BodyWhiteWithOrange': {
         'health': 18.00,
         'armor': 0.02,
-        'blaster_slots': ['blaster1', 'blaster2', 'blaster3',]
+        'blaster_slots': ['blaster1', 'blaster2',],
+        'missilelauncher_slots': ['missilelauncher1',],
     },
 }
 
@@ -170,7 +174,7 @@ var blasters = {
     'BlasterWhiteWithOrange': {
         'energy': 5.00,
         'bolt_speed': 55.00,
-        'cool_down': 0.20,
+        'cool_down': 0.25,
         'battery_capacity': 70.00,
     },
     '': {
@@ -178,6 +182,23 @@ var blasters = {
         'bolt_speed': 0.00,
         'cool_down': 0.00,
         'battery_capacity': 0.00,
+    },
+}
+
+var missile_launchers = {
+    'MissileLauncherWhite': {
+        'damage': {5.0: 10.0, 8.0: 5.0,},
+        'missile_speed': 40.0,
+        'missile_acc': 0.5,
+        'cool_down': 1.5,
+        'magazine_capacity': 3,
+    },
+    '': {
+        'damage': {0.0: 0.0,},
+        'missile_speed': 0.0,
+        'missile_acc': 0.0,
+        'cool_down': 0.0,
+        'magazine_capacity': 0,
     },
 }
 

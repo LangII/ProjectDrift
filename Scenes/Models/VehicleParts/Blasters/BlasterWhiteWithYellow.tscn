@@ -42,5 +42,5 @@ transform = Transform( -2.44381e-08, 0, 0.02, 0, 0.01, 0, -0.15, 0, -3.25841e-09
 mesh = SubResource( 6 )
 material/0 = null
 
-[node name="BoltSpawn*" type="Position3D" parent="BarrelPivot*"]
+[node name="ProjectileSpawn*" type="Position3D" parent="BarrelPivot*"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -3.39445e-07, 0, -2.0835 )

@@ -20,6 +20,9 @@ onready var engines_tag =   controls.gameplay['vehicle']['engines']
 onready var shields_tag =   controls.gameplay['vehicle']['shields']
 ### (expandables)
 onready var blaster_tags = []
+onready var launcher_full_tags = []
+onready var launcher_types = []
+onready var launcher_tags = []
 
 ### Get global control variables.
 onready var GRAVITY_FORCE =         controls.global['vehicle']['gravity_force']
@@ -48,6 +51,10 @@ onready var REPLENISH =                 controls.generators[generator_tag]['repl
 onready var BLASTER_BATTERY_CAPACITIES = []
 onready var BLASTER_COOL_DOWNS = []
 onready var BOLT_ENERGIES = []
+onready var LAUNCHER_SLOTS = []
+onready var LAUNCHER_MAGAZINE_CAPACITIES = []
+onready var LAUNCHER_COOL_DOWNS = []
+
 
 
 
@@ -101,12 +108,13 @@ onready var pointing_at = Vector3()
 onready var rot_force = 0.0
 onready var gravity_force = 2.00
 onready var gravity_dir = Vector3.DOWN
-onready var has_shields = true
-onready var has_blasters = true
+onready var has_shields = false
+onready var has_blasters = false
+onready var has_launchers = false
 onready var replenish = {}
 ### (expandables)
 onready var barrel_pivots = []
-onready var bolt_spawns = []
+onready var blaster_proj_spawns = []
 onready var blaster_cooled_downs = []
 onready var blaster_batteries = []
 onready var Bolts = []
@@ -136,11 +144,18 @@ func _ready():
     set_angular_damp(SPIN_DAMP)
     
     # Among variable generations and model instancing, tags have to come first.
-    generateExpandableTags()
+    generateExpandableSlotsAndTags()
     
     setHasShields()
     
     setHasBlasters()
+    
+    setHasLaunchers()
+    
+#    print("LAUNCHER_SLOTS = ", LAUNCHER_SLOTS)
+#    print("launcher_tags = ", launcher_tags)
+#    print("has_launchers = ", has_launchers)
+#    get_tree().quit()
     
     instancePartModels()
     
@@ -166,29 +181,36 @@ func _ready():
                                                                              ###   READY FUNCS   ###
                                                                              #######################
 
-func generateExpandableTags():
+func generateExpandableSlotsAndTags():
     """
     Generate expandable tags.
     """
     
     for blaster in BLASTER_SLOTS:
         blaster_tags += [ controls.gameplay['vehicle'][blaster] ]
+    
+    # Load LAUNCHER_SLOTS with each launcher type.
+    if 'missilelauncher_slots' in controls.body[body_tag].keys():
+        LAUNCHER_SLOTS += controls.body[body_tag]['missilelauncher_slots']
+    
+    if LAUNCHER_SLOTS:
+        for launcher in LAUNCHER_SLOTS:
+            var full_tag = controls.gameplay['vehicle'][launcher]
+            launcher_full_tags += [ full_tag ]
+            launcher_tags += [ full_tag.right(full_tag.find('Launcher') + len('Launcher')) ]
+            launcher_types += [ full_tag.left(full_tag.find('Launcher')) ]
 
 
 
 func setHasShields():
-    """
-    Determine value of has_shields.
-    """
+    """ Set value of has_shields. """
     
     if not shields_tag:  has_shields = false
 
 
 
 func setHasBlasters():
-    """
-    Determine value of has_blasters.
-    """
+    """ Set value of has_blasters. """
     
     has_blasters = false
     for blaster_tag in blaster_tags:
@@ -198,10 +220,19 @@ func setHasBlasters():
 
 
 
+func setHasLaunchers():
+    """ Set value of has_launchers. """
+    
+    has_launchers = false
+    for launcher_tag in launcher_tags:
+        if launcher_tag != '':
+            has_launchers = true
+            break
+
+
+
 func instancePartModels():
-    """
-    Instance part models.  Must succeed generateExpandableTags().
-    """
+    """ Instance part models.  Must succeed generateExpandableTags(). """
     
     # Instance generator model.
     var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tscn' % generator_tag)
@@ -228,18 +259,34 @@ func instancePartModels():
             var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
             var blaster_pos = _parts_.find_node('Blaster%sPos*' % str(i + 1))
             blaster_pos.add_child(Blaster.instance())
+    
+    # If applicable, instance launcher models.
+    var all_launcher_types = ['Missile']
+    if has_launchers:
+        for i in range(len(launcher_tags)):
+            var launcher_tag = launcher_tags[i]
+            if launcher_tag:
+                for type in all_launcher_types:
+                    if launcher_types[i] == type:
+                        var launcher_str = 'res://Scenes/Models/VehicleParts/Launchers/%s/%s.tscn'
+                        var Launcher = load(launcher_str % [type, launcher_full_tags[i]])
+                        var launcher_pos = _parts_.find_node('%sLauncher%sPos*' % [type, str(i + 1)])
+                        launcher_pos.add_child(Launcher.instance())
 
 
 
 func generateExpandableControlVars():
-    """
-    Generate expandable control variables.  Must succeed generateExpandableTags().
-    """
+    """ Generate expandable control variables.  Must succeed generateExpandableTags(). """
     
     for blaster_tag in blaster_tags:
         BLASTER_BATTERY_CAPACITIES +=   [ controls.blasters[blaster_tag]['battery_capacity'] ]
         BLASTER_COOL_DOWNS +=           [ controls.blasters[blaster_tag]['cool_down'] ]
         BOLT_ENERGIES +=                [ controls.blasters[blaster_tag]['energy'] ]
+    
+#    for launcher_tag in launcher_tags:
+#        LAUNCHER_MAGAZINE_CAPACITIES += [  ]
+#        LAUNCHER_COOL_DOWNS += [  ]
+        
 
 
 
@@ -255,7 +302,7 @@ func generateExpandableWorkingVars():
         if blaster_tag:
             var blaster_pos = _parts_.find_node('Blaster%sPos*' % str(i + 1))
             barrel_pivots +=        [ blaster_pos.find_node('BarrelPivot*', true, false) ]
-            bolt_spawns +=          [ blaster_pos.find_node('BoltSpawn*', true, false) ]
+            blaster_proj_spawns +=  [ blaster_pos.find_node('ProjectileSpawn*', true, false) ]
             blaster_cooled_downs += [ true ]
             blaster_batteries +=    [ BLASTER_BATTERY_CAPACITIES[i] ]
             
@@ -269,7 +316,7 @@ func generateExpandableWorkingVars():
         
         else:
             barrel_pivots +=        [ null ]
-            bolt_spawns +=          [ null ]
+            blaster_proj_spawns +=          [ null ]
             blaster_cooled_downs += [ null ]
             blaster_batteries +=    [ 0 ]
             Bolts +=                [ null ]
@@ -376,7 +423,7 @@ func setTargetting():
     
     if scope.is_colliding():  pointing_at = scope.get_collision_point()
     else:  pointing_at = look_default.global_transform.origin
-    bolt_spawns[cur_blaster].look_at(pointing_at, Vector3.UP)
+    blaster_proj_spawns[cur_blaster].look_at(pointing_at, Vector3.UP)
     
     ###   NEED TO FIX   ###
     # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
@@ -476,11 +523,14 @@ func handleInputOther():
                 get_node('/root/Main/Gameplay/VehicleBolts').add_child(bolt)
                 ###
                 
-                bolt.spawn(bolt_spawns[cur_blaster].global_transform)
+                bolt.spawn(blaster_proj_spawns[cur_blaster].global_transform)
                 blaster_batteries[cur_blaster] -= BOLT_ENERGIES[cur_blaster]
                 hud.updateBlasterBatteryValue(cur_blaster, blaster_batteries[cur_blaster])
                 blaster_cool_downs[cur_blaster].start()
                 blaster_cooled_downs[cur_blaster] = false
+    
+#    if Input.is_action_pressed('launcher_shoot') and has_launchers:
+        
     
     # Change replenish set.
     if Input.is_action_just_pressed('change_repl_set'):
@@ -682,12 +732,6 @@ func _on_Blaster1CoolDown_timeout():
 func _on_Blaster2CoolDown_timeout():
     
     blaster_cooled_downs[1] = true
-
-
-
-func _on_Blaster3CoolDown_timeout():
-    
-    blaster_cooled_downs[2] = true
 
 
 

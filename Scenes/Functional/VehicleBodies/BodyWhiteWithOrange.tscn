@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/Vehicle.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Functional/Hud.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Models/VehicleParts/Slots/MissileLauncherSlot.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Models/VehicleParts/Slots/GeneratorSlot.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Models/VehicleParts/Slots/ShieldsSlot.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Models/VehicleParts/Slots/EnginesSlot.tscn" type="PackedScene" id=7]
@@ -122,7 +123,7 @@ mesh = SubResource( 5 )
 material/0 = SubResource( 6 )
 
 [node name="MeshInstance03" type="MeshInstance" parent="BodyMesh"]
-transform = Transform( 0.3, 0, 2.49272e-08, 0, 0.1, 0, -3.73908e-08, 0, 0.2, 1.12, 0.68, 0.45 )
+transform = Transform( 0.3, 0, 2.49272e-08, 0, 0.1, 0, -3.73908e-08, 0, 0.2, 1.12, 0.68, 0.149571 )
 mesh = SubResource( 5 )
 material/0 = SubResource( 7 )
 
@@ -166,10 +167,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.75, -0.219158 )
 
 [node name="BlasterSlot" parent="Parts*/Blaster2Pos*" instance=ExtResource( 8 )]
 
-[node name="Blaster3Pos*" type="Position3D" parent="Parts*"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.75, 0.0808422 )
+[node name="MissileLauncher1Pos*" type="Position3D" parent="Parts*"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.75, 0.518168 )
 
-[node name="BlasterSlot" parent="Parts*/Blaster3Pos*" instance=ExtResource( 8 )]
+[node name="MissileLauncherSlot" parent="Parts*/MissileLauncher1Pos*" instance=ExtResource( 3 )]
 
 [node name="EngineFrPos*" type="Position3D" parent="Parts*"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.22, 0.39, 0.53 )
@@ -210,10 +211,6 @@ autostart = true
 one_shot = true
 autostart = true
 
-[node name="Blaster3CoolDown*" type="Timer" parent="NonSpatial*"]
-one_shot = true
-autostart = true
-
 [node name="Hud" parent="NonSpatial*" instance=ExtResource( 2 )]
 margin_left = 0.0
 margin_top = 0.0
@@ -222,4 +219,3 @@ margin_bottom = 0.0
 [connection signal="timeout" from="NonSpatial*/GeneratorRate*" to="." method="_on_GeneratorRate_timeout"]
 [connection signal="timeout" from="NonSpatial*/Blaster1CoolDown*" to="." method="_on_Blaster1CoolDown_timeout"]
 [connection signal="timeout" from="NonSpatial*/Blaster2CoolDown*" to="." method="_on_Blaster2CoolDown_timeout"]
-[connection signal="timeout" from="NonSpatial*/Blaster3CoolDown*" to="." method="_on_Blaster3CoolDown_timeout"]
