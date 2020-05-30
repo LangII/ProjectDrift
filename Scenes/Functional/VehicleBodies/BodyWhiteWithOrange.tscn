@@ -211,6 +211,10 @@ autostart = true
 one_shot = true
 autostart = true
 
+[node name="Launcher1CoolDown*" type="Timer" parent="NonSpatial*"]
+one_shot = true
+autostart = true
+
 [node name="Hud" parent="NonSpatial*" instance=ExtResource( 2 )]
 margin_left = 0.0
 margin_top = 0.0
@@ -219,3 +223,4 @@ margin_bottom = 0.0
 [connection signal="timeout" from="NonSpatial*/GeneratorRate*" to="." method="_on_GeneratorRate_timeout"]
 [connection signal="timeout" from="NonSpatial*/Blaster1CoolDown*" to="." method="_on_Blaster1CoolDown_timeout"]
 [connection signal="timeout" from="NonSpatial*/Blaster2CoolDown*" to="." method="_on_Blaster2CoolDown_timeout"]
+[connection signal="timeout" from="NonSpatial*/Launcher1CoolDown*" to="." method="_on_Launcher1CoolDown_timeout"]

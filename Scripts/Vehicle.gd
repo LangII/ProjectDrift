@@ -73,6 +73,7 @@ onready var scope = camera_pivot.find_node('Scope*')
 onready var look_default = camera_pivot.find_node('LookDefault*')
 ### (expandables)
 onready var blaster_cool_downs = []
+onready var launcher_cool_downs = []
 
 
 
@@ -101,9 +102,12 @@ onready var only_engines_replenish_sets = [
     {'engines': 1.00, 'shields': 0.00, 'blasters': 0.00},
 ]
 
+onready var all_launcher_types = ['Missile',]
+
 ### Working vars.
 onready var cur_repl_set = 0
 onready var cur_blaster = 0
+onready var cur_launcher = 0
 onready var pointing_at = Vector3()
 onready var rot_force = 0.0
 onready var gravity_force = 2.00
@@ -113,11 +117,16 @@ onready var has_blasters = false
 onready var has_launchers = false
 onready var replenish = {}
 ### (expandables)
-onready var barrel_pivots = []
+onready var blaster_barrel_pivots = []
 onready var blaster_proj_spawns = []
 onready var blaster_cooled_downs = []
 onready var blaster_batteries = []
 onready var Bolts = []
+onready var launcher_barrel_pivots = []
+onready var launcher_proj_spawns = []
+onready var launcher_cooled_downs = []
+onready var launcher_magazines = []
+onready var Rounds = []
 
 ### Initialize shields var.
 onready var shields_battery = SHIELDS_BATTERY_CAPACITY
@@ -205,7 +214,7 @@ func generateExpandableSlotsAndTags():
 func setHasShields():
     """ Set value of has_shields. """
     
-    if not shields_tag:  has_shields = false
+    if shields_tag:  has_shields = true
 
 
 
@@ -261,7 +270,6 @@ func instancePartModels():
             blaster_pos.add_child(Blaster.instance())
     
     # If applicable, instance launcher models.
-    var all_launcher_types = ['Missile']
     if has_launchers:
         for i in range(len(launcher_tags)):
             var launcher_tag = launcher_tags[i]
@@ -283,10 +291,16 @@ func generateExpandableControlVars():
         BLASTER_COOL_DOWNS +=           [ controls.blasters[blaster_tag]['cool_down'] ]
         BOLT_ENERGIES +=                [ controls.blasters[blaster_tag]['energy'] ]
     
-#    for launcher_tag in launcher_tags:
-#        LAUNCHER_MAGAZINE_CAPACITIES += [  ]
-#        LAUNCHER_COOL_DOWNS += [  ]
-        
+    for i in range(len(launcher_full_tags)):
+        var launcher_tag = launcher_full_tags[i]
+        for type in all_launcher_types:
+            if launcher_types[i] == type:
+                LAUNCHER_MAGAZINE_CAPACITIES += [
+                    controls.launchers[type][launcher_tag]['magazine_capacity']
+                ]
+                LAUNCHER_COOL_DOWNS += [
+                    controls.launchers[type][launcher_tag]['cool_down']
+                ]
 
 
 
@@ -295,67 +309,73 @@ func generateExpandableWorkingVars():
     Generate expandable working variables.  Must succeed generateExpandableTags() and
     generateExpandableControlVars().
     """
-
+    
     for i in range(len(blaster_tags)):
         var blaster_tag = blaster_tags[i]
-        
         if blaster_tag:
             var blaster_pos = _parts_.find_node('Blaster%sPos*' % str(i + 1))
-            barrel_pivots +=        [ blaster_pos.find_node('BarrelPivot*', true, false) ]
-            blaster_proj_spawns +=  [ blaster_pos.find_node('ProjectileSpawn*', true, false) ]
-            blaster_cooled_downs += [ true ]
-            blaster_batteries +=    [ BLASTER_BATTERY_CAPACITIES[i] ]
-            
-            """
-            Need to use load().new() for passing arguments when instancing.
-            """
-            
-            # Load Bolt scenes into Bolts expandable.
+            blaster_barrel_pivots +=    [ blaster_pos.find_node('BarrelPivot*', true, false) ]
+            blaster_proj_spawns +=      [ blaster_pos.find_node('ProjectileSpawn*', true, false) ]
+            blaster_cooled_downs +=     [ true ]
+            blaster_batteries +=        [ BLASTER_BATTERY_CAPACITIES[i] ]
             var bolt_tag = 'VehicleBolt' + blaster_tag.right(7)
             Bolts += [ load('res://Scenes/Functional/Projectiles/%s.tscn' % bolt_tag) ]
-        
         else:
-            barrel_pivots +=        [ null ]
-            blaster_proj_spawns +=          [ null ]
-            blaster_cooled_downs += [ null ]
-            blaster_batteries +=    [ 0 ]
-            Bolts +=                [ null ]
+            blaster_barrel_pivots +=    [ null ]
+            blaster_proj_spawns +=      [ null ]
+            blaster_cooled_downs +=     [ null ]
+            blaster_batteries +=        [ 0 ]
+            Bolts +=                    [ null ]
+    
+    for i in range(len(launcher_full_tags)):
+        var launcher_tag = launcher_tags[i]
+        var launcher_type = launcher_types[i]
+        if launcher_tag:
+            var launcher_pos = _parts_.find_node('%sLauncher%sPos*' % [launcher_type, str(i + 1)])
+            launcher_barrel_pivots += [ launcher_pos.find_node('BarrelPivot*'), true, false ]
+            launcher_proj_spawns += [ launcher_pos.find_node('ProjectileSpawn*'), true, false ]
+            launcher_cooled_downs += [ true ]
+            launcher_magazines += [ LAUNCHER_MAGAZINE_CAPACITIES[i] ]
+            var round_tag = 'Vehicle%sRound%s' % [launcher_type, launcher_tag]
+            Rounds += [ load('res://Scenes/Functional/Projectiles/%s.tscn' % round_tag) ]
+        else:
+            launcher_barrel_pivots +=   [ null ]
+            launcher_proj_spawns +=     [ null ]
+            launcher_cooled_downs +=    [ null ]
+            launcher_magazines +=       [ 0 ]
+            Rounds +=                   [ null ]
 
 
 
 func generateExpandableNodeRefs():
-    """
-    Generate expandable node references.  Must succeed generateExpandableTags().
-    """
+    """ Generate expandable node references.  Must succeed generateExpandableTags(). """
     
     for i in range(len(BLASTER_SLOTS)):
         blaster_cool_downs += [ _non_spatial_.find_node('Blaster%sCoolDown*' % str(i + 1)) ]
+    for i in range(len(LAUNCHER_SLOTS)):
+        launcher_cool_downs += [ _non_spatial_.find_node('Launcher%sCoolDown*' % str(i + 1)) ]
 
 
 
 func setNodeRefValues():
-    """
-    Set dynamic values of nodes. 
-    """
+    """ Set dynamic values of nodes. """
     
     generator_rate.wait_time = GENERATOR_RATE
 
 
 
 func setExpandableNodeRefValues():
-    """
-    Set dynamic values of nodes from expandable node groups. 
-    """
+    """ Set dynamic values of nodes from expandable node groups. """
     
     for i in range(len(BLASTER_SLOTS)):
         blaster_cool_downs[i].wait_time = BLASTER_COOL_DOWNS[i]
+    for i in range(len(LAUNCHER_SLOTS)):
+        launcher_cool_downs[i].wait_time = LAUNCHER_COOL_DOWNS[i]
 
 
 
 func setReplenishSets():
-    """
-    Set replenish_sets based on has_shields and has_blasters.
-    """
+    """ Set replenish_sets based on has_shields and has_blasters. """
     
     if not has_shields:  replenish_sets = no_shields_replenish_sets
     if not has_blasters:  replenish_sets = no_blasters_replenish_sets
@@ -431,10 +451,10 @@ func setTargetting():
     # a gravity inversion slope.
     
     # Point barrel_pivot at pointing_at.
-    barrel_pivots[cur_blaster].look_at(pointing_at, gravity_dir * -1)
-    barrel_pivots[cur_blaster].rotation_degrees.y = -90
-    barrel_pivots[cur_blaster].rotation_degrees.x = clamp(
-        barrel_pivots[cur_blaster].rotation_degrees.x, 0, 90
+    blaster_barrel_pivots[cur_blaster].look_at(pointing_at, gravity_dir * -1)
+    blaster_barrel_pivots[cur_blaster].rotation_degrees.y = -90
+    blaster_barrel_pivots[cur_blaster].rotation_degrees.x = clamp(
+        blaster_barrel_pivots[cur_blaster].rotation_degrees.x, 0, 90
     )
 
 
@@ -529,8 +549,9 @@ func handleInputOther():
                 blaster_cool_downs[cur_blaster].start()
                 blaster_cooled_downs[cur_blaster] = false
     
-#    if Input.is_action_pressed('launcher_shoot') and has_launchers:
-        
+    # Launcher / Round controls.
+    if Input.is_action_pressed('launcher_shoot') and has_launchers:
+        pass
     
     # Change replenish set.
     if Input.is_action_just_pressed('change_repl_set'):
@@ -668,6 +689,11 @@ func handleInputMouseWheel(_event):
                 else:  cur_blaster = len(BLASTER_SLOTS) - 1
         
         hud.updateBlasterCurrentValue(cur_blaster)
+    
+    """
+    NEXT TO-DO:  Need to handle event for changing cur_launcher.  Then need to handle event for
+    shooting cur_launcher.  Then need to update hud for displaying launcher info.
+    """
 
 
 
@@ -735,6 +761,12 @@ func _on_Blaster2CoolDown_timeout():
 
 
 
+func _on_Launcher1CoolDown_timeout():
+    
+    launcher_cooled_downs[0] = true
+
+
+
 ####################################################################################################
                                                                                 ###   OBSOLETE   ###
                                                                                 ####################
@@ -743,3 +775,5 @@ func _on_Blaster2CoolDown_timeout():
 #    # Clamp vehicle's max speed. 
 #    if linear_velocity.length() > MAX_SPEED:
 #        linear_velocity = linear_velocity.normalized() * MAX_SPEED
+
+

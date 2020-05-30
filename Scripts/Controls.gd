@@ -185,20 +185,22 @@ var blasters = {
     },
 }
 
-var missile_launchers = {
-    'MissileLauncherWhite': {
-        'damage': {5.0: 10.0, 8.0: 5.0,},
-        'missile_speed': 40.0,
-        'missile_acc': 0.5,
-        'cool_down': 1.5,
-        'magazine_capacity': 3,
-    },
-    '': {
-        'damage': {0.0: 0.0,},
-        'missile_speed': 0.0,
-        'missile_acc': 0.0,
-        'cool_down': 0.0,
-        'magazine_capacity': 0,
+var launchers = {
+    'Missile': {
+        'MissileLauncherWhite': {
+            'damage': {5.0: 10.0, 8.0: 5.0,},
+            'missile_speed': 40.0,
+            'missile_acc': 0.5,
+            'cool_down': 1.5,
+            'magazine_capacity': 3,
+        },
+        '': {
+            'damage': {0.0: 0.0,},
+            'missile_speed': 0.0,
+            'missile_acc': 0.0,
+            'cool_down': 0.0,
+            'magazine_capacity': 0,
+        },
     },
 }
 
