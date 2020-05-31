@@ -342,6 +342,10 @@ func _on_HalfSecond_timeout():
 
     hud.updateSpeedValue(vehicle.linear_velocity.length())
 
+#    print("\nENGINES = ", vehicle.replenish['engines'])
+#    print("SHIELDS = ", vehicle.replenish['shields'])
+#    print("BLASTERS = ", vehicle.replenish['blasters'])
+
 #    print(vehicle.MAX_SPEED)
 
 #    vehicle.printTransformBasis()

@@ -172,6 +172,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.75, 0.518168 )
 
 [node name="MissileLauncherSlot" parent="Parts*/MissileLauncher1Pos*" instance=ExtResource( 3 )]
 
+[node name="MissileLauncher2Pos*" type="Position3D" parent="Parts*"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.75, 0.905429 )
+
+[node name="MissileLauncherSlot" parent="Parts*/MissileLauncher2Pos*" instance=ExtResource( 3 )]
+
 [node name="EngineFrPos*" type="Position3D" parent="Parts*"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.22, 0.39, 0.53 )
 
@@ -215,6 +220,10 @@ autostart = true
 one_shot = true
 autostart = true
 
+[node name="Launcher2CoolDown*" type="Timer" parent="NonSpatial*"]
+one_shot = true
+autostart = true
+
 [node name="Hud" parent="NonSpatial*" instance=ExtResource( 2 )]
 margin_left = 0.0
 margin_top = 0.0
@@ -224,3 +233,4 @@ margin_bottom = 0.0
 [connection signal="timeout" from="NonSpatial*/Blaster1CoolDown*" to="." method="_on_Blaster1CoolDown_timeout"]
 [connection signal="timeout" from="NonSpatial*/Blaster2CoolDown*" to="." method="_on_Blaster2CoolDown_timeout"]
 [connection signal="timeout" from="NonSpatial*/Launcher1CoolDown*" to="." method="_on_Launcher1CoolDown_timeout"]
+[connection signal="timeout" from="NonSpatial*/Launcher2CoolDown*" to="." method="_on_Launcher2CoolDown_timeout"]

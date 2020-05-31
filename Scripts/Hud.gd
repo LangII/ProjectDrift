@@ -24,16 +24,22 @@ onready var engines_tag =   controls.gameplay['vehicle']['engines']
 onready var shields_tag =   controls.gameplay['vehicle']['shields']
 ### (expandables)
 onready var blaster_tags = []
+onready var launcher_full_tags = []
+onready var launcher_types = []
+onready var launcher_tags = []
 
 ### Set initial values from controls.
 onready var objective_input =       controls.gameplay['number_of_targets']
 onready var BLASTER_SLOTS =         controls.body[body_tag]['blaster_slots']
+onready var LAUNCHER_SLOTS =         controls.body[body_tag]['launcher_slots']
 onready var health_input =          controls.body[body_tag]['health']
 onready var MAX_SPEED =             controls.engines[engines_tag]['max_speed']
 onready var shields_battery_input = controls.shields[shields_tag]['battery_capacity']
 ### (expandables)
 onready var blaster_battery_inputs = []
 onready var blaster_bolt_energy_inputs = []
+onready var launcher_magazine_inputs = []
+onready var launcher_round_dmg_inputs = []
 
 
 
@@ -70,11 +76,16 @@ onready var health_text =               _bottom_left_.find_node('HealthText*')
 ### BottomRight node references.
 onready var _bottom_right_ = find_node('BottomRight*')
 onready var blasters_container = _bottom_right_.find_node('BlastersContainer*')
+onready var launchers_container = _bottom_right_.find_node('LaunchersContainer*')
 ### (expandables)
 onready var blaster_texts = []
 onready var blaster_prog_bars = []
 onready var blaster_bolt_energy_texts = []
-onready var blaster_cur_texts = []
+onready var blaster_cur_containers = []
+onready var launcher_texts = []
+onready var launcher_prog_bars = []
+onready var launcher_round_dmg_texts = []
+onready var launcher_cur_containers = []
 
 ### TopLeft node references.
 onready var _top_left_ = find_node('TopLeft*')
@@ -98,6 +109,7 @@ onready var replenish_engines_input = 0.0
 onready var replenish_shields_input = 0.0
 onready var replenish_blasters_input = 0.0
 onready var blaster_cur_input = 0
+onready var launcher_cur_input = 0
 ### Standardizing text formatting.
 onready var text_format_std = "%.2f"
 onready var text_format_be = "(%.2f)"
@@ -148,9 +160,11 @@ func _ready():
     if not shields_tag:  adjustNodesForNoShields()
     
     adjustNodesForBlasters()
-
+    
+    adjustNodesForLaunchers()
+    
     generateExpandableControlVars()
-
+    
     generateExpandableNodeRefs()
     
     setInitialExpandableValues()
@@ -168,28 +182,28 @@ func _ready():
                                                                              #######################
 
 func generateExpandableTags():
-    """
-    Generate expandable tags.
-    """
+    """ Generate expandable tags. """
     
     for blaster in BLASTER_SLOTS:
         blaster_tags += [ controls.gameplay['vehicle'][blaster] ]
+    
+    for launcher in LAUNCHER_SLOTS:
+        var full_tag = controls.gameplay['vehicle'][launcher]
+        launcher_full_tags += [ full_tag ]
+        launcher_tags += [ full_tag.right(full_tag.find('Launcher') + len('Launcher')) ]
+        launcher_types += [ full_tag.left(full_tag.find('Launcher')) ]
 
 
 
 func adjustNodesForNoShields():
-    """
-    Adjust nodes when there are no shields.
-    """
+    """ Adjust nodes when there are no shields. """
     
     shields_hbox.visible = false
 
 
 
 func adjustNodesForBlasters():
-    """
-    Adjust nodes to expand to blaster count.
-    """
+    """ Adjust nodes to expand to blaster count. """
     
     # BLOCK...  Expand blasters_container in BottomRight per blaster.
     var blaster_counter = 0
@@ -210,21 +224,48 @@ func adjustNodesForBlasters():
 
 
 
+func adjustNodesForLaunchers():
+    
+    var launcher_counter = 0
+    for launcher in launcher_tags:
+        launcher_counter += 1
+        if launcher_counter == 1:  continue
+        var launcher_box = preload('res://Scenes/Functional/Launcher1Box.tscn').instance()
+        var launcher_box_nodes = [
+            'Launcher%sCurrentContainer*', 'Launcher%sText*', 'Launcher%sProgBar*',
+            'Launcher%sRoundDmgText*'
+        ]
+        for node in launcher_box_nodes:
+            launcher_box.find_node(node % str(1)).name = node % launcher_counter
+        launcher_box.name = 'Launcher%sBox*' % launcher_counter
+        launchers_container.add_child(launcher_box)
+
+
+
 func generateExpandableControlVars():
-    """
-    Generate expandable control variables.
-    """
+    """ Generate expandable control variables. """
     
     for blaster_tag in blaster_tags:
         blaster_battery_inputs += [ controls.blasters[blaster_tag]['battery_capacity'] ]
         blaster_bolt_energy_inputs += [ controls.blasters[blaster_tag]['energy'] ]
+    
+    for i in range(len(launcher_full_tags)):
+        
+        var launcher_full_tag = launcher_full_tags[i]
+        launcher_magazine_inputs += [
+            controls.launchers[launcher_types[i]][launcher_full_tag]['magazine_capacity']
+        ]
+        
+        var damages = controls.launchers[launcher_types[i]][launcher_full_tag]['damage']
+        var round_damage_input = 0
+        for dmg in damages.values():
+            if dmg > round_damage_input:  round_damage_input = dmg
+        launcher_round_dmg_inputs += [ round_damage_input ]
 
 
 
 func generateExpandableNodeRefs():
-    """
-    Generate expandable node references.
-    """
+    """ Generate expandable node references. """
     
     for i in range(len(blaster_tags)):
         blaster_texts += [
@@ -236,16 +277,28 @@ func generateExpandableNodeRefs():
         blaster_bolt_energy_texts += [
             _bottom_right_.find_node('Blaster%sBoltEnergyText*' % str(i + 1), true, false)
         ]
-        blaster_cur_texts += [
+        blaster_cur_containers += [
             _bottom_right_.find_node('Blaster%sCurrentContainer*' % str(i + 1), true, false)
+        ]
+    
+    for i in range(len(launcher_full_tags)):
+        launcher_texts += [
+            _bottom_right_.find_node('Launcher%sText*' % str(i + 1), true, false)
+        ]
+        launcher_prog_bars += [
+            _bottom_right_.find_node('Launcher%sProgBar*' % str(i + 1), true, false)
+        ]
+        launcher_round_dmg_texts += [
+            _bottom_right_.find_node('Launcher%sRoundDmgText*' % str(i + 1), true, false)
+        ]
+        launcher_cur_containers += [
+            _bottom_right_.find_node('Launcher%sCurrentContainer*' % str(i + 1), true, false)
         ]
 
 
 
 func setInitialExpandableValues():
-    """
-    Set initial values of expandable nodes.
-    """
+    """ Set initial values of expandable nodes. """
     
     # Set initial BottomRight values.
     for i in range(len(BLASTER_SLOTS)):
@@ -253,6 +306,20 @@ func setInitialExpandableValues():
         blaster_prog_bars[i].max_value = blaster_battery_inputs[i]
         blaster_prog_bars[i].value = blaster_battery_inputs[i]
         blaster_bolt_energy_texts[i].text = text_format_be % blaster_bolt_energy_inputs[i]
+    
+    for i in range(len(LAUNCHER_SLOTS)):
+        launcher_texts[i].text = text_format_std % launcher_magazine_inputs[i]
+#        launcher_prog_bars[i].max_value = launcher_magazine_inputs[i]
+        launcher_prog_bars[i].max_value = 8
+        launcher_prog_bars[i].value = launcher_magazine_inputs[i]
+        launcher_round_dmg_texts[i].text = text_format_be % launcher_round_dmg_inputs[i]
+    
+    """
+    Connectivity is working.  But all I did was cut/paste from blasters.  There are a few things in
+    launchers that are not identical to blasters.  Such as The containers text on the left should be
+    extra mags not total value.  Need to write a function that turns launcher_magazine_input into
+    extra mags and rounds in current mag.
+    """
 
 
 
@@ -408,8 +475,8 @@ func updateBlasterBatteryValue(_cur_blaster, _value):
 func updateBlasterCurrentValue(_value):
     
     blaster_cur_input = _value
-    for each in blaster_cur_texts:  each.visible = false
-    blaster_cur_texts[blaster_cur_input].visible = true
+    for each in blaster_cur_containers:  each.visible = false
+    blaster_cur_containers[blaster_cur_input].visible = true
 
 
 

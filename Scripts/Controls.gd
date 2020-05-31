@@ -65,6 +65,9 @@ var gameplay = {
 
         'missilelauncher1': 'MissileLauncherWhite',
 #        'missilelauncher1': 'MissileLauncher',
+
+        'missilelauncher2': 'MissileLauncherWhite',
+#        'missilelauncher2': 'MissileLauncher',
     },
 }
 
@@ -114,7 +117,8 @@ var body = {
         'health': 18.00,
         'armor': 0.02,
         'blaster_slots': ['blaster1', 'blaster2',],
-        'missilelauncher_slots': ['missilelauncher1',],
+#        'launcher_slots': ['missilelauncher1',],
+        'launcher_slots': ['missilelauncher1', 'missilelauncher2',],
     },
 }
 
@@ -194,7 +198,7 @@ var launchers = {
             'cool_down': 1.5,
             'magazine_capacity': 3,
         },
-        '': {
+        'MissileLauncher': {
             'damage': {0.0: 0.0,},
             'missile_speed': 0.0,
             'missile_acc': 0.0,

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Textures/yellow_repl_bar_hor_01.png" type="Texture" id=1]
 [ext_resource path="res://Textures/grey_repl_bar_hor_01.png" type="Texture" id=2]
+[ext_resource path="res://Textures/grey_repl_bar_mag_over.png" type="Texture" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
@@ -9,7 +10,7 @@ bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
-[node name="Blaster1Box" type="HBoxContainer"]
+[node name="Launcher1Box" type="HBoxContainer"]
 margin_right = 249.0
 margin_bottom = 20.0
 custom_constants/separation = 2
@@ -18,13 +19,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Blaster1CurrentContainer*" type="PanelContainer" parent="."]
+[node name="Launcher1CurrentContainer*" type="PanelContainer" parent="."]
 margin_right = 16.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 16, 20 )
 custom_styles/panel = SubResource( 1 )
 
-[node name="BlasterCurrentText" type="Label" parent="Blaster1CurrentContainer*"]
+[node name="LauncherCurrentText" type="Label" parent="Launcher1CurrentContainer*"]
 margin_top = 3.0
 margin_right = 16.0
 margin_bottom = 17.0
@@ -39,21 +40,23 @@ margin_bottom = 20.0
 rect_min_size = Vector2( 52, 20 )
 custom_styles/panel = SubResource( 2 )
 
-[node name="Blaster1Text*" type="Label" parent="PanelContainer2"]
+[node name="Launcher1Text*" type="Label" parent="PanelContainer2"]
 margin_top = 3.0
 margin_right = 52.0
 margin_bottom = 17.0
-text = "000.00"
+text = "+00 m"
 align = 1
 valign = 1
 
-[node name="Blaster1ProgBar*" type="TextureProgress" parent="."]
+[node name="Launcher1ProgBar*" type="TextureProgress" parent="."]
 margin_left = 72.0
 margin_right = 197.0
 margin_bottom = 20.0
-step = 0.01
-value = 100.0
+max_value = 8.0
+step = 1.0
+value = 8.0
 texture_under = ExtResource( 2 )
+texture_over = ExtResource( 3 )
 texture_progress = ExtResource( 1 )
 fill_mode = 1
 
@@ -64,7 +67,7 @@ margin_bottom = 20.0
 rect_min_size = Vector2( 50, 20 )
 custom_styles/panel = SubResource( 2 )
 
-[node name="Blaster1BoltEnergyText*" type="Label" parent="PanelContainer3"]
+[node name="Launcher1RoundDmgText*" type="Label" parent="PanelContainer3"]
 margin_top = 3.0
 margin_right = 50.0
 margin_bottom = 17.0

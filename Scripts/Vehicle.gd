@@ -40,6 +40,7 @@ onready var MOUSE_VERT_DAMP =       controls.global['vehicle']['mouse_vert_damp'
 onready var HEALTH =                    controls.body[body_tag]['health']
 onready var ARMOR =                     controls.body[body_tag]['armor']
 onready var BLASTER_SLOTS =             controls.body[body_tag]['blaster_slots']
+onready var LAUNCHER_SLOTS =            controls.body[body_tag]['launcher_slots']
 onready var SHIELDS_BATTERY_CAPACITY =  controls.shields[shields_tag]['battery_capacity']
 onready var SHIELDS_DENSITY =           controls.shields[shields_tag]['density']
 onready var SHIELDS_CONCENTRATION =     controls.shields[shields_tag]['concentration']
@@ -51,10 +52,8 @@ onready var REPLENISH =                 controls.generators[generator_tag]['repl
 onready var BLASTER_BATTERY_CAPACITIES = []
 onready var BLASTER_COOL_DOWNS = []
 onready var BOLT_ENERGIES = []
-onready var LAUNCHER_SLOTS = []
 onready var LAUNCHER_MAGAZINE_CAPACITIES = []
 onready var LAUNCHER_COOL_DOWNS = []
-
 
 
 
@@ -115,6 +114,8 @@ onready var gravity_dir = Vector3.DOWN
 onready var has_shields = false
 onready var has_blasters = false
 onready var has_launchers = false
+onready var input_shifting = false
+onready var input_repl_shifting = false
 onready var replenish = {}
 ### (expandables)
 onready var blaster_barrel_pivots = []
@@ -198,16 +199,11 @@ func generateExpandableSlotsAndTags():
     for blaster in BLASTER_SLOTS:
         blaster_tags += [ controls.gameplay['vehicle'][blaster] ]
     
-    # Load LAUNCHER_SLOTS with each launcher type.
-    if 'missilelauncher_slots' in controls.body[body_tag].keys():
-        LAUNCHER_SLOTS += controls.body[body_tag]['missilelauncher_slots']
-    
-    if LAUNCHER_SLOTS:
-        for launcher in LAUNCHER_SLOTS:
-            var full_tag = controls.gameplay['vehicle'][launcher]
-            launcher_full_tags += [ full_tag ]
-            launcher_tags += [ full_tag.right(full_tag.find('Launcher') + len('Launcher')) ]
-            launcher_types += [ full_tag.left(full_tag.find('Launcher')) ]
+    for launcher in LAUNCHER_SLOTS:
+        var full_tag = controls.gameplay['vehicle'][launcher]
+        launcher_full_tags += [ full_tag ]
+        launcher_tags += [ full_tag.right(full_tag.find('Launcher') + len('Launcher')) ]
+        launcher_types += [ full_tag.left(full_tag.find('Launcher')) ]
 
 
 
@@ -292,14 +288,14 @@ func generateExpandableControlVars():
         BOLT_ENERGIES +=                [ controls.blasters[blaster_tag]['energy'] ]
     
     for i in range(len(launcher_full_tags)):
-        var launcher_tag = launcher_full_tags[i]
+        var launcher_full_tag = launcher_full_tags[i]
         for type in all_launcher_types:
             if launcher_types[i] == type:
                 LAUNCHER_MAGAZINE_CAPACITIES += [
-                    controls.launchers[type][launcher_tag]['magazine_capacity']
+                    controls.launchers[type][launcher_full_tag]['magazine_capacity']
                 ]
                 LAUNCHER_COOL_DOWNS += [
-                    controls.launchers[type][launcher_tag]['cool_down']
+                    controls.launchers[type][launcher_full_tag]['cool_down']
                 ]
 
 
@@ -529,8 +525,13 @@ func getInputWasd():
     return wasd_vel_
 
 
-
 func handleInputOther():
+    
+    # Shift to bool vars controls.
+    if Input.is_action_just_pressed('shift'):       input_shifting = true
+    if Input.is_action_just_released('shift'):      input_shifting = false
+    if Input.is_action_just_pressed('repl_shift'):  input_repl_shifting = true
+    if Input.is_action_just_released('repl_shift'): input_repl_shifting = false
     
     # Blaster / Bolt controls.
     if Input.is_action_pressed('blaster_shoot') and has_blasters:
@@ -563,31 +564,30 @@ func handleInputOther():
         hud.updateReplenishValues(replenish['engines'], replenish['shields'], replenish['blasters'])
     
     # Change replenish each (pos).
-    if not Input.is_action_pressed('repl_shift'):
+    if not input_repl_shifting:
         if Input.is_action_just_pressed('repl_engines'):
             changeReplEach('pos', 'engines')
-        if Input.is_action_just_pressed('repl_shields') and has_shields:
+        elif Input.is_action_just_pressed('repl_shields') and has_shields:
             changeReplEach('pos', 'shields')
-        if Input.is_action_just_pressed('repl_blasters') and has_blasters:
+        elif Input.is_action_just_pressed('repl_blasters') and has_blasters:
             changeReplEach('pos', 'blasters')
+    
     # Change replenish each (neg).
-    if Input.is_action_pressed('repl_shift'):
+    if input_repl_shifting:
         if Input.is_action_just_pressed('repl_engines'):
             changeReplEach('neg', 'engines')
-        if Input.is_action_just_pressed('repl_shields') and has_shields:
+        elif Input.is_action_just_pressed('repl_shields') and has_shields:
             changeReplEach('neg', 'shields')
-        if Input.is_action_just_pressed('repl_blasters') and has_blasters:
+        elif Input.is_action_just_pressed('repl_blasters') and has_blasters:
             changeReplEach('neg', 'blasters')
         
-        # Force replenishments all back to even.
-        if Input.is_action_pressed('change_repl_set'):
-            cur_repl_set = 0
-            replenish['engines'] =     replenish_sets[cur_repl_set]['engines']
-            replenish['shields'] =     replenish_sets[cur_repl_set]['shields']
-            replenish['blasters'] =    replenish_sets[cur_repl_set]['blasters']
-            hud.updateReplenishValues(
-                replenish['engines'], replenish['shields'], replenish['blasters']
-            )
+    # Force replenishments all back to even.
+    if input_repl_shifting and Input.is_action_pressed('change_repl_set'):
+        cur_repl_set = 0
+        replenish['engines'] =     replenish_sets[cur_repl_set]['engines']
+        replenish['shields'] =     replenish_sets[cur_repl_set]['shields']
+        replenish['blasters'] =    replenish_sets[cur_repl_set]['blasters']
+        hud.updateReplenishValues(replenish['engines'], replenish['shields'], replenish['blasters'])
     
     # Focus controls.
     if Input.is_action_just_pressed('trigger_focus'):
@@ -640,7 +640,7 @@ func changeReplEach(_dir, _each):
                     if replenish[other] > 1.00:
                         replenish[_each] += (replenish[other] - 1.00)
                         replenish[other] = 0.00
-    
+
     hud.updateReplenishValues(replenish['engines'], replenish['shields'], replenish['blasters'])
 
 
@@ -672,23 +672,39 @@ func handleInputMouseWheel(_event):
         """
         
         # BLOCK...  Handle scroll wheel input events.
-        if _event.button_index == BUTTON_WHEEL_DOWN:
-            if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
-            else:  cur_blaster = 0
-            # After each cur_blaster change, the process is repeated if the cur_blaster is changed
-            # to an empty cur_blaster.  (same for BUTTON_WHEEL_DOWN)
-            if blaster_tags[cur_blaster] == '':
+        if not input_shifting:
+            if _event.button_index == BUTTON_WHEEL_DOWN:
                 if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
                 else:  cur_blaster = 0
-        # (same)
-        if _event.button_index == BUTTON_WHEEL_UP:
-            if cur_blaster != 0:  cur_blaster -= 1
-            else:  cur_blaster = len(BLASTER_SLOTS) - 1
-            if blaster_tags[cur_blaster] == '':
+                # After each cur_blaster change, the process is repeated if the cur_blaster is changed
+                # to an empty cur_blaster.  (same for BUTTON_WHEEL_DOWN)
+                if blaster_tags[cur_blaster] == '':
+                    if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
+                    else:  cur_blaster = 0
+            if _event.button_index == BUTTON_WHEEL_UP:
                 if cur_blaster != 0:  cur_blaster -= 1
                 else:  cur_blaster = len(BLASTER_SLOTS) - 1
-        
-        hud.updateBlasterCurrentValue(cur_blaster)
+                if blaster_tags[cur_blaster] == '':
+                    if cur_blaster != 0:  cur_blaster -= 1
+                    else:  cur_blaster = len(BLASTER_SLOTS) - 1
+            hud.updateBlasterCurrentValue(cur_blaster)
+    
+        if input_shifting:
+            if _event.button_index == BUTTON_WHEEL_DOWN:
+                if cur_launcher <= len(LAUNCHER_SLOTS) - 2:  cur_launcher += 1
+                else:  cur_launcher = 0
+                # After each cur_blaster change, the process is repeated if the cur_blaster is changed
+                # to an empty cur_blaster.  (same for BUTTON_WHEEL_DOWN)
+                if launcher_tags[cur_launcher] == '':
+                    if cur_launcher <= len(LAUNCHER_SLOTS) - 2:  cur_launcher += 1
+                    else:  cur_launcher = 0
+            if _event.button_index == BUTTON_WHEEL_UP:
+                if cur_launcher != 0:  cur_launcher -= 1
+                else:  cur_launcher = len(LAUNCHER_SLOTS) - 1
+                if launcher_tags[cur_launcher] == '':
+                    if cur_launcher != 0:  cur_launcher -= 1
+                    else:  cur_launcher = len(LAUNCHER_SLOTS) - 1
+#            hud.updateLauncherCurrentValue(cur_launcher)
     
     """
     NEXT TO-DO:  Need to handle event for changing cur_launcher.  Then need to handle event for
@@ -767,6 +783,12 @@ func _on_Launcher1CoolDown_timeout():
 
 
 
+func _on_Launcher2CoolDown_timeout():
+
+    launcher_cooled_downs[1] = true
+
+
+
 ####################################################################################################
                                                                                 ###   OBSOLETE   ###
                                                                                 ####################
@@ -775,5 +797,7 @@ func _on_Launcher1CoolDown_timeout():
 #    # Clamp vehicle's max speed. 
 #    if linear_velocity.length() > MAX_SPEED:
 #        linear_velocity = linear_velocity.normalized() * MAX_SPEED
+
+
 
 
