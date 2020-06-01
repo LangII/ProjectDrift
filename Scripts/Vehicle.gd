@@ -328,8 +328,8 @@ func generateExpandableWorkingVars():
         var launcher_type = launcher_types[i]
         if launcher_tag:
             var launcher_pos = _parts_.find_node('%sLauncher%sPos*' % [launcher_type, str(i + 1)])
-            launcher_barrel_pivots += [ launcher_pos.find_node('BarrelPivot*'), true, false ]
-            launcher_proj_spawns += [ launcher_pos.find_node('ProjectileSpawn*'), true, false ]
+            launcher_barrel_pivots += [ launcher_pos.find_node('BarrelPivot*', true, false) ]
+            launcher_proj_spawns += [ launcher_pos.find_node('ProjectileSpawn*', true, false) ]
             launcher_cooled_downs += [ true ]
             launcher_magazines += [ LAUNCHER_MAGAZINE_CAPACITIES[i] ]
             var round_tag = 'Vehicle%sRound%s' % [launcher_type, launcher_tag]
@@ -440,6 +440,7 @@ func setTargetting():
     if scope.is_colliding():  pointing_at = scope.get_collision_point()
     else:  pointing_at = look_default.global_transform.origin
     blaster_proj_spawns[cur_blaster].look_at(pointing_at, Vector3.UP)
+    launcher_proj_spawns[cur_launcher].look_at(pointing_at, Vector3.UP)
     
     ###   NEED TO FIX   ###
     # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
@@ -451,6 +452,12 @@ func setTargetting():
     blaster_barrel_pivots[cur_blaster].rotation_degrees.y = -90
     blaster_barrel_pivots[cur_blaster].rotation_degrees.x = clamp(
         blaster_barrel_pivots[cur_blaster].rotation_degrees.x, 0, 90
+    )
+    
+    launcher_barrel_pivots[cur_launcher].look_at(pointing_at, gravity_dir * -1)
+    launcher_barrel_pivots[cur_launcher].rotation_degrees.y = -90
+    launcher_barrel_pivots[cur_launcher].rotation_degrees.x = clamp(
+        launcher_barrel_pivots[cur_launcher].rotation_degrees.x, 0, 90
     )
 
 
@@ -552,7 +559,23 @@ func handleInputOther():
     
     # Launcher / Round controls.
     if Input.is_action_pressed('launcher_shoot') and has_launchers:
-        pass
+        if launcher_cooled_downs[cur_launcher]:
+            if launcher_magazines[cur_launcher] > 0:
+                
+                var launcher_round = Rounds[cur_launcher].instance()
+                
+                ###
+                # I think this should be handled in Gameplay.gd.
+                get_node('/root/Main/Gameplay/VehicleRounds').add_child(launcher_round)
+                ###
+                
+                launcher_round.spawn(launcher_proj_spawns[cur_launcher].global_transform)
+                launcher_magazines[cur_launcher] -= 1
+                hud.updateLauncherMagazineValue(cur_launcher, launcher_magazines[cur_launcher])
+                launcher_cool_downs[cur_launcher].start()
+                launcher_cooled_downs[cur_launcher] = false
+    
+    
     
     # Change replenish set.
     if Input.is_action_just_pressed('change_repl_set'):
@@ -704,12 +727,7 @@ func handleInputMouseWheel(_event):
                 if launcher_tags[cur_launcher] == '':
                     if cur_launcher != 0:  cur_launcher -= 1
                     else:  cur_launcher = len(LAUNCHER_SLOTS) - 1
-#            hud.updateLauncherCurrentValue(cur_launcher)
-    
-    """
-    NEXT TO-DO:  Need to handle event for changing cur_launcher.  Then need to handle event for
-    shooting cur_launcher.  Then need to update hud for displaying launcher info.
-    """
+            hud.updateLauncherCurrentValue(cur_launcher)
 
 
 
@@ -769,22 +787,20 @@ func _on_Blaster1CoolDown_timeout():
     
     blaster_cooled_downs[0] = true
 
-
-
 func _on_Blaster2CoolDown_timeout():
     
     blaster_cooled_downs[1] = true
 
-
+func _on_Blaster3CoolDown_timeout():
+    
+    blaster_cooled_downs[2] = true
 
 func _on_Launcher1CoolDown_timeout():
     
     launcher_cooled_downs[0] = true
 
-
-
 func _on_Launcher2CoolDown_timeout():
-
+    
     launcher_cooled_downs[1] = true
 
 
@@ -797,6 +813,9 @@ func _on_Launcher2CoolDown_timeout():
 #    # Clamp vehicle's max speed. 
 #    if linear_velocity.length() > MAX_SPEED:
 #        linear_velocity = linear_velocity.normalized() * MAX_SPEED
+
+
+
 
 
 

@@ -31,7 +31,7 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 8, # (currently) 64 or less
+    'number_of_targets': 0, # (currently) 64 or less
     'vehicle': {
 
 #        'body': 'BodyWhite',
@@ -60,7 +60,7 @@ var gameplay = {
 
 #        'blaster3': 'BlasterWhite',
 #        'blaster3': 'BlasterWhiteWithYellow',
-#        'blaster3': 'BlasterWhiteWithOrange',
+        'blaster3': 'BlasterWhiteWithOrange',
 #        'blaster3': '',
 
         'missilelauncher1': 'MissileLauncherWhite',
@@ -94,6 +94,10 @@ var global = {
     'bolt': {
         'life_time': 3.00,
     },
+    'missile': {
+        'life_time': 5.00,
+        'accel_time': 1.00,
+    },
 }
 
 
@@ -116,7 +120,7 @@ var body = {
     'BodyWhiteWithOrange': {
         'health': 18.00,
         'armor': 0.02,
-        'blaster_slots': ['blaster1', 'blaster2',],
+        'blaster_slots': ['blaster1', 'blaster2', 'blaster3'],
 #        'launcher_slots': ['missilelauncher1',],
         'launcher_slots': ['missilelauncher1', 'missilelauncher2',],
     },
@@ -193,15 +197,15 @@ var launchers = {
     'Missile': {
         'MissileLauncherWhite': {
             'damage': {5.0: 10.0, 8.0: 5.0,},
-            'missile_speed': 40.0,
-            'missile_acc': 0.5,
-            'cool_down': 1.5,
-            'magazine_capacity': 3,
+            'missile_speed': 8.0,
+            'missile_accel': 0.015,
+            'cool_down': 2.0,
+            'magazine_capacity': 14,
         },
         'MissileLauncher': {
             'damage': {0.0: 0.0,},
             'missile_speed': 0.0,
-            'missile_acc': 0.0,
+            'missile_accel': 0.0,
             'cool_down': 0.0,
             'magazine_capacity': 0,
         },

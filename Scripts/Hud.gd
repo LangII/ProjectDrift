@@ -113,6 +113,7 @@ onready var launcher_cur_input = 0
 ### Standardizing text formatting.
 onready var text_format_std = "%.2f"
 onready var text_format_be = "(%.2f)"
+onready var text_format_lm = "+%sm"
 
 ### Working variables.
 onready var vehicle = get_node('/root/Main/Gameplay/Vehicles/%s' % body_tag)
@@ -170,6 +171,8 @@ func _ready():
     setInitialExpandableValues()
     
     updateBlasterCurrentValue(blaster_cur_input)
+    
+    updateLauncherCurrentValue(blaster_cur_input)
     
     # Make visible because these nodes are default set to invisible for easier editing.
     focus_cam.visible = true
@@ -308,18 +311,10 @@ func setInitialExpandableValues():
         blaster_bolt_energy_texts[i].text = text_format_be % blaster_bolt_energy_inputs[i]
     
     for i in range(len(LAUNCHER_SLOTS)):
-        launcher_texts[i].text = text_format_std % launcher_magazine_inputs[i]
-#        launcher_prog_bars[i].max_value = launcher_magazine_inputs[i]
+        launcher_texts[i].text = text_format_lm % str(launcher_magazine_inputs[i] / 8)
         launcher_prog_bars[i].max_value = 8
-        launcher_prog_bars[i].value = launcher_magazine_inputs[i]
+        launcher_prog_bars[i].value = launcher_magazine_inputs[i] % 8
         launcher_round_dmg_texts[i].text = text_format_be % launcher_round_dmg_inputs[i]
-    
-    """
-    Connectivity is working.  But all I did was cut/paste from blasters.  There are a few things in
-    launchers that are not identical to blasters.  Such as The containers text on the left should be
-    extra mags not total value.  Need to write a function that turns launcher_magazine_input into
-    extra mags and rounds in current mag.
-    """
 
 
 
@@ -477,6 +472,32 @@ func updateBlasterCurrentValue(_value):
     blaster_cur_input = _value
     for each in blaster_cur_containers:  each.visible = false
     blaster_cur_containers[blaster_cur_input].visible = true
+
+
+
+func updateLauncherMagazineValue(_cur_launcher, _value):
+    
+    """ DIRTY DIRTY CODE!!! """
+    
+    launcher_magazine_inputs[_cur_launcher] = _value
+    launcher_texts[_cur_launcher].text = text_format_lm % str(launcher_magazine_inputs[_cur_launcher] / 8)
+    launcher_prog_bars[_cur_launcher].value = launcher_magazine_inputs[_cur_launcher] % 8
+    
+    if (launcher_magazine_inputs[_cur_launcher] % 8) == 0:
+        launcher_texts[_cur_launcher].text = text_format_lm % str((launcher_magazine_inputs[_cur_launcher] / 8) - 1)
+        launcher_prog_bars[_cur_launcher].value = 8
+    
+    if launcher_magazine_inputs[_cur_launcher] == 0:
+        launcher_texts[_cur_launcher].text = text_format_lm % str(0)
+        launcher_prog_bars[_cur_launcher].value = 0
+
+
+
+func updateLauncherCurrentValue(_value):
+    
+    launcher_cur_input = _value
+    for each in launcher_cur_containers:  each.visible = false
+    launcher_cur_containers[launcher_cur_input].visible = true
 
 
 

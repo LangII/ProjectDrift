@@ -167,6 +167,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.75, -0.219158 )
 
 [node name="BlasterSlot" parent="Parts*/Blaster2Pos*" instance=ExtResource( 8 )]
 
+[node name="Blaster3Pos*" type="Position3D" parent="Parts*"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.75, -1.00239 )
+
+[node name="BlasterSlot" parent="Parts*/Blaster3Pos*" instance=ExtResource( 8 )]
+
 [node name="MissileLauncher1Pos*" type="Position3D" parent="Parts*"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.88, 0.75, 0.518168 )
 
@@ -216,6 +221,10 @@ autostart = true
 one_shot = true
 autostart = true
 
+[node name="Blaster3CoolDown*" type="Timer" parent="NonSpatial*"]
+one_shot = true
+autostart = true
+
 [node name="Launcher1CoolDown*" type="Timer" parent="NonSpatial*"]
 one_shot = true
 autostart = true
@@ -232,5 +241,6 @@ margin_bottom = 0.0
 [connection signal="timeout" from="NonSpatial*/GeneratorRate*" to="." method="_on_GeneratorRate_timeout"]
 [connection signal="timeout" from="NonSpatial*/Blaster1CoolDown*" to="." method="_on_Blaster1CoolDown_timeout"]
 [connection signal="timeout" from="NonSpatial*/Blaster2CoolDown*" to="." method="_on_Blaster2CoolDown_timeout"]
+[connection signal="timeout" from="NonSpatial*/Blaster3CoolDown*" to="." method="_on_Blaster3CoolDown_timeout"]
 [connection signal="timeout" from="NonSpatial*/Launcher1CoolDown*" to="." method="_on_Launcher1CoolDown_timeout"]
 [connection signal="timeout" from="NonSpatial*/Launcher2CoolDown*" to="." method="_on_Launcher2CoolDown_timeout"]
