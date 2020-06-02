@@ -196,7 +196,7 @@ var blasters = {
 var launchers = {
     'Missile': {
         'MissileLauncherWhite': {
-            'damage': {5.0: 10.0, 8.0: 5.0,},
+            'damage': {20.0: 10.0, 50.0: 5.0, 100.0: 5.0,},
             'missile_speed': 8.0,
             'missile_accel': 0.015,
             'cool_down': 2.0,
