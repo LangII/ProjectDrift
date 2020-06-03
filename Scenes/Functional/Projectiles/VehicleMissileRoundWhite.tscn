@@ -28,26 +28,36 @@ angular_damp = 0.0
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 shape = SubResource( 1 )
 
-[node name="MeshInstance1" type="MeshInstance" parent="."]
+[node name="Mesh*" type="Spatial" parent="."]
+
+[node name="MeshInstance1" type="MeshInstance" parent="Mesh*"]
 transform = Transform( 0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.35, 0, 0, 0.2 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
-[node name="MeshInstance2" type="MeshInstance" parent="."]
+[node name="MeshInstance2" type="MeshInstance" parent="Mesh*"]
 transform = Transform( 0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.05, 0, 0, -0.18 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 4 )
 
-[node name="MeshInstance3" type="MeshInstance" parent="."]
+[node name="MeshInstance3" type="MeshInstance" parent="Mesh*"]
 transform = Transform( 0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.2, 0, 0, 0.7 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 5 )
 
-[node name="LifeTimer" type="Timer" parent="."]
+[node name="LifeTimer*" type="Timer" parent="."]
 one_shot = true
 
-[node name="AccelTimer" type="Timer" parent="."]
+[node name="AccelTimer*" type="Timer" parent="."]
+one_shot = true
+
+[node name="ExplosionExpandTimer*" type="Timer" parent="."]
+one_shot = true
+
+[node name="ExplosionCompleteTimer*" type="Timer" parent="."]
 one_shot = true
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
-[connection signal="timeout" from="LifeTimer" to="." method="_on_LifeTimer_timeout"]
-[connection signal="timeout" from="AccelTimer" to="." method="_on_AccelTimer_timeout"]
+[connection signal="timeout" from="LifeTimer*" to="." method="_on_LifeTimer_timeout"]
+[connection signal="timeout" from="AccelTimer*" to="." method="_on_AccelTimer_timeout"]
+[connection signal="timeout" from="ExplosionExpandTimer*" to="." method="_on_ExplosionExpandTimer_timeout"]
+[connection signal="timeout" from="ExplosionCompleteTimer*" to="." method="_on_ExplosionCompleteTimer_timeout"]

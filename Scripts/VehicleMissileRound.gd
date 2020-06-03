@@ -8,13 +8,18 @@ onready var gameplay = get_node('/root/Main/Gameplay')
 # Controls.
 onready var LIFE_TIME = controls.global['missile']['life_time']
 onready var ACCEL_TIME = controls.global['missile']['accel_time']
+onready var EXPL_EXPAND_TIME = controls.global['missile']['explosion_expand_time']
+onready var EXPL_FADE_OUT_TIME = controls.global['missile']['explosion_fade_out_time']
 
 # Node references.
 #onready var _explosion_ = find_node('Explosion*')
 #onready var explosion_mesh = _explosion_.find_node('ExplosionMesh*')
 #onready var explosion_area = _explosion_.find_node('ExplosionArea*')
-onready var life_timer = find_node('LifeTimer')
-onready var accel_timer = find_node('AccelTimer')
+onready var missile_mesh = find_node('Mesh*')
+onready var life_timer = find_node('LifeTimer*')
+onready var accel_timer = find_node('AccelTimer*')
+onready var expl_expand_timer = find_node('ExplosionExpandTimer*')
+onready var expl_complete_timer = find_node('ExplosionCompleteTimer*')
 
 onready var missile_explosion = preload('res://Scenes/Functional/Projectiles/MissileExplosion.tscn')
 
@@ -34,6 +39,7 @@ var vel = Vector3()
 
 func _ready():
     
+    
 #            'damage': {5.0: 10.0, 8.0: 5.0,},
 #            'missile_speed': 40.0,
 #            'missile_acc': 0.5,
@@ -46,18 +52,23 @@ func _ready():
     SPEED = controls.launchers['Missile'][missile_launcher_tag]['missile_speed']
     ACCEL = controls.launchers['Missile'][missile_launcher_tag]['missile_accel']
     
-    print("len(DAMAGE) = ", len(DAMAGE))
+#    print("len(DAMAGE) = ", len(DAMAGE))
+    print("")
+    print(name)
+#    print(missile_launcher_tag)
+#    print("DAMAGE = ", DAMAGE)
     
     explosions = buildAndGetExplosions()
     
-#    print("DAMAGE = ", DAMAGE)
-    
     life_timer.wait_time = LIFE_TIME
     accel_timer.wait_time = ACCEL_TIME
+    expl_expand_timer.wait_time = EXPL_EXPAND_TIME
+    expl_complete_timer.wait_time = EXPL_EXPAND_TIME + EXPL_FADE_OUT_TIME
+
     life_timer.start()
     accel_timer.start()
-    
-#    onCollision()
+
+
 
 func getMissileLauncherTag():
     # blaster_tag is based on scene's root node name.  The node names get renamed by the engine.
@@ -71,17 +82,23 @@ func getMissileLauncherTag():
     
     return missile_launcher_tag_
 
+
+
 func buildAndGetExplosions():
     
     var explosions_ = []
     
     var opac_counter = len(DAMAGE)
     for key in DAMAGE:
-        var explosion = {'node': '', 'tween': '', 'area': '', 'mesh': '', 'opacity': '', 'radius': '', 'damage': ''}
+        var explosion = {
+            'node': '', 'scale_tween': '', 'alpha_tween': '', 'area': '', 'mesh': '', 'opacity': '',
+            'radius': '', 'damage': ''
+        }
         var value = DAMAGE[key]
         explosion['node'] = missile_explosion.instance()
         add_child(explosion['node'])
-        explosion['tween'] = explosion['node'].find_node('Tween*')
+        explosion['scale_tween'] = explosion['node'].find_node('ScaleTween*')
+        explosion['alpha_tween'] = explosion['node'].find_node('AlphaTween*')
         explosion['area'] = explosion['node'].find_node('ExplosionArea*')
         explosion['mesh'] = explosion['node'].find_node('ExplosionMesh*')
         explosion['opacity'] = ((1.00 / len(DAMAGE)) * opac_counter) - 0.10
@@ -117,7 +134,10 @@ func onCollision():
 #
 #    for area in areas:  print("area = ", area.name)
 #    for body in bodies:  print("body = ", body.name)
-
+    
+    expl_expand_timer.start()
+    expl_complete_timer.start()
+    
     for layer in explosions:
 #        print(layer)
         for mesh in layer['mesh'].get_children():
@@ -127,11 +147,21 @@ func onCollision():
             mesh.get_surface_material(0).albedo_color.a = layer['opacity']
 #            print(mesh.get_surface_material(0).albedo_color)
 #        layer['mesh'].scale = Vector3(1, 1, 1) * layer['radius']
-        layer['tween'].interpolate_property(
+        layer['scale_tween'].interpolate_property(
             layer['mesh'], 'scale', layer['mesh'].scale, Vector3(1, 1, 1) * layer['radius'],
-            0.1, Tween.TRANS_LINEAR , Tween.EASE_OUT
+            EXPL_EXPAND_TIME, Tween.TRANS_LINEAR , Tween.EASE_OUT
         )
-        layer['tween'].start()
+        layer['scale_tween'].start()
+
+func explosionFadeOut():
+    
+    for layer in explosions:
+        for mesh in layer['mesh'].get_children():
+            layer['alpha_tween'].interpolate_property(
+                mesh.get_surface_material(0), 'albedo_color', mesh.get_surface_material(0).albedo_color, Color(1, 1, 0, 0),
+                EXPL_FADE_OUT_TIME, Tween.TRANS_LINEAR, Tween.EASE_IN
+            )
+            layer['alpha_tween'].start()
 
 
 
@@ -142,15 +172,22 @@ func onCollision():
 func _on_Area_body_entered(_body):
     
     onCollision()
-    
-#    queue_free()
     vel = Vector3()
+    missile_mesh.visible = false
 
 func _on_LifeTimer_timeout():
     
-#    queue_free()
-    pass
+    queue_free()
 
 func _on_AccelTimer_timeout():
     
     ACCEL = 0.00
+
+func _on_ExplosionExpandTimer_timeout():
+    
+    explosionFadeOut()
+#    pass
+
+func _on_ExplosionCompleteTimer_timeout():
+
+    queue_free()

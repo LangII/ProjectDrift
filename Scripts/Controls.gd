@@ -60,13 +60,13 @@ var gameplay = {
 
 #        'blaster3': 'BlasterWhite',
 #        'blaster3': 'BlasterWhiteWithYellow',
-        'blaster3': 'BlasterWhiteWithOrange',
+#        'blaster3': 'BlasterWhiteWithOrange',
 #        'blaster3': '',
 
         'missilelauncher1': 'MissileLauncherWhite',
 #        'missilelauncher1': 'MissileLauncher',
 
-        'missilelauncher2': 'MissileLauncherWhite',
+#        'missilelauncher2': 'MissileLauncherWhite',
 #        'missilelauncher2': 'MissileLauncher',
     },
 }
@@ -97,6 +97,8 @@ var global = {
     'missile': {
         'life_time': 5.00,
         'accel_time': 1.00,
+        'explosion_expand_time': 0.15,
+        'explosion_fade_out_time': 2.00,
     },
 }
 
@@ -120,9 +122,8 @@ var body = {
     'BodyWhiteWithOrange': {
         'health': 18.00,
         'armor': 0.02,
-        'blaster_slots': ['blaster1', 'blaster2', 'blaster3'],
-#        'launcher_slots': ['missilelauncher1',],
-        'launcher_slots': ['missilelauncher1', 'missilelauncher2',],
+        'blaster_slots': ['blaster1', 'blaster2'],
+        'launcher_slots': ['missilelauncher1',],
     },
 }
 
@@ -199,7 +200,7 @@ var launchers = {
             'damage': {20.0: 10.0, 50.0: 5.0, 100.0: 5.0,},
             'missile_speed': 8.0,
             'missile_accel': 0.015,
-            'cool_down': 2.0,
+            'cool_down': 1.0,
             'magazine_capacity': 14,
         },
         'MissileLauncher': {
