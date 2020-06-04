@@ -53,8 +53,7 @@ func _ready():
     ACCEL = controls.launchers['Missile'][missile_launcher_tag]['missile_accel']
     
 #    print("len(DAMAGE) = ", len(DAMAGE))
-    print("")
-    print(name)
+    print("\n", name)
 #    print(missile_launcher_tag)
 #    print("DAMAGE = ", DAMAGE)
     
@@ -100,6 +99,8 @@ func buildAndGetExplosions():
         explosion['scale_tween'] = explosion['node'].find_node('ScaleTween*')
         explosion['alpha_tween'] = explosion['node'].find_node('AlphaTween*')
         explosion['area'] = explosion['node'].find_node('ExplosionArea*')
+        explosion['area'].get_node('CollisionShape').shape.radius = key / 10.0
+        
         explosion['mesh'] = explosion['node'].find_node('ExplosionMesh*')
         explosion['opacity'] = ((1.00 / len(DAMAGE)) * opac_counter) - 0.10
         opac_counter -= 1
@@ -127,19 +128,52 @@ func spawn(_spawn_transform):
     transform = _spawn_transform
     vel = -transform.basis.z * SPEED
 
-func onCollision():
+
+
+func distributeDamage():
     
-#    var areas = explosion_area.get_overlapping_areas()
-#    var bodies = explosion_area.get_overlapping_bodies()
-#
-#    for area in areas:  print("area = ", area.name)
-#    for body in bodies:  print("body = ", body.name)
+    for layer in explosions:
+    
+        var areas = layer['area'].get_overlapping_areas()
+        var bodies = layer['area'].get_overlapping_bodies()
+        
+##        print("areas = ", areas)
+#        for area in areas:
+#    #        print(area.name)
+#            if area.get_parent().name == 'Vehicles':
+#                gameplay.objectInExplosion(area, layer['damage'], 'Vehicles')
+#            elif area.get_parent().name == 'Targets':
+#                gameplay.objectInExplosion(area, layer['damage'], 'Targets')
+#    #            continue
+##        print("bodies = ", bodies)
+#        for body in bodies:
+#    #        print(body.name)
+#            if body.get_parent().name == 'Vehicles':
+#                gameplay.objectInExplosion(body, layer['damage'], 'Vehicles')
+#            elif body.get_parent().name == 'Targets':
+#                gameplay.objectInExplosion(body, layer['damage'], 'Targets')
+#    #            continue
+        
+        for object in areas + bodies:
+            if object.get_parent().name == 'Vehicles':
+                gameplay.objectInExplosion(object, layer['damage'], 'Vehicles')
+            elif object.get_parent().name == 'Targets':
+                gameplay.objectInExplosion(object, layer['damage'], 'Targets')
+
+
+
+func onCollision():
     
     expl_expand_timer.start()
     expl_complete_timer.start()
     
+    distributeDamage()
+    
     for layer in explosions:
 #        print(layer)
+#        layer['area'].get_node('CollisionShape').shape.radius = layer['radius'] / 10.0
+#        handleExplosionArea(layer['area'], layer['damage'])
+
         for mesh in layer['mesh'].get_children():
 #            mesh.get_surface_material().albedo_color = Color(_, _, _, layer['opacity'])
 #            print(mesh.get_surface_material(0).albedo_color)
