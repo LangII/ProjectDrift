@@ -245,35 +245,33 @@ func generateTargets():
                                                                            ###   PROCESS FUNCS   ###
                                                                            #########################
 
-func vehicleBoltHitsTargetBody(_bolt, _target):
-    # Anonymously handle vehicle bolt to target body collisions.
-
-    _target.HEALTH -= _bolt.ENERGY
-
+func applyDamageToTarget(_damage, _target):
+    
+    _target.HEALTH -= _damage
+    
     # Handle '_target' with 0 HEALTH.
     if _target.HEALTH <= 0:
         hud.updateObjectiveValue(hud.objective_input - 1)
         if _target == hud.focus_obj:  hud.clearFocusObject()
         _target.queue_free()
-
+    
     # Hud update for '_target' that is in "focus".
     elif hud.focus_name_input == _target.name:
         hud.updateFocusHealthValue(_target.HEALTH)
 
 
 
-func targetBoltHitsVehicleBody(_bolt, _vehicle):
-    # Anonymously handle target bolt to vehicle body collisions.
-
+func applyDamageToVehicle(_damage, _vehicle):
+    
     # For testing, override vehicle take damage.
     if controls.TESTING_take_no_damage:  return
     # Handle vehicle's 'shields_battery' first.
     if _vehicle.shields_battery > 0:
         # Apply bolt's ENERGY to vehicle's 'shields_battery'
-        _vehicle.shields_battery -= _bolt.ENERGY * (1 - _vehicle.SHIELDS_DENSITY)
+        _vehicle.shields_battery -= _damage * (1 - _vehicle.SHIELDS_DENSITY)
         if _vehicle.shields_battery >= 0:
             hud.updateShieldsBatteryValue(_vehicle.shields_battery)
-
+        
         # Handle spill over of bolt's ENERGY if vehicle's 'shields_battery' over depletes by
         # applying over depletion to vehicle's HEALTH.
         else:
@@ -287,71 +285,35 @@ func targetBoltHitsVehicleBody(_bolt, _vehicle):
             # Updated line as temp fix.  Still needs improvement but atleast ARMOR is actually
             # used now.
             _vehicle.HEALTH -= abs(_vehicle.shields_battery) * (1 - _vehicle.ARMOR)
-
+            
             _vehicle.shields_battery = 0
             hud.updateShieldsBatteryValue(_vehicle.shields_battery)
             hud.updateHealthValue(_vehicle.HEALTH)
-
+    
     # If vehicle's 'shields_battery' is empty, then apply bolt's ENERGY to vehicle's HEALTH.
     else:
-        _vehicle.HEALTH -= _bolt.ENERGY * (1 - _vehicle.ARMOR)
+        _vehicle.HEALTH -= _damage * (1 - _vehicle.ARMOR)
         hud.updateHealthValue(_vehicle.HEALTH)
+
+
+
+func vehicleBoltHitsTargetBody(_bolt, _target):
+    
+    applyDamageToTarget(_bolt.ENERGY, _target)
+
+
+
+func targetBoltHitsVehicleBody(_bolt, _vehicle):
+    
+    applyDamageToVehicle(_bolt.ENERGY, _vehicle)
 
 
 
 func objectInExplosion(_obj, _damage, _obj_group):
     
-    
-    print("body %s will get %s damage" % [_obj, _damage])
-    
-    
     match _obj_group:
-    
-        'Vehicles':
-            # For testing, override vehicle take damage.
-            if controls.TESTING_take_no_damage:  return
-            # Handle vehicle's 'shields_battery' first.
-            if _obj.shields_battery > 0:
-                # Apply bolt's ENERGY to vehicle's 'shields_battery'
-                _obj.shields_battery -= _damage * (1 - _obj.SHIELDS_DENSITY)
-                if _obj.shields_battery >= 0:
-                    hud.updateShieldsBatteryValue(_obj.shields_battery)
-        
-                # Handle spill over of bolt's ENERGY if vehicle's 'shields_battery' over depletes by
-                # applying over depletion to vehicle's HEALTH.
-                else:
-        
-        #            ###   NEED TO FIX   ###
-        #            # Currently, if damage is done to shield, and carried over to health, the carry over
-        #            # value will have density applied to it, not armor.  If damage is done to health, armor
-        #            # should be applied, not density.  Right now, this is not the case.
-        #            _vehicle.HEALTH -= abs(_vehicle.shields_battery)
-        
-                    # Updated line as temp fix.  Still needs improvement but atleast ARMOR is actually
-                    # used now.
-                    _obj.HEALTH -= abs(_obj.shields_battery) * (1 - _obj.ARMOR)
-        
-                    _obj.shields_battery = 0
-                    hud.updateShieldsBatteryValue(_obj.shields_battery)
-                    hud.updateHealthValue(_obj.HEALTH)
-        
-            # If vehicle's 'shields_battery' is empty, then apply bolt's ENERGY to vehicle's HEALTH.
-            else:
-                _obj.HEALTH -= _damage * (1 - _obj.ARMOR)
-                hud.updateHealthValue(_obj.HEALTH)
-        
-        'Targets':
-            _obj.HEALTH -= _damage
-        
-            # Handle '_target' with 0 HEALTH.
-            if _obj.HEALTH <= 0:
-                hud.updateObjectiveValue(hud.objective_input - 1)
-                if _obj == hud.focus_obj:  hud.clearFocusObject()
-                _obj.queue_free()
-        
-            # Hud update for '_target' that is in "focus".
-            elif hud.focus_name_input == _obj.name:
-                hud.updateFocusHealthValue(_obj.HEALTH)
+        'Vehicles':  applyDamageToVehicle(_damage, _obj)
+        'Targets':  applyDamageToTarget(_damage, _obj)
 
 
 

@@ -12,9 +12,6 @@ onready var EXPL_EXPAND_TIME = controls.global['missile']['explosion_expand_time
 onready var EXPL_FADE_OUT_TIME = controls.global['missile']['explosion_fade_out_time']
 
 # Node references.
-#onready var _explosion_ = find_node('Explosion*')
-#onready var explosion_mesh = _explosion_.find_node('ExplosionMesh*')
-#onready var explosion_area = _explosion_.find_node('ExplosionArea*')
 onready var missile_mesh = find_node('Mesh*')
 onready var life_timer = find_node('LifeTimer*')
 onready var accel_timer = find_node('AccelTimer*')
@@ -39,25 +36,13 @@ var vel = Vector3()
 
 func _ready():
     
-    
-#            'damage': {5.0: 10.0, 8.0: 5.0,},
-#            'missile_speed': 40.0,
-#            'missile_acc': 0.5,
-#            'cool_down': 1.5,
-#            'magazine_capacity': 14,
-    
     missile_launcher_tag = getMissileLauncherTag()
     
     DAMAGE = controls.launchers['Missile'][missile_launcher_tag]['damage']
     SPEED = controls.launchers['Missile'][missile_launcher_tag]['missile_speed']
     ACCEL = controls.launchers['Missile'][missile_launcher_tag]['missile_accel']
     
-#    print("len(DAMAGE) = ", len(DAMAGE))
-    print("\n", name)
-#    print(missile_launcher_tag)
-#    print("DAMAGE = ", DAMAGE)
-    
-    explosions = buildAndGetExplosions()
+    explosions = buildAndGetExplosionLayers()
     
     life_timer.wait_time = LIFE_TIME
     accel_timer.wait_time = ACCEL_TIME
@@ -70,8 +55,9 @@ func _ready():
 
 
 func getMissileLauncherTag():
-    # blaster_tag is based on scene's root node name.  The node names get renamed by the engine.
-    # getBlasterTag() returns blaster_tag regardless of the engine's renaming.
+    # missile_launcher_tag is based on scene's root node name.  The node names get renamed by the
+    # engine.  getMissileLauncherTag() returns missile_launcher_tag regardless of the engine's
+    # renaming.
     
     var missile_launcher_tag_
     if name[0] == '@':
@@ -83,29 +69,33 @@ func getMissileLauncherTag():
 
 
 
-func buildAndGetExplosions():
+func buildAndGetExplosionLayers():
+    # Return array explosions_, each element is a dictionary needed for visual animation and damage
+    # distribution of each layer.
     
     var explosions_ = []
     
+    # BLOCK...  Loop through key, value of DAMAGE to build each explosion layer.
     var opac_counter = len(DAMAGE)
     for key in DAMAGE:
-        var explosion = {
-            'node': '', 'scale_tween': '', 'alpha_tween': '', 'area': '', 'mesh': '', 'opacity': '',
-            'radius': '', 'damage': ''
-        }
         var value = DAMAGE[key]
-        explosion['node'] = missile_explosion.instance()
+        var explosion = {}
+        # Get instanced scene and reference node.
+        var explosion_node = missile_explosion.instance()
+        var explosion_area = explosion_node.find_node('ExplosionArea*')
+        # Build explosion layer dictionary.
+        explosion['node'] =     explosion_node
+        explosion['tween'] =    explosion_node.find_node('Tween*')
+        explosion['area'] =     explosion_area
+        explosion['mesh'] =     explosion_node.find_node('ExplosionMesh*')
+        explosion['opacity'] =  ((1.00 / len(DAMAGE)) * opac_counter) - 0.10
+        explosion['radius'] =   key
+        explosion['damage'] =   value
+        # Other necessary maintenance per loop.
         add_child(explosion['node'])
-        explosion['scale_tween'] = explosion['node'].find_node('ScaleTween*')
-        explosion['alpha_tween'] = explosion['node'].find_node('AlphaTween*')
-        explosion['area'] = explosion['node'].find_node('ExplosionArea*')
-        explosion['area'].get_node('CollisionShape').shape.radius = key / 10.0
-        
-        explosion['mesh'] = explosion['node'].find_node('ExplosionMesh*')
-        explosion['opacity'] = ((1.00 / len(DAMAGE)) * opac_counter) - 0.10
+        explosion_area.get_node('CollisionShape').shape.radius = key / 10.0
         opac_counter -= 1
-        explosion['radius'] = key
-        explosion['damage'] = value
+        # Append for return.
         explosions_ += [ explosion ]
     
     return explosions_
@@ -120,8 +110,8 @@ func _process(delta):
     
     vel = vel * (1 + ACCEL)
     transform.origin += vel * delta
-    
-#    print(explosions[0]['mesh'].scale)
+
+
 
 func spawn(_spawn_transform):
     
@@ -131,29 +121,14 @@ func spawn(_spawn_transform):
 
 
 func distributeDamage():
+    # Find objects that are with explosion area of each explosion layer and trigger
+    # objectInExplosion() gameplay method.
     
     for layer in explosions:
-    
+        # Get objects in area.
         var areas = layer['area'].get_overlapping_areas()
         var bodies = layer['area'].get_overlapping_bodies()
-        
-##        print("areas = ", areas)
-#        for area in areas:
-#    #        print(area.name)
-#            if area.get_parent().name == 'Vehicles':
-#                gameplay.objectInExplosion(area, layer['damage'], 'Vehicles')
-#            elif area.get_parent().name == 'Targets':
-#                gameplay.objectInExplosion(area, layer['damage'], 'Targets')
-#    #            continue
-##        print("bodies = ", bodies)
-#        for body in bodies:
-#    #        print(body.name)
-#            if body.get_parent().name == 'Vehicles':
-#                gameplay.objectInExplosion(body, layer['damage'], 'Vehicles')
-#            elif body.get_parent().name == 'Targets':
-#                gameplay.objectInExplosion(body, layer['damage'], 'Targets')
-#    #            continue
-        
+        # Based on object's parent, send object and damage data to gameplay method.
         for object in areas + bodies:
             if object.get_parent().name == 'Vehicles':
                 gameplay.objectInExplosion(object, layer['damage'], 'Vehicles')
@@ -163,39 +138,50 @@ func distributeDamage():
 
 
 func onCollision():
+    # Events that occur when the missile collides.
     
+    # Trigger collision timers.
     expl_expand_timer.start()
     expl_complete_timer.start()
     
     distributeDamage()
     
+    # Because as of now there are multiple mesh nodes making up the model, the mesh container needs
+    # to be looped through inside of each layer loop.  All of this to update each mesh's alpha then
+    # trigger a tween on the mesh container.
     for layer in explosions:
-#        print(layer)
-#        layer['area'].get_node('CollisionShape').shape.radius = layer['radius'] / 10.0
-#        handleExplosionArea(layer['area'], layer['damage'])
-
         for mesh in layer['mesh'].get_children():
-#            mesh.get_surface_material().albedo_color = Color(_, _, _, layer['opacity'])
-#            print(mesh.get_surface_material(0).albedo_color)
-#            print(layer['opacity'])
             mesh.get_surface_material(0).albedo_color.a = layer['opacity']
-#            print(mesh.get_surface_material(0).albedo_color)
-#        layer['mesh'].scale = Vector3(1, 1, 1) * layer['radius']
-        layer['scale_tween'].interpolate_property(
-            layer['mesh'], 'scale', layer['mesh'].scale, Vector3(1, 1, 1) * layer['radius'],
-            EXPL_EXPAND_TIME, Tween.TRANS_LINEAR , Tween.EASE_OUT
+        layer['tween'].interpolate_property(
+            layer['mesh'],                      # node
+            'scale',                            # property
+            layer['mesh'].scale,                # starting value
+            Vector3.ONE * layer['radius'],      # ending value
+            EXPL_EXPAND_TIME,                   # duration of tween
+            Tween.TRANS_LINEAR,                 # detail 1
+            Tween.EASE_OUT                      # detail 2
         )
-        layer['scale_tween'].start()
+        layer['tween'].start()
+
+
 
 func explosionFadeOut():
+    # Trigger alpha fade out tween of each mesh in mesh container of each explosion layer.
     
     for layer in explosions:
         for mesh in layer['mesh'].get_children():
-            layer['alpha_tween'].interpolate_property(
-                mesh.get_surface_material(0), 'albedo_color', mesh.get_surface_material(0).albedo_color, Color(1, 1, 0, 0),
-                EXPL_FADE_OUT_TIME, Tween.TRANS_LINEAR, Tween.EASE_IN
+            var mesh_mat = mesh.get_surface_material(0)
+            var mesh_color = mesh_mat.albedo_color
+            layer['tween'].interpolate_property(
+                mesh_mat,                                               # node
+                'albedo_color',                                         # property
+                mesh_color,                                             # starting value
+                Color(mesh_color.r, mesh_color.g, mesh_color.b, 0),     # ending value
+                EXPL_FADE_OUT_TIME,                                     # duration of tween
+                Tween.TRANS_LINEAR,                                     # detail 1
+                Tween.EASE_IN                                           # detail 2
             )
-            layer['alpha_tween'].start()
+            layer['tween'].start()
 
 
 
@@ -220,7 +206,6 @@ func _on_AccelTimer_timeout():
 func _on_ExplosionExpandTimer_timeout():
     
     explosionFadeOut()
-#    pass
 
 func _on_ExplosionCompleteTimer_timeout():
 

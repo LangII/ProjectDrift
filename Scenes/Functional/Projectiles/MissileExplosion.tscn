@@ -78,8 +78,5 @@ material/0 = SubResource( 9 )
 [node name="CollisionShape" type="CollisionShape" parent="ExplosionArea*"]
 shape = SubResource( 3 )
 
-[node name="ScaleTween*" type="Tween" parent="."]
-playback_process_mode = 0
-
-[node name="AlphaTween*" type="Tween" parent="."]
+[node name="Tween*" type="Tween" parent="."]
 playback_process_mode = 0
