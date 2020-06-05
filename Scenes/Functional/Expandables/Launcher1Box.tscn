@@ -10,7 +10,7 @@ bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
-[node name="Launcher1Box" type="HBoxContainer"]
+[node name="Launcher1Box*" type="HBoxContainer"]
 margin_right = 249.0
 margin_bottom = 20.0
 custom_constants/separation = 2
@@ -53,7 +53,6 @@ margin_left = 72.0
 margin_right = 197.0
 margin_bottom = 20.0
 max_value = 8.0
-step = 1.0
 value = 8.0
 texture_under = ExtResource( 2 )
 texture_over = ExtResource( 3 )

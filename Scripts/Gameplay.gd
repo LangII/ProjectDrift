@@ -30,15 +30,14 @@ onready var NUMBER_OF_TARGETS = controls.gameplay['number_of_targets']
 
 ### Arena and entity tags.
 onready var arena_tag =     controls.gameplay['arena']
-onready var target_tag =    controls.gameplay['targets']
+#onready var target_tag =    controls.gameplay['targets']
 
 ### Vehicle body and parts tags.
 onready var body_tag =      controls.gameplay['vehicle']['body']
-onready var generator_tag = controls.gameplay['vehicle']['generator']
-onready var engines_tag =   controls.gameplay['vehicle']['engines']
-onready var shields_tag =   controls.gameplay['vehicle']['shields']
-#onready var blaster1_tag =  controls.gameplay['vehicle']['blaster1']
-onready var blaster_tags = []
+#onready var generator_tag = controls.gameplay['vehicle']['generator']
+#onready var engines_tag =   controls.gameplay['vehicle']['engines']
+#onready var shields_tag =   controls.gameplay['vehicle']['shields']
+#onready var blaster_tags = []
 
 
 
@@ -47,10 +46,10 @@ onready var blaster_tags = []
                                                                              #######################
 
 #onready var Arena =     load('res://Scenes/Arenas/%s.tscn' % arena_tag)
-onready var Target =    load('res://Scenes/Functional/Entities/%s.tscn' % target_tag)
+#onready var Target =    load('res://Scenes/Functional/Entities/%s.tscn' % target_tag)
 #onready var Body =      load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag)
-onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tscn' % generator_tag)
-onready var Engines =   load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
+#onready var Generator = load('res://Scenes/Models/VehicleParts/Generators/%s.tscn' % generator_tag)
+#onready var Engines =   load('res://Scenes/Models/VehicleParts/Engines/%s.tscn' % engines_tag)
 
 
 
@@ -135,69 +134,6 @@ func generateVehicle():
     # Return vehicle reference.
     var vehicle_ = _vehicles_.get_node(body_tag)
     return vehicle_
-
-
-
-func generateBlasterTags():
-
-#    for blaster in controls.body[body_tag]['blaster_slots']:
-
-    var blaster_slots = controls.body[body_tag]['blaster_slots']
-
-    for i in range(blaster_slots.size()):
-        blaster_tags += [controls.gameplay['vehicle'][blaster_slots[i]]]
-        
-#    for i in blaster_tags:
-#        print(i)
-#    get_tree().quit()
-
-
-
-func instanceVehicleParts():
-    """
-    For each designated vehicle body slot assign child of associated vehicle part from Controls.gd. 
-    """
-    
-    var generator_slot = vehicle.find_node('GeneratorPos')
-    generator_slot.add_child(Generator.instance())
-
-    var engines_suffixes = ['Fr', 'Br', 'Bl', 'Fl']
-    for suffix in engines_suffixes:
-        var engine_slot = vehicle.find_node('Engine%sPos' % suffix)
-        engine_slot.add_child(Engines.instance())
-        
-    if shields_tag:
-        var Shields = load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
-        var shields_slot = vehicle.find_node('ShieldsPos')
-        shields_slot.add_child(Shields.instance())
-
-#    # Blaster1 is wrapped in an if conditional because it's the only current part that is optional.
-#    if blaster1_tag:
-#        var Blaster1 = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster1_tag)
-#        var blaster1_slot = vehicle.find_node('Blaster1Pos')
-#        blaster1_slot.add_child(Blaster1.instance())
-
-    if blaster_tags:
-        for i in range(blaster_tags.size()):
-            var blaster_tag = blaster_tags[i]
-            if not blaster_tag:  continue
-            var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
-            var blaster_slot = vehicle.find_node('Blaster%sPos' % str(i + 1))
-            blaster_slot.add_child(Blaster.instance())
-
-
-
-func adjustForOptionalVehicleParts():
-    """
-    These adjustment calls need to be made after the scenes are instanced.  That's why these are
-    called in a seperate function that is called at the end of Gameplay's _ready().
-    """
-
-    if not shields_tag:
-        vehicle.adjustForNoShields()
-        hud.adjustForNoShields()
-    
-    hud.adjustForBlasters()
 
 
 
@@ -370,6 +306,68 @@ func _on_HalfSecond_timeout():
 ####################################################################################################
                                                                                 ###   OBSOLETE   ###
                                                                                 ####################
+
+""" READY FUNC (2020-06-05) """
+#func adjustForOptionalVehicleParts():
+#    """
+#    These adjustment calls need to be made after the scenes are instanced.  That's why these are
+#    called in a seperate function that is called at the end of Gameplay's _ready().
+#    """
+#
+#    if not shields_tag:
+#        vehicle.adjustForNoShields()
+#        hud.adjustForNoShields()
+#
+#    hud.adjustForBlasters()
+
+
+
+""" READY FUNC (2020-06-05) """
+#func instanceVehicleParts():
+#    """
+#    For each designated vehicle body slot assign child of associated vehicle part from Controls.gd. 
+#    """
+#
+#    var generator_slot = vehicle.find_node('GeneratorPos')
+#    generator_slot.add_child(Generator.instance())
+#
+#    var engines_suffixes = ['Fr', 'Br', 'Bl', 'Fl']
+#    for suffix in engines_suffixes:
+#        var engine_slot = vehicle.find_node('Engine%sPos' % suffix)
+#        engine_slot.add_child(Engines.instance())
+#
+#    if shields_tag:
+#        var Shields = load('res://Scenes/Models/VehicleParts/Shields/%s.tscn' % shields_tag)
+#        var shields_slot = vehicle.find_node('ShieldsPos')
+#        shields_slot.add_child(Shields.instance())
+#
+##    # Blaster1 is wrapped in an if conditional because it's the only current part that is optional.
+##    if blaster1_tag:
+##        var Blaster1 = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster1_tag)
+##        var blaster1_slot = vehicle.find_node('Blaster1Pos')
+##        blaster1_slot.add_child(Blaster1.instance())
+#
+#    if blaster_tags:
+#        for i in range(blaster_tags.size()):
+#            var blaster_tag = blaster_tags[i]
+#            if not blaster_tag:  continue
+#            var Blaster = load('res://Scenes/Models/VehicleParts/Blasters/%s.tscn' % blaster_tag)
+#            var blaster_slot = vehicle.find_node('Blaster%sPos' % str(i + 1))
+#            blaster_slot.add_child(Blaster.instance())
+
+
+
+""" READY FUNC (2020-06-05) """
+#func generateBlasterTags():
+#
+##    for blaster in controls.body[body_tag]['blaster_slots']:
+#
+#    var blaster_slots = controls.body[body_tag]['blaster_slots']
+#
+#    for i in range(blaster_slots.size()):
+#        blaster_tags += [controls.gameplay['vehicle'][blaster_slots[i]]]
+
+
 
 """ _ready() (2020-05-21) """
 #    # BLOCK...  Build vehicle, start with body.

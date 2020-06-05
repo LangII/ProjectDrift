@@ -31,7 +31,7 @@ onready var launcher_tags = []
 ### Set initial values from controls.
 onready var objective_input =       controls.gameplay['number_of_targets']
 onready var BLASTER_SLOTS =         controls.body[body_tag]['blaster_slots']
-onready var LAUNCHER_SLOTS =         controls.body[body_tag]['launcher_slots']
+onready var LAUNCHER_SLOTS =        controls.body[body_tag]['launcher_slots']
 onready var health_input =          controls.body[body_tag]['health']
 onready var MAX_SPEED =             controls.engines[engines_tag]['max_speed']
 onready var shields_battery_input = controls.shields[shields_tag]['battery_capacity']
@@ -162,7 +162,8 @@ func _ready():
     
     adjustNodesForBlasters()
     
-    adjustNodesForLaunchers()
+    if LAUNCHER_SLOTS:  adjustNodesForLaunchers()
+    else:  adjustNodesForNoLaunchers()
     
     generateExpandableControlVars()
     
@@ -172,7 +173,7 @@ func _ready():
     
     updateBlasterCurrentValue(blaster_cur_input)
     
-    updateLauncherCurrentValue(blaster_cur_input)
+    if LAUNCHER_SLOTS:  updateLauncherCurrentValue(launcher_cur_input)
     
     # Make visible because these nodes are default set to invisible for easier editing.
     focus_cam.visible = true
@@ -214,7 +215,7 @@ func adjustNodesForBlasters():
         blaster_counter += 1
         if blaster_counter == 1:  continue
         # Get container scene and adjust names of node children per counter.
-        var blaster_box = preload('res://Scenes/Functional/Blaster1Box.tscn').instance()
+        var blaster_box = preload('res://Scenes/Functional/Expandables/Blaster1Box.tscn').instance()
         var blaster_box_nodes = [
             'Blaster%sCurrentContainer*', 'Blaster%sText*', 'Blaster%sProgBar*',
             'Blaster%sBoltEnergyText*'
@@ -233,7 +234,7 @@ func adjustNodesForLaunchers():
     for launcher in launcher_tags:
         launcher_counter += 1
         if launcher_counter == 1:  continue
-        var launcher_box = preload('res://Scenes/Functional/Launcher1Box.tscn').instance()
+        var launcher_box = preload('res://Scenes/Functional/Expandables/Launcher1Box.tscn').instance()
         var launcher_box_nodes = [
             'Launcher%sCurrentContainer*', 'Launcher%sText*', 'Launcher%sProgBar*',
             'Launcher%sRoundDmgText*'
@@ -242,6 +243,13 @@ func adjustNodesForLaunchers():
             launcher_box.find_node(node % str(1)).name = node % launcher_counter
         launcher_box.name = 'Launcher%sBox*' % launcher_counter
         launchers_container.add_child(launcher_box)
+
+
+
+func adjustNodesForNoLaunchers():
+    
+    launchers_container.find_node('Launcher1Box*').visible = false
+    _bottom_right_.find_node('Divider*').visible = false
 
 
 

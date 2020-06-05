@@ -3,7 +3,7 @@
 
 extends VehicleBody
 
-# singletons.
+# Singletons.
 onready var main = get_node('/root/Main')
 onready var controls = get_node('/root/Controls')
 
@@ -70,6 +70,7 @@ onready var generator_rate = _non_spatial_.find_node('GeneratorRate*')
 onready var camera_pivot = find_node('CameraPivot*')
 onready var scope = camera_pivot.find_node('Scope*')
 onready var look_default = camera_pivot.find_node('LookDefault*')
+onready var spawn_ref = find_node('SpawnRef*')
 ### (expandables)
 onready var blaster_cool_downs = []
 onready var launcher_cool_downs = []
@@ -162,16 +163,13 @@ func _ready():
     
     setHasLaunchers()
     
-#    print("LAUNCHER_SLOTS = ", LAUNCHER_SLOTS)
-#    print("launcher_tags = ", launcher_tags)
-#    print("has_launchers = ", has_launchers)
-#    get_tree().quit()
-    
     instancePartModels()
     
     generateExpandableControlVars()
     
     generateExpandableWorkingVars()
+    
+    resetProjSpawnPos()
     
     generateExpandableNodeRefs()
     
@@ -343,6 +341,29 @@ func generateExpandableWorkingVars():
 
 
 
+func resetProjSpawnPos():
+    """
+    Projectile spawn positions need to be dynamically reset based on their distance from the spawn
+    reference position.  Basically, this is so that blasters and launchers that are set further back
+    on the vehicle body will not have their spawn points over lap with the body's collision shape.
+    """
+    
+    var spawn_ref_pos = spawn_ref.global_transform.origin
+    
+    for i in range(len(blaster_tags)):
+        if blaster_tags[i]:
+            var pivot_pos = blaster_barrel_pivots[i].global_transform.origin
+            var dist_to = pivot_pos.distance_to(spawn_ref_pos)
+            blaster_proj_spawns[i].transform.origin.z = -dist_to
+    
+    for i in range(len(launcher_tags)):
+        if launcher_tags[i]:
+            var pivot_pos = launcher_barrel_pivots[i].global_transform.origin
+            var dist_to = pivot_pos.distance_to(spawn_ref_pos)
+            launcher_proj_spawns[i].transform.origin.z = -dist_to
+
+
+
 func generateExpandableNodeRefs():
     """ Generate expandable node references.  Must succeed generateExpandableTags(). """
     
@@ -364,6 +385,7 @@ func setExpandableNodeRefValues():
     """ Set dynamic values of nodes from expandable node groups. """
     
     for i in range(len(BLASTER_SLOTS)):
+        blaster_cool_downs[i].wait_time = BLASTER_COOL_DOWNS[i]
         blaster_cool_downs[i].wait_time = BLASTER_COOL_DOWNS[i]
     for i in range(len(LAUNCHER_SLOTS)):
         launcher_cool_downs[i].wait_time = LAUNCHER_COOL_DOWNS[i]
@@ -388,8 +410,10 @@ func setReplenishSets():
                                                                                  ###################
 
 func _process(_delta):
-
-    if has_blasters:  setTargetting()
+    
+    setPointingAt()
+    if has_blasters:  setBlasterTargetting()
+    if has_launchers:  setLauncherTargetting()
 
     handleInputOther()
 
@@ -433,14 +457,18 @@ func _unhandled_input(event):
                                                                            ###   PROCESS FUNCS   ###
                                                                            #########################
 
-func setTargetting():
-    # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to
-    # ensure that whatever is in the player's crosshairs is the point that will be shot at.
+func setPointingAt():
     
     if scope.is_colliding():  pointing_at = scope.get_collision_point()
     else:  pointing_at = look_default.global_transform.origin
+
+
+
+func setBlasterTargetting():
+    # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to
+    # ensure that whatever is in the player's crosshairs is the point that will be shot at.
+    
     blaster_proj_spawns[cur_blaster].look_at(pointing_at, Vector3.UP)
-    launcher_proj_spawns[cur_launcher].look_at(pointing_at, Vector3.UP)
     
     ###   NEED TO FIX   ###
     # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
@@ -453,6 +481,19 @@ func setTargetting():
     blaster_barrel_pivots[cur_blaster].rotation_degrees.x = clamp(
         blaster_barrel_pivots[cur_blaster].rotation_degrees.x, 0, 90
     )
+
+
+
+func setLauncherTargetting():
+    # Targetting logic...  'spawn_bolt' looks at whatever 'scope' is looking at.  This is to
+    # ensure that whatever is in the player's crosshairs is the point that will be shot at.
+    
+    launcher_proj_spawns[cur_launcher].look_at(pointing_at, Vector3.UP)
+    
+    ###   NEED TO FIX   ###
+    # Barrel rotation needs rework.  Current rotation is based on global rotation. Should be based
+    # on local or parent rotation.  Can see the issue in the barrel's rotation while vehicle is on
+    # a gravity inversion slope.
     
     launcher_barrel_pivots[cur_launcher].look_at(pointing_at, gravity_dir * -1)
     launcher_barrel_pivots[cur_launcher].rotation_degrees.y = -90

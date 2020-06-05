@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://Scripts/TestVehicle01.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Obsolete/TestVehicle01.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Functional/Hud.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Materials/TestMatLightOrange.tres" type="Material" id=3]
 [ext_resource path="res://Materials/TestMatOrange.tres" type="Material" id=4]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Scenes/Models/VehicleParts/Slots/ShieldsSlot.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Models/VehicleParts/Slots/EnginesSlot.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/Models/VehicleParts/Slots/BlasterSlot.tscn" type="PackedScene" id=8]
+
 
 [sub_resource type="PhysicsMaterial" id=1]
 friction = 0.0

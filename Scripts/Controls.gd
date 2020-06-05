@@ -18,8 +18,8 @@ extends Node
 var TESTING_no_menu = true
 
 ### If 'true', vehicle takes no damage from target bolts.
-var TESTING_take_no_damage = false
-#var TESTING_take_no_damage = true
+#var TESTING_take_no_damage = false
+var TESTING_take_no_damage = true
 
 
 
@@ -31,12 +31,13 @@ var gameplay = {
     # 'arena': 'TestArena01',
     'arena': 'Bunny',
     'targets': 'TestTarget01',
-    'number_of_targets': 4, # (currently) 64 or less
+    'number_of_targets': 0, # (currently) 64 or less
     'vehicle': {
 
 #        'body': 'BodyWhite',
 #        'body': 'BodyWhiteWithYellow',
-        'body': 'BodyWhiteWithOrange',
+#        'body': 'BodyWhiteWithOrange',
+        'body': 'BodyWhiteWithGreen',
 
 #        'generator': 'GeneratorWhite',
         'generator': 'GeneratorWhiteWithYellow',
@@ -49,8 +50,8 @@ var gameplay = {
 #        'shields': '',
 
 #        'blaster1': 'BlasterWhite',
-        'blaster1': 'BlasterWhiteWithYellow',
-#        'blaster1': 'BlasterWhiteWithOrange',
+#        'blaster1': 'BlasterWhiteWithYellow',
+        'blaster1': 'BlasterWhiteWithOrange',
 #        'blaster1': '',
 
 #        'blaster2': 'BlasterWhite',
@@ -60,13 +61,15 @@ var gameplay = {
 
 #        'blaster3': 'BlasterWhite',
 #        'blaster3': 'BlasterWhiteWithYellow',
-#        'blaster3': 'BlasterWhiteWithOrange',
+        'blaster3': 'BlasterWhiteWithOrange',
 #        'blaster3': '',
 
         'missilelauncher1': 'MissileLauncherWhite',
+#        'missilelauncher1': 'MissileLauncherWhiteWithYellow',
 #        'missilelauncher1': 'MissileLauncher',
 
-#        'missilelauncher2': 'MissileLauncherWhite',
+        'missilelauncher2': 'MissileLauncherWhite',
+#        'missilelauncher2': 'MissileLauncherWhiteWithYellow',
 #        'missilelauncher2': 'MissileLauncher',
     },
 }
@@ -113,17 +116,25 @@ var body = {
         'health': 20.00,
         'armor': 0.05,
         'blaster_slots': ['blaster1',],
+        'launcher_slots': [],
     },
     'BodyWhiteWithYellow': {
         'health': 15.00,
         'armor': 0.04,
         'blaster_slots': ['blaster1', 'blaster2',],
+        'launcher_slots': [],
     },
     'BodyWhiteWithOrange': {
         'health': 18.00,
         'armor': 0.02,
         'blaster_slots': ['blaster1', 'blaster2'],
         'launcher_slots': ['missilelauncher1',],
+    },
+    'BodyWhiteWithGreen': {
+        'health': 5.00,
+        'armor': 0.01,
+        'blaster_slots': ['blaster1', 'blaster2', 'blaster3',],
+        'launcher_slots': ['missilelauncher1', 'missilelauncher2'],
     },
 }
 
@@ -201,7 +212,14 @@ var launchers = {
             'missile_speed': 8.0,
             'missile_accel': 0.015,
             'cool_down': 1.0,
-            'magazine_capacity': 14,
+            'magazine_capacity': 3,
+        },
+        'MissileLauncherWhiteWithYellow': {
+            'damage': {20.0: 5.0, 60.0: 5.0,},
+            'missile_speed': 9.0,
+            'missile_accel': 0.020,
+            'cool_down': 0.8,
+            'magazine_capacity': 5,
         },
         'MissileLauncher': {
             'damage': {0.0: 0.0,},
