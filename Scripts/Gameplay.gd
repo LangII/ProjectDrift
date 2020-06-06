@@ -33,11 +33,7 @@ onready var arena_tag =     controls.gameplay['arena']
 #onready var target_tag =    controls.gameplay['targets']
 
 ### Vehicle body and parts tags.
-onready var body_tag =      controls.gameplay['vehicle']['body']
-#onready var generator_tag = controls.gameplay['vehicle']['generator']
-#onready var engines_tag =   controls.gameplay['vehicle']['engines']
-#onready var shields_tag =   controls.gameplay['vehicle']['shields']
-#onready var blaster_tags = []
+onready var body_tag =      controls.gameplay['vehicle']['body']['part_tag']
 
 
 

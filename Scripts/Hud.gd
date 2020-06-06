@@ -19,9 +19,9 @@ onready var gameplay =  get_node('/root/Main/Gameplay')
                                                                                 ####################
 
 ### Controls tags.
-onready var body_tag =      controls.gameplay['vehicle']['body']
-onready var engines_tag =   controls.gameplay['vehicle']['engines']
-onready var shields_tag =   controls.gameplay['vehicle']['shields']
+onready var body_tag =      controls.gameplay['vehicle']['body']['part_tag']
+onready var engines_tag =   controls.gameplay['vehicle']['engines']['part_tag']
+onready var shields_tag =   controls.gameplay['vehicle']['shields']['part_tag']
 ### (expandables)
 onready var blaster_tags = []
 onready var launcher_full_tags = []
@@ -30,9 +30,9 @@ onready var launcher_tags = []
 
 ### Set initial values from controls.
 onready var objective_input =       controls.gameplay['number_of_targets']
-onready var BLASTER_SLOTS =         controls.body[body_tag]['blaster_slots']
-onready var LAUNCHER_SLOTS =        controls.body[body_tag]['launcher_slots']
-onready var health_input =          controls.body[body_tag]['health']
+onready var BLASTER_SLOTS =         controls.bodies[body_tag]['blaster_slots']
+onready var LAUNCHER_SLOTS =        controls.bodies[body_tag]['launcher_slots']
+onready var health_input =          controls.bodies[body_tag]['health']
 onready var MAX_SPEED =             controls.engines[engines_tag]['max_speed']
 onready var shields_battery_input = controls.shields[shields_tag]['battery_capacity']
 ### (expandables)
@@ -189,10 +189,10 @@ func generateExpandableTags():
     """ Generate expandable tags. """
     
     for blaster in BLASTER_SLOTS:
-        blaster_tags += [ controls.gameplay['vehicle'][blaster] ]
+        blaster_tags += [ controls.gameplay['vehicle'][blaster]['part_tag'] ]
     
     for launcher in LAUNCHER_SLOTS:
-        var full_tag = controls.gameplay['vehicle'][launcher]
+        var full_tag = controls.gameplay['vehicle'][launcher]['part_tag']
         launcher_full_tags += [ full_tag ]
         launcher_tags += [ full_tag.right(full_tag.find('Launcher') + len('Launcher')) ]
         launcher_types += [ full_tag.left(full_tag.find('Launcher')) ]

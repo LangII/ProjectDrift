@@ -14,10 +14,10 @@ onready var controls = get_node('/root/Controls')
                                                                                 ####################
 
 ### Get tags.
-onready var body_tag =      controls.gameplay['vehicle']['body']
-onready var generator_tag = controls.gameplay['vehicle']['generator']
-onready var engines_tag =   controls.gameplay['vehicle']['engines']
-onready var shields_tag =   controls.gameplay['vehicle']['shields']
+onready var body_tag =      controls.gameplay['vehicle']['body']['part_tag']
+onready var generator_tag = controls.gameplay['vehicle']['generator']['part_tag']
+onready var engines_tag =   controls.gameplay['vehicle']['engines']['part_tag']
+onready var shields_tag =   controls.gameplay['vehicle']['shields']['part_tag']
 ### (expandables)
 onready var blaster_tags = []
 onready var launcher_full_tags = []
@@ -37,10 +37,10 @@ onready var MOUSE_VERT_DAMP =       controls.global['vehicle']['mouse_vert_damp'
 # onready var REST_LINEAR_DAMP =      controls.global['vehicle']['rest_linear_damp']
 
 ### Get parts' control variables.
-onready var HEALTH =                    controls.body[body_tag]['health']
-onready var ARMOR =                     controls.body[body_tag]['armor']
-onready var BLASTER_SLOTS =             controls.body[body_tag]['blaster_slots']
-onready var LAUNCHER_SLOTS =            controls.body[body_tag]['launcher_slots']
+onready var HEALTH =                    controls.bodies[body_tag]['health']
+onready var ARMOR =                     controls.bodies[body_tag]['armor']
+onready var BLASTER_SLOTS =             controls.bodies[body_tag]['blaster_slots']
+onready var LAUNCHER_SLOTS =            controls.bodies[body_tag]['launcher_slots']
 onready var SHIELDS_BATTERY_CAPACITY =  controls.shields[shields_tag]['battery_capacity']
 onready var SHIELDS_DENSITY =           controls.shields[shields_tag]['density']
 onready var SHIELDS_CONCENTRATION =     controls.shields[shields_tag]['concentration']
@@ -190,15 +190,13 @@ func _ready():
                                                                              #######################
 
 func generateExpandableSlotsAndTags():
-    """
-    Generate expandable tags.
-    """
+    """ Generate expandable tags. """
     
     for blaster in BLASTER_SLOTS:
-        blaster_tags += [ controls.gameplay['vehicle'][blaster] ]
+        blaster_tags += [ controls.gameplay['vehicle'][blaster]['part_tag'] ]
     
     for launcher in LAUNCHER_SLOTS:
-        var full_tag = controls.gameplay['vehicle'][launcher]
+        var full_tag = controls.gameplay['vehicle'][launcher]['part_tag']
         launcher_full_tags += [ full_tag ]
         launcher_tags += [ full_tag.right(full_tag.find('Launcher') + len('Launcher')) ]
         launcher_types += [ full_tag.left(full_tag.find('Launcher')) ]
