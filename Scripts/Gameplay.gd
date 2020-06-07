@@ -21,6 +21,8 @@ extends Node
 onready var main = get_node('/root/Main')
 onready var controls = get_node('/root/Controls')
 
+
+
 ####################################################################################################
                                                                                 ###   CONTROLS   ###
                                                                                 ####################
@@ -75,6 +77,11 @@ func _ready():
     print("\n>>> [%s] scripted scene entering tree" % name)
     
     randomize()
+    
+    # Open BoostMod, Apply vehicle boosts, then close BoostMod.
+    var boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
+    boost_mod.updateControlsPartsStats()
+    boost_mod.queue_free()
 
     arena = generateArena()
     

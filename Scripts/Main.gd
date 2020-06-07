@@ -28,6 +28,16 @@ func _ready():
 
 
 
+func loadModule(_parent, _path):
+    
+    var Module = load(_path)
+    var module = Module.instance()
+    _parent.add_child(module)
+    
+    return module
+
+
+
 func changeScene(_scene):
     
     print("\n>>> changing scene to %s" % _scene)
