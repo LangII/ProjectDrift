@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/Models/VehicleParts/Slots/BlasterSlot.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Models/VehicleParts/Slots/BoostSlot.tscn" type="PackedScene" id=2]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -44,3 +45,15 @@ material/0 = null
 
 [node name="ProjectileSpawn*" type="Position3D" parent="BarrelPivot*"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -3.39445e-07, 0, -2.0835 )
+
+[node name="Boosts*" type="Spatial" parent="."]
+
+[node name="Boost1Pos*" type="Position3D" parent="Boosts*"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.299744, 0.109719, -0.0406333 )
+
+[node name="BoostSlot" parent="Boosts*/Boost1Pos*" instance=ExtResource( 2 )]
+
+[node name="Boost2Pos*" type="Position3D" parent="Boosts*"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.299744, 0.109719, 0.0396056 )
+
+[node name="BoostSlot" parent="Boosts*/Boost2Pos*" instance=ExtResource( 2 )]

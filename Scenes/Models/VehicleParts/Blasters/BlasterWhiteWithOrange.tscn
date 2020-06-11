@@ -54,3 +54,5 @@ material/0 = null
 
 [node name="ProjectileSpawn*" type="Position3D" parent="BarrelPivot*"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -3.39445e-07, 0, -2.0835 )
+
+[node name="Boosts*" type="Spatial" parent="."]

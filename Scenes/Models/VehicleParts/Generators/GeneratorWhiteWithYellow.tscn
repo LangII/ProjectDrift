@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Models/VehicleParts/Slots/GeneratorSlot.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Models/VehicleParts/Slots/BoostSlot.tscn" type="PackedScene" id=2]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -42,3 +43,15 @@ material/0 = SubResource( 4 )
 transform = Transform( -4.37114e-10, 0, -0.05, 0, 0.008, 0, 0.01, 0, -2.18557e-09, 0, 0.07, 0.1 )
 mesh = SubResource( 1 )
 material/0 = SubResource( 4 )
+
+[node name="Boosts*" type="Spatial" parent="."]
+
+[node name="Boost1Pos*" type="Position3D" parent="Boosts*"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0448598, 0.0541259, -0.245527 )
+
+[node name="BoostSlot" parent="Boosts*/Boost1Pos*" instance=ExtResource( 2 )]
+
+[node name="Boost2Pos*" type="Position3D" parent="Boosts*"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0461245, 0.0541259, -0.244944 )
+
+[node name="BoostSlot" parent="Boosts*/Boost2Pos*" instance=ExtResource( 2 )]

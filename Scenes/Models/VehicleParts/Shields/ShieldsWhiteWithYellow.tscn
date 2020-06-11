@@ -32,3 +32,5 @@ material/0 = SubResource( 3 )
 transform = Transform( 0.08, 0, 0, 0, 0.025, 0, 0, 0, 0.08, 0, 0.0802629, 0 )
 mesh = SubResource( 1 )
 material/0 = SubResource( 4 )
+
+[node name="Boosts*" type="Spatial" parent="."]

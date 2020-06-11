@@ -202,6 +202,8 @@ transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 1.22, 0
 
 [node name="EngineSlot" parent="Parts*/EngineFlPos*" instance=ExtResource( 7 )]
 
+[node name="Boosts*" type="Spatial" parent="."]
+
 [node name="SpawnRef*" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.3, 0 )
 

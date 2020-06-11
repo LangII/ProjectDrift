@@ -76,12 +76,12 @@ func _ready():
     
     print("\n>>> [%s] scripted scene entering tree" % name)
     
+    # Open temp mods.
+    var boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
+    
     randomize()
     
-    # Open BoostMod, Apply vehicle boosts, then close BoostMod.
-    var boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
     boost_mod.updateControlsPartsStats()
-    boost_mod.queue_free()
 
     arena = generateArena()
     
@@ -91,6 +91,9 @@ func _ready():
     hud = vehicle.find_node('NonSpatial*').find_node('Hud')
     
     generateTargets()
+    
+    # Close temp mods.
+    boost_mod.queue_free()
     
     print("\n>>> [%s] ready...  [%s] starting..." % [name, name])
 

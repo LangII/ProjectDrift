@@ -35,42 +35,42 @@ var gameplay = {
     'vehicle': {
 
 #        'body': {'part_tag': 'BodyWhite', 'boosts': []}, # 0
-#        'body': {'part_tag': 'BodyWhiteWithYellow', 'boosts': []}, # 1
-        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': ['body_boost_01', 'body_boost_02']}, # 2
+#        'body': {'part_tag': 'BodyWhiteWithYellow', 'boosts': ['body_boost_03']}, # 1
+        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': ['body_boost_03', 'body_boost_01']}, # 2
 #        'body': {'part_tag': 'BodyWhiteWithGreen', 'boosts': []}, # 0
 
-#        'generator': {'part_tag': 'GeneratorWhite', 'boosts': []}, # 1
-        'generator': {'part_tag': 'GeneratorWhiteWithYellow', 'boosts': ['generator_boost_01', 'generator_boost_02']}, # 2
+#        'generator': {'part_tag': 'GeneratorWhite', 'boosts': ['generator_boost_01']}, # 1
+        'generator': {'part_tag': 'GeneratorWhiteWithYellow', 'boosts': ['generator_boost_01']}, # 2
 
-        'engines': {'part_tag': 'EnginesWhite', 'boosts': ['engines_boost_01']}, # 1
+        'engines': {'part_tag': 'EnginesWhite', 'boosts': ['engines_boost_02']}, # 1
 #        'engines': {'part_tag': 'EnginesWhiteWithYellow', 'boosts': []}, # 0
 
-        'shields': {'part_tag': 'ShieldsWhite', 'boosts': ['shields_boost_01', 'shields_boost_03']}, # 2
+        'shields': {'part_tag': 'ShieldsWhite', 'boosts': ['shields_boost_01']}, # 2
 #        'shields': {'part_tag': 'ShieldsWhiteWithYellow', 'boosts': []}, # 0
 #        'shields': {'part_tag': '', 'boosts': []}, # 0
 
-#        'blaster1': {'part_tag': 'BlasterWhite', 'boosts': []}, # 1
-        'blaster1': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['blaster_boost_01', 'blaster_boost_02']}, # 2
-#        'blaster1': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
-#        'blaster1': {'part_tag': '', 'boosts': []}, # 0
+#        'blaster_1': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_01']}, # 1
+#        'blaster_1': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['blaster_boost_01', 'blaster_boost_02']}, # 2
+#        'blaster_1': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
+        'blaster_1': {'part_tag': '', 'boosts': []}, # 0
 
-#        'blaster2': {'part_tag': 'BlasterWhite', 'boosts': []}, # 1
-#        'blaster2': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': []}, # 2
-        'blaster2': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
-#        'blaster2': {'part_tag': '', 'boosts': []}, # 0
+        'blaster_2': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_03']}, # 1
+#        'blaster_2': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['blaster_boost_02', 'blaster_boost_02']}, # 2
+#        'blaster_2': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
+#        'blaster_2': {'part_tag': '', 'boosts': []}, # 0
 
-#        'blaster3': {'part_tag': 'BlasterWhite', 'boosts': []}, # 1
-#        'blaster3': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': []}, # 2
-#        'blaster3': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
-#        'blaster3': {'part_tag': '', 'boosts': []}, # 0
+#        'blaster_3': {'part_tag': 'BlasterWhite', 'boosts': []}, # 1
+#        'blaster_3': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': []}, # 2
+#        'blaster_3': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
+#        'blaster_3': {'part_tag': '', 'boosts': []}, # 0
 
-        'missilelauncher1': {'part_tag': 'MissileLauncherWhite', 'boosts': ['missile_launcher_boost_01']}, # 1
-#        'missilelauncher1': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': []}, # 2
-#        'missilelauncher1': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
+#        'missilelauncher_1': {'part_tag': 'MissileLauncherWhite', 'boosts': ['missilelauncher_boost_01']}, # 1
+#        'missilelauncher_1': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': ['missilelauncher_boost_01', 'missilelauncher_boost_02']}, # 2
+        'missilelauncher_1': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
 
-#        'missilelauncher2': {'part_tag': 'MissileLauncherWhite', 'boosts': []}, # 1
-#        'missilelauncher2': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': []}, # 2
-#        'missilelauncher2': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
+#        'missilelauncher_2': {'part_tag': 'MissileLauncherWhite', 'boosts': []}, # 1
+#        'missilelauncher_2': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': []}, # 2
+#        'missilelauncher_2': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
     },
 }
 
@@ -115,29 +115,29 @@ var bodies = {
     'BodyWhite': {
         'health': 20.00,
         'armor': 0.05,
-        'blaster_slots': ['blaster1',],
+        'blaster_slots': ['blaster_1',],
         'launcher_slots': [],
         'boost_slots': 0,
     },
     'BodyWhiteWithYellow': {
         'health': 15.00,
         'armor': 0.04,
-        'blaster_slots': ['blaster1', 'blaster2',],
+        'blaster_slots': ['blaster_1', 'blaster_2',],
         'launcher_slots': [],
         'boost_slots': 1,
     },
     'BodyWhiteWithOrange': {
         'health': 18.00,
         'armor': 0.02,
-        'blaster_slots': ['blaster1', 'blaster2'],
-        'launcher_slots': ['missilelauncher1',],
+        'blaster_slots': ['blaster_1', 'blaster_2'],
+        'launcher_slots': ['missilelauncher_1',],
         'boost_slots': 2,
     },
     'BodyWhiteWithGreen': {
         'health': 5.00,
         'armor': 0.01,
-        'blaster_slots': ['blaster1', 'blaster2', 'blaster3',],
-        'launcher_slots': ['missilelauncher1', 'missilelauncher2'],
+        'blaster_slots': ['blaster_1', 'blaster_2', 'blaster_3',],
+        'launcher_slots': ['missilelauncher_1', 'missilelauncher_2'],
         'boost_slots': 0,
     },
 }
@@ -255,6 +255,25 @@ var launchers = {
                                                                                   ###   BOOSTS   ###
                                                                                   ##################
 
+var boost_model_refs = {
+    # red = strength, purple = capacity, orange = speed, white = time
+    'red': [
+        'body armor', 'generator replenish', 'shields density', 'shields concentration',
+        'blaster energy', 'missilelauncher dmg_rad', 'missilelauncher dmg_val',
+    ],
+    'purple': [
+        'body health', 'engines max_speed', 'shields battery_capacity', 'blaster battery_capacity',
+        'missilelauncher magazine_capacity',
+    ],
+    'orange': [
+        'engines thrust', 'blaster bolt_speed', 'missilelauncher missile_speed',
+        'missilelauncher missile_accel',
+    ],
+    'white': [
+        'generator rate', 'blaster cool_down', 'missilelauncher cool_down',
+    ],
+}
+
 var boosts = {
         # 'type': 'perc +', 'perc -', 'incr +', or 'incr -'
         # 'value': value of increase with consideration of 'type'
@@ -262,17 +281,20 @@ var boosts = {
         # 'stat': 'health' or 'armor'
         'body_boost_01': {'stat': 'health', 'type': 'perc +', 'value': 0.15},
         'body_boost_02': {'stat': 'armor', 'type': 'perc +', 'value': 0.10},
+        'body_boost_03': {'stat': 'health', 'type': 'incr +', 'value': 15},
     },
     'generator': {
         # 'stat': 'rate' or 'replenish'
         #       !!!  If 'stat': 'rate', then 'type' can only be 'perc -'.  !!!
         'generator_boost_01': {'stat': 'replenish', 'type': 'incr +', 'value': 0.20},
         'generator_boost_02': {'stat': 'rate', 'type': 'perc -', 'value': 0.20},
+        'generator_boost_03': {'stat': 'replenish', 'type': 'perc +', 'value': 0.10},
     },
     'engines': {
         # 'stat': 'thrust' or 'max_speed'
         'engines_boost_01': {'stat': 'thrust', 'type': 'perc +', 'value': 0.20},
         'engines_boost_02': {'stat': 'max_speed', 'type': 'incr +', 'value': 5},
+        'engines_boost_03': {'stat': 'max_speed', 'type': 'perc +', 'value': 0.10},
     },
     'shields': {
         # 'stat': 'density', 'concentration', or 'battery_capacity'
@@ -285,13 +307,15 @@ var boosts = {
         #       !!!  If 'stat': 'cool_down', then 'type' can only be 'perc -'.  !!!
         'blaster_boost_01': {'stat': 'energy', 'type': 'incr +', 'value': 0.50},
         'blaster_boost_02': {'stat': 'battery_capacity', 'type': 'perc +', 'value': 0.10},
+        'blaster_boost_03': {'stat': 'cool_down', 'type': 'perc -', 'value': 0.08},
     },
-    'missile_launcher': {
+    'missilelauncher': {
         # 'stat': 'dmg_rad', 'dmg_val', 'missile_speed', 'missile_accel', 'cool_down', or
         # 'magazine_capacity'
         #       !!!  If 'stat': 'cool_down', then 'type' can only be 'perc -'.  !!!
-        'missile_launcher_boost_01': {'stat': 'dmg_rad', 'type': 'perc +', 'value': 0.10},
-        'missile_launcher_boost_02': {'stat': 'magazine_capacity', 'type': 'perc +', 'value': 0.10},
+        'missilelauncher_boost_01': {'stat': 'dmg_rad', 'type': 'perc +', 'value': 0.10},
+        'missilelauncher_boost_02': {'stat': 'magazine_capacity', 'type': 'perc +', 'value': 0.10},
+        'missilelauncher_boost_03': {'stat': 'dmg_val', 'type': 'incr +', 'value': 2},
     },
 }
 

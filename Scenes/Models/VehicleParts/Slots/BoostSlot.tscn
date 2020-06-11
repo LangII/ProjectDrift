@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CylinderMesh" id=1]
+radial_segments = 8
+
+[node name="BoostSlot" type="MeshInstance"]
+transform = Transform( 0.035, 0, 0, 0, 0.002, 0, 0, 0, 0.035, 0, 0.002, 0 )
+mesh = SubResource( 1 )
+material/0 = null

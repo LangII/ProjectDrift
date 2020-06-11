@@ -143,6 +143,9 @@ func _ready():
     
     print("\n>>> [%s] scripted scene entering tree" % name)
     
+    # Open temp mods.
+    var boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
+    
     """
     TO-DOS:  Mouse capture should be handled in Gameplay.gd.
     """
@@ -165,6 +168,8 @@ func _ready():
     
     instancePartModels()
     
+    boost_mod.instanceBoostModels()
+    
     generateExpandableControlVars()
     
     generateExpandableWorkingVars()
@@ -180,6 +185,11 @@ func _ready():
     setReplenishSets()
     
     hud.updateReplenishValues(replenish['engines'], replenish['shields'], replenish['blasters'])
+    
+    setCurrents()
+    
+    # Close temp mods.
+    boost_mod.queue_free()
     
     print("\n>>> [%s] ready..." % name)
 
@@ -400,6 +410,22 @@ func setReplenishSets():
     replenish['engines'] =     replenish_sets[cur_repl_set]['engines']
     replenish['shields'] =     replenish_sets[cur_repl_set]['shields']
     replenish['blasters'] =    replenish_sets[cur_repl_set]['blasters']
+
+
+
+func setCurrents():
+    """ Set cur_blaster and cur_launcher based on tags. """
+    
+    if has_blasters:
+        for tag in blaster_tags:
+            if not tag:  cur_blaster += 1
+            else:  break
+        hud.updateBlasterCurrentValue(cur_blaster)
+    if has_launchers:
+        for tag in launcher_tags:
+            if not tag:  cur_launcher += 1
+            else:  break
+        hud.updateLauncherCurrentValue(cur_launcher)
 
 
 
