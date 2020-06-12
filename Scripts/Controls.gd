@@ -45,16 +45,16 @@ var gameplay = {
         'engines': {'part_tag': 'EnginesWhite', 'boosts': ['engines_boost_02']}, # 1
 #        'engines': {'part_tag': 'EnginesWhiteWithYellow', 'boosts': []}, # 0
 
-        'shields': {'part_tag': 'ShieldsWhite', 'boosts': ['shields_boost_01']}, # 2
+        'shields': {'part_tag': 'ShieldsWhite', 'boosts': ['shields_boost_01', 'shields_boost_01']}, # 2
 #        'shields': {'part_tag': 'ShieldsWhiteWithYellow', 'boosts': []}, # 0
 #        'shields': {'part_tag': '', 'boosts': []}, # 0
 
 #        'blaster_1': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_01']}, # 1
-#        'blaster_1': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['blaster_boost_01', 'blaster_boost_02']}, # 2
+        'blaster_1': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['blaster_boost_01', 'blaster_boost_01']}, # 2
 #        'blaster_1': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
-        'blaster_1': {'part_tag': '', 'boosts': []}, # 0
+#        'blaster_1': {'part_tag': '', 'boosts': []}, # 0
 
-        'blaster_2': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_03']}, # 1
+        'blaster_2': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_02']}, # 1
 #        'blaster_2': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['blaster_boost_02', 'blaster_boost_02']}, # 2
 #        'blaster_2': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
 #        'blaster_2': {'part_tag': '', 'boosts': []}, # 0
@@ -65,8 +65,8 @@ var gameplay = {
 #        'blaster_3': {'part_tag': '', 'boosts': []}, # 0
 
 #        'missilelauncher_1': {'part_tag': 'MissileLauncherWhite', 'boosts': ['missilelauncher_boost_01']}, # 1
-#        'missilelauncher_1': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': ['missilelauncher_boost_01', 'missilelauncher_boost_02']}, # 2
-        'missilelauncher_1': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
+        'missilelauncher_1': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': ['missilelauncher_boost_01', 'missilelauncher_boost_01']}, # 2
+#        'missilelauncher_1': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
 
 #        'missilelauncher_2': {'part_tag': 'MissileLauncherWhite', 'boosts': []}, # 1
 #        'missilelauncher_2': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': []}, # 2
