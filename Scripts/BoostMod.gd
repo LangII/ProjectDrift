@@ -75,7 +75,6 @@ func updateStats(_part_type, _part_tag, _boosts):
 
 
 
-
 func getNewStatValue(_old_value, _boost):
     """
     Get type from _boost, extract 'incr' or 'perc' and '+' or '-' to determine stat change.  With
@@ -254,7 +253,7 @@ func addChildModelToSlot(_boost_slots, _part_type, _part_tag, _boost_tags):
         var boost_slot = _boost_slots.get_node('Boost%sPos*' % str(i + 1))
         boost_slot.add_child(boost_scene.instance())
         
-        printModelUpdate(_part_tag, _boost_tags[i], boost_scene)
+        printModelUpdate(boost_slot.get_parent().get_parent().name, _boost_tags[i], stat, boost_scene)
 
 
 
@@ -279,7 +278,7 @@ func printStatUpdate(_part_tag, _boost_tag, _boost, _old_value, _new_value):
     ]
     var div_line = "+-%s-+-%s-+-%s-+-%s-+-%s-+" % div_str_form
     
-    if print_stat_counter == 1:  print(div_line)
+    if print_stat_counter == 1:  print("\n", div_line)
     
     if typeof(_old_value) == TYPE_DICTIONARY:
         var str_form = [
@@ -299,9 +298,37 @@ func printStatUpdate(_part_tag, _boost_tag, _boost, _old_value, _new_value):
 
 
 
-func printModelUpdate(_part_tag, _boost_tag, _boost_model):
+var print_model_counter = 0
+var engines_counter = 0
+func printModelUpdate(_part_tag, _boost_tag, _stat, _boost_model):
     
-    pass
+    print_model_counter += 1
+    
+    if _part_tag.begins_with('Engines'):
+        engines_counter += 1
+        if engines_counter > 1:  return
+    
+    var part_tag_pad = 32
+    var boost_tag_pad = 26
+    var stat_pad = 18
+    var boost_model_pad = 16
+    
+    var model_name = _boost_model.resource_path.right(_boost_model.resource_path.rfind('/') + 1)
+    
+    var div_str_form = [
+        '-'.repeat(part_tag_pad), '-'.repeat(boost_tag_pad), '-'.repeat(stat_pad),
+        '-'.repeat(boost_model_pad)
+    ]
+    var div_line = "+-%s-+-%s-+-%s-+-%s-+" % div_str_form
+    
+    if print_model_counter == 1:  print("\n", div_line)
+    
+    var str_form = [
+        part_tag_pad, _part_tag, boost_tag_pad, _boost_tag, stat_pad, _stat, boost_model_pad,
+        model_name
+    ]
+    print("| %-*s | %-*s | %-*s | %-*s |" % str_form)
+    print(div_line)
 
 
 
