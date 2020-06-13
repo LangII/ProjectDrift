@@ -34,66 +34,45 @@ func updateControlsPartsStats():
         """
         
         if value['part_tag'].begins_with('Body'):
-            updateBodyPart(value['part_tag'], value['boosts'])
+            updateStats('body', value['part_tag'], value['boosts'])
         
         elif value['part_tag'].begins_with('Generator'):
-            updateGeneratorPart(value['part_tag'], value['boosts'])
+            updateStats('generator', value['part_tag'], value['boosts'])
         
         elif value['part_tag'].begins_with('Engines'):
-            updateEnginesPart(value['part_tag'], value['boosts'])
+            updateStats('engines', value['part_tag'], value['boosts'])
         
         elif value['part_tag'].begins_with('Shields'):
-            updateShieldsPart(value['part_tag'], value['boosts'])
+            updateStats('shields', value['part_tag'], value['boosts'])
         
         elif value['part_tag'].begins_with('Blaster'):
-            updateBlasterPart(value['part_tag'], value['boosts'])
+            updateStats('blaster', value['part_tag'], value['boosts'])
         
         elif value['part_tag'].begins_with('MissileLauncher'):
             updateMissileLauncherPart(value['part_tag'], value['boosts'])
 
 
 
-""" Referenced vehicle part functions for calling controls attributes and updating their stats. """
-
-func updateBodyPart(_part_tag, _boosts):
+func updateStats(_part_type, _part_tag, _boosts):
+    """ Update stat values from boost dictionary. """
+    
+    var part_type_ref
+    match _part_type:
+        'body':         part_type_ref = controls.bodies
+        'generator':    part_type_ref = controls.generators
+        'engines':      part_type_ref = controls.engines
+        'shields':      part_type_ref = controls.shields
+        'blaster':      part_type_ref = controls.blasters
     
     for boost in _boosts:
-        boost = controls.boosts['body'][boost]
-        var old_stat_value = controls.bodies[_part_tag][boost['stat']]
-        var new_stat_value = getNewStatValue(old_stat_value, boost)
-        controls.bodies[_part_tag][boost['stat']] = new_stat_value
-
-func updateGeneratorPart(_part_tag, _boosts):
+        if not boost:  continue
+        var boost_dict = controls.boosts[_part_type][boost]
+        var old_stat_value = part_type_ref[_part_tag][boost_dict['stat']]
+        var new_stat_value = getNewStatValue(old_stat_value, boost_dict)
+        part_type_ref[_part_tag][boost_dict['stat']] = new_stat_value
     
-    for boost in _boosts:
-        boost = controls.boosts['generator'][boost]
-        var old_stat_value = controls.generators[_part_tag][boost['stat']]
-        var new_stat_value = getNewStatValue(old_stat_value, boost)
-        controls.generators[_part_tag][boost['stat']] = new_stat_value
+        printStatUpdate(_part_tag, boost, boost_dict, old_stat_value, new_stat_value)
 
-func updateEnginesPart(_part_tag, _boosts):
-    
-    for boost in _boosts:
-        boost = controls.boosts['engines'][boost]
-        var old_stat_value = controls.engines[_part_tag][boost['stat']]
-        var new_stat_value = getNewStatValue(old_stat_value, boost)
-        controls.engines[_part_tag][boost['stat']] = new_stat_value
-
-func updateShieldsPart(_part_tag, _boosts):
-    
-    for boost in _boosts:
-        boost = controls.boosts['shields'][boost]
-        var old_stat_value = controls.shields[_part_tag][boost['stat']]
-        var new_stat_value = getNewStatValue(old_stat_value, boost)
-        controls.shields[_part_tag][boost['stat']] = new_stat_value
-
-func updateBlasterPart(_part_tag, _boosts):
-    
-    for boost in _boosts:
-        boost = controls.boosts['blaster'][boost]
-        var old_stat_value = controls.blasters[_part_tag][boost['stat']]
-        var new_stat_value = getNewStatValue(old_stat_value, boost)
-        controls.blasters[_part_tag][boost['stat']] = new_stat_value
 
 
 
@@ -129,19 +108,23 @@ func updateMissileLauncherPart(_part_tag, _boosts):
     
     for boost in _boosts:
         
-        boost = controls.boosts['missilelauncher'][boost]
+        var boost_dict = controls.boosts['missilelauncher'][boost]
 
         # Handle odd boost stats of 'dmg_rad' and 'dmg_val'.
-        if boost['stat'] == 'dmg_rad' or boost['stat'] == 'dmg_val':
+        if boost_dict['stat'] == 'dmg_rad' or boost_dict['stat'] == 'dmg_val':
             var old_dmg_dict = controls.launchers['Missile'][_part_tag]['damage']
-            var new_dmg_dict = getNewDamageDict(old_dmg_dict, boost)
+            var new_dmg_dict = getNewDamageDict(old_dmg_dict, boost_dict)
             controls.launchers['Missile'][_part_tag]['damage'] = new_dmg_dict
+            
+            printStatUpdate(_part_tag, boost, boost_dict, old_dmg_dict, new_dmg_dict)
         
         # Process other stats as normal.
         else:
-            var old_stat_value = controls.launchers['Missile'][_part_tag][boost['stat']]
-            var new_stat_value = getNewStatValue(old_stat_value, boost)
-            controls.launchers['Missile'][_part_tag][boost['stat']] = new_stat_value
+            var old_stat_value = controls.launchers['Missile'][_part_tag][boost_dict['stat']]
+            var new_stat_value = getNewStatValue(old_stat_value, boost_dict)
+            controls.launchers['Missile'][_part_tag][boost_dict['stat']] = new_stat_value
+        
+            printStatUpdate(_part_tag, boost, boost_dict, old_stat_value, new_stat_value)
 
 
 
@@ -265,15 +248,60 @@ func addChildModelToSlot(_boost_slots, _part_type, _part_tag, _boost_tags):
     """ Repeatable application of boosts.  Needed for instanceBoostModels(). """
     
     for i in range(len(_boost_tags)):
+        if not _boost_tags[i]:  continue
         var stat = boosts[_part_type][_boost_tags[i]]['stat']
         var boost_scene = getBoostModelScene(_part_type, stat)
         var boost_slot = _boost_slots.get_node('Boost%sPos*' % str(i + 1))
         boost_slot.add_child(boost_scene.instance())
+        
+        printModelUpdate(_part_tag, _boost_tags[i], boost_scene)
 
 
 
+####################################################################################################
+                                                                            ###   UNIT TESTING   ###
+                                                                            ########################
+
+var print_stat_counter = 0
+func printStatUpdate(_part_tag, _boost_tag, _boost, _old_value, _new_value):
+    
+    print_stat_counter += 1
+    
+    var part_tag_pad = 32
+    var boost_tag_pad = 26
+    var boost_pad = 64
+    var old_value_pad = 38
+    var new_value_pad = 38
+    
+    var div_str_form = [
+        '-'.repeat(part_tag_pad), '-'.repeat(boost_tag_pad), '-'.repeat(boost_pad),
+        '-'.repeat(old_value_pad), '-'.repeat(new_value_pad)
+    ]
+    var div_line = "+-%s-+-%s-+-%s-+-%s-+-%s-+" % div_str_form
+    
+    if print_stat_counter == 1:  print(div_line)
+    
+    if typeof(_old_value) == TYPE_DICTIONARY:
+        var str_form = [
+            part_tag_pad, _part_tag, boost_tag_pad, _boost_tag, boost_pad, _boost, old_value_pad,
+            String(_old_value), new_value_pad, String(_new_value)
+        ]
+        print("| %-*s | %-*s | %-*s | %*s | %*s |" % str_form)
+        print(div_line)
+        return
+    
+    var str_form = [
+        part_tag_pad, _part_tag, boost_tag_pad, _boost_tag, boost_pad, _boost, old_value_pad,
+        float(_old_value), new_value_pad, float(_new_value)
+    ]
+    print("| %-*s | %-*s | %-*s | %*.4f | %*.4f |" % str_form)
+    print(div_line)
 
 
+
+func printModelUpdate(_part_tag, _boost_tag, _boost_model):
+    
+    pass
 
 
 

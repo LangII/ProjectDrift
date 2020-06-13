@@ -36,7 +36,7 @@ var gameplay = {
 
 #        'body': {'part_tag': 'BodyWhite', 'boosts': []}, # 0
 #        'body': {'part_tag': 'BodyWhiteWithYellow', 'boosts': ['body_boost_03']}, # 1
-        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': ['body_boost_03', 'body_boost_01']}, # 2
+        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': ['body_boost_01', 'body_boost_01']}, # 2
 #        'body': {'part_tag': 'BodyWhiteWithGreen', 'boosts': []}, # 0
 
 #        'generator': {'part_tag': 'GeneratorWhite', 'boosts': ['generator_boost_01']}, # 1
@@ -298,7 +298,7 @@ var boosts = {
     },
     'shields': {
         # 'stat': 'density', 'concentration', or 'battery_capacity'
-        'shields_boost_01': {'stat': 'density', 'type': 'perc +', 'value': 0.02},
+        'shields_boost_01': {'stat': 'density', 'type': 'perc +', 'value': 0.05},
         'shields_boost_02': {'stat': 'concentration', 'type': 'perc +', 'value': 0.10},
         'shields_boost_03': {'stat': 'battery_capacity', 'type': 'perc +', 'value': 0.10},
     },
