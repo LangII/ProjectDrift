@@ -35,7 +35,8 @@ onready var arena_tag =     controls.gameplay['arena']
 #onready var target_tag =    controls.gameplay['targets']
 
 ### Vehicle body and parts tags.
-onready var body_tag =      controls.gameplay['vehicle']['body']['part_tag']
+onready var vehicle_rig =   controls.gameplay['vehicle']
+onready var body_tag =      vehicle_rig['body']['part_tag']
 
 
 
@@ -81,6 +82,8 @@ func _ready():
     
     randomize()
     
+    transferPartStatsToVehicleRig()
+    
     boost_mod.updateControlsPartsStats()
 
     arena = generateArena()
@@ -102,6 +105,32 @@ func _ready():
 ####################################################################################################
                                                                              ###   READY FUNCS   ###
                                                                              #######################
+
+func transferPartStatsToVehicleRig():
+    
+    for key in vehicle_rig:
+        var value = vehicle_rig[key]
+        print("%-18s" % key, " ... ", value)
+    
+    for part_type in vehicle_rig:
+        var part_dict = vehicle_rig[part_type]
+
+        var controls_ref
+        if part_type.begins_with('body'): controls_ref = controls.bodies
+        elif part_type.begins_with('generator'): controls_ref = controls.generators
+        elif part_type.begins_with('engines'): controls_ref = controls.engines
+        elif part_type.begins_with('shields'): controls_ref = controls.shields
+        elif part_type.begins_with('blaster'): controls_ref = controls.blasters
+        elif part_type.begins_with('missilelauncher'): controls_ref = controls.launchers['Missile']
+
+        vehicle_rig[part_type]['part_stats'] = controls_ref[vehicle_rig[part_type]['part_tag']]
+    
+    print("")
+    for key in vehicle_rig:
+        var value = vehicle_rig[key]
+        print("%-18s" % key, " ... ", value)
+
+    get_tree().quit()
 
 
 func generateArena():

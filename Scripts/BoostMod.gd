@@ -16,6 +16,9 @@ onready var Purple = preload('res://Scenes/Models/VehicleParts/Boosts/BoostPurpl
 onready var Orange = preload('res://Scenes/Models/VehicleParts/Boosts/BoostOrange.tscn')
 onready var White = preload('res://Scenes/Models/VehicleParts/Boosts/BoostWhite.tscn')
 
+var UNIT_TESTING = false
+#var UNIT_TESTING = true
+
 
 
 ####################################################################################################
@@ -71,7 +74,8 @@ func updateStats(_part_type, _part_tag, _boosts):
         var new_stat_value = getNewStatValue(old_stat_value, boost_dict)
         part_type_ref[_part_tag][boost_dict['stat']] = new_stat_value
     
-        printStatUpdate(_part_tag, boost, boost_dict, old_stat_value, new_stat_value)
+        if UNIT_TESTING:
+            printStatUpdate(_part_tag, boost, boost_dict, old_stat_value, new_stat_value)
 
 
 
@@ -107,6 +111,8 @@ func updateMissileLauncherPart(_part_tag, _boosts):
     
     for boost in _boosts:
         
+        if not boost:  continue
+        
         var boost_dict = controls.boosts['missilelauncher'][boost]
 
         # Handle odd boost stats of 'dmg_rad' and 'dmg_val'.
@@ -115,7 +121,8 @@ func updateMissileLauncherPart(_part_tag, _boosts):
             var new_dmg_dict = getNewDamageDict(old_dmg_dict, boost_dict)
             controls.launchers['Missile'][_part_tag]['damage'] = new_dmg_dict
             
-            printStatUpdate(_part_tag, boost, boost_dict, old_dmg_dict, new_dmg_dict)
+            if UNIT_TESTING:
+                printStatUpdate(_part_tag, boost, boost_dict, old_dmg_dict, new_dmg_dict)
         
         # Process other stats as normal.
         else:
@@ -123,7 +130,8 @@ func updateMissileLauncherPart(_part_tag, _boosts):
             var new_stat_value = getNewStatValue(old_stat_value, boost_dict)
             controls.launchers['Missile'][_part_tag][boost_dict['stat']] = new_stat_value
         
-            printStatUpdate(_part_tag, boost, boost_dict, old_stat_value, new_stat_value)
+            if UNIT_TESTING:
+                printStatUpdate(_part_tag, boost, boost_dict, old_stat_value, new_stat_value)
 
 
 
@@ -253,7 +261,10 @@ func addChildModelToSlot(_boost_slots, _part_type, _part_tag, _boost_tags):
         var boost_slot = _boost_slots.get_node('Boost%sPos*' % str(i + 1))
         boost_slot.add_child(boost_scene.instance())
         
-        printModelUpdate(boost_slot.get_parent().get_parent().name, _boost_tags[i], stat, boost_scene)
+        if UNIT_TESTING:
+            printModelUpdate(
+                boost_slot.get_parent().get_parent().name, _boost_tags[i], stat, boost_scene
+            )
 
 
 
