@@ -19,9 +19,9 @@ onready var gameplay =  get_node('/root/Main/Gameplay')
                                                                                 ####################
 
 ### Controls tags.
-onready var body_tag =      controls.gameplay['vehicle']['body']['part_tag']
-onready var engines_tag =   controls.gameplay['vehicle']['engines']['part_tag']
-onready var shields_tag =   controls.gameplay['vehicle']['shields']['part_tag']
+onready var body_tag =      controls.gameplay['vehicle_rig']['body']['part_tag']
+onready var engines_tag =   controls.gameplay['vehicle_rig']['engines']['part_tag']
+onready var shields_tag =   controls.gameplay['vehicle_rig']['shields']['part_tag']
 ### (expandables)
 onready var blaster_tags = []
 onready var launcher_full_tags = []
@@ -189,10 +189,10 @@ func generateExpandableTags():
     """ Generate expandable tags. """
     
     for blaster in BLASTER_SLOTS:
-        blaster_tags += [ controls.gameplay['vehicle'][blaster]['part_tag'] ]
+        blaster_tags += [ controls.gameplay['vehicle_rig'][blaster]['part_tag'] ]
     
     for launcher in LAUNCHER_SLOTS:
-        var full_tag = controls.gameplay['vehicle'][launcher]['part_tag']
+        var full_tag = controls.gameplay['vehicle_rig'][launcher]['part_tag']
         launcher_full_tags += [ full_tag ]
         launcher_tags += [ full_tag.right(full_tag.find('Launcher') + len('Launcher')) ]
         launcher_types += [ full_tag.left(full_tag.find('Launcher')) ]

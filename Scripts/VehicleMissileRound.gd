@@ -10,6 +10,7 @@ onready var LIFE_TIME = controls.global['missile']['life_time']
 onready var ACCEL_TIME = controls.global['missile']['accel_time']
 onready var EXPL_EXPAND_TIME = controls.global['missile']['explosion_expand_time']
 onready var EXPL_FADE_OUT_TIME = controls.global['missile']['explosion_fade_out_time']
+onready var vehicle_rig = controls.gameplay['vehicle_rig']
 
 # Node references.
 onready var missile_mesh = find_node('Mesh*')
@@ -38,9 +39,7 @@ func _ready():
     
     missile_launcher_tag = getMissileLauncherTag()
     
-    DAMAGE = controls.launchers['Missile'][missile_launcher_tag]['damage']
-    SPEED = controls.launchers['Missile'][missile_launcher_tag]['missile_speed']
-    ACCEL = controls.launchers['Missile'][missile_launcher_tag]['missile_accel']
+    setControlVars()
     
     explosions = buildAndGetExplosionLayers()
     
@@ -66,6 +65,18 @@ func getMissileLauncherTag():
         missile_launcher_tag_ = 'MissileLauncher' + name.right(19)
     
     return missile_launcher_tag_
+
+
+
+func setControlVars():
+    
+    for part_dict in vehicle_rig.values():
+        if part_dict['part_tag'] != missile_launcher_tag:  continue
+        
+        DAMAGE = part_dict['part_stats']['damage']
+        SPEED = part_dict['part_stats']['missile_speed']
+        ACCEL = part_dict['part_stats']['missile_accel']
+        return
 
 
 

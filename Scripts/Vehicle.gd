@@ -14,10 +14,10 @@ onready var controls = get_node('/root/Controls')
                                                                                 ####################
 
 ### Get tags.
-onready var body_tag =      controls.gameplay['vehicle']['body']['part_tag']
-onready var generator_tag = controls.gameplay['vehicle']['generator']['part_tag']
-onready var engines_tag =   controls.gameplay['vehicle']['engines']['part_tag']
-onready var shields_tag =   controls.gameplay['vehicle']['shields']['part_tag']
+onready var body_tag =      controls.gameplay['vehicle_rig']['body']['part_tag']
+onready var generator_tag = controls.gameplay['vehicle_rig']['generator']['part_tag']
+onready var engines_tag =   controls.gameplay['vehicle_rig']['engines']['part_tag']
+onready var shields_tag =   controls.gameplay['vehicle_rig']['shields']['part_tag']
 ### (expandables)
 onready var blaster_tags = []
 onready var launcher_full_tags = []
@@ -37,17 +37,18 @@ onready var MOUSE_VERT_DAMP =       controls.global['vehicle']['mouse_vert_damp'
 # onready var REST_LINEAR_DAMP =      controls.global['vehicle']['rest_linear_damp']
 
 ### Get parts' control variables.
-onready var HEALTH =                    controls.bodies[body_tag]['health']
-onready var ARMOR =                     controls.bodies[body_tag]['armor']
-onready var BLASTER_SLOTS =             controls.bodies[body_tag]['blaster_slots']
-onready var LAUNCHER_SLOTS =            controls.bodies[body_tag]['launcher_slots']
-onready var SHIELDS_BATTERY_CAPACITY =  controls.shields[shields_tag]['battery_capacity']
-onready var SHIELDS_DENSITY =           controls.shields[shields_tag]['density']
-onready var SHIELDS_CONCENTRATION =     controls.shields[shields_tag]['concentration']
-onready var THRUST =                    controls.engines[engines_tag]['thrust']
-onready var MAX_SPEED =                 controls.engines[engines_tag]['max_speed']
-onready var GENERATOR_RATE =            controls.generators[generator_tag]['rate']
-onready var REPLENISH =                 controls.generators[generator_tag]['replenish']
+onready var vehicle_rig = controls.gameplay['vehicle_rig']
+onready var HEALTH =                    vehicle_rig['body']['part_stats']['health']
+onready var ARMOR =                     vehicle_rig['body']['part_stats']['armor']
+onready var BLASTER_SLOTS =             vehicle_rig['body']['part_stats']['blaster_slots']
+onready var LAUNCHER_SLOTS =            vehicle_rig['body']['part_stats']['launcher_slots']
+onready var SHIELDS_BATTERY_CAPACITY =  vehicle_rig['shields']['part_stats']['battery_capacity']
+onready var SHIELDS_DENSITY =           vehicle_rig['shields']['part_stats']['density']
+onready var SHIELDS_CONCENTRATION =     vehicle_rig['shields']['part_stats']['concentration']
+onready var THRUST =                    vehicle_rig['engines']['part_stats']['thrust']
+onready var MAX_SPEED =                 vehicle_rig['engines']['part_stats']['max_speed']
+onready var GENERATOR_RATE =            vehicle_rig['generator']['part_stats']['rate']
+onready var REPLENISH =                 vehicle_rig['generator']['part_stats']['replenish']
 ### (expandables)
 onready var BLASTER_BATTERY_CAPACITIES = []
 onready var BLASTER_COOL_DOWNS = []
@@ -203,10 +204,10 @@ func generateExpandableSlotsAndTags():
     """ Generate expandable tags. """
     
     for blaster in BLASTER_SLOTS:
-        blaster_tags += [ controls.gameplay['vehicle'][blaster]['part_tag'] ]
+        blaster_tags += [ controls.gameplay['vehicle_rig'][blaster]['part_tag'] ]
     
     for launcher in LAUNCHER_SLOTS:
-        var full_tag = controls.gameplay['vehicle'][launcher]['part_tag']
+        var full_tag = controls.gameplay['vehicle_rig'][launcher]['part_tag']
         launcher_full_tags += [ full_tag ]
         launcher_tags += [ full_tag.right(full_tag.find('Launcher') + len('Launcher')) ]
         launcher_types += [ full_tag.left(full_tag.find('Launcher')) ]
@@ -286,23 +287,27 @@ func instancePartModels():
 
 
 func generateExpandableControlVars():
-    """ Generate expandable control variables.  Must succeed generateExpandableTags(). """
+    """ Generate expandable control variables.  Has to come after generateExpandableTags(). """
     
-    for blaster_tag in blaster_tags:
-        BLASTER_BATTERY_CAPACITIES +=   [ controls.blasters[blaster_tag]['battery_capacity'] ]
-        BLASTER_COOL_DOWNS +=           [ controls.blasters[blaster_tag]['cool_down'] ]
-        BOLT_ENERGIES +=                [ controls.blasters[blaster_tag]['energy'] ]
+    for i in range(len(blaster_tags)):
+        var blaster_tag = blaster_tags[i]
+        
+        var blaster_stats = vehicle_rig['blaster_%s' % str(i + 1)]['part_stats']
+        
+        BLASTER_BATTERY_CAPACITIES +=   [ blaster_stats['battery_capacity'] ]
+        BLASTER_COOL_DOWNS +=           [ blaster_stats['cool_down'] ]
+        BOLT_ENERGIES +=                [ blaster_stats['energy'] ]
     
     for i in range(len(launcher_full_tags)):
         var launcher_full_tag = launcher_full_tags[i]
         for type in all_launcher_types:
             if launcher_types[i] == type:
-                LAUNCHER_MAGAZINE_CAPACITIES += [
-                    controls.launchers[type][launcher_full_tag]['magazine_capacity']
-                ]
-                LAUNCHER_COOL_DOWNS += [
-                    controls.launchers[type][launcher_full_tag]['cool_down']
-                ]
+                
+                var rig_launcher_tag = '%slauncher_%s' % [type.to_lower(), str(i + 1)]
+                var launcher_stats = vehicle_rig[rig_launcher_tag]['part_stats']
+                
+                LAUNCHER_MAGAZINE_CAPACITIES += [ launcher_stats['magazine_capacity'] ]
+                LAUNCHER_COOL_DOWNS +=          [ launcher_stats['cool_down'] ]
 
 
 

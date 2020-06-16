@@ -32,7 +32,7 @@ var gameplay = {
     'arena': 'Bunny',
     'targets': 'TestTarget01',
     'number_of_targets': 0, # (currently) 64 or less
-    'vehicle': {
+    'vehicle_rig': {
 
 #        'body': {'part_tag': 'BodyWhite', 'boosts': []}, # 0
 #        'body': {'part_tag': 'BodyWhiteWithYellow', 'boosts': ['body_boost_03']}, # 1

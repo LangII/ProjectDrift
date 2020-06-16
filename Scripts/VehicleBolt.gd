@@ -7,6 +7,7 @@ onready var gameplay = get_node('/root/Main/Gameplay')
 
 # Controls.
 onready var LIFE_TIME = controls.global['bolt']['life_time']
+onready var vehicle_rig = controls.gameplay['vehicle_rig']
 
 # Node references.
 onready var timer = find_node('Timer')
@@ -27,8 +28,7 @@ func _ready():
     
     blaster_tag = getBlasterTag()
     
-    ENERGY = controls.blasters[blaster_tag]['energy']
-    SPEED = controls.blasters[blaster_tag]['bolt_speed']
+    setControlVars()
     
     timer.wait_time = LIFE_TIME
     timer.start()
@@ -42,6 +42,15 @@ func getBlasterTag():
     else:  blaster_tag_ = 'Blaster' + name.right(11)
     
     return blaster_tag_
+
+func setControlVars():
+    
+    for part_dict in vehicle_rig.values():
+        if part_dict['part_tag'] != blaster_tag:  continue
+        
+        ENERGY = part_dict['part_stats']['energy']
+        SPEED = part_dict['part_stats']['bolt_speed']
+        return
 
 
 

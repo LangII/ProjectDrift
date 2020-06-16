@@ -35,7 +35,7 @@ onready var arena_tag =     controls.gameplay['arena']
 #onready var target_tag =    controls.gameplay['targets']
 
 ### Vehicle body and parts tags.
-onready var vehicle_rig =   controls.gameplay['vehicle']
+onready var vehicle_rig =   controls.gameplay['vehicle_rig']
 onready var body_tag =      vehicle_rig['body']['part_tag']
 
 
@@ -108,9 +108,9 @@ func _ready():
 
 func transferPartStatsToVehicleRig():
     
-    for key in vehicle_rig:
-        var value = vehicle_rig[key]
-        print("%-18s" % key, " ... ", value)
+#    for key in vehicle_rig:
+#        var value = vehicle_rig[key]
+#        print("%-18s" % key, " ... ", value)
     
     for part_type in vehicle_rig:
         var part_dict = vehicle_rig[part_type]
@@ -125,12 +125,13 @@ func transferPartStatsToVehicleRig():
 
         vehicle_rig[part_type]['part_stats'] = controls_ref[vehicle_rig[part_type]['part_tag']]
     
-    print("")
-    for key in vehicle_rig:
-        var value = vehicle_rig[key]
-        print("%-18s" % key, " ... ", value)
+#    print("")
+#    for key in vehicle_rig:
+#        var value = vehicle_rig[key]
+#        print("%-18s" % key, " ... ", value)
+#
+#    get_tree().quit()
 
-    get_tree().quit()
 
 
 func generateArena():

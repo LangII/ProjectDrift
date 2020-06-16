@@ -6,7 +6,7 @@ onready var main = get_node('/root/Main')
 onready var controls = get_node('/root/Controls')
 
 # Controls.
-onready var vehicle_rig = controls.gameplay['vehicle']
+onready var vehicle_rig = controls.gameplay['vehicle_rig']
 onready var boosts = controls.boosts
 onready var boost_model_refs = controls.boost_model_refs
 
@@ -27,7 +27,7 @@ var UNIT_TESTING = false
 
 func updateControlsPartsStats():
     
-    var vehicle_rig = controls.gameplay['vehicle']
+    var vehicle_rig = controls.gameplay['vehicle_rig']
     
     for value in vehicle_rig.values():
         
