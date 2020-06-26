@@ -1,22 +1,30 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Testing/TEST_PartSelection.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Textures/tree_branch_A.png" type="Texture" id=2]
+[ext_resource path="res://Textures/tree_branch_T.png" type="Texture" id=3]
+[ext_resource path="res://Textures/tree_branch_r.png" type="Texture" id=4]
+[ext_resource path="res://Textures/tree_branch_l.png" type="Texture" id=5]
+[ext_resource path="res://Textures/tree_branch_sep.png" type="Texture" id=6]
 
 [node name="TEST_BuildRig" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_right = 1280.0
+margin_bottom = 720.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
+custom_constants/separation = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TEST_PartSelectionBox" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_right = 416.0
 
 [node name="TextureRect" parent="VBoxContainer/TEST_PartSelectionBox" index="0"]
 visible = false
@@ -26,74 +34,160 @@ visible = false
 margin_left = 0.0
 margin_right = 64.0
 
-[node name="Label" parent="VBoxContainer/TEST_PartSelectionBox" index="2"]
+[node name="PanelContainer" parent="VBoxContainer/TEST_PartSelectionBox" index="2"]
 margin_left = 0.0
-margin_right = 69.0
+margin_right = 328.0
 
-[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox" index="3"]
-margin_left = 73.0
-margin_right = 202.0
+[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox/PanelContainer/MarginContainer/PanelContainer/HBoxContainer" index="1"]
 selected = -1
 
 [node name="TEST_PartSelectionBox2" parent="VBoxContainer" instance=ExtResource( 1 )]
-margin_top = 68.0
-margin_bottom = 132.0
+margin_top = 46.0
+margin_right = 416.0
+margin_bottom = 86.0
 
 [node name="TextureRect" parent="VBoxContainer/TEST_PartSelectionBox2" index="0"]
-visible = false
+texture = ExtResource( 5 )
 
 [node name="TextureRect2" parent="VBoxContainer/TEST_PartSelectionBox2" index="1"]
-margin_left = 0.0
-margin_right = 64.0
+texture = ExtResource( 3 )
 
-[node name="Label" parent="VBoxContainer/TEST_PartSelectionBox2" index="2"]
-margin_left = 68.0
-margin_right = 137.0
-
-[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox2" index="3"]
-margin_left = 141.0
-margin_right = 270.0
+[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox2/PanelContainer/MarginContainer/PanelContainer/HBoxContainer" index="1"]
 selected = -1
 
 [node name="TEST_PartSelectionBox3" parent="VBoxContainer" instance=ExtResource( 1 )]
-margin_top = 136.0
-margin_bottom = 200.0
+margin_top = 92.0
+margin_right = 416.0
+margin_bottom = 132.0
 
-[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox3" index="3"]
+[node name="TextureRect" parent="VBoxContainer/TEST_PartSelectionBox3" index="0"]
+texture = ExtResource( 5 )
+
+[node name="TextureRect2" parent="VBoxContainer/TEST_PartSelectionBox3" index="1"]
+texture = ExtResource( 4 )
+
+[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox3/PanelContainer/MarginContainer/PanelContainer/HBoxContainer" index="1"]
 selected = -1
 
-[node name="TEST_PartSelectionBox4" parent="VBoxContainer" instance=ExtResource( 1 )]
-margin_top = 204.0
-margin_bottom = 268.0
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+margin_top = 138.0
+margin_right = 416.0
+margin_bottom = 158.0
+texture = ExtResource( 6 )
 
-[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox4" index="3"]
+[node name="TEST_PartSelectionBox4" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 164.0
+margin_right = 416.0
+margin_bottom = 204.0
+
+[node name="TextureRect" parent="VBoxContainer/TEST_PartSelectionBox4" index="0"]
+visible = false
+texture = ExtResource( 5 )
+
+[node name="TextureRect2" parent="VBoxContainer/TEST_PartSelectionBox4" index="1"]
+margin_left = 0.0
+margin_right = 40.0
+texture = ExtResource( 3 )
+
+[node name="PanelContainer" parent="VBoxContainer/TEST_PartSelectionBox4" index="2"]
+margin_left = 44.0
+margin_right = 372.0
+
+[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox4/PanelContainer/MarginContainer/PanelContainer/HBoxContainer" index="1"]
 selected = -1
 
 [node name="TEST_PartSelectionBox5" parent="VBoxContainer" instance=ExtResource( 1 )]
-margin_top = 272.0
-margin_bottom = 336.0
+margin_top = 210.0
+margin_right = 416.0
+margin_bottom = 250.0
 
 [node name="TextureRect" parent="VBoxContainer/TEST_PartSelectionBox5" index="0"]
-visible = false
+texture = ExtResource( 5 )
 
 [node name="TextureRect2" parent="VBoxContainer/TEST_PartSelectionBox5" index="1"]
-margin_left = 0.0
-margin_right = 64.0
+texture = ExtResource( 4 )
 
-[node name="Label" parent="VBoxContainer/TEST_PartSelectionBox5" index="2"]
-margin_left = 68.0
-margin_right = 137.0
-
-[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox5" index="3"]
-margin_left = 141.0
-margin_right = 270.0
+[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox5/PanelContainer/MarginContainer/PanelContainer/HBoxContainer" index="1"]
 selected = -1
 
-[node name="TEST_PartSelectionBox6" parent="VBoxContainer" instance=ExtResource( 1 )]
-margin_top = 340.0
-margin_bottom = 404.0
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer"]
+margin_top = 256.0
+margin_right = 416.0
+margin_bottom = 276.0
+texture = ExtResource( 6 )
 
-[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox6" index="3"]
+[node name="TEST_PartSelectionBox6" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 282.0
+margin_right = 416.0
+margin_bottom = 322.0
+
+[node name="TextureRect" parent="VBoxContainer/TEST_PartSelectionBox6" index="0"]
+visible = false
+
+[node name="TextureRect2" parent="VBoxContainer/TEST_PartSelectionBox6" index="1"]
+margin_left = 0.0
+margin_right = 40.0
+texture = ExtResource( 3 )
+
+[node name="PanelContainer" parent="VBoxContainer/TEST_PartSelectionBox6" index="2"]
+margin_left = 44.0
+margin_right = 372.0
+
+[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox6/PanelContainer/MarginContainer/PanelContainer/HBoxContainer" index="1"]
+selected = -1
+
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer"]
+margin_top = 328.0
+margin_right = 416.0
+margin_bottom = 348.0
+texture = ExtResource( 6 )
+
+[node name="TEST_PartSelectionBox7" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 354.0
+margin_right = 416.0
+margin_bottom = 394.0
+
+[node name="TextureRect" parent="VBoxContainer/TEST_PartSelectionBox7" index="0"]
+visible = false
+
+[node name="TextureRect2" parent="VBoxContainer/TEST_PartSelectionBox7" index="1"]
+margin_left = 0.0
+margin_right = 40.0
+texture = ExtResource( 4 )
+
+[node name="PanelContainer" parent="VBoxContainer/TEST_PartSelectionBox7" index="2"]
+margin_left = 44.0
+margin_right = 372.0
+
+[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox7/PanelContainer/MarginContainer/PanelContainer/HBoxContainer" index="1"]
+selected = -1
+
+[node name="TEST_PartSelectionBox8" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 400.0
+margin_right = 416.0
+margin_bottom = 440.0
+
+[node name="TextureRect" parent="VBoxContainer/TEST_PartSelectionBox8" index="0"]
+texture = ExtResource( 2 )
+
+[node name="TextureRect2" parent="VBoxContainer/TEST_PartSelectionBox8" index="1"]
+texture = ExtResource( 3 )
+
+[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox8/PanelContainer/MarginContainer/PanelContainer/HBoxContainer" index="1"]
+selected = -1
+
+[node name="TEST_PartSelectionBox9" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 446.0
+margin_right = 416.0
+margin_bottom = 486.0
+
+[node name="TextureRect" parent="VBoxContainer/TEST_PartSelectionBox9" index="0"]
+texture = ExtResource( 2 )
+
+[node name="TextureRect2" parent="VBoxContainer/TEST_PartSelectionBox9" index="1"]
+texture = ExtResource( 4 )
+
+[node name="OptionButton" parent="VBoxContainer/TEST_PartSelectionBox9/PanelContainer/MarginContainer/PanelContainer/HBoxContainer" index="1"]
 selected = -1
 
 [editable path="VBoxContainer/TEST_PartSelectionBox"]
@@ -107,3 +201,9 @@ selected = -1
 [editable path="VBoxContainer/TEST_PartSelectionBox5"]
 
 [editable path="VBoxContainer/TEST_PartSelectionBox6"]
+
+[editable path="VBoxContainer/TEST_PartSelectionBox7"]
+
+[editable path="VBoxContainer/TEST_PartSelectionBox8"]
+
+[editable path="VBoxContainer/TEST_PartSelectionBox9"]
