@@ -45,7 +45,8 @@ func bodySelected(_body_node, _selection):
         var this_parts_boosts = getThisPartsBoosts(part_node.get_position_in_parent())
         for this_parts_boost in this_parts_boosts:  this_parts_boost.queue_free()
         part_node.queue_free()
-    for boost_node in getThisPartsBoosts(_body_node.get_position_in_parent()):  boost_node.queue_free()
+    for boost_node in getThisPartsBoosts(_body_node.get_position_in_parent()):
+        boost_node.queue_free()
     
     if not _selection:  return
     
@@ -61,13 +62,20 @@ func bodySelected(_body_node, _selection):
 
 func partSelected(_part_node, _selection):
     
-    for boost_node in getThisPartsBoosts(_part_node.get_position_in_parent()):  boost_node.queue_free()
+    for boost_node in getThisPartsBoosts(_part_node.get_position_in_parent()):
+        boost_node.queue_free()
     
     if not _selection:  return
     
     var boost_count = getBoostCount(_part_node.part_type, _selection)
-    for boost in range(boost_count):  addSelectionNode(_part_node.get_position_in_parent() + 1, 'boost', 'boost_%s' % str(boost + 1))
-    
+    boost_count = range(boost_count)
+    boost_count.invert()
+    for boost in boost_count:
+        addSelectionNode(
+            _part_node.get_position_in_parent() + 1,
+            'boost',
+            'boost_%s' % str(boost + 1)
+        )
 
 
 
@@ -106,11 +114,9 @@ func getThisPartsBoosts(_parts_pos):
     
     var boost_nodes_ = []
     for branch in branches_below:
-        print("branch.part_type = ", branch.part_type)
         if branch.part_type.begins_with('boost'):  boost_nodes_ += [ branch ]
         else:  break
     
-    print("boost_nodes_ = ", boost_nodes_)
     return boost_nodes_
 
 
@@ -120,13 +126,6 @@ func getBoostCount(_type, _selection):
     var boost_count_ = 0
     
     var part_ref
-#    match _type:
-#        'body':             part_ref = controls.bodies
-#        'generator':        part_ref = controls.generators
-#        'engines':          part_ref = controls.engines
-#        'shields':          part_ref = controls.shields
-#        'blaster':          part_ref = controls.blasters
-#        'missilelauncher':  part_ref = controls.launchers['Missile']
         
     if _type.begins_with('body'):                 part_ref = controls.bodies
     elif _type.begins_with('generator'):          part_ref = controls.generators
@@ -138,6 +137,148 @@ func getBoostCount(_type, _selection):
     boost_count_ = part_ref[_selection]['boost_slots']
     
     return boost_count_
+
+
+
+func deleteSeparators():
+    
+    for branch in tree.get_children():
+        print(branch.get_class())
+        if branch.get_class() == 'TextureRect':
+            print("deleting")
+#            branch.queue_free()
+            branch.free()
+
+
+
+func resetAllBranchImages():
+    
+    var branches = tree.get_children()
+    
+#    for branch in branches:
+#        branch.find_node('Branch1*', true, false).texture = branch_A
+#        branch.find_node('Branch2*', true, false).texture = branch_A
+    
+#    print("branches = ", branches)
+    
+    var branch_types = getBranchTypes(branches)
+    
+#    print("\n")
+#    for each in branch_types:  print(each)
+
+    for i in range(len(branch_types)):
+        var branch_type = branch_types[i][1]
+        match branch_type:
+            'body':
+                var branch1 = branches[i].find_node('Branch1*', true, false)
+                var branch2 = branches[i].find_node('Branch2*', true, false)
+                branch1.visible = false
+                branch2.visible = false
+            'mid_part':
+                var branch1 = branches[i].find_node('Branch1*', true, false)
+                var branch2 = branches[i].find_node('Branch2*', true, false)
+                branch1.texture = branch_T
+                branch2.visible = false
+            'last_part':
+                var branch1 = branches[i].find_node('Branch1*', true, false)
+                var branch2 = branches[i].find_node('Branch2*', true, false)
+                branch1.texture = branch_r
+                branch2.visible = false
+            'mid_boost':
+                var branch1 = branches[i].find_node('Branch1*', true, false)
+                var branch2 = branches[i].find_node('Branch2*', true, false)
+                branch1.texture = branch_l
+                branch2.texture = branch_T
+            'last_boost':
+                var branch1 = branches[i].find_node('Branch1*', true, false)
+                var branch2 = branches[i].find_node('Branch2*', true, false)
+                branch1.texture = branch_l
+                branch2.texture = branch_r
+            'last_part_mid_boost':
+                var branch1 = branches[i].find_node('Branch1*', true, false)
+                var branch2 = branches[i].find_node('Branch2*', true, false)
+                branch1.texture = branch_A
+                branch2.texture = branch_T
+            'last_part_last_boost':
+                var branch1 = branches[i].find_node('Branch1*', true, false)
+                var branch2 = branches[i].find_node('Branch2*', true, false)
+                branch1.texture = branch_A
+                branch2.texture = branch_r
+
+
+
+func getBranchTypes(_branches):
+
+    var branch_types_ = []
+
+    _branches.invert()
+
+    var last_part_boosts = true
+    var last_part = true
+
+    for i in range(len(_branches)):
+        var branch = _branches[i]
+        
+        # Handle body.
+        if branch.node_layer == 'body':  branch_types_ += [ [branch.part_type, 'body'] ]
+
+        # Handle last_part_last_boost and last_part_mid_boosts.
+        if last_part_boosts and branch.node_layer == 'part':
+            last_part_boosts = false
+        if last_part_boosts and branch.node_layer == 'boost':
+            if _branches[i - 1].node_layer != 'boost':
+                branch_types_ += [ [branch.part_type, 'last_part_last_boost'] ]
+                continue
+            else:
+                branch_types_ += [ [branch.part_type, 'last_part_mid_boost'] ]
+                continue
+        
+        # Handle last_part.
+        if last_part and branch.node_layer == 'part':
+            last_part = false
+            branch_types_ += [ [branch.part_type, 'last_part'] ]
+            continue
+        
+        # Handle mid_parts.
+        if branch.node_layer == 'part':
+            branch_types_ += [ [branch.part_type, 'mid_part'] ]
+            continue
+        
+        # Handle last_boosts and mid_boosts.
+        if branch.node_layer == 'boost':
+            if _branches[i - 1].node_layer != 'boost':
+                branch_types_ += [ [branch.part_type, 'last_boost'] ]
+                continue
+            else:
+                branch_types_ += [ [branch.part_type, 'mid_boost'] ]
+                continue
+    
+#    branch_types_.invert()
+
+    return branch_types_
+
+
+
+func insertSeparators():
+    
+    var branches = tree.get_children()
+    
+    var sep_counter = 0
+    for i in range(len(branches)):
+        var branch = branches[i]
+        
+        
+        if branch.node_layer == 'part':
+            
+#            print(i)
+            
+#            addSelectionNode(i + sep_counter, 'separator', 'separator')
+            
+            var separator = TextureRect.new()
+            separator.texture = branch_sep
+            tree.add_child(separator)
+            tree.move_child(separator, i + sep_counter)
+            sep_counter += 1
 
 
 
