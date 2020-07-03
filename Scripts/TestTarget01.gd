@@ -16,7 +16,7 @@ extends StaticBody
 onready var controls = get_node('/root/Controls')
 
 # Get tags.
-onready var body_tag =      controls.gameplay['vehicle_rig']['body']
+onready var body_tag =      controls.gameplay['vehicle_rig']['body']['part_tag']
 onready var target_tag =    controls.gameplay['targets']
 onready var bolt_tag =      controls.targets[target_tag]['bolt_scene']
 

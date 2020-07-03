@@ -5,7 +5,7 @@ onready var controls = get_node('/root/Controls')
 
 onready var gameplay = get_node('/root/Main/Gameplay')
 
-onready var body_tag = controls.gameplay['vehicle']['body']
+onready var body_tag = controls.gameplay['vehicle_rig']['body']['part_tag']
 
 # Get control variable tag.
 onready var target_tag = controls.gameplay['targets']

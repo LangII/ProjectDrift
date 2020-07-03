@@ -36,8 +36,8 @@ var gameplay = {
 
 #        'body': {'part_tag': 'BodyWhite', 'boosts': []}, # 0
 #        'body': {'part_tag': 'BodyWhiteWithYellow', 'boosts': ['body_boost_03']}, # 1
-        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': ['body_boost_02', 'body_boost_01']}, # 2
-#        'body': {'part_tag': 'BodyWhiteWithGreen', 'boosts': []}, # 0
+#        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': ['body_boost_02', 'body_boost_01']}, # 2
+        'body': {'part_tag': 'BodyWhiteWithGreen', 'boosts': []}, # 0
 
 #        'generator': {'part_tag': 'GeneratorWhite', 'boosts': ['generator_boost_01']}, # 1
         'generator': {'part_tag': 'GeneratorWhiteWithYellow', 'boosts': ['generator_boost_03', 'generator_boost_02']}, # 2
@@ -61,14 +61,14 @@ var gameplay = {
 
 #        'blaster_3': {'part_tag': 'BlasterWhite', 'boosts': []}, # 1
 #        'blaster_3': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': []}, # 2
-#        'blaster_3': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
+        'blaster_3': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
 #        'blaster_3': {'part_tag': '', 'boosts': []}, # 0
 
 #        'missilelauncher_1': {'part_tag': 'MissileLauncherWhite', 'boosts': ['missilelauncher_boost_01']}, # 1
         'missilelauncher_1': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': ['missilelauncher_boost_03', 'missilelauncher_boost_01']}, # 2
 #        'missilelauncher_1': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
 
-#        'missilelauncher_2': {'part_tag': 'MissileLauncherWhite', 'boosts': []}, # 1
+        'missilelauncher_2': {'part_tag': 'MissileLauncherWhite', 'boosts': []}, # 1
 #        'missilelauncher_2': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': []}, # 2
 #        'missilelauncher_2': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
     },
@@ -227,7 +227,7 @@ var launchers = {
             'missile_speed': 8.0,
             'missile_accel': 0.015,
             'cool_down': 1.0,
-            'magazine_capacity': 3,
+            'magazine_capacity': 100,
             'boost_slots': 1,
         },
         'MissileLauncherWhiteWithYellow': {
@@ -235,7 +235,7 @@ var launchers = {
             'missile_speed': 9.0,
             'missile_accel': 0.020,
             'cool_down': 0.8,
-            'magazine_capacity': 5,
+            'magazine_capacity': 100,
             'boost_slots': 2,
         },
         'MissileLauncher': {

@@ -37,6 +37,7 @@ func init(_layer, _type):
     if node_layer == 'body':
         find_node('Branch1*', true, false).visible = false
         find_node('Branch2*', true, false).visible = false
+    
     setPopUpOptions()
 
 
@@ -72,6 +73,7 @@ func setPopUpOptions():
             elif part_type.begins_with('missilelauncher'):  options = inv_mod.missilelaunchers
         'boost':
             var part_parent = getPartParent()
+            print("part_parent = ", part_parent)
             if part_parent.begins_with('body'):                 options = inv_mod.boosts['body']
             elif part_parent.begins_with('generator'):          options = inv_mod.boosts['generator']
             elif part_parent.begins_with('engines'):            options = inv_mod.boosts['engines']
@@ -90,6 +92,9 @@ func getPartParent():
     
     var branches = get_parent().get_children()
     var pos_in_branches = get_position_in_parent()
+    print("\nDEBUG")
+    for branch in branches:  print(branch.name)
+    print("pos_in_branches = ", pos_in_branches)
     var looping_array = range(pos_in_branches)
     looping_array.invert()
     
@@ -104,29 +109,46 @@ func getPartParent():
 
 ####################################################################################################
 
+onready var timer_1 = get_node('Timer1')
+onready var timer_2 = get_node('Timer2')
+onready var timer_3 = get_node('Timer3')
 
-
+var selection = 0
 func _on_PartSelectionPopUp_item_selected(id):
     
-    var selection = pop_up.get_item_text(id)
+    print('node_layer = ', node_layer)
+    
+    selection = pop_up.get_item_text(id)
 
     rig_builder.deleteSeparators()
+
+    if node_layer != 'boost':
+        timer_1.start()
+        timer_2.start()
+        timer_3.start()
+
+    else:
+
+        match node_layer:
+            'body':  rig_builder.bodySelected(self, selection)
+            'part':  rig_builder.partSelected(self, selection)
+    
+        rig_builder.resetAllBranchImages()
+    
+        rig_builder.insertSeparators()
+
+
+
+func _on_Timer1_timeout():
     
     match node_layer:
         'body':  rig_builder.bodySelected(self, selection)
         'part':  rig_builder.partSelected(self, selection)
+
+func _on_Timer2_timeout():
     
     rig_builder.resetAllBranchImages()
+
+func _on_Timer3_timeout():
+
     rig_builder.insertSeparators()
-
-
-
-
-
-
-
-
-
-
-
-
