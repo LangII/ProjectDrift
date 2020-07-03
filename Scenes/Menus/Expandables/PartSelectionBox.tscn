@@ -29,13 +29,13 @@ margin_right = 84.0
 margin_bottom = 40.0
 texture = ExtResource( 1 )
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="ContentContainer*" type="PanelContainer" parent="."]
 margin_left = 88.0
 margin_right = 416.0
 margin_bottom = 40.0
 custom_styles/panel = SubResource( 1 )
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ContentContainer*"]
 margin_right = 328.0
 margin_bottom = 40.0
 custom_constants/margin_right = 2
@@ -46,21 +46,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="ContentContainer*/MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 326.0
 margin_bottom = 38.0
 custom_styles/panel = SubResource( 2 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentContainer*/MarginContainer/PanelContainer"]
 margin_right = 324.0
 margin_bottom = 36.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PartTypeLabel*" type="Label" parent="PanelContainer/MarginContainer/PanelContainer/HBoxContainer"]
+[node name="PartTypeLabel*" type="Label" parent="ContentContainer*/MarginContainer/PanelContainer/HBoxContainer"]
 margin_top = 11.0
 margin_right = 140.0
 margin_bottom = 25.0
@@ -68,7 +68,7 @@ rect_min_size = Vector2( 140, 0 )
 text = "\"part type\""
 align = 1
 
-[node name="PartSelectionPopUp*" type="OptionButton" parent="PanelContainer/MarginContainer/PanelContainer/HBoxContainer"]
+[node name="PartSelectionPopUp*" type="OptionButton" parent="ContentContainer*/MarginContainer/PanelContainer/HBoxContainer"]
 margin_left = 144.0
 margin_right = 324.0
 margin_bottom = 36.0
@@ -76,18 +76,18 @@ rect_min_size = Vector2( 180, 0 )
 text = "\"part selection\""
 align = 1
 
-[node name="Timer1" type="Timer" parent="."]
+[node name="Timer1*" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
 
-[node name="Timer2" type="Timer" parent="."]
+[node name="Timer2*" type="Timer" parent="."]
 wait_time = 0.4
 one_shot = true
 
-[node name="Timer3" type="Timer" parent="."]
+[node name="Timer3*" type="Timer" parent="."]
 wait_time = 0.6
 one_shot = true
-[connection signal="item_selected" from="PanelContainer/MarginContainer/PanelContainer/HBoxContainer/PartSelectionPopUp*" to="." method="_on_PartSelectionPopUp_item_selected"]
-[connection signal="timeout" from="Timer1" to="." method="_on_Timer1_timeout"]
-[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
-[connection signal="timeout" from="Timer3" to="." method="_on_Timer3_timeout"]
+[connection signal="item_selected" from="ContentContainer*/MarginContainer/PanelContainer/HBoxContainer/PartSelectionPopUp*" to="." method="_on_PartSelectionPopUp_item_selected"]
+[connection signal="timeout" from="Timer1*" to="." method="_on_Timer1_timeout"]
+[connection signal="timeout" from="Timer2*" to="." method="_on_Timer2_timeout"]
+[connection signal="timeout" from="Timer3*" to="." method="_on_Timer3_timeout"]

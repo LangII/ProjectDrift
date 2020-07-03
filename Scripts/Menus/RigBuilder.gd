@@ -116,7 +116,7 @@ func getPartNodes():
     
     var part_nodes_ = []
     for child in tree.get_children():
-        if child.node_layer == 'part':  part_nodes_ += [ child ]
+        if child.part_layer == 'part':  part_nodes_ += [ child ]
     
     return part_nodes_
 
@@ -236,13 +236,13 @@ func getBranchTypes(_branches):
         var branch = _branches[i]
         
         # Handle body.
-        if branch.node_layer == 'body':  branch_types_ += [ [branch.part_type, 'body'] ]
+        if branch.part_layer == 'body':  branch_types_ += [ [branch.part_type, 'body'] ]
 
         # Handle last_part_last_boost and last_part_mid_boosts.
-        if last_part_boosts and branch.node_layer == 'part':
+        if last_part_boosts and branch.part_layer == 'part':
             last_part_boosts = false
-        if last_part_boosts and branch.node_layer == 'boost':
-#            if _branches[i - 1].node_layer != 'boost':
+        if last_part_boosts and branch.part_layer == 'boost':
+#            if _branches[i - 1].part_layer != 'boost':
 #            print("i = ", i)
 #            print("len(_branches) = ", len(_branches))
             if i == 0:
@@ -253,19 +253,19 @@ func getBranchTypes(_branches):
                 continue
         
         # Handle last_part.
-        if last_part and branch.node_layer == 'part':
+        if last_part and branch.part_layer == 'part':
             last_part = false
             branch_types_ += [ [branch.part_type, 'last_part'] ]
             continue
         
         # Handle mid_parts.
-        if branch.node_layer == 'part':
+        if branch.part_layer == 'part':
             branch_types_ += [ [branch.part_type, 'mid_part'] ]
             continue
         
         # Handle last_boosts and mid_boosts.
-        if branch.node_layer == 'boost':
-            if _branches[i - 1].node_layer != 'boost':
+        if branch.part_layer == 'boost':
+            if _branches[i - 1].part_layer != 'boost':
                 branch_types_ += [ [branch.part_type, 'last_boost'] ]
                 continue
             else:
@@ -303,7 +303,7 @@ func insertSeparators():
             if partAlreadySeparated(i):  continue
             
             # Sort out boosts.
-            if branch.node_layer == 'boost':  continue
+            if branch.part_layer == 'boost':  continue
             
             part_last_boost_pos = getPartLastBoostPos(i)
             break
@@ -320,9 +320,79 @@ func getCountOfParts():
     var count_of_parts_ = 0
     for branch in branches:
         if branch.get_class() == 'TextureRect':  continue
-        if branch.node_layer == 'part':  count_of_parts_ += 1
+        if branch.part_layer == 'part':  count_of_parts_ += 1
     
     return count_of_parts_
+
+
+
+func partAlreadySeparated(_i):
+    
+    var part_already_separated_ = false
+    
+    for branch in tree.get_children().slice(_i + 1, -1):
+        if branch.get_class() == 'TextureRect':
+            part_already_separated_ = true
+            break
+        if branch.part_layer == 'boost':  continue
+        break
+    
+#    print("part_already_separated_ = ", part_already_separated_)
+    return part_already_separated_
+
+
+
+func isLastPart(_i):
+    
+    var is_last_part_ = true
+    
+    for branch in tree.get_children().slice(_i, -1):
+        if branch.get_class() == 'TextureRect':  is_last_part_ = false
+        elif branch.part_layer == 'part':  is_last_part_ = false
+    
+#    print("is_last_part_ = ", is_last_part_)
+    return is_last_part_
+
+
+
+func getPartLastBoostPos(_i):
+    
+    var part_last_boost_pos_ = 0
+    
+    var branches = tree.get_children()
+    
+    for i in range(len(branches)):
+        var branch = branches[i]
+        if i <= _i:  continue
+        if branch.part_layer != 'boost':
+            part_last_boost_pos_ = i
+            break
+    
+    return part_last_boost_pos_
+
+
+
+func insertSeparator(_part_last_boost_pos):
+    
+    var separator = TextureRect.new()
+    separator.texture = branch_sep
+    tree.add_child(separator)
+    tree.move_child(separator, _part_last_boost_pos)
+
+
+
+####################################################################################################
+
+
+
+func queue_free():
+    
+    # Close temp mods.
+    inv_mod.queue_free()
+
+
+
+####################################################################################################
 
 
 
@@ -343,7 +413,7 @@ func getCountOfParts():
 #
 ##            print(branch.get_class())
 #            if branch.get_class() == 'TextureRect':  continue
-#            if branch.node_layer != 'part':  continue
+#            if branch.part_layer != 'part':  continue
 #
 #
 #            if partAlreadySeparated(i):  continue
@@ -354,69 +424,13 @@ func getCountOfParts():
 
 
 
-func partAlreadySeparated(_i):
-    
-    var part_already_separated_ = false
-    
-    for branch in tree.get_children().slice(_i + 1, -1):
-        if branch.get_class() == 'TextureRect':
-            part_already_separated_ = true
-            break
-        if branch.node_layer == 'boost':  continue
-        break
-    
-#    print("part_already_separated_ = ", part_already_separated_)
-    return part_already_separated_
-
-
-
-func isLastPart(_i):
-    
-    var is_last_part_ = true
-    
-    for branch in tree.get_children().slice(_i, -1):
-        if branch.get_class() == 'TextureRect':  is_last_part_ = false
-        elif branch.node_layer == 'part':  is_last_part_ = false
-    
-#    print("is_last_part_ = ", is_last_part_)
-    return is_last_part_
-
-
-
-func getPartLastBoostPos(_i):
-    
-    var part_last_boost_pos_ = 0
-    
-    var branches = tree.get_children()
-    
-    for i in range(len(branches)):
-        var branch = branches[i]
-        if i <= _i:  continue
-        if branch.node_layer != 'boost':
-            part_last_boost_pos_ = i
-            break
-    
-    return part_last_boost_pos_
-
-
-
-func insertSeparator(_part_last_boost_pos):
-    
-    var separator = TextureRect.new()
-    separator.texture = branch_sep
-    tree.add_child(separator)
-    tree.move_child(separator, _part_last_boost_pos)
-
-
-
 #    var branches = tree.get_children()
 #
 #    var sep_counter = 0
 #    for i in range(len(branches)):
 #        var branch = branches[i]
 #
-#
-#        if branch.node_layer == 'part':
+#        if branch.part_layer == 'part':
 #
 ##            print(i)
 #
@@ -434,21 +448,6 @@ func insertSeparator(_part_last_boost_pos):
 #            tree.move_child(separator, i + sep_counter)
 ##            tree.move_child(separator, i)
 #            sep_counter += 1
-
-
-
-####################################################################################################
-
-
-
-func queue_free():
-    
-    # Close temp mods.
-    inv_mod.queue_free()
-
-
-
-####################################################################################################
 
 
 
