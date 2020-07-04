@@ -169,112 +169,7 @@ func deleteSeparators():
 
 func resetAllBranchImages():
     
-    var branches = tree.get_children()
-    
-#    for branch in branches:
-#        branch.find_node('Branch1*', true, false).texture = branch_A
-#        branch.find_node('Branch2*', true, false).texture = branch_A
-    
-#    print("branches = ", branches)
-    
-    var branch_types = getBranchTypes(branches)
-    
-#    print("\n")
-#    for each in branch_types:  print(each)
-
-    for i in range(len(branch_types)):
-        var branch_type = branch_types[i][1]
-        match branch_type:
-            'body':
-                var branch1 = branches[i].find_node('Branch1*', true, false)
-                var branch2 = branches[i].find_node('Branch2*', true, false)
-                branch1.visible = false
-                branch2.visible = false
-            'mid_part':
-                var branch1 = branches[i].find_node('Branch1*', true, false)
-                var branch2 = branches[i].find_node('Branch2*', true, false)
-                branch1.texture = branch_T
-                branch2.visible = false
-            'last_part':
-                var branch1 = branches[i].find_node('Branch1*', true, false)
-                var branch2 = branches[i].find_node('Branch2*', true, false)
-                branch1.texture = branch_r
-                branch2.visible = false
-            'mid_boost':
-                var branch1 = branches[i].find_node('Branch1*', true, false)
-                var branch2 = branches[i].find_node('Branch2*', true, false)
-                branch1.texture = branch_l
-                branch2.texture = branch_T
-            'last_boost':
-                var branch1 = branches[i].find_node('Branch1*', true, false)
-                var branch2 = branches[i].find_node('Branch2*', true, false)
-                branch1.texture = branch_l
-                branch2.texture = branch_r
-            'last_part_mid_boost':
-                var branch1 = branches[i].find_node('Branch1*', true, false)
-                var branch2 = branches[i].find_node('Branch2*', true, false)
-                branch1.texture = branch_A
-                branch2.texture = branch_T
-            'last_part_last_boost':
-                var branch1 = branches[i].find_node('Branch1*', true, false)
-                var branch2 = branches[i].find_node('Branch2*', true, false)
-                branch1.texture = branch_A
-                branch2.texture = branch_r
-
-
-
-func getBranchTypes(_branches):
-
-    var branch_types_ = []
-
-    _branches.invert()
-
-    var last_part_boosts = true
-    var last_part = true
-
-    for i in range(len(_branches)):
-        var branch = _branches[i]
-        
-        # Handle body.
-        if branch.part_layer == 'body':  branch_types_ += [ [branch.part_type, 'body'] ]
-
-        # Handle last_part_last_boost and last_part_mid_boosts.
-        if last_part_boosts and branch.part_layer == 'part':
-            last_part_boosts = false
-        if last_part_boosts and branch.part_layer == 'boost':
-#            if _branches[i - 1].part_layer != 'boost':
-#            print("i = ", i)
-#            print("len(_branches) = ", len(_branches))
-            if i == 0:
-                branch_types_ += [ [branch.part_type, 'last_part_last_boost'] ]
-                continue
-            else:
-                branch_types_ += [ [branch.part_type, 'last_part_mid_boost'] ]
-                continue
-        
-        # Handle last_part.
-        if last_part and branch.part_layer == 'part':
-            last_part = false
-            branch_types_ += [ [branch.part_type, 'last_part'] ]
-            continue
-        
-        # Handle mid_parts.
-        if branch.part_layer == 'part':
-            branch_types_ += [ [branch.part_type, 'mid_part'] ]
-            continue
-        
-        # Handle last_boosts and mid_boosts.
-        if branch.part_layer == 'boost':
-            if _branches[i - 1].part_layer != 'boost':
-                branch_types_ += [ [branch.part_type, 'last_boost'] ]
-                continue
-            else:
-                branch_types_ += [ [branch.part_type, 'mid_boost'] ]
-                continue
-    
-#    branch_types_.invert()
-
-    return branch_types_
+    for branch in tree.get_children():  branch.setBranchImages()
 
 
 
@@ -393,6 +288,120 @@ func queue_free():
 
 
 ####################################################################################################
+
+
+
+#func getBranchTypes(_branches):
+#
+#    var branch_types_ = []
+#
+#    _branches.invert()
+#
+#    var last_part_boosts = true
+#    var last_part = true
+#
+#    for i in range(len(_branches)):
+#        var branch = _branches[i]
+#
+#        # Handle body.
+#        if branch.part_layer == 'body':  branch_types_ += [ [branch.part_type, 'body'] ]
+#
+#        # Handle last_part_last_boost and last_part_mid_boosts.
+#        if last_part_boosts and branch.part_layer == 'part':
+#            last_part_boosts = false
+#        if last_part_boosts and branch.part_layer == 'boost':
+##            if _branches[i - 1].part_layer != 'boost':
+##            print("i = ", i)
+##            print("len(_branches) = ", len(_branches))
+#            if i == 0:
+#                branch_types_ += [ [branch.part_type, 'last_part_last_boost'] ]
+#                continue
+#            else:
+#                branch_types_ += [ [branch.part_type, 'last_part_mid_boost'] ]
+#                continue
+#
+#        # Handle last_part.
+#        if last_part and branch.part_layer == 'part':
+#            last_part = false
+#            branch_types_ += [ [branch.part_type, 'last_part'] ]
+#            continue
+#
+#        # Handle mid_parts.
+#        if branch.part_layer == 'part':
+#            branch_types_ += [ [branch.part_type, 'mid_part'] ]
+#            continue
+#
+#        # Handle last_boosts and mid_boosts.
+#        if branch.part_layer == 'boost':
+#            if _branches[i - 1].part_layer != 'boost':
+#                branch_types_ += [ [branch.part_type, 'last_boost'] ]
+#                continue
+#            else:
+#                branch_types_ += [ [branch.part_type, 'mid_boost'] ]
+#                continue
+#
+##    branch_types_.invert()
+#
+#    return branch_types_
+
+
+
+#        branch_types += [ branch.branch_image_type ]
+    
+#    print("\nDEBUG")
+#    for branch_type in branch_types:  print(branch_type)
+    
+#    print("\n")
+#    for each in branch_types:  print(each)
+#
+#    for i in range(len(branch_types)):
+#        var branch_type = branch_types[i]
+#        match branch_type:
+#            'body':
+#                var branch1 = branches[i].find_node('Branch1*', true, false)
+#                var branch2 = branches[i].find_node('Branch2*', true, false)
+#                branch1.visible = false
+#                branch2.visible = false
+#            'mid_part':
+#                var branch1 = branches[i].find_node('Branch1*', true, false)
+#                var branch2 = branches[i].find_node('Branch2*', true, false)
+#                branch1.texture = branch_T
+#                branch2.visible = false
+#            'last_part':
+#                var branch1 = branches[i].find_node('Branch1*', true, false)
+#                var branch2 = branches[i].find_node('Branch2*', true, false)
+#                branch1.texture = branch_r
+#                branch2.visible = false
+#            'mid_boost':
+#                var branch1 = branches[i].find_node('Branch1*', true, false)
+#                var branch2 = branches[i].find_node('Branch2*', true, false)
+#                branch1.texture = branch_l
+#                branch2.texture = branch_T
+#            'last_boost':
+#                var branch1 = branches[i].find_node('Branch1*', true, false)
+#                var branch2 = branches[i].find_node('Branch2*', true, false)
+#                branch1.texture = branch_l
+#                branch2.texture = branch_r
+#            'last_part_mid_boost':
+#                var branch1 = branches[i].find_node('Branch1*', true, false)
+#                var branch2 = branches[i].find_node('Branch2*', true, false)
+#                branch1.texture = branch_A
+#                branch2.texture = branch_T
+#            'last_part_last_boost':
+#                var branch1 = branches[i].find_node('Branch1*', true, false)
+#                var branch2 = branches[i].find_node('Branch2*', true, false)
+#                branch1.texture = branch_A
+#                branch2.texture = branch_r
+
+
+
+#    for branch in branches:
+#        branch.find_node('Branch1*', true, false).texture = branch_A
+#        branch.find_node('Branch2*', true, false).texture = branch_A
+    
+#    print("branches = ", branches)
+    
+#    var branch_types = getBranchTypes(branches)
 
 
 

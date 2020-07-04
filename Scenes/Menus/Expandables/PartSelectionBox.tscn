@@ -18,12 +18,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Branch1*" type="TextureRect" parent="."]
+[node name="BranchImage1*" type="TextureRect" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 1 )
 
-[node name="Branch2*" type="TextureRect" parent="."]
+[node name="BranchImage2*" type="TextureRect" parent="."]
 margin_left = 44.0
 margin_right = 84.0
 margin_bottom = 40.0
