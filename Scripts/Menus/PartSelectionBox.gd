@@ -18,19 +18,19 @@ onready var timer_2 = find_node('Timer2*')
 onready var timer_3 = find_node('Timer3*')
 
 # Resources.
-onready var branch_A = preload('res://Textures/tree_branch_A.png')
-onready var branch_l = preload('res://Textures/tree_branch_l.png')
-onready var branch_r = preload('res://Textures/tree_branch_r.png')
-onready var branch_T = preload('res://Textures/tree_branch_T.png')
+onready var Branch_A = preload('res://Textures/tree_branch_A.png')
+onready var Branch_l = preload('res://Textures/tree_branch_l.png')
+onready var Branch_r = preload('res://Textures/tree_branch_r.png')
+onready var Branch_t = preload('res://Textures/tree_branch_t.png')
+onready var BranchSep = preload('res://Textures/tree_branch_sep.png')
 
 # Attributes.
 onready var part_layer = ''
 onready var part_type = ''
 onready var part_parent = null
 onready var branch_image_type = ''
-
-# Working vars.
-var pop_up_selection = 0
+onready var pop_up_selection_id = 0
+onready var pop_up_selection_name = ''
 
 
 
@@ -43,12 +43,18 @@ func init(_layer, _type):
     part_layer = _layer
     part_type = _type
     name = _type
-    type_label.text = _type
-    part_parent = getPartParent()
     
-    setFirstBodyBranchImgVis()
+    if _type == 'separator':
+        branch_image_2.visible = false
+        _content_container_.visible = false
+        branch_image_1.texture = BranchSep
+        rect_min_size = Vector2(0, 0)
     
-    setPopUpOptions()
+    else:
+        type_label.text = _type
+        part_parent = getPartParent()
+        setFirstBodyBranchImgVis()
+        setPopUpOptions()
 
 
 
@@ -136,23 +142,23 @@ func setBranchImages():
             branch_image_1.visible = false
             branch_image_2.visible = false
         'mid_part':
-            branch_image_1.texture = branch_T
+            branch_image_1.texture = Branch_t
             branch_image_2.visible = false
         'last_part':
-            branch_image_1.texture = branch_r
+            branch_image_1.texture = Branch_r
             branch_image_2.visible = false
         'mid_boost':
-            branch_image_1.texture = branch_l
-            branch_image_2.texture = branch_T
+            branch_image_1.texture = Branch_l
+            branch_image_2.texture = Branch_t
         'last_boost':
-            branch_image_1.texture = branch_l
-            branch_image_2.texture = branch_r
+            branch_image_1.texture = Branch_l
+            branch_image_2.texture = Branch_r
         'last_part_mid_boost':
-            branch_image_1.texture = branch_A
-            branch_image_2.texture = branch_T
+            branch_image_1.texture = Branch_A
+            branch_image_2.texture = Branch_t
         'last_part_last_boost':
-            branch_image_1.texture = branch_A
-            branch_image_2.texture = branch_r
+            branch_image_1.texture = Branch_A
+            branch_image_2.texture = Branch_r
 
 
 
@@ -194,16 +200,16 @@ func isLastPart():
 
 func isLastBoostInSet():
     
-    if part_layer != 'boost':
+    if not part_layer in ['boost']:
         print('trying to call PartSelectionBox.isLastBoostInSet()...  this branch is not a boost')
         get_tree().quit()
     
     if isLastBranch():  return true
     
     var branches = get_parent().get_children()
-    var branch_after_self = branches[get_position_in_parent() + 1]
+    var Branch_After_self = branches[get_position_in_parent() + 1]
     
-    if branch_after_self.part_layer == 'boost':  return false
+    if Branch_After_self.part_layer == 'boost':  return false
     else:  return true
 
 
@@ -226,7 +232,8 @@ func _on_PartSelectionPopUp_item_selected(id):
     not occur if there is a delay in their calls.
     """
     
-    pop_up_selection = pop_up.get_item_text(id)
+    pop_up_selection_id = id
+    pop_up_selection_name = pop_up.get_item_text(id)
     
     # Delays are not needed for 'boost' part_layers.
     if part_layer == 'boost':
@@ -245,8 +252,8 @@ func _on_PartSelectionPopUp_item_selected(id):
 func _on_Timer1_timeout():
     
     match part_layer:
-        'body':  rig_builder.bodySelected(self, pop_up_selection)
-        'part':  rig_builder.partSelected(self, pop_up_selection)
+        'body':  rig_builder.bodySelected(self, pop_up_selection_name)
+        'part':  rig_builder.partSelected(self, pop_up_selection_name)
 
 func _on_Timer2_timeout():
     
@@ -265,7 +272,7 @@ func _on_Timer3_timeout():
 #    if part_layer == 'separator':
 #        find_node('Branch2*', true, false).visible = false
 #        find_node('PanelContainer', true, false).visible = false
-##        find_node('Branch1*', true, false).texture = branch_sep
+##        find_node('Branch1*', true, false).texture = BranchSep
 #        return
 #
 #    setBranchVisibilities()

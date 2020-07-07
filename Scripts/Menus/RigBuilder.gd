@@ -9,14 +9,7 @@ onready var controls = get_node('/root/Controls')
 
 onready var tree = find_node('PartsTreeVBox*')
 
-onready var selection_node_scene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
-
-onready var branch_A =      preload('res://Textures/tree_branch_A.png')
-onready var branch_l =      preload('res://Textures/tree_branch_l.png')
-onready var branch_r =      preload('res://Textures/tree_branch_r.png')
-onready var branch_T =      preload('res://Textures/tree_branch_T.png')
-onready var branch__ =      preload('res://Textures/tree_branch_-.png')
-onready var branch_sep =    preload('res://Textures/tree_branch_sep.png')
+onready var SelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
 
 var inv_mod
 
@@ -31,7 +24,7 @@ func _ready():
     # Open temp mods.
     inv_mod = main.loadModule(main, 'res://Scenes/Functional/InventoryMod.tscn')
 
-    addSelectionNode(0, 'body', 'body')
+    addSelectionBox(0, 'body', 'body')
 
 
 
@@ -41,36 +34,20 @@ func _ready():
 
 func bodySelected(_body_node, _selection):
     
-#    for part_node in getPartNodes():
-#        var this_parts_boosts = getThisPartsBoosts(part_node.get_position_in_parent())
-#        for this_parts_boost in this_parts_boosts:  this_parts_boost.queue_free()
-#        part_node.queue_free()
-#    for boost_node in getThisPartsBoosts(_body_node.get_position_in_parent()):
-#        boost_node.queue_free()
-    
-#    print("\nBODY SELECTED START")
-#    for each in tree.get_children():
-#        print(each)
-    
     for each in tree.get_children():
-        if each.name != 'body':  each.queue_free()
+        if each.part_layer != 'body':  each.queue_free()
     
     if not _selection:  return
     
     var boost_count = range(getBoostCount('body', _selection))
     boost_count.invert()
     for boost in boost_count:
-#        addSelectionNode(len(tree.get_children()), 'boost', 'boost_%s' % str(boost + 1))
-        addSelectionNode(1, 'boost', 'boost_%s' % str(boost + 1))
+        addSelectionBox(1, 'boost', 'boost_%s' % str(boost + 1))
     
     var parts = ['generator', 'engines', 'shields']
     
     parts += getExpandableParts(_selection)
-    for part in parts:  addSelectionNode(len(tree.get_children()), 'part', part)
-    
-#    print("\nBODY SELECTED END")
-#    for each in tree.get_children():
-#        print(each)
+    for part in parts:  addSelectionBox(len(tree.get_children()), 'part', part)
 
 
 
@@ -85,7 +62,7 @@ func partSelected(_part_node, _selection):
     boost_count = range(boost_count)
     boost_count.invert()
     for boost in boost_count:
-        addSelectionNode(
+        addSelectionBox(
             _part_node.get_position_in_parent() + 1,
             'boost',
             'boost_%s' % str(boost + 1)
@@ -93,12 +70,12 @@ func partSelected(_part_node, _selection):
 
 
 
-func addSelectionNode(_index, _layer, _type):
+func addSelectionBox(_index, _layer, _type):
     
-    var node_ = selection_node_scene.instance()
-    tree.add_child(node_)
-    tree.move_child(node_, _index)
-    node_.init(_layer, _type)
+    var selection_box = SelectionBoxScene.instance()
+    tree.add_child(selection_box)
+    tree.move_child(selection_box, _index)
+    selection_box.init(_layer, _type)
 
 
 
@@ -159,7 +136,7 @@ func deleteSeparators():
 #    print("\nDELETING ALL SEPARATORS")
     for branch in tree.get_children():
 #        print(branch.get_class())
-        if branch.get_class() == 'TextureRect':
+        if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':
 #            print("    deleting")
             tree.remove_child(branch)
             branch.queue_free()
@@ -180,7 +157,7 @@ func insertSeparators():
     if len(tree.get_children()) == 1:  return
     
     for _i in range(getCountOfParts()):
-#        print("\n_i = ", _i)
+        print("\n_i = ", _i)
     
         var branches = tree.get_children()
         
@@ -190,8 +167,9 @@ func insertSeparators():
 #            print("i = ", i)
             
             # Sort out separators.
-            if branch.get_class() == 'TextureRect':
-#                print("part is separator")
+            print("branch.part_type = ", branch.part_type)
+            if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':
+                print("part is separator")
                 continue
             
             # Sort out parts already separated.
@@ -214,7 +192,7 @@ func getCountOfParts():
     
     var count_of_parts_ = 0
     for branch in branches:
-        if branch.get_class() == 'TextureRect':  continue
+        if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':  continue
         if branch.part_layer == 'part':  count_of_parts_ += 1
     
     return count_of_parts_
@@ -226,7 +204,7 @@ func partAlreadySeparated(_i):
     var part_already_separated_ = false
     
     for branch in tree.get_children().slice(_i + 1, -1):
-        if branch.get_class() == 'TextureRect':
+        if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':
             part_already_separated_ = true
             break
         if branch.part_layer == 'boost':  continue
@@ -242,7 +220,7 @@ func isLastPart(_i):
     var is_last_part_ = true
     
     for branch in tree.get_children().slice(_i, -1):
-        if branch.get_class() == 'TextureRect':  is_last_part_ = false
+        if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':  is_last_part_ = false
         elif branch.part_layer == 'part':  is_last_part_ = false
     
 #    print("is_last_part_ = ", is_last_part_)
@@ -269,10 +247,17 @@ func getPartLastBoostPos(_i):
 
 func insertSeparator(_part_last_boost_pos):
     
-    var separator = TextureRect.new()
-    separator.texture = branch_sep
-    tree.add_child(separator)
-    tree.move_child(separator, _part_last_boost_pos)
+#    print(_part_last_boost_pos)
+
+#    var separator = TextureRect.new()
+#    separator.texture = branch_sep
+#    tree.add_child(separator)
+#    tree.move_child(separator, _part_last_boost_pos)
+
+    var node_ = SelectionBoxScene.instance()
+    tree.add_child(node_)
+    tree.move_child(node_, _part_last_boost_pos)
+    node_.init('separator', 'separator')
 
 
 
@@ -443,7 +428,7 @@ func queue_free():
 #
 ##            print(i)
 #
-##            addSelectionNode(i + sep_counter, 'separator', 'separator')
+##            addSelectionBox(i + sep_counter, 'separator', 'separator')
 #
 #            """
 #            Maybe try using add_child_below_node().  Will have to write a function that determines
