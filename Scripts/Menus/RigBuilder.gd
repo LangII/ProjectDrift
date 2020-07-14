@@ -7,8 +7,10 @@ extends Control
 onready var main = get_node('/root/Main')
 onready var controls = get_node('/root/Controls')
 
+# Node references.
 onready var tree = find_node('PartsTreeVBox*')
 
+# Resources.
 onready var SelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
 
 var inv_mod
@@ -16,131 +18,52 @@ var inv_mod
 
 
 ####################################################################################################
-
-
+                                                                                   ###   READY   ###
+                                                                                   #################
 
 func _ready():
     
     # Open temp mods.
     inv_mod = main.loadModule(main, 'res://Scenes/Functional/InventoryMod.tscn')
 
-    addSelectionBox(0, 'body', 'body')
+    insertSelectionBox(0, 'body', 'body')
 
 
 
 ####################################################################################################
-
-
+                                                                       ###   EXTERNALLY CALLED   ###
+                                                                       #############################
 
 func bodySelected(_body_node, _selection):
     
-    for each in tree.get_children():
-        if each.part_layer != 'body':  each.queue_free()
+    clearBranchesForNewBody()
     
+    # End call if empty selection.
     if not _selection:  return
     
-    var boost_count = range(getBoostCount('body', _selection))
-    boost_count.invert()
-    for boost in boost_count:
-        addSelectionBox(1, 'boost', 'boost_%s' % str(boost + 1))
+    insertBoostsIntoTreeAtIndex(_body_node, _selection, 1)
     
-    var parts = ['generator', 'engines', 'shields']
-    
-    parts += getExpandableParts(_selection)
-    for part in parts:  addSelectionBox(len(tree.get_children()), 'part', part)
+    appendPartsToTree(_selection)
 
 
 
 func partSelected(_part_node, _selection):
     
-    for boost_node in getThisPartsBoosts(_part_node.get_position_in_parent()):
-        boost_node.queue_free()
+    clearBranchesForNewPart(_part_node)
     
+    # End call if empty selection.
     if not _selection:  return
     
-    var boost_count = getBoostCount(_part_node.part_type, _selection)
-    boost_count = range(boost_count)
-    boost_count.invert()
-    for boost in boost_count:
-        addSelectionBox(
-            _part_node.get_position_in_parent() + 1,
-            'boost',
-            'boost_%s' % str(boost + 1)
-        )
-
-
-
-func addSelectionBox(_index, _layer, _type):
-    
-    var selection_box = SelectionBoxScene.instance()
-    tree.add_child(selection_box)
-    tree.move_child(selection_box, _index)
-    selection_box.init(_layer, _type)
-
-
-
-func getExpandableParts(_selection):
-    
-    var expandable_parts_ = []
-    var body = controls.bodies[_selection]
-    expandable_parts_ += body['blaster_slots'] + body['launcher_slots']
-    
-    return expandable_parts_
-
-
-
-func getPartNodes():
-    
-    var part_nodes_ = []
-    for child in tree.get_children():
-        if child.part_layer == 'part':  part_nodes_ += [ child ]
-    
-    return part_nodes_
-
-
-
-func getThisPartsBoosts(_parts_pos):
-    
-    var branches_below = tree.get_children().slice(_parts_pos + 1, -1)
-    
-    var boost_nodes_ = []
-    for branch in branches_below:
-        if branch.part_type.begins_with('boost'):  boost_nodes_ += [ branch ]
-        else:  break
-    
-    return boost_nodes_
-
-
-
-func getBoostCount(_type, _selection):
-    
-    var boost_count_ = 0
-    
-    var part_ref
-        
-    if _type.begins_with('body'):                 part_ref = controls.bodies
-    elif _type.begins_with('generator'):          part_ref = controls.generators
-    elif _type.begins_with('engines'):            part_ref = controls.engines
-    elif _type.begins_with('shields'):            part_ref = controls.shields
-    elif _type.begins_with('blaster'):            part_ref = controls.blasters
-    elif _type.begins_with('missilelauncher'):    part_ref = controls.launchers['Missile']
-    
-    boost_count_ = part_ref[_selection]['boost_slots']
-    
-    return boost_count_
+    insertBoostsIntoTreeAtIndex(_part_node, _selection, _part_node.get_position_in_parent() + 1)
 
 
 
 func deleteSeparators():
     
-#    print("\nDELETING ALL SEPARATORS")
     for branch in tree.get_children():
-#        print(branch.get_class())
-        if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':
-#            print("    deleting")
+        if branch.branch_type == 'separator':
             tree.remove_child(branch)
             branch.queue_free()
-            branch.free()
 
 
 
@@ -152,65 +75,139 @@ func resetAllBranchImages():
 
 func insertSeparators():
     
-#    print("\nlen(tree.get_children()) = ", len(tree.get_children()))
-#    for each in tree.get_children():  print(each)
+    # If only 'body' branch exists end call.
     if len(tree.get_children()) == 1:  return
     
-    for _i in range(getCountOfParts()):
-        print("\n_i = ", _i)
-    
+    # Perform outer loop for each part in tree.  Each separator is inserted in consideration of each
+    # branch of part type.
+    for _i in range(getCountOfPartBranches()):
+        
+        # Get new branches with each loop.
         var branches = tree.get_children()
         
-        var part_last_boost_pos = 0
+        # Inner loop through all branches.
+        var this_part_last_boost_pos = 0
         for i in range(len(branches)):
             var branch = branches[i]
-#            print("i = ", i)
             
-            # Sort out separators.
-            print("branch.part_type = ", branch.part_type)
-            if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':
-                print("part is separator")
-                continue
-            
-            # Sort out parts already separated.
+            # End current loop conditionals.
+            if branch.branch_type == 'separator':  continue
             if partAlreadySeparated(i):  continue
             
-            # Sort out boosts.
-            if branch.part_layer == 'boost':  continue
+            """ Obsolete...  But staying here for now. I swear I thought this was relevant. """
+#            # Sort out boosts.
+#            if branch.branch_layer == 'boost':
+#                print("part is boost")
+#                continue
             
-            part_last_boost_pos = getPartLastBoostPos(i)
+            # Final get of position for separator insert.
+            this_part_last_boost_pos = getThisPartLastBoostPos(i)
             break
         
-#        print("part_last_boost_pos = ", part_last_boost_pos)
-        insertSeparator(part_last_boost_pos)
+        insertSeparator(this_part_last_boost_pos)
 
 
 
-func getCountOfParts():
+####################################################################################################
+                                                                                   ###   FUNCS   ###
+                                                                                   #################
+
+func clearBranchesForNewBody():
+
+    for each in tree.get_children():
+        if each.branch_layer != 'body':  each.queue_free()
+
+
+
+func clearBranchesForNewPart(_part_node):
     
-    var branches = tree.get_children()
+    for boost_node in getThisPartsBoosts(_part_node.get_position_in_parent()):
+        boost_node.queue_free()
+
+
+
+func getThisPartsBoosts(_parts_pos):
     
-    var count_of_parts_ = 0
-    for branch in branches:
-        if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':  continue
-        if branch.part_layer == 'part':  count_of_parts_ += 1
+    var branches_below_pos = tree.get_children().slice(_parts_pos + 1, -1)
+    var boost_nodes_ = []
+    for branch in branches_below_pos:
+        if branch.branch_type.begins_with('boost'):  boost_nodes_ += [ branch ]
+        else:  break
     
-    return count_of_parts_
+    return boost_nodes_
+
+
+
+func insertBoostsIntoTreeAtIndex(_branch_node, _selection, _index):
+    
+    var boost_list = range(getBoostCount(_branch_node.branch_type, _selection))
+    boost_list.invert()
+    for boost in boost_list:  insertSelectionBox(_index, 'boost', 'boost_%s' % str(boost + 1))
+
+
+
+func appendPartsToTree(_selection):
+    
+    var parts = ['generator', 'engines', 'shields']
+    parts += getExpandableParts(_selection)
+    for part in parts:  insertSelectionBox(len(tree.get_children()), 'part', part)
+
+
+
+func getExpandableParts(_selection):
+    
+    var body = controls.bodies[_selection]
+    var expandable_parts_ = body['blaster_slots'] + body['launcher_slots']
+    
+    return expandable_parts_
+
+
+
+func getBoostCount(_branch_type, _selection):
+    
+    var part_ref
+    if _branch_type == 'body':                          part_ref = controls.bodies
+    elif _branch_type == 'generator':                   part_ref = controls.generators
+    elif _branch_type == 'engines':                     part_ref = controls.engines
+    elif _branch_type == 'shields':                     part_ref = controls.shields
+    elif _branch_type.begins_with('blaster'):           part_ref = controls.blasters
+    elif _branch_type.begins_with('missilelauncher'):   part_ref = controls.launchers['Missile']
+    
+    var boost_count_ = part_ref[_selection]['boost_slots']
+    
+    return boost_count_
+
+
+
+func insertSelectionBox(_index, _layer, _type):
+    
+    var selection_box = SelectionBoxScene.instance()
+    tree.add_child(selection_box)
+    tree.move_child(selection_box, _index)
+    selection_box.init(_layer, _type)
+
+
+
+func getCountOfPartBranches():
+    
+    var count_of_part_branches_ = 0
+    for branch in tree.get_children():
+        if branch.branch_layer == 'part':  count_of_part_branches_ += 1
+    
+    return count_of_part_branches_
 
 
 
 func partAlreadySeparated(_i):
     
     var part_already_separated_ = false
-    
     for branch in tree.get_children().slice(_i + 1, -1):
-        if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':
+        if branch.branch_type == 'separator':
             part_already_separated_ = true
             break
-        if branch.part_layer == 'boost':  continue
+        if branch.branch_layer == 'boost':  continue
         break
     
-#    print("part_already_separated_ = ", part_already_separated_)
     return part_already_separated_
 
 
@@ -218,42 +215,35 @@ func partAlreadySeparated(_i):
 func isLastPart(_i):
     
     var is_last_part_ = true
-    
     for branch in tree.get_children().slice(_i, -1):
-        if branch.get_class() == 'TextureRect' or branch.part_type == 'separator':  is_last_part_ = false
-        elif branch.part_layer == 'part':  is_last_part_ = false
+        if branch.branch_type == 'separator':  is_last_part_ = false
+        elif branch.branch_layer == 'part':  is_last_part_ = false
     
-#    print("is_last_part_ = ", is_last_part_)
     return is_last_part_
 
 
 
-func getPartLastBoostPos(_i):
+func getThisPartLastBoostPos(_i):
     
-    var part_last_boost_pos_ = 0
-    
+    var this_part_last_boost_pos_ = 0
     var branches = tree.get_children()
-    
+
     for i in range(len(branches)):
         var branch = branches[i]
+
+        # Ignore branches before 'this' branch.
         if i <= _i:  continue
-        if branch.part_layer != 'boost':
-            part_last_boost_pos_ = i
+
+        if branch.branch_layer != 'boost':
+            this_part_last_boost_pos_ = i
             break
     
-    return part_last_boost_pos_
+    return this_part_last_boost_pos_
 
 
 
 func insertSeparator(_part_last_boost_pos):
     
-#    print(_part_last_boost_pos)
-
-#    var separator = TextureRect.new()
-#    separator.texture = branch_sep
-#    tree.add_child(separator)
-#    tree.move_child(separator, _part_last_boost_pos)
-
     var node_ = SelectionBoxScene.instance()
     tree.add_child(node_)
     tree.move_child(node_, _part_last_boost_pos)
@@ -262,8 +252,8 @@ func insertSeparator(_part_last_boost_pos):
 
 
 ####################################################################################################
-
-
+                                                                             ###   ON DELETION   ###
+                                                                             #######################
 
 func queue_free():
     
@@ -273,6 +263,16 @@ func queue_free():
 
 
 ####################################################################################################
+                                                                                ###   OBSOLETE   ###
+                                                                                ####################
+
+#func getPartNodes():
+#
+#    var part_nodes_ = []
+#    for child in tree.get_children():
+#        if child.branch_layer == 'part':  part_nodes_ += [ child ]
+#
+#    return part_nodes_
 
 
 
@@ -289,40 +289,40 @@ func queue_free():
 #        var branch = _branches[i]
 #
 #        # Handle body.
-#        if branch.part_layer == 'body':  branch_types_ += [ [branch.part_type, 'body'] ]
+#        if branch.branch_layer == 'body':  branch_types_ += [ [branch.branch_type, 'body'] ]
 #
 #        # Handle last_part_last_boost and last_part_mid_boosts.
-#        if last_part_boosts and branch.part_layer == 'part':
+#        if last_part_boosts and branch.branch_layer == 'part':
 #            last_part_boosts = false
-#        if last_part_boosts and branch.part_layer == 'boost':
-##            if _branches[i - 1].part_layer != 'boost':
+#        if last_part_boosts and branch.branch_layer == 'boost':
+##            if _branches[i - 1].branch_layer != 'boost':
 ##            print("i = ", i)
 ##            print("len(_branches) = ", len(_branches))
 #            if i == 0:
-#                branch_types_ += [ [branch.part_type, 'last_part_last_boost'] ]
+#                branch_types_ += [ [branch.branch_type, 'last_part_last_boost'] ]
 #                continue
 #            else:
-#                branch_types_ += [ [branch.part_type, 'last_part_mid_boost'] ]
+#                branch_types_ += [ [branch.branch_type, 'last_part_mid_boost'] ]
 #                continue
 #
 #        # Handle last_part.
-#        if last_part and branch.part_layer == 'part':
+#        if last_part and branch.branch_layer == 'part':
 #            last_part = false
-#            branch_types_ += [ [branch.part_type, 'last_part'] ]
+#            branch_types_ += [ [branch.branch_type, 'last_part'] ]
 #            continue
 #
 #        # Handle mid_parts.
-#        if branch.part_layer == 'part':
-#            branch_types_ += [ [branch.part_type, 'mid_part'] ]
+#        if branch.branch_layer == 'part':
+#            branch_types_ += [ [branch.branch_type, 'mid_part'] ]
 #            continue
 #
 #        # Handle last_boosts and mid_boosts.
-#        if branch.part_layer == 'boost':
-#            if _branches[i - 1].part_layer != 'boost':
-#                branch_types_ += [ [branch.part_type, 'last_boost'] ]
+#        if branch.branch_layer == 'boost':
+#            if _branches[i - 1].branch_layer != 'boost':
+#                branch_types_ += [ [branch.branch_type, 'last_boost'] ]
 #                continue
 #            else:
-#                branch_types_ += [ [branch.part_type, 'mid_boost'] ]
+#                branch_types_ += [ [branch.branch_type, 'mid_boost'] ]
 #                continue
 #
 ##    branch_types_.invert()
@@ -407,7 +407,7 @@ func queue_free():
 #
 ##            print(branch.get_class())
 #            if branch.get_class() == 'TextureRect':  continue
-#            if branch.part_layer != 'part':  continue
+#            if branch.branch_layer != 'part':  continue
 #
 #
 #            if partAlreadySeparated(i):  continue
@@ -424,11 +424,11 @@ func queue_free():
 #    for i in range(len(branches)):
 #        var branch = branches[i]
 #
-#        if branch.part_layer == 'part':
+#        if branch.branch_layer == 'part':
 #
 ##            print(i)
 #
-##            addSelectionBox(i + sep_counter, 'separator', 'separator')
+##            insertSelectionBox(i + sep_counter, 'separator', 'separator')
 #
 #            """
 #            Maybe try using add_child_below_node().  Will have to write a function that determines
