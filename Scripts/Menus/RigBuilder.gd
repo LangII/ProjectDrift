@@ -9,6 +9,7 @@ onready var controls = get_node('/root/Controls')
 
 # Node references.
 onready var tree = find_node('PartsTreeVBox*')
+onready var pedestal = find_node('PedestalPos*')
 
 # Resources.
 onready var SelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
@@ -27,6 +28,24 @@ func _ready():
     inv_mod = main.loadModule(main, 'res://Scenes/Functional/InventoryMod.tscn')
 
     insertSelectionBox(0, 'body', 'body')
+
+
+
+####################################################################################################
+                                                                                 ###   PROCESS   ###
+                                                                                 ###################
+
+func _process(delta):
+    
+#    print("pedestal = ", pedestal)
+#    print('something')
+#    pedestal.rotate_y(.001)
+    pedestal.rotate_object_local(Vector3.UP, .001)
+#    pedestal.global_rotate(Vector3.UP, 10)
+#    pedestal.transform.basis.y
+
+#    var rot_speed = rad2deg(30)  # 30 deg/sec
+#    pedestal.set_rot(pedestal.get_rot() + rot_speed * delta)
 
 
 
