@@ -16,6 +16,7 @@ onready var pop_up = _content_container_.find_node('PartSelectionPopUp*')
 onready var timer_1 = find_node('Timer1*')
 onready var timer_2 = find_node('Timer2*')
 onready var timer_3 = find_node('Timer3*')
+onready var timer_4 = find_node('Timer4*')
 
 # Resources.
 onready var Branch_A = preload('res://Textures/tree_branch_A.png')
@@ -240,12 +241,15 @@ func _on_PartSelectionPopUp_item_selected(id):
         rig_builder.deleteSeparators()
         rig_builder.resetAllBranchImages()
         rig_builder.insertSeparators()
+        rig_builder.buildRigModel()
     
     else:
         rig_builder.deleteSeparators()
         timer_1.start()
         timer_2.start()
         timer_3.start()
+#        timer_4.start()
+    
 
 
 
@@ -256,14 +260,13 @@ func _on_Timer1_timeout():
         'part':  rig_builder.partSelected(self, pop_up_selection_name)
 
 func _on_Timer2_timeout():
-    
     rig_builder.resetAllBranchImages()
 
 func _on_Timer3_timeout():
-
     rig_builder.insertSeparators()
+    rig_builder.buildRigModel()
 
-
+#func _on_Timer4_timeout():
 
 ####################################################################################################
                                                                                 ###   OBSOLETE   ###
@@ -289,6 +292,8 @@ func _on_Timer3_timeout():
 #
 #    find_node('Branch1*', true, false).visible = branch_visibilities[0]
 #    find_node('Branch2*', true, false).visible = branch_visibilities[1]
+
+
 
 
 

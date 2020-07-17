@@ -40,7 +40,7 @@ func _process(delta):
 #    print("pedestal = ", pedestal)
 #    print('something')
 #    pedestal.rotate_y(.001)
-    pedestal.rotate_object_local(Vector3.UP, .001)
+    pedestal.rotate_object_local(Vector3.UP, .005)
 #    pedestal.global_rotate(Vector3.UP, 10)
 #    pedestal.transform.basis.y
 
@@ -124,6 +124,36 @@ func insertSeparators():
             break
         
         insertSeparator(this_part_last_boost_pos)
+
+
+
+func buildRigModel():
+    
+    var current_rig_models = pedestal.get_children()
+    for model in current_rig_models:
+        pedestal.remove_child(model)
+        model.queue_free()
+    
+    var rig_json = getRigJson()
+    
+#    for key in rig_json.keys():
+#        var value = rig_json[key]
+    
+    var body_tag = rig_json['body']['part_tag']
+    
+    if not body_tag:  return
+    
+    var body = load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag).instance()
+    
+    body.script = null
+    var body_non_spatial = body.find_node('NonSpatial*')
+    body.remove_child(body_non_spatial)
+    body_non_spatial.queue_free()
+    var body_camera_pivot = body.find_node('CameraPivot*')
+    body.remove_child(body_camera_pivot)
+    body_camera_pivot.queue_free()
+    
+    pedestal.add_child(body)
 
 
 
@@ -270,6 +300,32 @@ func insertSeparator(_part_last_boost_pos):
 
 
 
+func getRigJson():
+    
+    var rig_json_ = {}
+    for branch in tree.get_children():
+        
+#        if branch.branch_layer == 'separator':  continue
+        
+        if branch.branch_type == 'body':
+            rig_json_['body'] = {}
+            rig_json_['body']['part_tag'] = branch.pop_up_selection_name
+        elif branch.branch_type == 'generator':
+            rig_json_['generator'] = {}
+            rig_json_['generator']['part_tag'] = branch.pop_up_selection_name
+        elif branch.branch_type == 'engines':
+            rig_json_['engines'] = {}
+            rig_json_['engines']['part_tag'] = branch.pop_up_selection_name
+        elif branch.branch_type == 'shields':
+            rig_json_['shields'] = {}
+            rig_json_['shields']['part_tag'] = branch.pop_up_selection_name
+    
+#    print(rig_json_)
+
+    return rig_json_
+
+
+
 ####################################################################################################
                                                                              ###   ON DELETION   ###
                                                                              #######################
@@ -277,6 +333,7 @@ func insertSeparator(_part_last_boost_pos):
 func queue_free():
     
     # Close temp mods.
+    inv_mod.queue_free()
     inv_mod.queue_free()
 
 

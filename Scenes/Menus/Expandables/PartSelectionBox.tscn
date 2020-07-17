@@ -87,7 +87,12 @@ one_shot = true
 [node name="Timer3*" type="Timer" parent="."]
 wait_time = 0.6
 one_shot = true
+
+[node name="Timer4*" type="Timer" parent="."]
+wait_time = 0.8
+one_shot = true
 [connection signal="item_selected" from="ContentContainer*/MarginContainer/PanelContainer/HBoxContainer/PartSelectionPopUp*" to="." method="_on_PartSelectionPopUp_item_selected"]
 [connection signal="timeout" from="Timer1*" to="." method="_on_Timer1_timeout"]
 [connection signal="timeout" from="Timer2*" to="." method="_on_Timer2_timeout"]
 [connection signal="timeout" from="Timer3*" to="." method="_on_Timer3_timeout"]
+[connection signal="timeout" from="Timer4*" to="." method="_on_Timer4_timeout"]

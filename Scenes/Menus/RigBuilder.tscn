@@ -8,7 +8,7 @@ bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 [sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
 flags_do_not_receive_shadows = true
-albedo_color = Color( 0.490196, 0.490196, 0.490196, 1 )
+albedo_color = Color( 0.239216, 0.227451, 0.270588, 1 )
 
 [sub_resource type="PlaneMesh" id=3]
 material = SubResource( 2 )
@@ -105,9 +105,10 @@ mesh = SubResource( 3 )
 material/0 = null
 
 [node name="PedestalPos*" type="Position3D" parent="HSplitContainer/VSplitContainer/PedestalViewport*/ViewportContainer/Viewport/PedestalCamera*"]
-transform = Transform( 1, 0, 0, 0, 0.945445, -0.325783, 0, 0.325783, 0.945445, 0, 0, -8.82757 )
+transform = Transform( 1, 0, 0, 0, 0.945445, -0.325783, 0, 0.325783, 0.945445, 0, 0, -3.23627 )
 
 [node name="MeshInstance" type="MeshInstance" parent="HSplitContainer/VSplitContainer/PedestalViewport*/ViewportContainer/Viewport/PedestalCamera*/PedestalPos*"]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0 )
+visible = false
 mesh = SubResource( 4 )
 material/0 = null

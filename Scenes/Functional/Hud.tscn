@@ -22,7 +22,7 @@ bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 [sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
 flags_do_not_receive_shadows = true
-albedo_color = Color( 0.490196, 0.490196, 0.490196, 1 )
+albedo_color = Color( 0.239216, 0.227451, 0.270588, 1 )
 
 [sub_resource type="PlaneMesh" id=3]
 material = SubResource( 2 )
