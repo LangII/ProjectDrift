@@ -134,12 +134,12 @@ func buildRigModel():
         pedestal.remove_child(model)
         model.queue_free()
     
-    var rig_json = getRigJson()
+    var rig_data_pack = getRigDataPack()
     
 #    for key in rig_json.keys():
 #        var value = rig_json[key]
     
-    var body_tag = rig_json['body']['part_tag']
+    var body_tag = rig_data_pack['body']['part_tag']
     
     if not body_tag:  return
     
@@ -154,6 +154,54 @@ func buildRigModel():
     body_camera_pivot.queue_free()
     
     pedestal.add_child(body)
+    
+    for part_type in rig_data_pack.keys():
+        if part_type == 'body':  continue
+        var part_data = rig_data_pack[part_type]
+        
+        if not part_data['part_tag']:  continue
+        
+        var part_type_ref
+        var part_slot_ref
+        if part_type == 'generator':
+            part_type_ref = 'Generators'
+            part_slot_ref = 'GeneratorPos*'
+        elif part_type == 'engines':
+            part_type_ref = 'Engines'
+            
+            part_slot_ref = []
+            for each in ['Fr', 'Br', 'Bl', 'Fl']:  part_slot_ref += [ 'Engine%sPos*' % each ]
+            
+        elif part_type == 'shields':
+            part_type_ref = 'Shields'
+            part_slot_ref = 'ShieldsPos*'
+        elif part_type.begins_with('blaster'):
+            part_type_ref = 'Blasters'
+            
+            var i_tag = part_type.substr(part_type.find('_') + 1, len(part_type))
+#            print("i_tag = |%s|" % i_tag)
+            part_slot_ref = 'Blaster%sPos*' % i_tag
+#            continue
+            
+        elif part_type.begins_with('missilelauncher'):
+            part_type_ref = 'Launchers/Missile'
+            
+            var i_tag = part_type.substr(part_type.find('_') + 1, len(part_type))
+#            print("i_tag = |%s|" % i_tag)
+            part_slot_ref = 'MissileLauncher%sPos*' % i_tag
+            
+        var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_type_ref, part_data['part_tag']])
+        
+        if part_type == 'engines':
+            print("part_slot_ref = ", part_slot_ref)
+            print("part_node = ", part_node)
+            for ref in part_slot_ref:
+                var part_slot = body.find_node(ref, true, false)
+                part_slot.add_child(part_node.instance())
+            continue
+        
+        var part_slot = body.find_node(part_slot_ref, true, false)
+        part_slot.add_child(part_node.instance())
 
 
 
@@ -300,29 +348,27 @@ func insertSeparator(_part_last_boost_pos):
 
 
 
-func getRigJson():
+func getRigDataPack():
     
-    var rig_json_ = {}
+    var rig_data_pack_ = {}
+    # Build parts of data pack.
     for branch in tree.get_children():
-        
-#        if branch.branch_layer == 'separator':  continue
-        
-        if branch.branch_type == 'body':
-            rig_json_['body'] = {}
-            rig_json_['body']['part_tag'] = branch.pop_up_selection_name
-        elif branch.branch_type == 'generator':
-            rig_json_['generator'] = {}
-            rig_json_['generator']['part_tag'] = branch.pop_up_selection_name
-        elif branch.branch_type == 'engines':
-            rig_json_['engines'] = {}
-            rig_json_['engines']['part_tag'] = branch.pop_up_selection_name
-        elif branch.branch_type == 'shields':
-            rig_json_['shields'] = {}
-            rig_json_['shields']['part_tag'] = branch.pop_up_selection_name
-    
-#    print(rig_json_)
+        if branch.branch_layer in ['separator', 'boost']:  continue
 
-    return rig_json_
+        rig_data_pack_[branch.branch_type] = {'part_tag': '', 'boosts': []}
+        rig_data_pack_[branch.branch_type]['part_tag'] = branch.pop_up_selection_name
+    
+    # Build boosts of data pack.
+    for branch in tree.get_children():
+        if branch.branch_layer != 'boost':  continue
+        if not branch.pop_up_selection_name:  continue
+
+        var parent = branch.branch_parent
+        rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_selection_name ]
+
+#    print(rig_data_pack_)
+
+    return rig_data_pack_
 
 
 
@@ -341,6 +387,21 @@ func queue_free():
 ####################################################################################################
                                                                                 ###   OBSOLETE   ###
                                                                                 ####################
+
+#        if branch.branch_type == 'body':
+#            rig_json_['body'] = {}
+#            rig_json_['body']['part_tag'] = branch.pop_up_selection_name
+#        elif branch.branch_type == 'generator':
+#            rig_json_['generator'] = {}
+#            rig_json_['generator']['part_tag'] = branch.pop_up_selection_name
+#        elif branch.branch_type == 'engines':
+#            rig_json_['engines'] = {}
+#            rig_json_['engines']['part_tag'] = branch.pop_up_selection_name
+#        elif branch.branch_type == 'shields':
+#            rig_json_['shields'] = {}
+#            rig_json_['shields']['part_tag'] = branch.pop_up_selection_name
+
+
 
 #func getPartNodes():
 #

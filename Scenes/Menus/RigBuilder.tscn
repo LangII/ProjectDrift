@@ -95,17 +95,17 @@ handle_input_locally = false
 render_target_update_mode = 3
 
 [node name="PedestalCamera*" type="Camera" parent="HSplitContainer/VSplitContainer/PedestalViewport*/ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27147, 0 )
+transform = Transform( 1, 0, 0, 0, 0.998359, 0.0572678, 0, -0.0572678, 0.998359, 0, 2.27147, 0 )
 cull_mask = 1
 
 [node name="Background*" type="MeshInstance" parent="HSplitContainer/VSplitContainer/PedestalViewport*/ViewportContainer/Viewport/PedestalCamera*"]
-transform = Transform( 20, 0, 0, 0, -4.37114e-08, -20, 0, 1, -8.74228e-07, 0, 0, -12.9087 )
+transform = Transform( 20, 0, 0, 0, -0.0572678, -19.9672, 0, 0.998359, -1.14536, 0, 0.739253, -12.8875 )
 cast_shadow = 0
 mesh = SubResource( 3 )
 material/0 = null
 
 [node name="PedestalPos*" type="Position3D" parent="HSplitContainer/VSplitContainer/PedestalViewport*/ViewportContainer/Viewport/PedestalCamera*"]
-transform = Transform( 1, 0, 0, 0, 0.945445, -0.325783, 0, 0.325783, 0.945445, 0, 0, -3.23627 )
+transform = Transform( 1, 0, 0, 0, 0.925236, -0.379392, 0, 0.379392, 0.925236, 0, 0.185334, -3.23096 )
 
 [node name="MeshInstance" type="MeshInstance" parent="HSplitContainer/VSplitContainer/PedestalViewport*/ViewportContainer/Viewport/PedestalCamera*/PedestalPos*"]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0 )
