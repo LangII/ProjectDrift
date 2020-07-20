@@ -15,6 +15,9 @@ onready var pedestal = find_node('PedestalPos*')
 onready var SelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
 
 var inv_mod
+var boost_mod
+
+onready var boosts = controls.boosts
 
 
 
@@ -26,6 +29,8 @@ func _ready():
     
     # Open temp mods.
     inv_mod = main.loadModule(main, 'res://Scenes/Functional/InventoryMod.tscn')
+    
+    boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
 
     insertSelectionBox(0, 'body', 'body')
 
@@ -145,7 +150,21 @@ func buildRigModel():
     
     var body = load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag).instance()
     
+#    var body_script = body.script
+    
+    """
+    TO DO:
+        Currently getting error messages because Vehicle.gd is still some how connected to 'body'.
+        Even though it's obviously removed with the next line.  I think this is engine related.
+        I'll fix on my end by creating the vehicle bodies seperately and calling their models and
+        part references into the fuctional scene.
+    """
+    
     body.script = null
+    
+#    print("body.script = ", body.script)
+    
+#    body = body.instance()
     var body_non_spatial = body.find_node('NonSpatial*')
     body.remove_child(body_non_spatial)
     body_non_spatial.queue_free()
@@ -153,7 +172,11 @@ func buildRigModel():
     body.remove_child(body_camera_pivot)
     body_camera_pivot.queue_free()
     
+    
+    body = appendBoostModelsToPartModel('body', body, rig_data_pack['body'])
     pedestal.add_child(body)
+    
+    print(rig_data_pack)
     
     for part_type in rig_data_pack.keys():
         if part_type == 'body':  continue
@@ -190,18 +213,46 @@ func buildRigModel():
 #            print("i_tag = |%s|" % i_tag)
             part_slot_ref = 'MissileLauncher%sPos*' % i_tag
             
-        var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_type_ref, part_data['part_tag']])
         
         if part_type == 'engines':
-            print("part_slot_ref = ", part_slot_ref)
-            print("part_node = ", part_node)
+#            print("part_slot_ref = ", part_slot_ref)
+#            print("part_node = ", part_node)
             for ref in part_slot_ref:
                 var part_slot = body.find_node(ref, true, false)
-                part_slot.add_child(part_node.instance())
+#                part_node = part_node.instance()
+                var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_type_ref, part_data['part_tag']]).instance()
+
+                part_node = appendBoostModelsToPartModel(part_type, part_node, part_data)
+                part_slot.add_child(part_node)
             continue
         
+        var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_type_ref, part_data['part_tag']]).instance()
+        
+        if part_type.begins_with('blaster'):
+            part_node = appendBoostModelsToPartModel('blaster', part_node, part_data)
+        elif part_type.begins_with('missilelauncher'):
+            part_node = appendBoostModelsToPartModel('missilelauncher', part_node, part_data)
+        else:
+            part_node = appendBoostModelsToPartModel(part_type, part_node, part_data)
+        
         var part_slot = body.find_node(part_slot_ref, true, false)
-        part_slot.add_child(part_node.instance())
+        part_slot.add_child(part_node)
+
+
+
+func appendBoostModelsToPartModel(_part_type, _part_model, _part_data_pack):
+    
+    for i in range(len(_part_data_pack['boosts'])):
+        var boost = _part_data_pack['boosts'][i]
+        var _boosts_node_ = _part_model.get_node('Boosts*')
+#        print("_boosts_node_ = ", _boosts_node_)
+        var boost_slot = _boosts_node_.find_node('Boost%sPos*' % str(i + 1), true, false)
+        print("boost_slot = ", boost_slot)
+        var stat = boosts[_part_type][boost]['stat']
+        var boost_scene = boost_mod.getBoostModelScene(_part_type, stat)
+        boost_slot.add_child(boost_scene.instance())
+    
+    return _part_model
 
 
 
@@ -380,7 +431,7 @@ func queue_free():
     
     # Close temp mods.
     inv_mod.queue_free()
-    inv_mod.queue_free()
+    boost_mod.queue_free()
 
 
 
