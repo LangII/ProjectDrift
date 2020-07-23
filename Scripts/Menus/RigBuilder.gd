@@ -106,7 +106,6 @@ func insertSeparators():
     # branch of part type.
     for _i in range(getCountOfPartBranches()):
         
-        # Get new branches with each loop.
         var branches = tree.get_children()
         
         # Inner loop through all branches.
@@ -114,7 +113,7 @@ func insertSeparators():
         for i in range(len(branches)):
             var branch = branches[i]
             
-            # End current loop conditionals.
+            # End inner loop conditionals.
             if branch.branch_type == 'separator':  continue
             if partAlreadySeparated(i):  continue
             
@@ -134,122 +133,166 @@ func insertSeparators():
 
 func buildRigModel():
     
-    var current_rig_models = pedestal.get_children()
-    for model in current_rig_models:
-        pedestal.remove_child(model)
-        model.queue_free()
+    deleteCurrentRigModel()
     
     var rig_data_pack = getRigDataPack()
     
-#    for key in rig_json.keys():
-#        var value = rig_json[key]
+    if not 'body' in rig_data_pack:  return
     
-    var body_tag = rig_data_pack['body']['part_tag']
+    var body_model = getBodyModel(rig_data_pack)
     
-    if not body_tag:  return
+    pedestal.add_child(body_model)
     
-    var body = load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag).instance()
-    
-#    var body_script = body.script
-    
-    """
-    TO DO:
-        Currently getting error messages because Vehicle.gd is still some how connected to 'body'.
-        Even though it's obviously removed with the next line.  I think this is engine related.
-        I'll fix on my end by creating the vehicle bodies seperately and calling their models and
-        part references into the fuctional scene.
-    """
-    
-    body.script = null
-    
-#    print("body.script = ", body.script)
-    
-#    body = body.instance()
-    var body_non_spatial = body.find_node('NonSpatial*')
-    body.remove_child(body_non_spatial)
-    body_non_spatial.queue_free()
-    var body_camera_pivot = body.find_node('CameraPivot*')
-    body.remove_child(body_camera_pivot)
-    body_camera_pivot.queue_free()
-    
-    
-    body = appendBoostModelsToPartModel('body', body, rig_data_pack['body'])
-    pedestal.add_child(body)
-    
-    print(rig_data_pack)
+#    print(rig_data_pack)
     
     for part_type in rig_data_pack.keys():
         if part_type == 'body':  continue
+        
         var part_data = rig_data_pack[part_type]
         
         if not part_data['part_tag']:  continue
         
-        var part_type_ref
-        var part_slot_ref
-        if part_type == 'generator':
-            part_type_ref = 'Generators'
-            part_slot_ref = 'GeneratorPos*'
-        elif part_type == 'engines':
-            part_type_ref = 'Engines'
-            
-            part_slot_ref = []
-            for each in ['Fr', 'Br', 'Bl', 'Fl']:  part_slot_ref += [ 'Engine%sPos*' % each ]
-            
-        elif part_type == 'shields':
-            part_type_ref = 'Shields'
-            part_slot_ref = 'ShieldsPos*'
-        elif part_type.begins_with('blaster'):
-            part_type_ref = 'Blasters'
-            
-            var i_tag = part_type.substr(part_type.find('_') + 1, len(part_type))
-#            print("i_tag = |%s|" % i_tag)
-            part_slot_ref = 'Blaster%sPos*' % i_tag
-#            continue
-            
-        elif part_type.begins_with('missilelauncher'):
-            part_type_ref = 'Launchers/Missile'
-            
-            var i_tag = part_type.substr(part_type.find('_') + 1, len(part_type))
-#            print("i_tag = |%s|" % i_tag)
-            part_slot_ref = 'MissileLauncher%sPos*' % i_tag
-            
+        var part_refs = getPartRefs(part_type)
+        
+        
+        
+        
+        
+        
+
+        
+        
+        
+        
         
         if part_type == 'engines':
 #            print("part_slot_ref = ", part_slot_ref)
 #            print("part_node = ", part_node)
-            for ref in part_slot_ref:
-                var part_slot = body.find_node(ref, true, false)
+            for ref in part_refs['slot']:
+                var part_slot = body_model.find_node(ref, true, false)
 #                part_node = part_node.instance()
-                var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_type_ref, part_data['part_tag']]).instance()
+                var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_refs['type'], part_data['part_tag']]).instance()
 
-                part_node = appendBoostModelsToPartModel(part_type, part_node, part_data)
+                part_node = appendBoostModelsToPartModel(part_node, part_type, part_data)
                 part_slot.add_child(part_node)
             continue
         
-        var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_type_ref, part_data['part_tag']]).instance()
+        print("part_refs['type'] = ", part_refs['type'])
+        
+        var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_refs['type'], part_data['part_tag']]).instance()
         
         if part_type.begins_with('blaster'):
-            part_node = appendBoostModelsToPartModel('blaster', part_node, part_data)
+            part_node = appendBoostModelsToPartModel(part_node, 'blaster', part_data)
         elif part_type.begins_with('missilelauncher'):
-            part_node = appendBoostModelsToPartModel('missilelauncher', part_node, part_data)
+            part_node = appendBoostModelsToPartModel(part_node, 'missilelauncher', part_data)
         else:
-            part_node = appendBoostModelsToPartModel(part_type, part_node, part_data)
+            part_node = appendBoostModelsToPartModel(part_node, part_type, part_data)
         
-        var part_slot = body.find_node(part_slot_ref, true, false)
+        var part_slot = body_model.find_node(part_refs['slot'], true, false)
         part_slot.add_child(part_node)
 
 
 
-func appendBoostModelsToPartModel(_part_type, _part_model, _part_data_pack):
+
+
+
+
+
+func deleteCurrentRigModel():
+    
+    var current_rig_models = pedestal.get_children()
+    for model in current_rig_models:
+        pedestal.remove_child(model)
+        model.queue_free()
+
+
+
+func getRigDataPack():
+    
+    var rig_data_pack_ = {}
+    
+    # Build parts of data pack.
+    for branch in tree.get_children():
+        if not branch.branch_layer in ['part', 'body']:  continue
+        rig_data_pack_[branch.branch_type] = {'part_tag': '', 'boosts': []}
+        rig_data_pack_[branch.branch_type]['part_tag'] = branch.pop_up_selection_name
+    
+    # Build boosts of data pack.
+    for branch in tree.get_children():
+        if branch.branch_layer != 'boost':  continue
+        if not branch.pop_up_selection_name:  continue
+        var parent = branch.branch_parent
+        rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_selection_name ]
+
+    return rig_data_pack_
+
+
+
+func getBodyModel(_rig_data_pack):
+    """
+    TO DO:
+        Currently getting error messages because Vehicle.gd is still some how connected to 'body'.
+        I think this is engine related.  I'll fix on my end by creating the vehicle bodies
+        seperately and calling their models and part references into the fuctional scene.
+    """
+    
+    var body_tag = _rig_data_pack['body']['part_tag']
+    var body_model_ = load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag).instance()
+    
+    body_model_.script = null
+    
+    var nodes_to_delete = ['NonSpatial*', 'CameraPivot*']
+    for node_name in nodes_to_delete:
+        var node_to_delete = body_model_.find_node(node_name, true, false)
+        body_model_.remove_child(node_to_delete)
+        node_to_delete.queue_free()
+    
+    body_model_ = appendBoostModelsToPartModel(body_model_, 'body', _rig_data_pack['body'])
+    
+    return body_model_
+
+
+
+func getPartRefs(_part_type):
+    
+    var part_refs_ = {}
+    
+    if _part_type == 'generator':
+        part_refs_ = {'type': 'Generators', 'slot': 'GeneratorPos*'}
+    
+    elif _part_type == 'shields':
+        part_refs_ = {'type': 'Shields', 'slot': 'ShieldsPos*'}
+    
+    elif _part_type == 'engines':
+        var part_slot_refs = []
+        for each in ['Fr', 'Br', 'Bl', 'Fl']:  part_slot_refs += [ 'Engine%sPos*' % each ]
+        part_refs_ = {'type': 'Engines', 'slot': part_slot_refs}
+    
+    elif _part_type.begins_with('blaster'):
+        var i_tag = _part_type.substr(_part_type.find('_') + 1, len(_part_type))
+        var part_slot_ref = 'Blaster%sPos*' % i_tag
+        part_refs_ = {'type': 'Blasters', 'slot': part_slot_ref}
+    
+    elif _part_type.begins_with('missilelauncher'):
+        var i_tag = _part_type.substr(_part_type.find('_') + 1, len(_part_type))
+        var part_slot_ref = 'MissileLauncher%sPos*' % i_tag
+        part_refs_ = {'type': 'Launchers/Missile', 'slot': part_slot_ref}
+    
+    return part_refs_
+
+
+
+func appendBoostModelsToPartModel(_part_model, _part_type, _part_data_pack):
     
     for i in range(len(_part_data_pack['boosts'])):
-        var boost = _part_data_pack['boosts'][i]
+        
         var _boosts_node_ = _part_model.get_node('Boosts*')
-#        print("_boosts_node_ = ", _boosts_node_)
-        var boost_slot = _boosts_node_.find_node('Boost%sPos*' % str(i + 1), true, false)
-        print("boost_slot = ", boost_slot)
-        var stat = boosts[_part_type][boost]['stat']
-        var boost_scene = boost_mod.getBoostModelScene(_part_type, stat)
+        var boost_slot = _boosts_node_.find_node('Boost%dPos*' % (i + 1), true, false)
+        
+        var boost_tag = _part_data_pack['boosts'][i]
+        var boost_stat = boosts[_part_type][boost_tag]['stat']
+        var boost_scene = boost_mod.getBoostModelScene(_part_type, boost_stat)
+        
         boost_slot.add_child(boost_scene.instance())
     
     return _part_model
@@ -396,30 +439,6 @@ func insertSeparator(_part_last_boost_pos):
     tree.add_child(node_)
     tree.move_child(node_, _part_last_boost_pos)
     node_.init('separator', 'separator')
-
-
-
-func getRigDataPack():
-    
-    var rig_data_pack_ = {}
-    # Build parts of data pack.
-    for branch in tree.get_children():
-        if branch.branch_layer in ['separator', 'boost']:  continue
-
-        rig_data_pack_[branch.branch_type] = {'part_tag': '', 'boosts': []}
-        rig_data_pack_[branch.branch_type]['part_tag'] = branch.pop_up_selection_name
-    
-    # Build boosts of data pack.
-    for branch in tree.get_children():
-        if branch.branch_layer != 'boost':  continue
-        if not branch.pop_up_selection_name:  continue
-
-        var parent = branch.branch_parent
-        rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_selection_name ]
-
-#    print(rig_data_pack_)
-
-    return rig_data_pack_
 
 
 
