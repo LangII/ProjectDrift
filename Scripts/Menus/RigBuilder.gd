@@ -136,6 +136,7 @@ func buildRigModel():
     deleteCurrentRigModel()
     
     var rig_data_pack = getRigDataPack()
+#    print(rig_data_pack)
     
     if not 'body' in rig_data_pack:  return
     
@@ -143,9 +144,8 @@ func buildRigModel():
     
     pedestal.add_child(body_model)
     
-#    print(rig_data_pack)
-    
     for part_type in rig_data_pack.keys():
+        
         if part_type == 'body':  continue
         
         var part_data = rig_data_pack[part_type]
@@ -154,47 +154,18 @@ func buildRigModel():
         
         var part_refs = getPartRefs(part_type)
         
+        var part_model_scene = getPartModelScene(part_refs, part_data)
         
-        
-        
-        
-        
-
-        
-        
-        
-        
-        
-        if part_type == 'engines':
-#            print("part_slot_ref = ", part_slot_ref)
-#            print("part_node = ", part_node)
-            for ref in part_refs['slot']:
-                var part_slot = body_model.find_node(ref, true, false)
-#                part_node = part_node.instance()
-                var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_refs['type'], part_data['part_tag']]).instance()
-
-                part_node = appendBoostModelsToPartModel(part_node, part_type, part_data)
-                part_slot.add_child(part_node)
-            continue
-        
-        print("part_refs['type'] = ", part_refs['type'])
-        
-        var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_refs['type'], part_data['part_tag']]).instance()
-        
-        if part_type.begins_with('blaster'):
-            part_node = appendBoostModelsToPartModel(part_node, 'blaster', part_data)
-        elif part_type.begins_with('missilelauncher'):
-            part_node = appendBoostModelsToPartModel(part_node, 'missilelauncher', part_data)
-        else:
-            part_node = appendBoostModelsToPartModel(part_node, part_type, part_data)
-        
-        var part_slot = body_model.find_node(part_refs['slot'], true, false)
-        part_slot.add_child(part_node)
+        appendPartModelToBodyModel(body_model, part_refs, part_model_scene, part_data)
 
 
 
-
-
+func getPartModelScene(_refs, _data):
+    
+    var file_path_str = 'res://Scenes/Models/VehicleParts/%s/%s.tscn'
+    var part_model_scene_ = load(file_path_str % [_refs['file'], _data['part_tag']])
+    
+    return part_model_scene_
 
 
 
@@ -258,27 +229,44 @@ func getPartRefs(_part_type):
     var part_refs_ = {}
     
     if _part_type == 'generator':
-        part_refs_ = {'type': 'Generators', 'slot': 'GeneratorPos*'}
+        part_refs_ = {'type': 'generator', 'file': 'Generators', 'slot': 'GeneratorPos*'}
     
     elif _part_type == 'shields':
-        part_refs_ = {'type': 'Shields', 'slot': 'ShieldsPos*'}
+        part_refs_ = {'type': 'shields', 'file': 'Shields', 'slot': 'ShieldsPos*'}
     
     elif _part_type == 'engines':
         var part_slot_refs = []
         for each in ['Fr', 'Br', 'Bl', 'Fl']:  part_slot_refs += [ 'Engine%sPos*' % each ]
-        part_refs_ = {'type': 'Engines', 'slot': part_slot_refs}
+        part_refs_ = {'type': 'engines', 'file': 'Engines', 'slot': part_slot_refs}
     
     elif _part_type.begins_with('blaster'):
         var i_tag = _part_type.substr(_part_type.find('_') + 1, len(_part_type))
         var part_slot_ref = 'Blaster%sPos*' % i_tag
-        part_refs_ = {'type': 'Blasters', 'slot': part_slot_ref}
+        part_refs_ = {'type': 'blaster', 'file': 'Blasters', 'slot': part_slot_ref}
     
     elif _part_type.begins_with('missilelauncher'):
         var i_tag = _part_type.substr(_part_type.find('_') + 1, len(_part_type))
         var part_slot_ref = 'MissileLauncher%sPos*' % i_tag
-        part_refs_ = {'type': 'Launchers/Missile', 'slot': part_slot_ref}
+        part_refs_ = {'type': 'missilelauncher', 'file': 'Launchers/Missile', 'slot': part_slot_ref}
     
     return part_refs_
+
+
+
+func appendPartModelToBodyModel(_body, _refs, _scene, _data):
+
+    if _refs['type'] == 'engines':
+        for ref in _refs['slot']:
+            var part_slot = _body.find_node(ref, true, false)
+            var part_node = _scene.instance()
+            part_node = appendBoostModelsToPartModel(part_node, _refs['type'], _data)
+            part_slot.add_child(part_node)
+        return
+
+    var part_slot = _body.find_node(_refs['slot'], true, false)
+    var part_node = _scene.instance()
+    part_node = appendBoostModelsToPartModel(part_node, _refs['type'], _data)
+    part_slot.add_child(part_node)
 
 
 
@@ -457,6 +445,31 @@ func queue_free():
 ####################################################################################################
                                                                                 ###   OBSOLETE   ###
                                                                                 ####################
+
+#    if _type == 'engines':
+#
+#
+#    if _type == 'engines':
+#        for ref in _refs['slot']:
+#            var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_refs['type'], part_data['part_tag']]).instance()
+#
+#            part_node = appendBoostModelsToPartModel(part_node, part_type, part_data)
+#
+#    var part_node = load('res://Scenes/Models/VehicleParts/%s/%s.tscn' % [part_refs['type'], part_data['part_tag']]).instance()
+#
+#    if part_type.begins_with('blaster'):
+#        part_node = appendBoostModelsToPartModel(part_node, 'blaster', part_data)
+#    elif part_type.begins_with('missilelauncher'):
+#        part_node = appendBoostModelsToPartModel(part_node, 'missilelauncher', part_data)
+#    else:
+#        part_node = appendBoostModelsToPartModel(part_node, part_type, part_data)
+#
+#    var part_slot = body_model.find_node(part_refs['slot'], true, false)
+#    part_slot.add_child(part_node)
+#
+#    return part_model_
+
+
 
 #        if branch.branch_type == 'body':
 #            rig_json_['body'] = {}
