@@ -95,6 +95,7 @@ margin_right = 681.0
 margin_bottom = 193.0
 
 [node name="StatsVBox*" type="VBoxContainer" parent="VBoxContainer/BodyContainer*/VSplitContainer/StatsDisplayContainer*/ScrollContainer"]
+custom_constants/separation = 4
 
 [node name="ModelDisplayContainer*" type="PanelContainer" parent="VBoxContainer/BodyContainer*/VSplitContainer"]
 margin_top = 212.0

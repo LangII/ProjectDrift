@@ -459,7 +459,7 @@ func updateStatsDisplay():
     
 #    StatDisplayBoxScene
 #    stats_vbox
-    print("\npart_types")
+#    print("\npart_types")
     for part_type in rig_data_pack.keys():
         var part_tag = rig_data_pack[part_type]['part_tag']
         var boosts = rig_data_pack[part_type]['boosts']
@@ -476,6 +476,21 @@ func updateStatsDisplay():
 #        var stat_label = stat_display_box.find_node('StatLabel*', true, false)
 #        var stat_orig_value_label = stat_display_box.find_node('StatOriginalValueLabel*', true, false)
 #        var stat_final_value_label = stat_display_box.find_node('StatFinalValueLabel*', true, false)
+        
+        var stat_container = L_stat_display_box.find_node('StatContainer*', true, false)
+        stat_container.visible = false
+        var stat_orig_value_container = L_stat_display_box.find_node('StatOriginalValueContainer*', true, false)
+        stat_orig_value_container.visible = false
+        var boost_adj_1_container = L_stat_display_box.find_node('BoostAdjust1Container*', true, false)
+        boost_adj_1_container.visible = false
+        var boost_adj_2_container = L_stat_display_box.find_node('BoostAdjust2Container*', true, false)
+        boost_adj_2_container.visible = false
+        var boost_adj_3_container = L_stat_display_box.find_node('BoostAdjust3Container*', true, false)
+        boost_adj_3_container.visible = false
+        var boost_adj_4_container = L_stat_display_box.find_node('BoostAdjust4Container*', true, false)
+        boost_adj_4_container.visible = false
+        var stat_final_value_container = L_stat_display_box.find_node('StatFinalValueContainer*', true, false)
+        stat_final_value_container.visible = false
         
         L_tab_label.visible = false
         L_part_type_label.text = part_type
@@ -501,8 +516,12 @@ func updateStatsDisplay():
             
             var part_type_label = stat_display_box.find_node('PartTypeLabel*', true, false)
             var part_tag_label = stat_display_box.find_node('PartTagLabel*', true, false)
-            part_type_label.visible = false
-            part_tag_label.visible = false
+            part_type_label.text = part_type
+            part_tag_label.text = part_tag
+            var part_type_container = stat_display_box.find_node('PartTypeContainer*', true, false)
+            var part_tag_container = stat_display_box.find_node('PartTagContainer*', true, false)
+            part_type_container.visible = false
+            part_tag_container.visible = false
             
             var stat_label = stat_display_box.find_node('StatLabel*', true, false)
             var stat_orig_value_label = stat_display_box.find_node('StatOriginalValueLabel*', true, false)
@@ -510,9 +529,19 @@ func updateStatsDisplay():
             
             stat_label.text = stat
             stat_orig_value_label.text = str(value)
-            stat_final_value_label.text = str(value)
+#            stat_final_value_label.text = str(value)
+            stat_final_value_label.text = '= ' + str(value)
             
             if boosts:  stat_display_box = updateStatDisplayWithBoosts(stat_display_box, boosts)
+            
+            var empty_boost_counter = 0
+            for i in range(4):
+                i += 1
+                if stat_display_box.find_node('BoostAdjustLabel%s*' % str(i)).text == '':
+                    stat_display_box.find_node('BoostAdjust%sContainer*' % str(i)).visible = false
+                    empty_boost_counter += 1
+            if empty_boost_counter == 4:
+                stat_display_box.find_node('StatOriginalValueContainer*').visible = false
             
             stats_vbox.add_child(stat_display_box)
 
@@ -520,9 +549,47 @@ func updateStatsDisplay():
 
 func updateStatDisplayWithBoosts(_stat_display, _boosts):
     
+    var part_type = _stat_display.find_node('PartTypeLabel*', true, false).text
+    if '_' in part_type:  part_type = part_type.left(part_type.find('_'))
+    
+    var stat_label = _stat_display.find_node('StatLabel*', true, false)
+    var stat_orig_value_label = _stat_display.find_node('StatOriginalValueLabel*', true, false)
+    var stat_final_value_label = _stat_display.find_node('StatFinalValueLabel*', true, false)
+    
+#    var boost_tick = 1
+    for i in range(len(_boosts)):
+#        boost_tick = i
+        var boost_tag = _boosts[i]
+#        print("part_type = ", part_type)
+        var boost_data_pack = controls.boosts[part_type][boost_tag]
+        
+        if boost_data_pack['stat'] != stat_label.text:  continue
+        
+        if i != 0 and _stat_display.find_node('BoostAdjustLabel%s*' % str(i)).text == '':
+            i -= 1
+        
+#        print("boost_tick = ", boost_tick)
+        var boost_adjust_label = _stat_display.find_node('BoostAdjustLabel%s*' % str(i + 1))
+#        boost_tick += 1
+        
+        
+        var new_value = boost_mod.getNewStatValue(float(stat_final_value_label.text.right(2)), boost_data_pack)
+        var dif_value = abs(new_value - float(stat_final_value_label.text.right(2)))
+        
+        var symbol = boost_data_pack['type'].right(boost_data_pack['type'].find(' '))
+        boost_adjust_label.text = symbol + ' ' + str(dif_value)
+#        boost_adjust_label.text = str(dif_value)
+        stat_final_value_label.text = '= ' + str(new_value)
+#        stat_final_value_label.text = str(new_value)
+    
+
+    
     return _stat_display
 
-
+"""
+Need to adjust arrangement of boost adjusts.  If boost #2 is applied to a different stat than boost
+#1, then boost #2 still goes into slot #2.
+"""
 
 ####################################################################################################
                                                                                  ###   SIGNALS   ###

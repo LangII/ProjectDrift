@@ -1,61 +1,283 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 3.0
+bg_color = Color( 0.239216, 0.227451, 0.270588, 1 )
 
 [node name="StatDisplayBox" type="HBoxContainer"]
-margin_right = 77.0
-margin_bottom = 14.0
-custom_constants/separation = 2
+margin_right = 155.0
+margin_bottom = 20.0
+custom_constants/separation = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TabLabel*" type="Label" parent="."]
+margin_top = 5.0
 margin_right = 13.0
-margin_bottom = 14.0
+margin_bottom = 19.0
 text = " - "
+valign = 1
 
-[node name="PartTypeLabel*" type="Label" parent="."]
-margin_left = 15.0
-margin_right = 145.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 130, 0 )
-
-[node name="PartTagLabel*" type="Label" parent="."]
-margin_left = 147.0
+[node name="PartTypeContainer*" type="PanelContainer" parent="."]
+margin_left = 17.0
 margin_right = 147.0
-margin_bottom = 14.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 130, 24 )
+custom_styles/panel = SubResource( 1 )
 
-[node name="StatLabel*" type="Label" parent="."]
-margin_left = 149.0
-margin_right = 279.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 130, 0 )
+[node name="MarginContainer" type="MarginContainer" parent="PartTypeContainer*"]
+margin_right = 130.0
+margin_bottom = 24.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
 
-[node name="StatOriginalValueLabel*" type="Label" parent="."]
-margin_left = 281.0
-margin_right = 281.0
-margin_bottom = 14.0
+[node name="PanelContainer" type="PanelContainer" parent="PartTypeContainer*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 129.0
+margin_bottom = 23.0
+custom_styles/panel = SubResource( 2 )
 
-[node name="BoostAdjustLabel1*" type="Label" parent="."]
-margin_left = 283.0
-margin_right = 283.0
-margin_bottom = 14.0
+[node name="PartTypeLabel*" type="Label" parent="PartTypeContainer*/MarginContainer/PanelContainer"]
+margin_left = 3.0
+margin_right = 128.0
+margin_bottom = 22.0
+size_flags_vertical = 1
+valign = 1
 
-[node name="BoostAdjustLabel2*" type="Label" parent="."]
-margin_left = 285.0
-margin_right = 285.0
-margin_bottom = 14.0
+[node name="PartTagContainer*" type="PanelContainer" parent="."]
+margin_left = 151.0
+margin_right = 391.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 240, 24 )
+custom_styles/panel = SubResource( 1 )
 
-[node name="BoostAdjustLabel3*" type="Label" parent="."]
-margin_left = 287.0
-margin_right = 287.0
-margin_bottom = 14.0
+[node name="MarginContainer" type="MarginContainer" parent="PartTagContainer*"]
+margin_right = 240.0
+margin_bottom = 24.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
 
-[node name="BoostAdjustLabel4*" type="Label" parent="."]
-margin_left = 289.0
-margin_right = 289.0
-margin_bottom = 14.0
+[node name="PanelContainer" type="PanelContainer" parent="PartTagContainer*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 239.0
+margin_bottom = 23.0
+custom_styles/panel = SubResource( 2 )
 
-[node name="StatFinalValueLabel*" type="Label" parent="."]
-margin_left = 291.0
-margin_right = 291.0
-margin_bottom = 14.0
+[node name="PartTagLabel*" type="Label" parent="PartTagContainer*/MarginContainer/PanelContainer"]
+margin_left = 3.0
+margin_top = 4.0
+margin_right = 238.0
+margin_bottom = 18.0
+
+[node name="StatContainer*" type="PanelContainer" parent="."]
+margin_left = 395.0
+margin_right = 535.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 140, 24 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="StatContainer*"]
+margin_right = 140.0
+margin_bottom = 24.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="StatContainer*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 139.0
+margin_bottom = 23.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="StatLabel*" type="Label" parent="StatContainer*/MarginContainer/PanelContainer"]
+margin_left = 3.0
+margin_top = 4.0
+margin_right = 138.0
+margin_bottom = 18.0
+valign = 1
+
+[node name="StatOriginalValueContainer*" type="PanelContainer" parent="."]
+margin_left = 539.0
+margin_right = 619.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 80, 24 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="StatOriginalValueContainer*"]
+margin_right = 80.0
+margin_bottom = 24.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="StatOriginalValueContainer*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 79.0
+margin_bottom = 23.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="StatOriginalValueLabel*" type="Label" parent="StatOriginalValueContainer*/MarginContainer/PanelContainer"]
+margin_top = 4.0
+margin_right = 78.0
+margin_bottom = 18.0
+align = 1
+valign = 1
+
+[node name="BoostAdjust1Container*" type="PanelContainer" parent="."]
+margin_left = 623.0
+margin_right = 703.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 80, 24 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="BoostAdjust1Container*"]
+margin_right = 80.0
+margin_bottom = 24.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="BoostAdjust1Container*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 79.0
+margin_bottom = 23.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="BoostAdjustLabel1*" type="Label" parent="BoostAdjust1Container*/MarginContainer/PanelContainer"]
+margin_top = 4.0
+margin_right = 78.0
+margin_bottom = 18.0
+align = 1
+valign = 1
+
+[node name="BoostAdjust2Container*" type="PanelContainer" parent="."]
+margin_left = 707.0
+margin_right = 787.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 80, 24 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="BoostAdjust2Container*"]
+margin_right = 80.0
+margin_bottom = 24.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="BoostAdjust2Container*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 79.0
+margin_bottom = 23.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="BoostAdjustLabel2*" type="Label" parent="BoostAdjust2Container*/MarginContainer/PanelContainer"]
+margin_top = 4.0
+margin_right = 78.0
+margin_bottom = 18.0
+align = 1
+valign = 1
+
+[node name="BoostAdjust3Container*" type="PanelContainer" parent="."]
+margin_left = 791.0
+margin_right = 871.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 80, 24 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="BoostAdjust3Container*"]
+margin_right = 80.0
+margin_bottom = 24.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="BoostAdjust3Container*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 79.0
+margin_bottom = 23.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="BoostAdjustLabel3*" type="Label" parent="BoostAdjust3Container*/MarginContainer/PanelContainer"]
+margin_top = 4.0
+margin_right = 78.0
+margin_bottom = 18.0
+align = 1
+valign = 1
+
+[node name="BoostAdjust4Container*" type="PanelContainer" parent="."]
+margin_left = 875.0
+margin_right = 955.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 80, 24 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="BoostAdjust4Container*"]
+margin_right = 80.0
+margin_bottom = 24.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="BoostAdjust4Container*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 79.0
+margin_bottom = 23.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="BoostAdjustLabel4*" type="Label" parent="BoostAdjust4Container*/MarginContainer/PanelContainer"]
+margin_top = 4.0
+margin_right = 78.0
+margin_bottom = 18.0
+align = 1
+valign = 1
+
+[node name="StatFinalValueContainer*" type="PanelContainer" parent="."]
+margin_left = 959.0
+margin_right = 1039.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 80, 24 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="StatFinalValueContainer*"]
+margin_right = 80.0
+margin_bottom = 24.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="StatFinalValueContainer*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 79.0
+margin_bottom = 23.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="StatFinalValueLabel*" type="Label" parent="StatFinalValueContainer*/MarginContainer/PanelContainer"]
+margin_top = 4.0
+margin_right = 78.0
+margin_bottom = 18.0
+align = 1
+valign = 1

@@ -19,13 +19,13 @@
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
 flags_do_not_receive_shadows = true
 albedo_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
 [sub_resource type="PlaneMesh" id=3]
-material = SubResource( 7 )
+material = SubResource( 2 )
 
 [sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )
