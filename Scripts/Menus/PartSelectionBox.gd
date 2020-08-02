@@ -119,8 +119,23 @@ func setPopUpOptions():
             elif branch_parent.branch_type.begins_with('blaster'):          options = inv_mod.boosts['blaster']
             elif branch_parent.branch_type.begins_with('missilelauncher'):  options = inv_mod.boosts['missilelauncher']
     
+    if branch_layer == 'part':  options = removeExtraEmptyOptions(branch_type, options)
+    
     pop_up.add_item('')
     for option in options:  pop_up.add_item(option)
+
+
+
+func removeExtraEmptyOptions(_branch_type, _options):
+    
+    if not branch_type.begins_with('missilelauncher'):
+        for i in range(len(_options)):
+            if not _options[i]:  _options.remove(i)
+    else:
+        for i in range(len(_options)):
+            if _options[i] == 'MissileLauncher':  _options.remove(i)
+    
+    return _options
 
 
 
@@ -242,6 +257,7 @@ func _on_PartSelectionPopUp_item_selected(id):
         rig_builder.resetAllBranchImages()
         rig_builder.insertSeparators()
         rig_builder.buildRigModel()
+        rig_builder.updateStatsDisplay()
     
     else:
         rig_builder.deleteSeparators()
@@ -265,6 +281,7 @@ func _on_Timer2_timeout():
 func _on_Timer3_timeout():
     rig_builder.insertSeparators()
     rig_builder.buildRigModel()
+    rig_builder.updateStatsDisplay()
 
 #func _on_Timer4_timeout():
 

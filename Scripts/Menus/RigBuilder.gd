@@ -10,12 +10,20 @@ onready var controls = get_node('/root/Controls')
 # Node references.
 onready var tree = find_node('PartsTreeVBox*')
 onready var pedestal = find_node('PedestalPos*')
+onready var play_botton = find_node('PlayButton*')
+onready var stats_vbox = find_node('StatsVBox*')
+onready var min_req_popup = find_node('MinimumRequirementsPopUp*')
+onready var are_you_sure_popup = find_node('AreYouSurePopUp*')
 
 # Resources.
-onready var SelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
+onready var PartSelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
+onready var StatDisplayBoxScene = preload('res://Scenes/Menus/Expandables/StatDisplayBox.tscn')
+
+onready var pedestal_rot_spd = 0.005
 
 var inv_mod
 var boost_mod
+var rig_data_pack = {}
 
 onready var boosts = controls.boosts
 
@@ -29,9 +37,8 @@ func _ready():
     
     # Open temp mods.
     inv_mod = main.loadModule(main, 'res://Scenes/Functional/InventoryMod.tscn')
-    
     boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
-
+    
     insertSelectionBox(0, 'body', 'body')
 
 
@@ -42,15 +49,7 @@ func _ready():
 
 func _process(delta):
     
-#    print("pedestal = ", pedestal)
-#    print('something')
-#    pedestal.rotate_y(.001)
-    pedestal.rotate_object_local(Vector3.UP, .005)
-#    pedestal.global_rotate(Vector3.UP, 10)
-#    pedestal.transform.basis.y
-
-#    var rot_speed = rad2deg(30)  # 30 deg/sec
-#    pedestal.set_rot(pedestal.get_rot() + rot_speed * delta)
+    pedestal.rotate_object_local(Vector3.UP, pedestal_rot_spd)
 
 
 
@@ -135,7 +134,7 @@ func buildRigModel():
     
     deleteCurrentRigModel()
     
-    var rig_data_pack = getRigDataPack()
+    rig_data_pack = getRigDataPack()
 #    print(rig_data_pack)
     
     if not 'body' in rig_data_pack:  return
@@ -360,7 +359,7 @@ func getBoostCount(_branch_type, _selection):
 
 func insertSelectionBox(_index, _layer, _type):
     
-    var selection_box = SelectionBoxScene.instance()
+    var selection_box = PartSelectionBoxScene.instance()
     tree.add_child(selection_box)
     tree.move_child(selection_box, _index)
     selection_box.init(_layer, _type)
@@ -423,10 +422,120 @@ func getThisPartLastBoostPos(_i):
 
 func insertSeparator(_part_last_boost_pos):
     
-    var node_ = SelectionBoxScene.instance()
+    var node_ = PartSelectionBoxScene.instance()
     tree.add_child(node_)
     tree.move_child(node_, _part_last_boost_pos)
     node_.init('separator', 'separator')
+
+
+
+func prepRigDataPackForPlay():
+    
+    for part_type in rig_data_pack.keys():
+#        var part_tag = rig_data_pack[part_type]['part_tag']
+#        var boosts = rig_data_pack[part_type]['boosts']
+        
+        if part_type.begins_with('missilelauncher'):
+            rig_data_pack[part_type]['part_tag'] = 'MissileLauncher'
+
+
+
+func minimumRequirementsMet():
+    
+    for min_req_part in ['body', 'generator', 'engines']:
+        if not min_req_part in rig_data_pack:  return false
+        if not rig_data_pack[min_req_part]['part_tag']:  return false
+    return true
+
+
+
+func updateStatsDisplay():
+    
+    """ HERE!!! (memory is bad, tired, not sure of context, need to set trigger in PartSelectionBox.gd, then start logic here) """
+    
+    for child in stats_vbox.get_children():
+        stats_vbox.remove_child(child)
+        child.queue_free()
+    
+#    StatDisplayBoxScene
+#    stats_vbox
+    print("\npart_types")
+    for part_type in rig_data_pack.keys():
+        var part_tag = rig_data_pack[part_type]['part_tag']
+        var boosts = rig_data_pack[part_type]['boosts']
+#        print("part_type = ", part_type)
+#        print("part_tag = ", part_tag)
+#        print("boosts = ", boosts)
+
+        if not part_tag:  continue
+        
+        var L_stat_display_box = StatDisplayBoxScene.instance()
+        var L_tab_label = L_stat_display_box.find_node('TabLabel*', true, false)
+        var L_part_type_label = L_stat_display_box.find_node('PartTypeLabel*', true, false)
+        var L_part_tag_label = L_stat_display_box.find_node('PartTagLabel*', true, false)
+#        var stat_label = stat_display_box.find_node('StatLabel*', true, false)
+#        var stat_orig_value_label = stat_display_box.find_node('StatOriginalValueLabel*', true, false)
+#        var stat_final_value_label = stat_display_box.find_node('StatFinalValueLabel*', true, false)
+        
+        L_tab_label.visible = false
+        L_part_type_label.text = part_type
+        L_part_tag_label.text = part_tag
+        
+        stats_vbox.add_child(L_stat_display_box)
+        
+        var part_ref
+        if part_type == 'body':                         part_ref = controls.bodies
+        elif part_type == 'generator':                  part_ref = controls.generators
+        elif part_type == 'engines':                    part_ref = controls.engines
+        elif part_type == 'shields':                    part_ref = controls.shields
+        elif part_type.begins_with('blaster'):          part_ref = controls.blasters
+        elif part_type.begins_with('missilelauncher'):  part_ref = controls.launchers['Missile']
+        
+        var stats = part_ref[part_tag]
+        for stat in stats.keys():
+            var value = stats[stat]
+            
+            if stat.ends_with('_slots'):  continue
+            
+            var stat_display_box = StatDisplayBoxScene.instance()
+            
+            var part_type_label = stat_display_box.find_node('PartTypeLabel*', true, false)
+            var part_tag_label = stat_display_box.find_node('PartTagLabel*', true, false)
+            part_type_label.visible = false
+            part_tag_label.visible = false
+            
+            var stat_label = stat_display_box.find_node('StatLabel*', true, false)
+            var stat_orig_value_label = stat_display_box.find_node('StatOriginalValueLabel*', true, false)
+            var stat_final_value_label = stat_display_box.find_node('StatFinalValueLabel*', true, false)
+            
+            stat_label.text = stat
+            stat_orig_value_label.text = str(value)
+            stat_final_value_label.text = str(value)
+            
+            if boosts:  stat_display_box = updateStatDisplayWithBoosts(stat_display_box, boosts)
+            
+            stats_vbox.add_child(stat_display_box)
+
+
+
+func updateStatDisplayWithBoosts(_stat_display, _boosts):
+    
+    return _stat_display
+
+
+
+####################################################################################################
+                                                                                 ###   SIGNALS   ###
+                                                                                 ###################
+
+func _on_PlayButton_pressed():
+    
+    if not minimumRequirementsMet():
+        min_req_popup.popup_centered()
+        return
+    prepRigDataPackForPlay()
+    controls.gameplay['vehicle_rig'] = rig_data_pack
+    main.changeScene('res://Scenes/Functional/Gameplay.tscn')
 
 
 
@@ -687,6 +796,9 @@ func queue_free():
 #func selectPart(_type, _selection):
 #
 #    pass
+
+
+
 
 
 

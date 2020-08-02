@@ -50,7 +50,10 @@ func changeScene(_scene):
 #        get_tree().quit()
 
     var current_scene = get_child(0)
-    if current_scene:  current_scene.queue_free()
+    if current_scene:
+        print(current_scene.name)
+        remove_child(current_scene)
+        current_scene.queue_free()
 
     var scene = load(_scene)
     add_child(scene.instance())

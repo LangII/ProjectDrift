@@ -765,7 +765,7 @@ func handleInputMouseWheel(_event):
         """
         
         # BLOCK...  Handle scroll wheel input events.
-        if not input_shifting:
+        if not input_shifting and has_blasters:
             if _event.button_index == BUTTON_WHEEL_DOWN:
                 if cur_blaster <= len(BLASTER_SLOTS) - 2:  cur_blaster += 1
                 else:  cur_blaster = 0
@@ -782,7 +782,7 @@ func handleInputMouseWheel(_event):
                     else:  cur_blaster = len(BLASTER_SLOTS) - 1
             hud.updateBlasterCurrentValue(cur_blaster)
     
-        if input_shifting:
+        if input_shifting and has_launchers:
             if _event.button_index == BUTTON_WHEEL_DOWN:
                 if cur_launcher <= len(LAUNCHER_SLOTS) - 2:  cur_launcher += 1
                 else:  cur_launcher = 0

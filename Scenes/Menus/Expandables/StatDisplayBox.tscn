@@ -1,0 +1,61 @@
+[gd_scene format=2]
+
+[node name="StatDisplayBox" type="HBoxContainer"]
+margin_right = 77.0
+margin_bottom = 14.0
+custom_constants/separation = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabLabel*" type="Label" parent="."]
+margin_right = 13.0
+margin_bottom = 14.0
+text = " - "
+
+[node name="PartTypeLabel*" type="Label" parent="."]
+margin_left = 15.0
+margin_right = 145.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 130, 0 )
+
+[node name="PartTagLabel*" type="Label" parent="."]
+margin_left = 147.0
+margin_right = 147.0
+margin_bottom = 14.0
+
+[node name="StatLabel*" type="Label" parent="."]
+margin_left = 149.0
+margin_right = 279.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 130, 0 )
+
+[node name="StatOriginalValueLabel*" type="Label" parent="."]
+margin_left = 281.0
+margin_right = 281.0
+margin_bottom = 14.0
+
+[node name="BoostAdjustLabel1*" type="Label" parent="."]
+margin_left = 283.0
+margin_right = 283.0
+margin_bottom = 14.0
+
+[node name="BoostAdjustLabel2*" type="Label" parent="."]
+margin_left = 285.0
+margin_right = 285.0
+margin_bottom = 14.0
+
+[node name="BoostAdjustLabel3*" type="Label" parent="."]
+margin_left = 287.0
+margin_right = 287.0
+margin_bottom = 14.0
+
+[node name="BoostAdjustLabel4*" type="Label" parent="."]
+margin_left = 289.0
+margin_right = 289.0
+margin_bottom = 14.0
+
+[node name="StatFinalValueLabel*" type="Label" parent="."]
+margin_left = 291.0
+margin_right = 291.0
+margin_bottom = 14.0
