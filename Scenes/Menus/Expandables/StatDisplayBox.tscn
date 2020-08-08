@@ -17,14 +17,15 @@ __meta__ = {
 
 [node name="TabLabel*" type="Label" parent="."]
 margin_top = 5.0
-margin_right = 13.0
+margin_right = 16.0
 margin_bottom = 19.0
-text = " - "
+text = "o  "
+align = 1
 valign = 1
 
 [node name="PartTypeContainer*" type="PanelContainer" parent="."]
-margin_left = 17.0
-margin_right = 147.0
+margin_left = 20.0
+margin_right = 150.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 130, 24 )
 custom_styles/panel = SubResource( 1 )
@@ -52,8 +53,8 @@ size_flags_vertical = 1
 valign = 1
 
 [node name="PartTagContainer*" type="PanelContainer" parent="."]
-margin_left = 151.0
-margin_right = 391.0
+margin_left = 154.0
+margin_right = 394.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 240, 24 )
 custom_styles/panel = SubResource( 1 )
@@ -80,8 +81,8 @@ margin_right = 238.0
 margin_bottom = 18.0
 
 [node name="StatContainer*" type="PanelContainer" parent="."]
-margin_left = 395.0
-margin_right = 535.0
+margin_left = 398.0
+margin_right = 538.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 24 )
 custom_styles/panel = SubResource( 1 )
@@ -109,8 +110,8 @@ margin_bottom = 18.0
 valign = 1
 
 [node name="StatOriginalValueContainer*" type="PanelContainer" parent="."]
-margin_left = 539.0
-margin_right = 619.0
+margin_left = 542.0
+margin_right = 622.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 80, 24 )
 custom_styles/panel = SubResource( 1 )
@@ -131,20 +132,21 @@ margin_bottom = 23.0
 custom_styles/panel = SubResource( 2 )
 
 [node name="StatOriginalValueLabel*" type="Label" parent="StatOriginalValueContainer*/MarginContainer/PanelContainer"]
+margin_left = 3.0
 margin_top = 4.0
 margin_right = 78.0
 margin_bottom = 18.0
 align = 1
 valign = 1
 
-[node name="BoostAdjust1Container*" type="PanelContainer" parent="."]
-margin_left = 623.0
-margin_right = 703.0
+[node name="BoostAdjustContainer1*" type="PanelContainer" parent="."]
+margin_left = 626.0
+margin_right = 706.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 80, 24 )
 custom_styles/panel = SubResource( 1 )
 
-[node name="MarginContainer" type="MarginContainer" parent="BoostAdjust1Container*"]
+[node name="MarginContainer" type="MarginContainer" parent="BoostAdjustContainer1*"]
 margin_right = 80.0
 margin_bottom = 24.0
 custom_constants/margin_right = 1
@@ -152,28 +154,29 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="BoostAdjust1Container*/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="BoostAdjustContainer1*/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 79.0
 margin_bottom = 23.0
 custom_styles/panel = SubResource( 2 )
 
-[node name="BoostAdjustLabel1*" type="Label" parent="BoostAdjust1Container*/MarginContainer/PanelContainer"]
+[node name="BoostAdjustLabel1*" type="Label" parent="BoostAdjustContainer1*/MarginContainer/PanelContainer"]
+margin_left = 3.0
 margin_top = 4.0
 margin_right = 78.0
 margin_bottom = 18.0
 align = 1
 valign = 1
 
-[node name="BoostAdjust2Container*" type="PanelContainer" parent="."]
-margin_left = 707.0
-margin_right = 787.0
+[node name="BoostAdjustContainer2*" type="PanelContainer" parent="."]
+margin_left = 710.0
+margin_right = 790.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 80, 24 )
 custom_styles/panel = SubResource( 1 )
 
-[node name="MarginContainer" type="MarginContainer" parent="BoostAdjust2Container*"]
+[node name="MarginContainer" type="MarginContainer" parent="BoostAdjustContainer2*"]
 margin_right = 80.0
 margin_bottom = 24.0
 custom_constants/margin_right = 1
@@ -181,28 +184,29 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="BoostAdjust2Container*/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="BoostAdjustContainer2*/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 79.0
 margin_bottom = 23.0
 custom_styles/panel = SubResource( 2 )
 
-[node name="BoostAdjustLabel2*" type="Label" parent="BoostAdjust2Container*/MarginContainer/PanelContainer"]
+[node name="BoostAdjustLabel2*" type="Label" parent="BoostAdjustContainer2*/MarginContainer/PanelContainer"]
+margin_left = 3.0
 margin_top = 4.0
 margin_right = 78.0
 margin_bottom = 18.0
 align = 1
 valign = 1
 
-[node name="BoostAdjust3Container*" type="PanelContainer" parent="."]
-margin_left = 791.0
-margin_right = 871.0
+[node name="BoostAdjustContainer3*" type="PanelContainer" parent="."]
+margin_left = 794.0
+margin_right = 874.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 80, 24 )
 custom_styles/panel = SubResource( 1 )
 
-[node name="MarginContainer" type="MarginContainer" parent="BoostAdjust3Container*"]
+[node name="MarginContainer" type="MarginContainer" parent="BoostAdjustContainer3*"]
 margin_right = 80.0
 margin_bottom = 24.0
 custom_constants/margin_right = 1
@@ -210,28 +214,29 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="BoostAdjust3Container*/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="BoostAdjustContainer3*/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 79.0
 margin_bottom = 23.0
 custom_styles/panel = SubResource( 2 )
 
-[node name="BoostAdjustLabel3*" type="Label" parent="BoostAdjust3Container*/MarginContainer/PanelContainer"]
+[node name="BoostAdjustLabel3*" type="Label" parent="BoostAdjustContainer3*/MarginContainer/PanelContainer"]
+margin_left = 3.0
 margin_top = 4.0
 margin_right = 78.0
 margin_bottom = 18.0
 align = 1
 valign = 1
 
-[node name="BoostAdjust4Container*" type="PanelContainer" parent="."]
-margin_left = 875.0
-margin_right = 955.0
+[node name="BoostAdjustContainer4*" type="PanelContainer" parent="."]
+margin_left = 878.0
+margin_right = 958.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 80, 24 )
 custom_styles/panel = SubResource( 1 )
 
-[node name="MarginContainer" type="MarginContainer" parent="BoostAdjust4Container*"]
+[node name="MarginContainer" type="MarginContainer" parent="BoostAdjustContainer4*"]
 margin_right = 80.0
 margin_bottom = 24.0
 custom_constants/margin_right = 1
@@ -239,14 +244,15 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="BoostAdjust4Container*/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="BoostAdjustContainer4*/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 79.0
 margin_bottom = 23.0
 custom_styles/panel = SubResource( 2 )
 
-[node name="BoostAdjustLabel4*" type="Label" parent="BoostAdjust4Container*/MarginContainer/PanelContainer"]
+[node name="BoostAdjustLabel4*" type="Label" parent="BoostAdjustContainer4*/MarginContainer/PanelContainer"]
+margin_left = 3.0
 margin_top = 4.0
 margin_right = 78.0
 margin_bottom = 18.0
@@ -254,8 +260,8 @@ align = 1
 valign = 1
 
 [node name="StatFinalValueContainer*" type="PanelContainer" parent="."]
-margin_left = 959.0
-margin_right = 1039.0
+margin_left = 962.0
+margin_right = 1042.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 80, 24 )
 custom_styles/panel = SubResource( 1 )
@@ -276,6 +282,7 @@ margin_bottom = 23.0
 custom_styles/panel = SubResource( 2 )
 
 [node name="StatFinalValueLabel*" type="Label" parent="StatFinalValueContainer*/MarginContainer/PanelContainer"]
+margin_left = 3.0
 margin_top = 4.0
 margin_right = 78.0
 margin_bottom = 18.0

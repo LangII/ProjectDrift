@@ -432,9 +432,6 @@ func insertSeparator(_part_last_boost_pos):
 func prepRigDataPackForPlay():
     
     for part_type in rig_data_pack.keys():
-#        var part_tag = rig_data_pack[part_type]['part_tag']
-#        var boosts = rig_data_pack[part_type]['boosts']
-        
         if part_type.begins_with('missilelauncher'):
             rig_data_pack[part_type]['part_tag'] = 'MissileLauncher'
 
@@ -447,70 +444,30 @@ func minimumRequirementsMet():
         if not rig_data_pack[min_req_part]['part_tag']:  return false
     return true
 
-
+####################################################################################################
 
 func updateStatsDisplay():
     
-    """ HERE!!! (memory is bad, tired, not sure of context, need to set trigger in PartSelectionBox.gd, then start logic here) """
-    
-    for child in stats_vbox.get_children():
-        stats_vbox.remove_child(child)
-        child.queue_free()
-    
-#    StatDisplayBoxScene
-#    stats_vbox
-#    print("\npart_types")
+    deleteAllInStatsDisplay()
+
     for part_type in rig_data_pack.keys():
         var part_tag = rig_data_pack[part_type]['part_tag']
         var boosts = rig_data_pack[part_type]['boosts']
-#        print("part_type = ", part_type)
-#        print("part_tag = ", part_tag)
-#        print("boosts = ", boosts)
-
+        
+        # Ignore unselected parts.
         if not part_tag:  continue
         
-        var L_stat_display_box = StatDisplayBoxScene.instance()
-        var L_tab_label = L_stat_display_box.find_node('TabLabel*', true, false)
-        var L_part_type_label = L_stat_display_box.find_node('PartTypeLabel*', true, false)
-        var L_part_tag_label = L_stat_display_box.find_node('PartTagLabel*', true, false)
-#        var stat_label = stat_display_box.find_node('StatLabel*', true, false)
-#        var stat_orig_value_label = stat_display_box.find_node('StatOriginalValueLabel*', true, false)
-#        var stat_final_value_label = stat_display_box.find_node('StatFinalValueLabel*', true, false)
+        var label_display_box = generateLabelDisplayBox(part_type, part_tag)
+        stats_vbox.add_child(label_display_box)
         
-        var stat_container = L_stat_display_box.find_node('StatContainer*', true, false)
-        stat_container.visible = false
-        var stat_orig_value_container = L_stat_display_box.find_node('StatOriginalValueContainer*', true, false)
-        stat_orig_value_container.visible = false
-        var boost_adj_1_container = L_stat_display_box.find_node('BoostAdjust1Container*', true, false)
-        boost_adj_1_container.visible = false
-        var boost_adj_2_container = L_stat_display_box.find_node('BoostAdjust2Container*', true, false)
-        boost_adj_2_container.visible = false
-        var boost_adj_3_container = L_stat_display_box.find_node('BoostAdjust3Container*', true, false)
-        boost_adj_3_container.visible = false
-        var boost_adj_4_container = L_stat_display_box.find_node('BoostAdjust4Container*', true, false)
-        boost_adj_4_container.visible = false
-        var stat_final_value_container = L_stat_display_box.find_node('StatFinalValueContainer*', true, false)
-        stat_final_value_container.visible = false
-        
-        L_tab_label.visible = false
-        L_part_type_label.text = part_type
-        L_part_tag_label.text = part_tag
-        
-        stats_vbox.add_child(L_stat_display_box)
-        
-        var part_ref
-        if part_type == 'body':                         part_ref = controls.bodies
-        elif part_type == 'generator':                  part_ref = controls.generators
-        elif part_type == 'engines':                    part_ref = controls.engines
-        elif part_type == 'shields':                    part_ref = controls.shields
-        elif part_type.begins_with('blaster'):          part_ref = controls.blasters
-        elif part_type.begins_with('missilelauncher'):  part_ref = controls.launchers['Missile']
-        
-        var stats = part_ref[part_tag]
-        for stat in stats.keys():
-            var value = stats[stat]
+        var part_stats = getPartStats(part_type, part_tag)
+        for stat in part_stats.keys():
+            var value = part_stats[stat]
             
+            # Ignore slots stats.
             if stat.ends_with('_slots'):  continue
+            
+            """ CLEANING UP...  LEFT OFF HERE... """
             
             var stat_display_box = StatDisplayBoxScene.instance()
             
@@ -538,7 +495,7 @@ func updateStatsDisplay():
             for i in range(4):
                 i += 1
                 if stat_display_box.find_node('BoostAdjustLabel%s*' % str(i)).text == '':
-                    stat_display_box.find_node('BoostAdjust%sContainer*' % str(i)).visible = false
+                    stat_display_box.find_node('BoostAdjustContainer%s*' % str(i)).visible = false
                     empty_boost_counter += 1
             if empty_boost_counter == 4:
                 stat_display_box.find_node('StatOriginalValueContainer*').visible = false
@@ -582,14 +539,53 @@ func updateStatDisplayWithBoosts(_stat_display, _boosts):
         stat_final_value_label.text = '= ' + str(new_value)
 #        stat_final_value_label.text = str(new_value)
     
-
-    
     return _stat_display
 
-"""
-Need to adjust arrangement of boost adjusts.  If boost #2 is applied to a different stat than boost
-#1, then boost #2 still goes into slot #2.
-"""
+
+
+func deleteAllInStatsDisplay():
+    
+    for child in stats_vbox.get_children():
+        stats_vbox.remove_child(child)
+        child.queue_free()
+
+
+
+func generateLabelDisplayBox(_part_type, _part_tag):
+    
+    var label_display_box_ = StatDisplayBoxScene.instance()
+    
+    label_display_box_.find_node('TabLabel*', true, false).visible = false
+    label_display_box_.find_node('PartTypeLabel*', true, false).text = _part_type
+    label_display_box_.find_node('PartTagLabel*', true, false).text = _part_tag
+    
+    var hide_nodes = [
+        'StatContainer*', 'StatOriginalValueContainer*', 'BoostAdjustContainer1*',
+        'BoostAdjustContainer2*', 'BoostAdjustContainer3*', 'BoostAdjustContainer4*',
+        'StatFinalValueContainer*'
+    ]
+    for hide_node in hide_nodes:
+        label_display_box_.find_node(hide_node, true, false).visible = false
+    
+    return label_display_box_
+
+
+
+func getPartStats(_part_type, _part_tag):
+    
+    var part_ref
+    if _part_type == 'body':                        part_ref = controls.bodies
+    elif _part_type == 'generator':                 part_ref = controls.generators
+    elif _part_type == 'engines':                   part_ref = controls.engines
+    elif _part_type == 'shields':                   part_ref = controls.shields
+    elif _part_type.begins_with('blaster'):         part_ref = controls.blasters
+    elif _part_type.begins_with('missilelauncher'): part_ref = controls.launchers['Missile']
+    
+    var part_stats_ = part_ref[_part_tag]
+    
+    return part_stats_
+
+
 
 ####################################################################################################
                                                                                  ###   SIGNALS   ###
