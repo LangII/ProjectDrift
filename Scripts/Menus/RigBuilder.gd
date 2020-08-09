@@ -444,7 +444,11 @@ func minimumRequirementsMet():
         if not rig_data_pack[min_req_part]['part_tag']:  return false
     return true
 
+
+
 ####################################################################################################
+                                                                           ###   STATS DISPLAY   ###
+                                                                           #########################
 
 func updateStatsDisplay():
     
@@ -467,38 +471,11 @@ func updateStatsDisplay():
             # Ignore slots stats.
             if stat.ends_with('_slots'):  continue
             
-            """ CLEANING UP...  LEFT OFF HERE... """
-            
-            var stat_display_box = StatDisplayBoxScene.instance()
-            
-            var part_type_label = stat_display_box.find_node('PartTypeLabel*', true, false)
-            var part_tag_label = stat_display_box.find_node('PartTagLabel*', true, false)
-            part_type_label.text = part_type
-            part_tag_label.text = part_tag
-            var part_type_container = stat_display_box.find_node('PartTypeContainer*', true, false)
-            var part_tag_container = stat_display_box.find_node('PartTagContainer*', true, false)
-            part_type_container.visible = false
-            part_tag_container.visible = false
-            
-            var stat_label = stat_display_box.find_node('StatLabel*', true, false)
-            var stat_orig_value_label = stat_display_box.find_node('StatOriginalValueLabel*', true, false)
-            var stat_final_value_label = stat_display_box.find_node('StatFinalValueLabel*', true, false)
-            
-            stat_label.text = stat
-            stat_orig_value_label.text = str(value)
-#            stat_final_value_label.text = str(value)
-            stat_final_value_label.text = '= ' + str(value)
+            var stat_display_box = generateStatDisplayBox(part_type, part_tag, stat, value)
             
             if boosts:  stat_display_box = updateStatDisplayWithBoosts(stat_display_box, boosts)
             
-            var empty_boost_counter = 0
-            for i in range(4):
-                i += 1
-                if stat_display_box.find_node('BoostAdjustLabel%s*' % str(i)).text == '':
-                    stat_display_box.find_node('BoostAdjustContainer%s*' % str(i)).visible = false
-                    empty_boost_counter += 1
-            if empty_boost_counter == 4:
-                stat_display_box.find_node('StatOriginalValueContainer*').visible = false
+            stat_display_box = updateBoostAdjustNodes(stat_display_box)
             
             stats_vbox.add_child(stat_display_box)
 
@@ -513,31 +490,23 @@ func updateStatDisplayWithBoosts(_stat_display, _boosts):
     var stat_orig_value_label = _stat_display.find_node('StatOriginalValueLabel*', true, false)
     var stat_final_value_label = _stat_display.find_node('StatFinalValueLabel*', true, false)
     
-#    var boost_tick = 1
     for i in range(len(_boosts)):
-#        boost_tick = i
         var boost_tag = _boosts[i]
-#        print("part_type = ", part_type)
         var boost_data_pack = controls.boosts[part_type][boost_tag]
         
         if boost_data_pack['stat'] != stat_label.text:  continue
         
-        if i != 0 and _stat_display.find_node('BoostAdjustLabel%s*' % str(i)).text == '':
+        if i != 0 and _stat_display.find_node('BoostAdjustLabel%s*' % str(i), true, false).text == '':
             i -= 1
         
-#        print("boost_tick = ", boost_tick)
-        var boost_adjust_label = _stat_display.find_node('BoostAdjustLabel%s*' % str(i + 1))
-#        boost_tick += 1
-        
+        var boost_adjust_label = _stat_display.find_node('BoostAdjustLabel%s*' % str(i + 1), true, false)
         
         var new_value = boost_mod.getNewStatValue(float(stat_final_value_label.text.right(2)), boost_data_pack)
         var dif_value = abs(new_value - float(stat_final_value_label.text.right(2)))
         
         var symbol = boost_data_pack['type'].right(boost_data_pack['type'].find(' '))
         boost_adjust_label.text = symbol + ' ' + str(dif_value)
-#        boost_adjust_label.text = str(dif_value)
         stat_final_value_label.text = '= ' + str(new_value)
-#        stat_final_value_label.text = str(new_value)
     
     return _stat_display
 
@@ -584,6 +553,39 @@ func getPartStats(_part_type, _part_tag):
     var part_stats_ = part_ref[_part_tag]
     
     return part_stats_
+
+
+
+func generateStatDisplayBox(_part_type, _part_tag, _stat, _value):
+    
+    var stat_display_box_ = StatDisplayBoxScene.instance()
+    
+    stat_display_box_.find_node('PartTypeLabel*', true, false).text = _part_type
+    stat_display_box_.find_node('PartTagLabel*', true, false).text = _part_tag
+    stat_display_box_.find_node('PartTypeContainer*', true, false).visible = false
+    stat_display_box_.find_node('PartTagContainer*', true, false).visible = false
+    
+    stat_display_box_.find_node('StatLabel*', true, false).text = _stat
+    stat_display_box_.find_node('StatOriginalValueLabel*', true, false).text = str(_value)
+    stat_display_box_.find_node('StatFinalValueLabel*', true, false).text = '= ' + str(_value)
+    
+    return stat_display_box_
+
+
+
+func updateBoostAdjustNodes(_stat_display_box):
+    
+    var empty_boost_counter = 0
+    for i in range(4):
+        # If boost label node is empty (not used), hide boost container and ++ counter.
+        if _stat_display_box.find_node('BoostAdjustLabel%s*' % str(i + 1)).text == '':
+            _stat_display_box.find_node('BoostAdjustContainer%s*' % str(i + 1)).visible = false
+            empty_boost_counter += 1
+    # If all boosts are empty hide original value container.
+    if empty_boost_counter == 4:
+        _stat_display_box.find_node('StatOriginalValueContainer*').visible = false
+    
+    return _stat_display_box
 
 
 
