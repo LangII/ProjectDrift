@@ -8,15 +8,20 @@ onready var main = get_node('/root/Main')
 onready var controls = get_node('/root/Controls')
 
 # Node references.
+onready var inventory = find_node('InventoryVBox*')
 onready var tree = find_node('PartsTreeVBox*')
 onready var pedestal = find_node('PedestalPos*')
-onready var play_botton = find_node('PlayButton*')
+#onready var play_button = find_node('PlayButton*')
 onready var stats_vbox = find_node('StatsVBox*')
 onready var min_req_popup = find_node('MinimumRequirementsPopUp*')
 onready var are_you_sure_popup = find_node('AreYouSurePopUp*')
+onready var rig_builder_tab_container = find_node('RigBuilderTabContainer*')
+onready var stats_tab_container = find_node('StatsTabContainer*')
+onready var model_tab_container = find_node('ModelTabContainer*')
 
 # Resources.
 onready var PartSelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
+onready var InventoryDisplayBoxScene = preload('res://Scenes/Menus/Expandables/InventoryDisplayBox.tscn')
 onready var StatDisplayBoxScene = preload('res://Scenes/Menus/Expandables/StatDisplayBox.tscn')
 
 onready var pedestal_rot_spd = 0.005
@@ -39,7 +44,43 @@ func _ready():
     inv_mod = main.loadModule(main, 'res://Scenes/Functional/InventoryMod.tscn')
     boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
     
+    setTabs()
+    
+    loadInventory()
+    
     insertSelectionBox(0, 'body', 'body')
+
+
+
+func setTabs():
+    
+    rig_builder_tab_container.set_tab_title(0, 'inventory display')
+    rig_builder_tab_container.set_tab_title(1, 'rig builder menu')
+    rig_builder_tab_container.current_tab = 1
+    stats_tab_container.set_tab_title(0, 'stats display')
+    stats_tab_container.set_tab_title(1, 'details display')
+    model_tab_container.set_tab_title(0, 'model display')
+#    model_details_tab_container.set_tab_title(1, 'details')
+
+
+
+func loadInventory():
+    
+#    var parts = ['bodies', 'generators', 'engines', 'shields', 'blasters', 'missilelaunchers']
+    loadMainBox('parts')
+    loadMainBox('boosts')
+    
+
+func loadMainBox(_label):
+    var inv_box = InventoryDisplayBoxScene.instance()
+    var hide_nodes = [
+        'TabLabel1*', 'TabLabel2*', 'PartsContainer*', 'BoostsContainer*', 'PartTypeContainer*',
+        'PartTagContainer*'
+    ]
+    if _label == 'parts':  hide_nodes.erase('PartsContainer*')
+    elif _label == 'boosts':  hide_nodes.erase('BoostsContainer*')
+    for hide_node in hide_nodes:  inv_box.find_node(hide_node, true, false).visible = false
+    inventory.add_child(inv_box)
 
 
 
@@ -473,42 +514,11 @@ func updateStatsDisplay():
             
             var stat_display_box = generateStatDisplayBox(part_type, part_tag, stat, value)
             
-            if boosts:  stat_display_box = updateStatDisplayWithBoosts(stat_display_box, boosts)
+            if boosts:  stat_display_box = updateStatDisplayBoxWithBoosts(stat_display_box, boosts)
             
             stat_display_box = updateBoostAdjustNodes(stat_display_box)
             
             stats_vbox.add_child(stat_display_box)
-
-
-
-func updateStatDisplayWithBoosts(_stat_display, _boosts):
-    
-    var part_type = _stat_display.find_node('PartTypeLabel*', true, false).text
-    if '_' in part_type:  part_type = part_type.left(part_type.find('_'))
-    
-    var stat_label = _stat_display.find_node('StatLabel*', true, false)
-    var stat_orig_value_label = _stat_display.find_node('StatOriginalValueLabel*', true, false)
-    var stat_final_value_label = _stat_display.find_node('StatFinalValueLabel*', true, false)
-    
-    for i in range(len(_boosts)):
-        var boost_tag = _boosts[i]
-        var boost_data_pack = controls.boosts[part_type][boost_tag]
-        
-        if boost_data_pack['stat'] != stat_label.text:  continue
-        
-        if i != 0 and _stat_display.find_node('BoostAdjustLabel%s*' % str(i), true, false).text == '':
-            i -= 1
-        
-        var boost_adjust_label = _stat_display.find_node('BoostAdjustLabel%s*' % str(i + 1), true, false)
-        
-        var new_value = boost_mod.getNewStatValue(float(stat_final_value_label.text.right(2)), boost_data_pack)
-        var dif_value = abs(new_value - float(stat_final_value_label.text.right(2)))
-        
-        var symbol = boost_data_pack['type'].right(boost_data_pack['type'].find(' '))
-        boost_adjust_label.text = symbol + ' ' + str(dif_value)
-        stat_final_value_label.text = '= ' + str(new_value)
-    
-    return _stat_display
 
 
 
@@ -567,9 +577,45 @@ func generateStatDisplayBox(_part_type, _part_tag, _stat, _value):
     
     stat_display_box_.find_node('StatLabel*', true, false).text = _stat
     stat_display_box_.find_node('StatOriginalValueLabel*', true, false).text = str(_value)
-    stat_display_box_.find_node('StatFinalValueLabel*', true, false).text = '= ' + str(_value)
+    stat_display_box_.find_node('StatFinalValueLabel*', true, false).text = '= %s' % str(_value)
     
     return stat_display_box_
+
+
+
+func updateStatDisplayBoxWithBoosts(_stat_display, _boosts):
+    
+    var part_type = _stat_display.find_node('PartTypeLabel*', true, false).text
+    if '_' in part_type:  part_type = part_type.left(part_type.find('_'))
+    
+    var stat_label = _stat_display.find_node('StatLabel*', true, false)
+    var stat_final_value_label = _stat_display.find_node('StatFinalValueLabel*', true, false)
+    
+    for i in range(len(_boosts)):
+        var boost_tag = _boosts[i]
+        var boost_data_pack = controls.boosts[part_type][boost_tag]
+        
+        # Conditional used to ensure that updates are only applied to correct stat.
+        if boost_data_pack['stat'] != stat_label.text:  continue
+        
+        """ Gonna leave this for now.  Might come in handy later on. """
+#        if i != 0 and _stat_display.find_node('BoostAdjustLabel%s*' % str(i), true, false).text == '':
+#            i -= 1
+        
+        var boost_adjust_label = _stat_display.find_node(
+            'BoostAdjustLabel%s*' % str(i + 1), true, false
+        )
+        
+        var new_value = boost_mod.getNewStatValue(
+            float(stat_final_value_label.text.right(2)), boost_data_pack
+        )
+        var dif_value = abs(new_value - float(stat_final_value_label.text.right(2)))
+        var symbol = boost_data_pack['type'].right(boost_data_pack['type'].find(' '))
+        
+        boost_adjust_label.text = '%s %s' % [symbol, str(dif_value)]
+        stat_final_value_label.text = '= %s' % str(new_value)
+    
+    return _stat_display
 
 
 

@@ -33,6 +33,10 @@ onready var branch_image_type = ''
 onready var pop_up_selection_id = 0
 onready var pop_up_selection_name = ''
 
+onready var mouse_in_pop_up_menu = false
+var pop_up_menu = null
+var num_of_selections = 0
+
 
 
 ####################################################################################################
@@ -56,6 +60,13 @@ func init(_layer, _type):
         branch_parent = getPartParent()
         setFirstBodyBranchImgVis()
         setPopUpOptions()
+    
+    pop_up_menu = pop_up.get_children()[0]
+    num_of_selections = pop_up_menu.get_item_count()
+#    print("pop_up_menu = ", pop_up_menu)
+#    print("pop_up_menu.get_item_count() = ", pop_up_menu.get_item_count())
+    pop_up_menu.connect('mouse_entered', self, '_on_PartSelectionPopUp_mouse_entered')
+    pop_up_menu.connect('mouse_exited', self, '_on_PartSelectionPopUp_mouse_exited')
 
 
 
@@ -236,6 +247,37 @@ func isLastBranch():
 
 
 
+func _process(delta):
+    
+    if mouse_in_pop_up_menu:
+#        print("get_viewport().get_mouse_position() = ", get_viewport().get_mouse_position())
+#        print("pop_up_menu.rect_position = ", pop_up_menu.rect_position)
+#        print("pop_up_menu.rect_size = ", pop_up_menu.rect_size)
+        var menu_top_pos = pop_up_menu.rect_position.y + 10
+        var menu_bot_pos = menu_top_pos + pop_up_menu.rect_size.y - 16
+        var mouse_pos = get_viewport().get_mouse_position().y
+        
+        var selection_width = (menu_bot_pos - menu_top_pos) / num_of_selections
+        var local_mouse_pos = mouse_pos - menu_top_pos
+        
+        if mouse_pos < menu_top_pos:  return
+        
+        for i in range(num_of_selections):
+#            print("i = %s" % str(i))
+            i += 1
+            if local_mouse_pos < (selection_width * i):
+                print("%s%s" % [' '.repeat(i + 1), str(i)])
+                break
+        
+#        var selection_by_pos = (menu_bot_pos - menu_top_pos) / ((mouse_pos - menu_top_pos))
+#        print(selection_by_pos)
+        
+#        print("\nmenu_top_pos = ", menu_top_pos)
+#        print("menu_bot_pos = ", menu_bot_pos)
+#        print("mouse_pos = ", mouse_pos)
+
+
+
 ####################################################################################################
                                                                                  ###   SIGNALS   ###
                                                                                  ###################
@@ -247,6 +289,8 @@ func _on_PartSelectionPopUp_item_selected(id):
     overlap their procedures and delete some separators while leaving others.  This problem does
     not occur if there is a delay in their calls.
     """
+    
+    mouse_in_pop_up_menu = false
     
     pop_up_selection_id = id
     pop_up_selection_name = pop_up.get_item_text(id)
@@ -283,7 +327,21 @@ func _on_Timer3_timeout():
     rig_builder.buildRigModel()
     rig_builder.updateStatsDisplay()
 
-#func _on_Timer4_timeout():
+
+
+func _on_PartSelectionPopUp_mouse_entered():
+    mouse_in_pop_up_menu = true
+    print("MOUSE ENTERED")
+#    print("get_viewport().get_mouse_position() = ", get_viewport().get_mouse_position())
+#    print("pop_up_menu.rect_position = ", pop_up_menu.rect_position)
+#    print("pop_up_menu.rect_size = ", pop_up_menu.rect_size)
+
+func _on_PartSelectionPopUp_mouse_exited():
+    mouse_in_pop_up_menu = false
+    print("MOUSE EXITED")
+#    print("get_viewport().get_mouse_position() = ", get_viewport().get_mouse_position())
+
+
 
 ####################################################################################################
                                                                                 ###   OBSOLETE   ###
@@ -309,6 +367,9 @@ func _on_Timer3_timeout():
 #
 #    find_node('Branch1*', true, false).visible = branch_visibilities[0]
 #    find_node('Branch2*', true, false).visible = branch_visibilities[1]
+
+
+
 
 
 
