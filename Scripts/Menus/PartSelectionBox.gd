@@ -37,6 +37,8 @@ onready var mouse_in_pop_up_menu = false
 var pop_up_menu = null
 var num_of_selections = 0
 
+var mouse_over_selection = ''
+
 
 
 ####################################################################################################
@@ -247,34 +249,51 @@ func isLastBranch():
 
 
 
+####################################################################################################
+
+
+
 func _process(delta):
     
-    if mouse_in_pop_up_menu:
-#        print("get_viewport().get_mouse_position() = ", get_viewport().get_mouse_position())
-#        print("pop_up_menu.rect_position = ", pop_up_menu.rect_position)
-#        print("pop_up_menu.rect_size = ", pop_up_menu.rect_size)
-        var menu_top_pos = pop_up_menu.rect_position.y + 10
-        var menu_bot_pos = menu_top_pos + pop_up_menu.rect_size.y - 16
-        var mouse_pos = get_viewport().get_mouse_position().y
-        
-        var selection_width = (menu_bot_pos - menu_top_pos) / num_of_selections
-        var local_mouse_pos = mouse_pos - menu_top_pos
-        
-        if mouse_pos < menu_top_pos:  return
-        
-        for i in range(num_of_selections):
-#            print("i = %s" % str(i))
-            i += 1
-            if local_mouse_pos < (selection_width * i):
-                print("%s%s" % [' '.repeat(i + 1), str(i)])
-                break
-        
-#        var selection_by_pos = (menu_bot_pos - menu_top_pos) / ((mouse_pos - menu_top_pos))
-#        print(selection_by_pos)
-        
-#        print("\nmenu_top_pos = ", menu_top_pos)
-#        print("menu_bot_pos = ", menu_bot_pos)
-#        print("mouse_pos = ", mouse_pos)
+    if mouse_in_pop_up_menu:  handlePopUpSelectionMouseOver()
+
+
+
+func handlePopUpSelectionMouseOver():
+    
+    var new_mouse_over_selection = getSelectionWithMouseOver()
+    if not mouse_over_selection == new_mouse_over_selection:
+        mouse_over_selection = new_mouse_over_selection
+        if mouse_over_selection:
+            var trimmed_type = trimBranchType(branch_type)
+            if branch_type == 'boost':
+                rig_builder.updateDetailsDisplay('boost', trimmed_type, mouse_over_selection)
+            else:
+                rig_builder.updateDetailsDisplay('part', trimmed_type, mouse_over_selection)
+
+
+
+func getSelectionWithMouseOver():
+    
+    var menu_top_pos = pop_up_menu.rect_position.y + 10
+    var menu_bot_pos = menu_top_pos + pop_up_menu.rect_size.y - 16
+    var mouse_pos = get_viewport().get_mouse_position().y
+    var local_mouse_pos = mouse_pos - menu_top_pos
+    var selection_height = (menu_bot_pos - menu_top_pos) / num_of_selections
+    
+    if mouse_pos < menu_top_pos:  return null
+    
+    for i in range(num_of_selections):
+        if local_mouse_pos < (selection_height * (i + 1)):
+            return pop_up.get_item_text(i)
+
+
+
+func trimBranchType(_branch_type):
+
+    if '_' in _branch_type:  return _branch_type.substr(0, _branch_type.find('_'))
+    else:  return _branch_type
+#    return
 
 
 
@@ -331,14 +350,14 @@ func _on_Timer3_timeout():
 
 func _on_PartSelectionPopUp_mouse_entered():
     mouse_in_pop_up_menu = true
-    print("MOUSE ENTERED")
+#    print("MOUSE ENTERED")
 #    print("get_viewport().get_mouse_position() = ", get_viewport().get_mouse_position())
 #    print("pop_up_menu.rect_position = ", pop_up_menu.rect_position)
 #    print("pop_up_menu.rect_size = ", pop_up_menu.rect_size)
 
 func _on_PartSelectionPopUp_mouse_exited():
     mouse_in_pop_up_menu = false
-    print("MOUSE EXITED")
+#    print("MOUSE EXITED")
 #    print("get_viewport().get_mouse_position() = ", get_viewport().get_mouse_position())
 
 

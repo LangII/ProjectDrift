@@ -8,15 +8,16 @@ onready var main = get_node('/root/Main')
 onready var controls = get_node('/root/Controls')
 
 # Node references.
-onready var inventory = find_node('InventoryVBox*')
+#onready var inventory = find_node('InventoryVBox*')
 onready var tree = find_node('PartsTreeVBox*')
 onready var pedestal = find_node('PedestalPos*')
 #onready var play_button = find_node('PlayButton*')
 onready var stats_vbox = find_node('StatsVBox*')
+onready var details_label = find_node('DetailsLabel*')
 onready var min_req_popup = find_node('MinimumRequirementsPopUp*')
 onready var are_you_sure_popup = find_node('AreYouSurePopUp*')
 onready var rig_builder_tab_container = find_node('RigBuilderTabContainer*')
-onready var stats_tab_container = find_node('StatsTabContainer*')
+onready var details_tab_container = find_node('DetailsTabContainer*')
 onready var model_tab_container = find_node('ModelTabContainer*')
 
 # Resources.
@@ -46,7 +47,7 @@ func _ready():
     
     setTabs()
     
-    loadInventory()
+#    loadInventory()
     
     insertSelectionBox(0, 'body', 'body')
 
@@ -57,30 +58,31 @@ func setTabs():
     rig_builder_tab_container.set_tab_title(0, 'inventory display')
     rig_builder_tab_container.set_tab_title(1, 'rig builder menu')
     rig_builder_tab_container.current_tab = 1
-    stats_tab_container.set_tab_title(0, 'stats display')
-    stats_tab_container.set_tab_title(1, 'details display')
+    details_tab_container.set_tab_title(0, 'details display')
     model_tab_container.set_tab_title(0, 'model display')
+    model_tab_container.set_tab_title(1, 'stats display')
 #    model_details_tab_container.set_tab_title(1, 'details')
 
 
 
-func loadInventory():
-    
-#    var parts = ['bodies', 'generators', 'engines', 'shields', 'blasters', 'missilelaunchers']
-    loadMainBox('parts')
-    loadMainBox('boosts')
-    
+#func loadInventory():
+#
+##    var parts = ['bodies', 'generators', 'engines', 'shields', 'blasters', 'missilelaunchers']
+#    loadMainBox('parts')
+#    loadMainBox('boosts')
 
-func loadMainBox(_label):
-    var inv_box = InventoryDisplayBoxScene.instance()
-    var hide_nodes = [
-        'TabLabel1*', 'TabLabel2*', 'PartsContainer*', 'BoostsContainer*', 'PartTypeContainer*',
-        'PartTagContainer*'
-    ]
-    if _label == 'parts':  hide_nodes.erase('PartsContainer*')
-    elif _label == 'boosts':  hide_nodes.erase('BoostsContainer*')
-    for hide_node in hide_nodes:  inv_box.find_node(hide_node, true, false).visible = false
-    inventory.add_child(inv_box)
+
+
+#func loadMainBox(_label):
+#    var inv_box = InventoryDisplayBoxScene.instance()
+#    var hide_nodes = [
+#        'TabLabel1*', 'TabLabel2*', 'PartsContainer*', 'BoostsContainer*', 'PartTypeContainer*',
+#        'PartTagContainer*'
+#    ]
+#    if _label == 'parts':  hide_nodes.erase('PartsContainer*')
+#    elif _label == 'boosts':  hide_nodes.erase('BoostsContainer*')
+#    for hide_node in hide_nodes:  inv_box.find_node(hide_node, true, false).visible = false
+#    inventory.add_child(inv_box)
 
 
 
@@ -632,6 +634,16 @@ func updateBoostAdjustNodes(_stat_display_box):
         _stat_display_box.find_node('StatOriginalValueContainer*').visible = false
     
     return _stat_display_box
+
+
+
+####################################################################################################
+
+
+
+func updateDetailsDisplay(_type, _branch, _selection):
+    
+    details_label.text = PoolStringArray([_type, _branch, _selection]).join(" ")
 
 
 
