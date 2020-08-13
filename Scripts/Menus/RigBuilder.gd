@@ -643,7 +643,33 @@ func updateBoostAdjustNodes(_stat_display_box):
 
 func updateDetailsDisplay(_type, _branch, _selection):
     
-    details_label.text = PoolStringArray([_type, _branch, _selection]).join(" ")
+#    print(PoolStringArray([_type, _branch, _selection]).join(' '))
+    
+    var details_text = ''
+    match _type:
+        'body', 'part':
+            var part_ref
+            match _branch:
+                'body':             part_ref = controls.bodies
+                'generator':        part_ref = controls.generators
+                'engines':          part_ref = controls.engines
+                'shields':          part_ref = controls.shields
+                'blaster':          part_ref = controls.blasters
+                'missilelauncher':  part_ref = controls.launchers['Missile']
+            details_text += " %s - %s - %s\n" % [_type, _branch, _selection]
+            for key in part_ref[_selection]:
+                var value = part_ref[_selection][key]
+                details_text += "%s:  %s\n" % [key, value]
+        'boost':
+#            details_text = PoolStringArray([_type, _branch, _selection]).join(' ')
+            details_text += " %s - %s - %s\n" % [_type, _branch, _selection]
+            for key in controls.boosts[_branch][_selection]:
+                var value = controls.boosts[_branch][_selection][key]
+                details_text += "%s:  %s\n" % [key, value]
+        'stat':
+            pass
+    
+    details_label.text = details_text
 
 
 

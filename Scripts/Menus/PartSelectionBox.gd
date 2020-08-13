@@ -265,11 +265,16 @@ func handlePopUpSelectionMouseOver():
     if not mouse_over_selection == new_mouse_over_selection:
         mouse_over_selection = new_mouse_over_selection
         if mouse_over_selection:
-            var trimmed_type = trimBranchType(branch_type)
-            if branch_type == 'boost':
-                rig_builder.updateDetailsDisplay('boost', trimmed_type, mouse_over_selection)
-            else:
-                rig_builder.updateDetailsDisplay('part', trimmed_type, mouse_over_selection)
+            var passing_type
+            if branch_layer == 'boost':  passing_type = branch_parent.branch_type
+            else:  passing_type = branch_type
+            var trimmed_type = trimBranchType(passing_type)
+            
+#                rig_builder.updateDetailsDisplay(branch_layer, trimmed_type, mouse_over_selection)
+#            else:
+#                rig_builder.updateDetailsDisplay('part', trimmed_type, mouse_over_selection)
+
+            rig_builder.updateDetailsDisplay(branch_layer, trimmed_type, mouse_over_selection)
 
 
 
