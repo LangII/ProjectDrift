@@ -22,7 +22,7 @@ onready var model_tab_container = find_node('ModelTabContainer*')
 
 # Resources.
 onready var PartSelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
-onready var InventoryDisplayBoxScene = preload('res://Scenes/Menus/Expandables/InventoryDisplayBox.tscn')
+#onready var InventoryDisplayBoxScene = preload('res://Scenes/Menus/Expandables/InventoryDisplayBox.tscn')
 onready var StatDisplayBoxScene = preload('res://Scenes/Menus/Expandables/StatDisplayBox.tscn')
 
 onready var pedestal_rot_spd = 0.005
@@ -55,8 +55,8 @@ func _ready():
 
 func setTabs():
     
-    rig_builder_tab_container.set_tab_title(0, 'inventory display')
-    rig_builder_tab_container.set_tab_title(1, 'rig builder menu')
+#    rig_builder_tab_container.set_tab_title(0, 'inventory display')
+    rig_builder_tab_container.set_tab_title(0, 'rig builder menu')
     rig_builder_tab_container.current_tab = 1
     details_tab_container.set_tab_title(0, 'details display')
     model_tab_container.set_tab_title(0, 'model display')
@@ -577,7 +577,7 @@ func generateStatDisplayBox(_part_type, _part_tag, _stat, _value):
     stat_display_box_.find_node('PartTypeContainer*', true, false).visible = false
     stat_display_box_.find_node('PartTagContainer*', true, false).visible = false
     
-    stat_display_box_.find_node('StatLabel*', true, false).text = _stat
+    stat_display_box_.find_node('StatLabel*', true, false).text = '%s*' % _stat
     stat_display_box_.find_node('StatOriginalValueLabel*', true, false).text = str(_value)
     stat_display_box_.find_node('StatFinalValueLabel*', true, false).text = '= %s' % str(_value)
     
@@ -648,6 +648,7 @@ func updateDetailsDisplay(_type, _branch, _selection):
     var details_text = ''
     match _type:
         'body', 'part':
+            details_text += '[  PART DETAILS  ]\n  - - - - -  \n'
             var part_ref
             match _branch:
                 'body':             part_ref = controls.bodies
@@ -656,18 +657,31 @@ func updateDetailsDisplay(_type, _branch, _selection):
                 'shields':          part_ref = controls.shields
                 'blaster':          part_ref = controls.blasters
                 'missilelauncher':  part_ref = controls.launchers['Missile']
-            details_text += " %s - %s - %s\n" % [_type, _branch, _selection]
+            details_text += "part type = %s\npart name = %s\n  - - - - -\n" % [_branch, _selection]
             for key in part_ref[_selection]:
                 var value = part_ref[_selection][key]
+                if typeof(value) == TYPE_ARRAY:  value = len(value)
+                
+                if typeof(value) == TYPE_DICTIONARY:
+                    var value_list = []
+                    for dkey in value:
+                        var dvalue = value[dkey]
+                        value_list += [ '%s:%s' % [dkey, dvalue] ]
+                    value = '{' + PoolStringArray(value_list).join(', ') + '}'
+                        
+                key = key.replace('_', ' ')
                 details_text += "%s:  %s\n" % [key, value]
         'boost':
+            details_text += '[  BOOST DETAILS  ]\n  - - - - -  \n'
 #            details_text = PoolStringArray([_type, _branch, _selection]).join(' ')
-            details_text += " %s - %s - %s\n" % [_type, _branch, _selection]
+            details_text += "part type = %s\nboost name = %s\n  - - - - -\n" % [_branch, _selection]
             for key in controls.boosts[_branch][_selection]:
                 var value = controls.boosts[_branch][_selection][key]
                 details_text += "%s:  %s\n" % [key, value]
         'stat':
-            pass
+#            details_text += "%s - %s - %s" % [_type, _branch, _selection]
+            details_text += '[  STAT DETAILS  ]\n  - - - - -  \n'
+            
     
     details_label.text = details_text
 

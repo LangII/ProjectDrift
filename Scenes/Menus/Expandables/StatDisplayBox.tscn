@@ -1,4 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scripts/Menus/StatDisplayBox.gd" type="Script" id=1]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 1 )
@@ -29,6 +31,7 @@ bg_color = Color( 0.239216, 0.227451, 0.270588, 1 )
 margin_right = 155.0
 margin_bottom = 20.0
 custom_constants/separation = -1
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -125,7 +128,7 @@ margin_left = 6.0
 margin_top = 6.0
 margin_right = 138.0
 margin_bottom = 20.0
-valign = 1
+mouse_filter = 0
 
 [node name="StatOriginalValueContainer*" type="PanelContainer" parent="."]
 margin_left = 530.0
@@ -300,3 +303,4 @@ margin_right = 78.0
 margin_bottom = 20.0
 align = 1
 valign = 1
+[connection signal="mouse_entered" from="StatContainer*/MarginContainer/PanelContainer/StatLabel*" to="." method="_on_StatLabel_mouse_entered"]

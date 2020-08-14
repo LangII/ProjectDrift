@@ -134,7 +134,7 @@ var bodies = {
         'boost_slots': 2,
     },
     'BodyWhiteWithGreen': {
-        'health': 5.00,
+        'health': 8.00,
         'armor': 0.01,
         'blaster_slots': ['blaster_1', 'blaster_2', 'blaster_3',],
         'launcher_slots': ['missilelauncher_1', 'missilelauncher_2'],
@@ -227,7 +227,7 @@ var launchers = {
             'missile_speed': 8.0,
             'missile_accel': 0.015,
             'cool_down': 1.0,
-            'magazine_capacity': 100,
+            'magazine_capacity': 8,
             'boost_slots': 1,
         },
         'MissileLauncherWhiteWithYellow': {
@@ -235,7 +235,7 @@ var launchers = {
             'missile_speed': 9.0,
             'missile_accel': 0.020,
             'cool_down': 0.8,
-            'magazine_capacity': 100,
+            'magazine_capacity': 5,
             'boost_slots': 2,
         },
         'MissileLauncher': {
