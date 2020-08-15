@@ -29,6 +29,7 @@ onready var pedestal_rot_spd = 0.005
 
 var inv_mod
 var boost_mod
+var stat_refs
 var rig_data_pack = {}
 
 onready var boosts = controls.boosts
@@ -44,6 +45,7 @@ func _ready():
     # Open temp mods.
     inv_mod = main.loadModule(main, 'res://Scenes/Functional/InventoryMod.tscn')
     boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
+    stat_refs = main.loadModule(main, 'res://Scenes/Functional/StatDisplayRefs.tscn')
     
     setTabs()
     
@@ -496,6 +498,8 @@ func minimumRequirementsMet():
 func updateStatsDisplay():
     
     deleteAllInStatsDisplay()
+    
+    print(rig_data_pack)
 
     for part_type in rig_data_pack.keys():
         var part_tag = rig_data_pack[part_type]['part_tag']
@@ -577,7 +581,7 @@ func generateStatDisplayBox(_part_type, _part_tag, _stat, _value):
     stat_display_box_.find_node('PartTypeContainer*', true, false).visible = false
     stat_display_box_.find_node('PartTagContainer*', true, false).visible = false
     
-    stat_display_box_.find_node('StatLabel*', true, false).text = '%s*' % _stat
+    stat_display_box_.find_node('StatLabel*', true, false).text = '%s *' % _stat
     stat_display_box_.find_node('StatOriginalValueLabel*', true, false).text = str(_value)
     stat_display_box_.find_node('StatFinalValueLabel*', true, false).text = '= %s' % str(_value)
     
@@ -597,8 +601,11 @@ func updateStatDisplayBoxWithBoosts(_stat_display, _boosts):
         var boost_tag = _boosts[i]
         var boost_data_pack = controls.boosts[part_type][boost_tag]
         
+        print("boost_data_pack['stat'] = ", boost_data_pack['stat'])
+        print("stat_label.text = ", stat_label.text)
+        
         # Conditional used to ensure that updates are only applied to correct stat.
-        if boost_data_pack['stat'] != stat_label.text:  continue
+        if boost_data_pack['stat'] != stat_label.text.replace(' *', ''):  continue
         
         """ Gonna leave this for now.  Might come in handy later on. """
 #        if i != 0 and _stat_display.find_node('BoostAdjustLabel%s*' % str(i), true, false).text == '':
@@ -681,6 +688,15 @@ func updateDetailsDisplay(_type, _branch, _selection):
         'stat':
 #            details_text += "%s - %s - %s" % [_type, _branch, _selection]
             details_text += '[  STAT DETAILS  ]\n  - - - - -  \n'
+            var stat_ref
+            match _branch:
+                'body':             stat_ref = stat_refs.bodies
+                'generator':        stat_ref = stat_refs.generators
+                'engines':          stat_ref = stat_refs.engines
+                'shields':          stat_ref = stat_refs.shields
+                'blaster':          stat_ref = stat_refs.blasters
+                'missilelauncher':  stat_ref = stat_refs.launchers['Missile']
+            details_text += stat_ref[_selection]
             
     
     details_label.text = details_text
@@ -711,6 +727,7 @@ func queue_free():
     # Close temp mods.
     inv_mod.queue_free()
     boost_mod.queue_free()
+    stat_refs.queue_free()
 
 
 

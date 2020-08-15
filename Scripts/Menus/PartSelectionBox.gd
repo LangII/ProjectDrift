@@ -319,6 +319,8 @@ func _on_PartSelectionPopUp_item_selected(id):
     pop_up_selection_id = id
     pop_up_selection_name = pop_up.get_item_text(id)
     
+#    print("branch_layer = ", branch_layer)
+    
     # Delays are not needed for 'boost' branch_layers.
     if branch_layer == 'boost':
         rig_builder.deleteSeparators()
@@ -332,8 +334,6 @@ func _on_PartSelectionPopUp_item_selected(id):
         timer_1.start()
         timer_2.start()
         timer_3.start()
-#        timer_4.start()
-    
 
 
 
@@ -355,15 +355,9 @@ func _on_Timer3_timeout():
 
 func _on_PartSelectionPopUp_mouse_entered():
     mouse_in_pop_up_menu = true
-#    print("MOUSE ENTERED")
-#    print("get_viewport().get_mouse_position() = ", get_viewport().get_mouse_position())
-#    print("pop_up_menu.rect_position = ", pop_up_menu.rect_position)
-#    print("pop_up_menu.rect_size = ", pop_up_menu.rect_size)
 
 func _on_PartSelectionPopUp_mouse_exited():
     mouse_in_pop_up_menu = false
-#    print("MOUSE EXITED")
-#    print("get_viewport().get_mouse_position() = ", get_viewport().get_mouse_position())
 
 
 
