@@ -1,10 +1,13 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Menus/RigBuilder.gd" type="Script" id=1]
 [ext_resource path="res://Textures/background_01_02.png" type="Texture" id=2]
 
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.294118, 0.666667, 0.658824, 0 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
@@ -33,42 +36,43 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ViewportContainer" type="ViewportContainer" parent="."]
+[node name="ViewportContainer*" type="ViewportContainer" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+[node name="Viewport" type="Viewport" parent="ViewportContainer*"]
 size = Vector2( 1280, 720 )
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="BackgroundCamera*" type="Camera" parent="ViewportContainer/Viewport"]
+[node name="BackgroundCamera*" type="Camera" parent="ViewportContainer*/Viewport"]
 cull_mask = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/separation = 10
+custom_constants/separation = 15
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TopContainer*" type="MarginContainer" parent="VBoxContainer"]
 margin_right = 1280.0
-margin_bottom = 64.0
-custom_constants/margin_right = 10
-custom_constants/margin_top = 10
-custom_constants/margin_left = 10
+margin_bottom = 69.0
+custom_constants/margin_right = 15
+custom_constants/margin_top = 15
+custom_constants/margin_left = 15
 custom_constants/margin_bottom = 0
 
 [node name="TopContainer___" type="PanelContainer" parent="VBoxContainer/TopContainer*"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 1270.0
-margin_bottom = 64.0
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 1265.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 0, 54 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -76,23 +80,23 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopContainer*/TopContainer___"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 1253.0
+margin_right = 1243.0
 margin_bottom = 47.0
 rect_min_size = Vector2( 0, 40 )
 alignment = 1
 
 [node name="BodyContainer*" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 74.0
+margin_top = 84.0
 margin_right = 1280.0
-margin_bottom = 646.0
+margin_bottom = 636.0
 size_flags_vertical = 3
-custom_constants/margin_right = 13
-custom_constants/margin_left = 13
+custom_constants/margin_right = 18
+custom_constants/margin_left = 18
 
 [node name="BodyContainer___" type="HSplitContainer" parent="VBoxContainer/BodyContainer*"]
-margin_left = 13.0
-margin_right = 1267.0
-margin_bottom = 572.0
+margin_left = 18.0
+margin_right = 1262.0
+margin_bottom = 552.0
 dragger_visibility = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -100,7 +104,7 @@ __meta__ = {
 
 [node name="RigBuilderTabContainer*" type="TabContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___"]
 margin_right = 540.0
-margin_bottom = 572.0
+margin_bottom = 552.0
 rect_min_size = Vector2( 540, 0 )
 custom_styles/panel = SubResource( 5 )
 tab_align = 0
@@ -111,21 +115,22 @@ anchor_bottom = 1.0
 margin_top = 24.0
 
 [node name="PartsTreeVBox*" type="VBoxContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___/RigBuilderTabContainer*/RigBuilderScrollContainer"]
+custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___"]
 margin_left = 552.0
-margin_right = 1254.0
-margin_bottom = 572.0
+margin_right = 1244.0
+margin_bottom = 552.0
 dragger_visibility = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="DetailsTabContainer*" type="TabContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer"]
-margin_right = 702.0
+margin_right = 692.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 200, 200 )
 tab_align = 0
@@ -148,66 +153,71 @@ autowrap = true
 
 [node name="ModelTabContainer*" type="TabContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer"]
 margin_top = 212.0
-margin_right = 702.0
-margin_bottom = 572.0
+margin_right = 692.0
+margin_bottom = 552.0
 rect_min_size = Vector2( 400, 200 )
+custom_styles/panel = SubResource( 8 )
 tab_align = 0
 drag_to_rearrange_enabled = true
 
-[node name="ViewportContainer" type="ViewportContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_top = 24.0
+custom_constants/margin_right = 60
+custom_constants/margin_top = 0
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 20
+
+[node name="ViewportContainer" type="ViewportContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/MarginContainer"]
+margin_left = 8.0
+margin_right = 632.0
+margin_bottom = 296.0
 stretch = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/ViewportContainer"]
-size = Vector2( 694, 324 )
+[node name="Viewport" type="Viewport" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/MarginContainer/ViewportContainer"]
+size = Vector2( 624, 296 )
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="PedestalCamera*" type="Camera" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/ViewportContainer/Viewport"]
+[node name="PedestalCamera*" type="Camera" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/MarginContainer/ViewportContainer/Viewport"]
 transform = Transform( 1, 0, 0, 0, 0.998359, 0.0572678, 0, -0.0572678, 0.998359, 0, 2.27147, 0 )
 cull_mask = 1
 
-[node name="Background*" type="MeshInstance" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/ViewportContainer/Viewport/PedestalCamera*"]
+[node name="Background*" type="MeshInstance" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/MarginContainer/ViewportContainer/Viewport/PedestalCamera*"]
 transform = Transform( 60, 0, 0, 0, -0.0572678, -19.9672, 0, 0.998359, -1.14536, 0, 0.739253, -12.8875 )
 cast_shadow = 0
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="PedestalPos*" type="Position3D" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/ViewportContainer/Viewport/PedestalCamera*"]
+[node name="PedestalPos*" type="Position3D" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/MarginContainer/ViewportContainer/Viewport/PedestalCamera*"]
 transform = Transform( 1, 0, 0, 0, 0.925236, -0.379392, 0, 0.379392, 0.925236, 0, 0.185334, -3.23096 )
 
 [node name="StatsScrollContainer" type="ScrollContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = -180.0
-margin_right = -4.0
-margin_bottom = -216.0
+margin_top = 24.0
 
 [node name="StatsVBox*" type="VBoxContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/StatsScrollContainer"]
 custom_constants/separation = -1
 
 [node name="LowerContainer*" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 656.0
+margin_top = 651.0
 margin_right = 1280.0
 margin_bottom = 720.0
-custom_constants/margin_right = 10
-custom_constants/margin_left = 10
-custom_constants/margin_bottom = 10
+custom_constants/margin_right = 15
+custom_constants/margin_left = 15
+custom_constants/margin_bottom = 15
 
 [node name="LowerContainer___" type="PanelContainer" parent="VBoxContainer/LowerContainer*"]
-margin_left = 10.0
-margin_right = 1270.0
+margin_left = 15.0
+margin_right = 1265.0
 margin_bottom = 54.0
+rect_min_size = Vector2( 0, 54 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -215,14 +225,14 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/LowerContainer*/LowerContainer___"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 1253.0
+margin_right = 1243.0
 margin_bottom = 47.0
 rect_min_size = Vector2( 0, 40 )
 alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/LowerContainer___/HBoxContainer"]
-margin_left = 580.0
-margin_right = 666.0
+margin_left = 575.0
+margin_right = 661.0
 margin_bottom = 40.0
 custom_styles/panel = SubResource( 4 )
 
