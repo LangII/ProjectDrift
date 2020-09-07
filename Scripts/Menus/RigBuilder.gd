@@ -23,9 +23,9 @@ onready var model_tab_container = find_node('ModelTabContainer*')
 onready var PartSelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
 onready var StatDisplayBoxScene = preload('res://Scenes/Menus/Expandables/StatDisplayBox.tscn')
 
-onready var pedestal_rot_spd = 0.005
-onready var background_cam_rot_spd_1 = 0.0004
-onready var background_cam_rot_spd_2 = -0.0002
+onready var pedestal_rot_spd = 0.008
+onready var background_cam_rot_spd_1 = 0.0009
+onready var background_cam_rot_spd_2 = -0.0006
 
 var inv_mod
 var boost_mod
@@ -59,8 +59,8 @@ func setTabs():
     
     rig_builder_tab_container.set_tab_title(0, 'rig builder menu')
     details_tab_container.set_tab_title(0, 'details display')
-    model_tab_container.set_tab_title(0, 'model display')
-    model_tab_container.set_tab_title(1, 'stats display')
+    model_tab_container.set_tab_title(0, 'rig model display')
+    model_tab_container.set_tab_title(1, 'rig stats display')
 
 
 
@@ -586,9 +586,7 @@ func updateStatDisplayBoxWithBoosts(_stat_display, _boosts):
 #        if i != 0 and _stat_display.find_node('BoostAdjustLabel%s*' % str(i), true, false).text == '':
 #            i -= 1
         
-        var boost_adjust_label = _stat_display.find_node(
-            'BoostAdjustLabel%s*' % str(i + 1), true, false
-        )
+        var boost_adjust_label = _stat_display.find_node('BoostAdjustLabel%s*' % str(i + 1), true, false)
         
         var new_value = boost_mod.getNewStatValue(
             float(stat_final_value_label.text.right(2)), boost_data_pack
@@ -652,7 +650,6 @@ func updateDetailsDisplay(_type, _branch, _selection):
                         var dvalue = value[dkey]
                         value_list += [ '%s:%s' % [dkey, dvalue] ]
                     value = '{' + PoolStringArray(value_list).join(', ') + '}'
-                        
                 key = key.replace('_', ' ')
                 details_text += "%s:  %s\n" % [key, value]
         'boost':
@@ -674,7 +671,6 @@ func updateDetailsDisplay(_type, _branch, _selection):
                 'blaster':          stat_ref = stat_refs.blasters
                 'missilelauncher':  stat_ref = stat_refs.launchers['Missile']
             details_text += stat_ref[_selection]
-            
     
     details_label.text = details_text
 

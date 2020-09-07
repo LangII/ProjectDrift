@@ -1,0 +1,256 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Scenes/Menus/ArenaSelection.gd" type="Script" id=1]
+[ext_resource path="res://Textures/background_01_02.png" type="Texture" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.239216, 0.227451, 0.270588, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_right = 8.0
+bg_color = Color( 0.239216, 0.227451, 0.270588, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.784314, 0.784314, 0.784314, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="PanoramaSky" id=11]
+panorama = ExtResource( 2 )
+
+[sub_resource type="Environment" id=12]
+background_mode = 2
+background_sky = SubResource( 11 )
+background_sky_orientation = Basis( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1 )
+
+[node name="ArenaSelection" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer*" type="ViewportContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer*"]
+size = Vector2( 1280, 720 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="BackgroundCamera*" type="Camera" parent="ViewportContainer*/Viewport"]
+cull_mask = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 15
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopContainer*" type="MarginContainer" parent="VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 77.0
+custom_constants/margin_right = 15
+custom_constants/margin_top = 15
+custom_constants/margin_left = 15
+custom_constants/margin_bottom = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/TopContainer*"]
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 1265.0
+margin_bottom = 77.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TopContainer*/PanelContainer"]
+margin_right = 1250.0
+margin_bottom = 62.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/TopContainer*/PanelContainer/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1249.0
+margin_bottom = 61.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TopContainer*/PanelContainer/MarginContainer/PanelContainer"]
+margin_right = 1248.0
+margin_bottom = 60.0
+custom_constants/margin_right = 3
+custom_constants/margin_top = 3
+custom_constants/margin_left = 3
+custom_constants/margin_bottom = 3
+
+[node name="TopContainer___" type="PanelContainer" parent="VBoxContainer/TopContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 1245.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 0, 54 )
+custom_styles/panel = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___"]
+margin_right = 1242.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 0, 40 )
+alignment = 1
+
+[node name="BodyContainer*" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 92.0
+margin_right = 1280.0
+margin_bottom = 630.0
+size_flags_vertical = 3
+custom_constants/margin_right = 45
+custom_constants/margin_left = 45
+
+[node name="LowerContainer*" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 645.0
+margin_right = 1280.0
+margin_bottom = 720.0
+custom_constants/margin_right = 15
+custom_constants/margin_left = 15
+custom_constants/margin_bottom = 15
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*"]
+margin_left = 15.0
+margin_right = 1265.0
+margin_bottom = 60.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer"]
+margin_right = 1250.0
+margin_bottom = 60.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1249.0
+margin_bottom = 59.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer"]
+margin_right = 1248.0
+margin_bottom = 58.0
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="TopContainer___" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 1246.0
+margin_bottom = 56.0
+rect_min_size = Vector2( 0, 54 )
+custom_styles/panel = SubResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___"]
+margin_right = 1236.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 0, 40 )
+alignment = 2
+
+[node name="GameplayRulesButtonContainer*" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer"]
+margin_left = 1026.0
+margin_top = 9.0
+margin_right = 1236.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 210, 35 )
+size_flags_vertical = 4
+custom_styles/panel = SubResource( 5 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/GameplayRulesButtonContainer*"]
+margin_right = 210.0
+margin_bottom = 35.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/GameplayRulesButtonContainer*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 209.0
+margin_bottom = 34.0
+custom_styles/panel = SubResource( 6 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/GameplayRulesButtonContainer*/MarginContainer/PanelContainer"]
+margin_right = 208.0
+margin_bottom = 33.0
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/GameplayRulesButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 206.0
+margin_bottom = 31.0
+custom_styles/panel = SubResource( 7 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/GameplayRulesButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
+margin_right = 204.0
+margin_bottom = 29.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="GameplayRulesButton*" type="Button" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/GameplayRulesButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 203.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 80, 0 )
+custom_styles/hover = SubResource( 8 )
+custom_styles/pressed = SubResource( 9 )
+custom_styles/normal = SubResource( 10 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "DONE ... go to gameplay rules"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 12 )
+[connection signal="pressed" from="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/GameplayRulesButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/GameplayRulesButton*" to="." method="_on_GameplayRulesButton_pressed"]

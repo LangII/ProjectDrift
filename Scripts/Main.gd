@@ -18,8 +18,8 @@ onready var controls = get_node('/root/Controls')
 func _ready():
     
     """ comment in to do direct unisolated test of scene (comment out the rest of _ready()) """
-    
-    changeScene('res://Scenes/Menus/RigBuilder.tscn')
+#    changeScene('res://Scenes/Menus/RigBuilder.tscn')
+    changeScene('res://Scenes/Menus/ArenaSelection.tscn')
     
 #    print("\n>>> [%s] scripted scene entering tree" % name)
 #    if controls.TESTING_no_menu:
