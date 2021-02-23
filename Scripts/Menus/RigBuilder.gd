@@ -216,6 +216,9 @@ func getRigDataPack():
         if not branch.pop_up_selection_name:  continue
         var parent = branch.branch_parent
         rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_selection_name ]
+    
+#    print("rig_data_pak_ =")
+#    print(rig_data_pack_)
 
     return rig_data_pack_
 
@@ -453,9 +456,11 @@ func insertSeparator(_part_last_boost_pos):
 
 
 func prepRigDataPackForPlay():
-    
+
     for part_type in rig_data_pack.keys():
-        if part_type.begins_with('missilelauncher'):
+        var is_missile_launcher = part_type.begins_with('missilelauncher')
+        var no_missile_launcher_assigned = rig_data_pack[part_type]['part_tag'] == ''
+        if is_missile_launcher and no_missile_launcher_assigned:
             rig_data_pack[part_type]['part_tag'] = 'MissileLauncher'
 
 

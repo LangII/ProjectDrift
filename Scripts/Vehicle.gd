@@ -208,9 +208,16 @@ func generateExpandableSlotsAndTags():
     
     for launcher in LAUNCHER_SLOTS:
         var full_tag = controls.gameplay['vehicle_rig'][launcher]['part_tag']
+#        print("full_tag = ", full_tag)
         launcher_full_tags += [ full_tag ]
         launcher_tags += [ full_tag.right(full_tag.find('Launcher') + len('Launcher')) ]
         launcher_types += [ full_tag.left(full_tag.find('Launcher')) ]
+    
+#    print("LAUNCHER_SLOTS = ", LAUNCHER_SLOTS)
+#    print("blaster_tags = ", blaster_tags)
+#    print("launcher_full_tags = ", launcher_full_tags)
+#    print("launcher_tags = ", launcher_tags)
+#    print("launcher_types = ", launcher_types)
 
 
 
@@ -240,6 +247,9 @@ func setHasLaunchers():
         if launcher_tag != '':
             has_launchers = true
             break
+    
+    print("launcher_tags = ", launcher_tags)
+    print("has_launchers = ", has_launchers)
 
 
 

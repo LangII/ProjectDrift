@@ -106,7 +106,7 @@ func getNewStatValue(_old_value, _boost):
 func updateMissileLauncherPart(_part_tag, _boosts):
     """
     Because of the dictionary value in MissileLaunchers, their boosts have to be processed
-    differently.  
+    differently.
     """
     
     for boost in _boosts:

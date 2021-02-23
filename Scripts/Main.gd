@@ -45,10 +45,12 @@ func changeScene(_scene):
     
     print("\n>>> changing scene to %s" % _scene)
     
+    ### OBSOLETE (DL 2021-02-21) ... update main.changeScene()
 #    if get_tree().change_scene(_scene) != OK:
 #        print("\n>>> !!! ERROR changing scene to %s !!!" % _scene)
 #        get_tree().quit()
 
+    ### UPDATE (DL 2021-02-21) ... update main.changeScene()
     var current_scene = get_child(0)
     if current_scene:
         print(current_scene.name)
