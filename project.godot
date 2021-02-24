@@ -27,9 +27,7 @@ Controls="*res://Scripts/Controls.gd"
 
 window/size/width=1280
 window/size/height=720
-window/size/resizable=false
 window/stretch/mode="viewport"
-window/stretch/aspect="expand"
 
 [input]
 

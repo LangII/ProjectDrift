@@ -9,29 +9,29 @@ bg_color = Color( 0, 0, 0, 1 )
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0.239216, 0.227451, 0.270588, 1 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=3]
 content_margin_right = 8.0
 bg_color = Color( 0.239216, 0.227451, 0.270588, 1 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.784314, 0.784314, 0.784314, 1 )
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="PanoramaSky" id=11]
@@ -117,7 +117,7 @@ margin_top = 3.0
 margin_right = 1245.0
 margin_bottom = 57.0
 rect_min_size = Vector2( 0, 54 )
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -179,7 +179,7 @@ margin_top = 2.0
 margin_right = 1246.0
 margin_bottom = 56.0
 rect_min_size = Vector2( 0, 54 )
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = SubResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -197,7 +197,7 @@ margin_right = 1236.0
 margin_bottom = 44.0
 rect_min_size = Vector2( 180, 35 )
 size_flags_vertical = 4
-custom_styles/panel = SubResource( 5 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/RigBuilderButtonContainer*"]
 margin_right = 180.0
@@ -212,7 +212,7 @@ margin_left = 1.0
 margin_top = 1.0
 margin_right = 179.0
 margin_bottom = 34.0
-custom_styles/panel = SubResource( 6 )
+custom_styles/panel = SubResource( 5 )
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/RigBuilderButtonContainer*/MarginContainer/PanelContainer"]
 margin_right = 178.0
@@ -227,7 +227,7 @@ margin_left = 2.0
 margin_top = 2.0
 margin_right = 176.0
 margin_bottom = 31.0
-custom_styles/panel = SubResource( 7 )
+custom_styles/panel = SubResource( 6 )
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/RigBuilderButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
 margin_right = 174.0
@@ -243,9 +243,9 @@ margin_top = 1.0
 margin_right = 173.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 80, 0 )
-custom_styles/hover = SubResource( 8 )
-custom_styles/pressed = SubResource( 9 )
-custom_styles/normal = SubResource( 10 )
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/normal = SubResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
