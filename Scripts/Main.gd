@@ -7,8 +7,6 @@ Curently not much to see.  This is because the current primary development focus
 vehicle controls (not to be confused with Controls.gd) and functionality.  As menu systems are
 developed, so will Main.gd.
 
-(testing new env git push)
-
 """
 
 extends Node
