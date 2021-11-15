@@ -77,6 +77,75 @@ var gameplay = {
 
 
 ####################################################################################################
+                                                             ###   ACTIVE INVENTORY CONTAINERS   ###
+                                                             #######################################
+
+var parts_inv = {
+    'body': {
+        'BodyWhite': {'used': false},
+        'BodyWhiteWithYellow': {'used': false},
+        'BodyWhiteWithOrange': {'used': false},
+        'BodyWhiteWithGreen': {'used': false}
+    },
+    'generator': {
+        'GeneratorWhite': {'used': false},
+        'GeneratorWhiteWithYellow': {'used': false}
+       },
+    'engines': {
+        'EnginesWhite': {'used': false},
+        'EnginesWhiteWithYellow': {'used': false}
+    },
+    'shields': {
+        'ShieldsWhite': {'used': false},
+        'ShieldsWhiteWithYellow': {'used': false}
+    },
+    'blaster': {
+        'BlasterWhite': {'used': false},
+        'BlasterWhiteWithYellow': {'used': false},
+        'BlasterWhiteWithOrange': {'used': false}
+    },
+    'missilelauncher': {
+        'MissileLauncherWhite': {'used': false},
+        'MissileLauncherWhiteWithYellow': {'used': false}
+    }
+}
+
+var boosts_inv = {
+    'body': {
+        'body_boost_01': {'used': false},
+        'body_boost_02': {'used': false},
+        'body_boost_03': {'used': false}
+    },
+    'generator': {
+        'generator_boost_01': {'used': false},
+        'generator_boost_02': {'used': false},
+        'generator_boost_03': {'used': false}
+    },
+    'engines': {
+        'engines_boost_01': {'used': false},
+        'engines_boost_02': {'used': false},
+        'engines_boost_03': {'used': false}
+    },
+    'shields': {
+        'shields_boost_01': {'used': false},
+        'shields_boost_02': {'used': false},
+        'shields_boost_03': {'used': false}
+    },
+    'blaster': {
+        'blaster_boost_01': {'used': false},
+        'blaster_boost_02': {'used': false},
+        'blaster_boost_03': {'used': false}
+    },
+    'missilelauncher': {
+        'missilelauncher_boost_01': {'used': false},
+        'missilelauncher_boost_02': {'used': false},
+        'missilelauncher_boost_03': {'used': false}
+    }
+}
+
+
+
+####################################################################################################
                                                                                  ###   GLOBALS   ###
                                                                                  ###################
 

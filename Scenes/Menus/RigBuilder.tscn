@@ -532,4 +532,5 @@ window_title = "Are you sure?"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 24 )
+
 [connection signal="pressed" from="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/PlayButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PlayButton*" to="." method="_on_PlayButton_pressed"]

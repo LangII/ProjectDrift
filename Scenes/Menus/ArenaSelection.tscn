@@ -253,4 +253,5 @@ text = "DONE ... go to gameplay rules"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 12 )
+
 [connection signal="pressed" from="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/GameplayRulesButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/GameplayRulesButton*" to="." method="_on_GameplayRulesButton_pressed"]

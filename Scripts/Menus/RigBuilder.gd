@@ -207,19 +207,20 @@ func getRigDataPack():
     # Build parts of data pack.
     for branch in tree.get_children():
         if not branch.branch_layer in ['part', 'body']:  continue
-        rig_data_pack_[branch.branch_type] = {'part_tag': '', 'boosts': []}
-        rig_data_pack_[branch.branch_type]['part_tag'] = branch.pop_up_selection_name
-    
+        if not branch.pop_up_cur_selection_name:  continue
+        rig_data_pack_[branch.branch_type] = {
+            'part_tag': branch.pop_up_cur_selection_name, 'boosts': []
+        }
+        
     # Build boosts of data pack.
     for branch in tree.get_children():
         if branch.branch_layer != 'boost':  continue
-        if not branch.pop_up_selection_name:  continue
+        if not branch.pop_up_cur_selection_name:  continue
         var parent = branch.branch_parent
-        rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_selection_name ]
+        rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_cur_selection_name ]
     
-#    print("rig_data_pak_ =")
-#    print(rig_data_pack_)
-
+#    print("rig_data_pack_ = ", rig_data_pack_)
+    
     return rig_data_pack_
 
 
@@ -312,14 +313,30 @@ func appendBoostModelsToPartModel(_part_model, _part_type, _part_data_pack):
 
 
 
+#- add updatePopUpOptionsDisabled() in PartSelectionBox
+#- add updateAllPartSelectionBoxOptionsDisabled() in RigBuilder
+func updateAllPopUpOptionsDisabled() -> void:
+    
+    """ UNDER CONSTRUCTION """
+    
+    for branch in tree.get_children():
+        if branch.branch_layer == 'separator':  continue
+        branch.updatePopUpOptionsDisabled()
+#        print("branch.branch_layer = %s | branch.branch_type = %s" % [branch.branch_layer, branch.branch_type])
+
+
+
 ####################################################################################################
                                                                                    ###   FUNCS   ###
                                                                                    #################
 
 func clearBranchesForNewBody():
+    
+    """ UNDER CONSTRUCTION """
 
     for each in tree.get_children():
-        if each.branch_layer != 'body':  each.queue_free()
+        if each.branch_layer != 'body':
+            each.pre_queue_free() ; each.queue_free()
 
 
 
@@ -740,16 +757,16 @@ func queue_free():
 
 #        if branch.branch_type == 'body':
 #            rig_json_['body'] = {}
-#            rig_json_['body']['part_tag'] = branch.pop_up_selection_name
+#            rig_json_['body']['part_tag'] = branch.pop_up_cur_selection_name
 #        elif branch.branch_type == 'generator':
 #            rig_json_['generator'] = {}
-#            rig_json_['generator']['part_tag'] = branch.pop_up_selection_name
+#            rig_json_['generator']['part_tag'] = branch.pop_up_cur_selection_name
 #        elif branch.branch_type == 'engines':
 #            rig_json_['engines'] = {}
-#            rig_json_['engines']['part_tag'] = branch.pop_up_selection_name
+#            rig_json_['engines']['part_tag'] = branch.pop_up_cur_selection_name
 #        elif branch.branch_type == 'shields':
 #            rig_json_['shields'] = {}
-#            rig_json_['shields']['part_tag'] = branch.pop_up_selection_name
+#            rig_json_['shields']['part_tag'] = branch.pop_up_cur_selection_name
 
 
 

@@ -6,7 +6,6 @@ var bodies = [
     'BodyWhiteWithYellow',
     'BodyWhiteWithOrange',
     'BodyWhiteWithGreen',
-
 ]
 
 var generators = [
@@ -35,7 +34,7 @@ var blasters = [
 var missilelaunchers = [
     'MissileLauncherWhite',
     'MissileLauncherWhiteWithYellow',
-    'MissileLauncher',
+#    'MissileLauncher',
 ]
 
 var boosts = {

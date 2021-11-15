@@ -6,10 +6,10 @@
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.313726, 0.313726, 0.313726, 1 )
 
 [node name="PartSelectionBox" type="HBoxContainer"]
@@ -52,7 +52,7 @@ margin_left = 1.0
 margin_top = 1.0
 margin_right = 401.0
 margin_bottom = 39.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ContentContainer*/MarginContainer/PanelContainer"]
 margin_right = 400.0
@@ -70,7 +70,7 @@ margin_left = 3.0
 margin_top = 3.0
 margin_right = 397.0
 margin_bottom = 35.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ContentContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
 margin_right = 394.0
@@ -110,6 +110,7 @@ one_shot = true
 [node name="Timer4*" type="Timer" parent="."]
 wait_time = 0.8
 one_shot = true
+
 [connection signal="item_selected" from="ContentContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/HBoxContainer/PartSelectionPopUp*" to="." method="_on_PartSelectionPopUp_item_selected"]
 [connection signal="timeout" from="Timer1*" to="." method="_on_Timer1_timeout"]
 [connection signal="timeout" from="Timer2*" to="." method="_on_Timer2_timeout"]
