@@ -68,7 +68,7 @@ func setTabs():
                                                                                  ###   PROCESS   ###
                                                                                  ###################
 
-func _process(delta):
+func _process(_delta):
     
     background_cam.rotate_object_local(Vector3.UP, background_cam_rot_spd_1)
     background_cam.rotate_object_local(Vector3.FORWARD, background_cam_rot_spd_2)
@@ -158,7 +158,7 @@ func buildRigModel():
     deleteCurrentRigModel()
     
     rig_data_pack = getRigDataPack()
-#    print(rig_data_pack)
+    print(rig_data_pack)
     
     if not 'body' in rig_data_pack:  return
     
@@ -166,7 +166,11 @@ func buildRigModel():
     
     pedestal.add_child(body_model)
     
+#    print("")  # <-
+    
     for part_type in rig_data_pack.keys():
+        
+#        print("part_type = ", part_type)
         
         if part_type == 'body':  continue
         
@@ -207,17 +211,17 @@ func getRigDataPack():
     # Build parts of data pack.
     for branch in tree.get_children():
         if not branch.branch_layer in ['part', 'body']:  continue
-        if not branch.pop_up_cur_selection_name:  continue
+        if not branch.pop_up_cur_selection_name_trim:  continue
         rig_data_pack_[branch.branch_type] = {
-            'part_tag': branch.pop_up_cur_selection_name, 'boosts': []
+            'part_tag': branch.pop_up_cur_selection_name_trim, 'boosts': []
         }
         
     # Build boosts of data pack.
     for branch in tree.get_children():
         if branch.branch_layer != 'boost':  continue
-        if not branch.pop_up_cur_selection_name:  continue
+        if not branch.pop_up_cur_selection_name_trim:  continue
         var parent = branch.branch_parent
-        rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_cur_selection_name ]
+        rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_cur_selection_name_trim ]
     
 #    print("rig_data_pack_ = ", rig_data_pack_)
     
@@ -313,7 +317,7 @@ func appendBoostModelsToPartModel(_part_model, _part_type, _part_data_pack):
 
 
 
-#- add updatePopUpOptionsDisabled() in PartSelectionBox
+#- add setPopUpOptionsDisabled() in PartSelectionBox
 #- add updateAllPartSelectionBoxOptionsDisabled() in RigBuilder
 func updateAllPopUpOptionsDisabled() -> void:
     
@@ -321,7 +325,7 @@ func updateAllPopUpOptionsDisabled() -> void:
     
     for branch in tree.get_children():
         if branch.branch_layer == 'separator':  continue
-        branch.updatePopUpOptionsDisabled()
+        branch.setPopUpOptionsDisabled()
 #        print("branch.branch_layer = %s | branch.branch_type = %s" % [branch.branch_layer, branch.branch_type])
 
 
@@ -489,6 +493,10 @@ func minimumRequirementsMet():
         if not rig_data_pack[min_req_part]['part_tag']:  return false
     return true
 
+
+
+
+    
 
 
 ####################################################################################################

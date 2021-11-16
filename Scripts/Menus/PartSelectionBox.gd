@@ -34,6 +34,8 @@ onready var pop_up_prev_selection_id = 0
 onready var pop_up_cur_selection_id = 0
 onready var pop_up_prev_selection_name = ''
 onready var pop_up_cur_selection_name = ''
+onready var pop_up_prev_selection_name_trim = ''
+onready var pop_up_cur_selection_name_trim = ''
 
 onready var mouse_in_pop_up_menu = false
 var pop_up_menu = null
@@ -71,7 +73,7 @@ func init(_layer, _type):
         setFirstBodyBranchImgVis()
         setPopUpOptions()
         
-        updatePopUpOptionsDisabled()
+        setPopUpOptionsDisabled()
     
     pop_up_menu = pop_up.get_children()[0]
     num_of_selections = pop_up_menu.get_item_count()
@@ -154,7 +156,7 @@ func setPopUpOptions():
         'boost':
             options = controls.boosts_inv[trimBranchType(branch_parent.branch_type)]
     pop_up.add_item('')
-    for option in options:  pop_up.add_item(option)
+    for option in options.keys():  pop_up.add_item(option)
     
 #    var option_index = 1  # Start with 1 because 0 is '' that was just added.
 #    for option_key in options.keys():
@@ -175,6 +177,42 @@ func removeExtraEmptyOptions(_branch_type, _options):
             if _options[i] == 'MissileLauncher':  _options.remove(i)
     
     return _options
+
+
+
+func setPopUpOptionsDisabled() -> void:
+    
+#        var options = {}
+#    match branch_layer:
+#        'body', 'part':
+#            options = controls.parts_inv[trimBranchType(branch_type)]
+#        'boost':
+#            options = controls.boosts_inv[trimBranchType(branch_parent.branch_type)]
+#    pop_up.add_item('')
+#    for option in options:  pop_up.add_item(option)
+    
+#    var option_index = 1  # Start with 1 because 0 is '' that was just added.
+#    for option_key in options.keys():
+#        var option_value = options[option_key]
+#        pop_up.add_item(option_key)
+#        pop_up.set_item_disabled(option_index, option_value['used'])
+#        option_index += 1
+    
+    var which_inv = null
+    var which_branch_type = null
+    match branch_layer:
+        'body', 'part':
+            which_inv = controls.parts_inv
+            which_branch_type = trimBranchType(branch_type)
+        'boost':
+            which_inv = controls.boosts_inv
+            which_branch_type = trimBranchType(branch_parent.branch_type)
+    
+    for i in range(pop_up.get_item_count()):
+        if i == 0:  continue
+        var item_text = pop_up.get_item_text(i)
+        var is_disabled = which_inv[which_branch_type][item_text]['used']
+        pop_up.set_item_disabled(i, is_disabled)
 
 
 
@@ -279,7 +317,7 @@ func isLastBranch():
 
 
 
-func _process(delta):
+func _process(_delta):
     
     if mouse_in_pop_up_menu:  handlePopUpSelectionMouseOver()
 
@@ -306,7 +344,9 @@ func handlePopUpSelectionMouseOver():
 #            print("trimmed_type = |%s|" % trimmed_type)
 #            print("mouse_over_selection = |%s|" % mouse_over_selection)
 
-            rig_builder.updateDetailsDisplay(branch_layer, trimmed_type, mouse_over_selection)
+            var trimmed_selection = removePartTagUniqueId(mouse_over_selection)
+
+            rig_builder.updateDetailsDisplay(branch_layer, trimmed_type, trimmed_selection)
 
 
 
@@ -333,39 +373,11 @@ func trimBranchType(_branch_type):
 
 
 
-func updatePopUpOptionsDisabled() -> void:
+func removePartTagUniqueId(_part_tag: String) -> String:
     
-#        var options = {}
-#    match branch_layer:
-#        'body', 'part':
-#            options = controls.parts_inv[trimBranchType(branch_type)]
-#        'boost':
-#            options = controls.boosts_inv[trimBranchType(branch_parent.branch_type)]
-#    pop_up.add_item('')
-#    for option in options:  pop_up.add_item(option)
-    
-#    var option_index = 1  # Start with 1 because 0 is '' that was just added.
-#    for option_key in options.keys():
-#        var option_value = options[option_key]
-#        pop_up.add_item(option_key)
-#        pop_up.set_item_disabled(option_index, option_value['used'])
-#        option_index += 1
-    
-    var which_inv = null
-    var which_branch_type = null
-    match branch_layer:
-        'body', 'part':
-            which_inv = controls.parts_inv
-            which_branch_type = trimBranchType(branch_type)
-        'boost':
-            which_inv = controls.boosts_inv
-            which_branch_type = trimBranchType(branch_parent.branch_type)
-    
-    for i in range(pop_up.get_item_count()):
-        if i == 0:  continue
-        var item_text = pop_up.get_item_text(i)
-        var is_disabled = which_inv[which_branch_type][item_text]['used']
-        pop_up.set_item_disabled(i, is_disabled)
+    if not _part_tag or not _part_tag.ends_with(')'):  return _part_tag
+    _part_tag = _part_tag.left(_part_tag.find('('))
+    return _part_tag
 
 
 
@@ -466,6 +478,8 @@ func _on_PartSelectionPopUp_item_selected(id):
     pop_up_cur_selection_id = id
     pop_up_prev_selection_name = pop_up_cur_selection_name
     pop_up_cur_selection_name = pop_up.get_item_text(id)
+    pop_up_prev_selection_name_trim = removePartTagUniqueId(pop_up_prev_selection_name)
+    pop_up_cur_selection_name_trim = removePartTagUniqueId(pop_up_cur_selection_name)
     
     var which_inv = null
     var which_branch_type = null
@@ -500,8 +514,8 @@ func _on_PartSelectionPopUp_item_selected(id):
 func _on_Timer1_timeout():
     
     match branch_layer:
-        'body':  rig_builder.bodySelected(self, pop_up_cur_selection_name)
-        'part':  rig_builder.partSelected(self, pop_up_cur_selection_name)
+        'body':  rig_builder.bodySelected(self, pop_up_cur_selection_name_trim)
+        'part':  rig_builder.partSelected(self, pop_up_cur_selection_name_trim)
 
 func _on_Timer2_timeout():
     rig_builder.resetAllBranchImages()

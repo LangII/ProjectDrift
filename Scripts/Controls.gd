@@ -80,6 +80,12 @@ var gameplay = {
                                                              ###   ACTIVE INVENTORY CONTAINERS   ###
                                                              #######################################
 
+"""
+IMPORTANT NOTES:
+- To handle duplicates of parts in inv.  The duplicate parts must have suffix of '({unique letter})'.
+For example: 'BodyWhite(a)' and 'BodyWhite(b)'
+"""
+
 var parts_inv = {
     'body': {
         'BodyWhite': {'used': false},
@@ -90,7 +96,7 @@ var parts_inv = {
     'generator': {
         'GeneratorWhite': {'used': false},
         'GeneratorWhiteWithYellow': {'used': false}
-       },
+    },
     'engines': {
         'EnginesWhite': {'used': false},
         'EnginesWhiteWithYellow': {'used': false}
@@ -100,7 +106,9 @@ var parts_inv = {
         'ShieldsWhiteWithYellow': {'used': false}
     },
     'blaster': {
-        'BlasterWhite': {'used': false},
+#        'BlasterWhite': {'used': false},
+        'BlasterWhite(a)': {'used': false},
+        'BlasterWhite(b)': {'used': false},
         'BlasterWhiteWithYellow': {'used': false},
         'BlasterWhiteWithOrange': {'used': false}
     },
@@ -109,6 +117,36 @@ var parts_inv = {
         'MissileLauncherWhiteWithYellow': {'used': false}
     }
 }
+
+#var parts_inv = {
+#    'body': [
+#        {'id': 1, 'tag': 'BodyWhite', 'used': false},
+#        {'id': 2, 'tag': 'BodyWhiteWithYellow', 'used': false},
+#        {'id': 3, 'tag': 'BodyWhiteWithOrange', 'used': false},
+#        {'id': 4, 'tag': 'BodyWhiteWithGreen', 'used': false}
+#    ],
+#    'generator': [
+#        {'id': 1, 'tag': 'GeneratorWhite', 'used': false},
+#        {'id': 2, 'tag': 'GeneratorWhiteWithYellow', 'used': false}
+#       ],
+#    'engines': [
+#        {'id': 1, 'tag': 'EnginesWhite', 'used': false},
+#        {'id': 2, 'tag': 'EnginesWhiteWithYellow', 'used': false}
+#    ],
+#    'shields': [
+#        {'id': 1, 'tag': 'ShieldsWhite', 'used': false},
+#        {'id': 2, 'tag': 'ShieldsWhiteWithYellow', 'used': false}
+#    ],
+#    'blaster': [
+#        {'id': 1, 'tag': 'BlasterWhite', 'used': false},
+#        {'id': 2, 'tag': 'BlasterWhiteWithYellow', 'used': false},
+#        {'id': 3, 'tag': 'BlasterWhiteWithOrange', 'used': false}
+#    ],
+#    'missilelauncher': [
+#        {'id': 1, 'tag': 'MissileLauncherWhite', 'used': false},
+#        {'id': 2, 'tag': 'MissileLauncherWhiteWithYellow', 'used': false}
+#    ]
+#}
 
 var boosts_inv = {
     'body': {
@@ -142,6 +180,39 @@ var boosts_inv = {
         'missilelauncher_boost_03': {'used': false}
     }
 }
+
+#var boosts_inv = {
+#    'body': [
+#        {'id': 1, 'tag': 'body_boost_01', 'used': false},
+#        {'id': 2, 'tag': 'body_boost_02', 'used': false},
+#        {'id': 3, 'tag': 'body_boost_03', 'used': false}
+#    ],
+#    'generator': [
+#        {'id': 1, 'tag': 'generator_boost_01', 'used': false},
+#        {'id': 2, 'tag': 'generator_boost_02', 'used': false},
+#        {'id': 3, 'tag': 'generator_boost_03', 'used': false}
+#    ],
+#    'engines': [
+#        {'id': 1, 'tag': 'engines_boost_01', 'used': false},
+#        {'id': 2, 'tag': 'engines_boost_02', 'used': false},
+#        {'id': 3, 'tag': 'engines_boost_03', 'used': false}
+#    ],
+#    'shields': [
+#        {'id': 1, 'tag': 'shields_boost_01', 'used': false},
+#        {'id': 2, 'tag': 'shields_boost_02', 'used': false},
+#        {'id': 3, 'tag': 'shields_boost_03', 'used': false}
+#    ],
+#    'blaster': [
+#        {'id': 1, 'tag': 'blaster_boost_01', 'used': false},
+#        {'id': 2, 'tag': 'blaster_boost_02', 'used': false},
+#        {'id': 3, 'tag': 'blaster_boost_03', 'used': false}
+#    ],
+#    'missilelauncher': [
+#        {'id': 1, 'tag': 'missilelauncher_boost_01', 'used': false},
+#        {'id': 2, 'tag': 'missilelauncher_boost_02', 'used': false},
+#        {'id': 3, 'tag': 'missilelauncher_boost_03', 'used': false}
+#    ]
+#}
 
 
 

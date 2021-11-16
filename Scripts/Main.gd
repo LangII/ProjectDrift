@@ -13,7 +13,6 @@ extends Node
 
 onready var controls = get_node('/root/Controls')
 
-
 ####################################################################################################
 
 
@@ -22,6 +21,12 @@ func _ready():
     
     ################################################################################################
     """ TESTING """
+#    print("TESTING")
+#    var word = 'something'
+#    for i in range(2):
+#        var word = String(i)
+#        print("word", word)
+#    print("word", word)
 
     """ comment in to do direct unisolated test of scene (comment out the rest of _ready()) """
     changeScene('res://Scenes/Menus/RigBuilder.tscn')
@@ -37,15 +42,21 @@ func _ready():
 
     ################################################################################################
 
-func _process(delta):
+func _process(_delta):
     if Input.is_action_just_released('ui_test'):
         print("\nTESTING...")
+        
+        ############################################################################################
+        """ TESTING """
+        
         print("\ncontrols.parts_inv:")
         for part_inv in controls.parts_inv:
             print("part_inv = %s : %s" % [part_inv, controls.parts_inv[part_inv]])
         print("\ncontrols.boosts_inv:")
         for boost_inv in controls.boosts_inv:
             print("boost_inv = %s : %s" % [boost_inv, controls.boosts_inv[boost_inv]])
+        
+        ############################################################################################
 
 func loadModule(_parent, _path):
     
