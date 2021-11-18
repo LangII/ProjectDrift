@@ -3,6 +3,9 @@
 
 extends HBoxContainer
 
+# Singletons.
+onready var controls = get_node('/root/Controls')
+
 # External node references.
 onready var rig_builder = get_node('/root/Main').find_node('RigBuilder', true, false)
 onready var inv_mod = get_node('/root/Main/InventoryMod')
@@ -36,16 +39,10 @@ onready var pop_up_prev_selection_name = ''
 onready var pop_up_cur_selection_name = ''
 onready var pop_up_prev_selection_name_trim = ''
 onready var pop_up_cur_selection_name_trim = ''
-
 onready var mouse_in_pop_up_menu = false
-var pop_up_menu = null
-var num_of_selections = 0
-
-var mouse_over_selection = ''
-
-
-
-onready var controls = get_node('/root/Controls')
+onready var pop_up_menu = null
+onready var num_of_selections = 0
+onready var mouse_over_selection = ''
 
 
 
@@ -54,8 +51,6 @@ onready var controls = get_node('/root/Controls')
                                                                                     ################
 
 func init(_layer, _type):
-    
-    """ UNDER CONSTRUCTION """
     
     branch_layer = _layer
     branch_type = _type
@@ -77,8 +72,6 @@ func init(_layer, _type):
     
     pop_up_menu = pop_up.get_children()[0]
     num_of_selections = pop_up_menu.get_item_count()
-#    print("pop_up_menu = ", pop_up_menu)
-#    print("pop_up_menu.get_item_count() = ", pop_up_menu.get_item_count())
     pop_up_menu.connect('mouse_entered', self, '_on_PartSelectionPopUp_mouse_entered')
     pop_up_menu.connect('mouse_exited', self, '_on_PartSelectionPopUp_mouse_exited')
 
@@ -124,30 +117,7 @@ func setFirstBodyBranchImgVis():
 
 
 
-func setPopUpOptions():
-    
-    """ UNDER CONSTRUCTION """
-    
-#    var options = []
-#    match branch_layer:
-#        'body':
-#            options = inv_mod.bodies
-#        'part':
-#            if   branch_type == 'generator':                  options = inv_mod.generators
-#            elif branch_type == 'engines':                    options = inv_mod.engines
-#            elif branch_type == 'shields':                    options = inv_mod.shields
-#            elif branch_type.begins_with('blaster'):          options = inv_mod.blasters
-#            elif branch_type.begins_with('missilelauncher'):  options = inv_mod.missilelaunchers
-#        'boost':
-#            if   branch_parent.branch_type == 'body':                       options = inv_mod.boosts['body']
-#            elif branch_parent.branch_type == 'generator':                  options = inv_mod.boosts['generator']
-#            elif branch_parent.branch_type == 'engines':                    options = inv_mod.boosts['engines']
-#            elif branch_parent.branch_type == 'shields':                    options = inv_mod.boosts['shields']
-#            elif branch_parent.branch_type.begins_with('blaster'):          options = inv_mod.boosts['blaster']
-#            elif branch_parent.branch_type.begins_with('missilelauncher'):  options = inv_mod.boosts['missilelauncher']
-#    if branch_layer == 'part':  options = removeExtraEmptyOptions(branch_type, options)
-#    pop_up.add_item('')
-#    for option in options:  pop_up.add_item(option)
+func setPopUpOptions() -> void:
     
     var options = {}
     match branch_layer:
@@ -158,13 +128,6 @@ func setPopUpOptions():
     pop_up.add_item('')
     for option in options.keys():  pop_up.add_item(option)
     
-#    var option_index = 1  # Start with 1 because 0 is '' that was just added.
-#    for option_key in options.keys():
-#        var option_value = options[option_key]
-#        pop_up.add_item(option_key)
-#        pop_up.set_item_disabled(option_index, option_value['used'])
-#        option_index += 1
-
 
 
 func removeExtraEmptyOptions(_branch_type, _options):
@@ -181,22 +144,6 @@ func removeExtraEmptyOptions(_branch_type, _options):
 
 
 func setPopUpOptionsDisabled() -> void:
-    
-#        var options = {}
-#    match branch_layer:
-#        'body', 'part':
-#            options = controls.parts_inv[trimBranchType(branch_type)]
-#        'boost':
-#            options = controls.boosts_inv[trimBranchType(branch_parent.branch_type)]
-#    pop_up.add_item('')
-#    for option in options:  pop_up.add_item(option)
-    
-#    var option_index = 1  # Start with 1 because 0 is '' that was just added.
-#    for option_key in options.keys():
-#        var option_value = options[option_key]
-#        pop_up.add_item(option_key)
-#        pop_up.set_item_disabled(option_index, option_value['used'])
-#        option_index += 1
     
     var which_inv = null
     var which_branch_type = null
@@ -219,12 +166,9 @@ func setPopUpOptionsDisabled() -> void:
 ####################################################################################################
                                                                         ###   AFTER INIT FUNCS   ###
                                                                         ############################
-
 """
 These funcs should not be called in init().  They should be called after all branches have been set.
 """
-
-
 
 func setBranchImages():
     
@@ -325,25 +269,16 @@ func _process(_delta):
 
 func handlePopUpSelectionMouseOver():
     
-    """ UNDER CONSTRUCTION """
-    
     var new_mouse_over_selection = getSelectionWithMouseOver()
     if mouse_over_selection != new_mouse_over_selection:
         mouse_over_selection = new_mouse_over_selection
         if mouse_over_selection:
+            
             var passing_type
             if branch_layer == 'boost':  passing_type = branch_parent.branch_type
             else:  passing_type = branch_type
-            var trimmed_type = trimBranchType(passing_type)
             
-#                rig_builder.updateDetailsDisplay(branch_layer, trimmed_type, mouse_over_selection)
-#            else:
-#                rig_builder.updateDetailsDisplay('part', trimmed_type, mouse_over_selection)
-
-#            print("\nbranch_layer = |%s|" % branch_layer)
-#            print("trimmed_type = |%s|" % trimmed_type)
-#            print("mouse_over_selection = |%s|" % mouse_over_selection)
-
+            var trimmed_type = trimBranchType(passing_type)
             var trimmed_selection = removePartTagUniqueId(mouse_over_selection)
 
             rig_builder.updateDetailsDisplay(branch_layer, trimmed_type, trimmed_selection)
@@ -387,8 +322,6 @@ func removePartTagUniqueId(_part_tag: String) -> String:
 
 func pre_queue_free() -> void:
     
-    """ UNDER CONSTRUCTION """
-
     if pop_up_cur_selection_name == '':  return
 
     var which_inv = null
@@ -403,58 +336,6 @@ func pre_queue_free() -> void:
     
     which_inv[which_branch_type][pop_up_cur_selection_name]['used'] = false
     
-    """
-    
-    parts_inv / boosts_inv <-> PartSelectionBox
-    
-    - add updatePopUpOptionsDisabled() in PartSelectionBox
-    - add updateAllPartSelectionBoxOptionsDisabled() in RigBuilder
-    
-    when PartSelectionBox init:
-        - call updateOptionsDisabled()
-    
-    when option selected in PartSelectionBox:
-        - set cur_name in inv to 'used'=true
-        - set prev_name in inv to 'used'=false
-        - call updateAllPartSelectionBoxOptionsDisabled()
-    
-    when PartSelectionBox queue_free:
-        - set cur_name in inv to 'used'=false
-        - call updateAllPartSelectionBoxOptionsDisabled()
-    
-    
-    """
-
-#    var which_inv = null
-#    var which_branch_type = null
-#    match branch_layer:
-#        'body', 'part':
-#            which_inv = controls.parts_inv
-#            which_branch_type = branch_type
-#        'boost':
-#            which_inv = controls.boosts_inv
-#            which_branch_type = branch_parent.branch_type
-
-#    for i in range(pop_up.get_item_count()):
-#
-#        if i == 0:  continue
-#        if not pop_up.is_item_disabled(i):  continue
-#
-#        var item_text = pop_up.get_item_text(i)
-#
-##        which_inv[trimBranchType(which_branch_type)][item_text]['used'] = false
-#
-#        match branch_layer:
-#            'body', 'part':
-#                controls.parts_inv[trimBranchType(branch_type)][item_text]['used'] = false
-#            'boost':
-#                controls.boosts_inv[trimBranchType(branch_parent.branch_type)][item_text]['used'] = false
-#
-#    print("\ncontrols.parts_inv['generator'] = ", controls.parts_inv['generator'])
-
-
-    
-
 
 
 ####################################################################################################
@@ -462,8 +343,6 @@ func pre_queue_free() -> void:
                                                                                  ###################
 
 func _on_PartSelectionPopUp_item_selected(id):
-    
-    """ UNDER CONSTRUCTION """
     
     """
     I had to incorporate a delay in the tree menu updates.  This possibly has to do with threading
@@ -502,8 +381,7 @@ func _on_PartSelectionPopUp_item_selected(id):
         rig_builder.insertSeparators()
         rig_builder.buildRigModel()
         rig_builder.updateStatsDisplay()
-        
-        rig_builder.updateAllPopUpOptionsDisabled()  #
+        rig_builder.updateAllPopUpOptionsDisabled() 
     
     else:
         rig_builder.deleteSeparators()
@@ -524,8 +402,7 @@ func _on_Timer3_timeout():
     rig_builder.insertSeparators()
     rig_builder.buildRigModel()
     rig_builder.updateStatsDisplay()
-
-    rig_builder.updateAllPopUpOptionsDisabled()  #
+    rig_builder.updateAllPopUpOptionsDisabled()
 
 
 
@@ -540,6 +417,35 @@ func _on_PartSelectionPopUp_mouse_exited():
 ####################################################################################################
                                                                                 ###   OBSOLETE   ###
                                                                                 ####################
+
+### from setPopUpOptions()
+#    var options = []
+#    match branch_layer:
+#        'body':
+#            options = inv_mod.bodies
+#        'part':
+#            if   branch_type == 'generator':                  options = inv_mod.generators
+#            elif branch_type == 'engines':                    options = inv_mod.engines
+#            elif branch_type == 'shields':                    options = inv_mod.shields
+#            elif branch_type.begins_with('blaster'):          options = inv_mod.blasters
+#            elif branch_type.begins_with('missilelauncher'):  options = inv_mod.missilelaunchers
+#        'boost':
+#            if   branch_parent.branch_type == 'body':                       options = inv_mod.boosts['body']
+#            elif branch_parent.branch_type == 'generator':                  options = inv_mod.boosts['generator']
+#            elif branch_parent.branch_type == 'engines':                    options = inv_mod.boosts['engines']
+#            elif branch_parent.branch_type == 'shields':                    options = inv_mod.boosts['shields']
+#            elif branch_parent.branch_type.begins_with('blaster'):          options = inv_mod.boosts['blaster']
+#            elif branch_parent.branch_type.begins_with('missilelauncher'):  options = inv_mod.boosts['missilelauncher']
+#    if branch_layer == 'part':  options = removeExtraEmptyOptions(branch_type, options)
+#    pop_up.add_item('')
+#    for option in options:  pop_up.add_item(option)
+#    var option_index = 1  # Start with 1 because 0 is '' that was just added.
+#    for option_key in options.keys():
+#        var option_value = options[option_key]
+#        pop_up.add_item(option_key)
+#        pop_up.set_item_disabled(option_index, option_value['used'])
+#        option_index += 1
+
 
 #    if branch_layer == 'separator':
 #        find_node('Branch2*', true, false).visible = false
@@ -561,10 +467,6 @@ func _on_PartSelectionPopUp_mouse_exited():
 #
 #    find_node('Branch1*', true, false).visible = branch_visibilities[0]
 #    find_node('Branch2*', true, false).visible = branch_visibilities[1]
-
-
-
-
 
 
 

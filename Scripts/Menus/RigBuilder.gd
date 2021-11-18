@@ -49,8 +49,6 @@ func _ready():
     
     setTabs()
     
-#    loadInventory()
-    
     insertSelectionBox(0, 'body', 'body')
 
 
@@ -158,7 +156,7 @@ func buildRigModel():
     deleteCurrentRigModel()
     
     rig_data_pack = getRigDataPack()
-    print(rig_data_pack)
+#    print(rig_data_pack)
     
     if not 'body' in rig_data_pack:  return
     
@@ -166,11 +164,7 @@ func buildRigModel():
     
     pedestal.add_child(body_model)
     
-#    print("")  # <-
-    
     for part_type in rig_data_pack.keys():
-        
-#        print("part_type = ", part_type)
         
         if part_type == 'body':  continue
         
@@ -222,8 +216,6 @@ func getRigDataPack():
         if not branch.pop_up_cur_selection_name_trim:  continue
         var parent = branch.branch_parent
         rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_cur_selection_name_trim ]
-    
-#    print("rig_data_pack_ = ", rig_data_pack_)
     
     return rig_data_pack_
 
@@ -317,16 +309,11 @@ func appendBoostModelsToPartModel(_part_model, _part_type, _part_data_pack):
 
 
 
-#- add setPopUpOptionsDisabled() in PartSelectionBox
-#- add updateAllPartSelectionBoxOptionsDisabled() in RigBuilder
 func updateAllPopUpOptionsDisabled() -> void:
-    
-    """ UNDER CONSTRUCTION """
     
     for branch in tree.get_children():
         if branch.branch_layer == 'separator':  continue
         branch.setPopUpOptionsDisabled()
-#        print("branch.branch_layer = %s | branch.branch_type = %s" % [branch.branch_layer, branch.branch_type])
 
 
 
@@ -335,12 +322,11 @@ func updateAllPopUpOptionsDisabled() -> void:
                                                                                    #################
 
 func clearBranchesForNewBody():
-    
-    """ UNDER CONSTRUCTION """
 
     for each in tree.get_children():
         if each.branch_layer != 'body':
-            each.pre_queue_free() ; each.queue_free()
+            each.pre_queue_free()
+            each.queue_free()
 
 
 
@@ -495,10 +481,6 @@ func minimumRequirementsMet():
 
 
 
-
-    
-
-
 ####################################################################################################
                                                                            ###   STATS DISPLAY   ###
                                                                            #########################
@@ -507,8 +489,6 @@ func updateStatsDisplay():
     
     deleteAllInStatsDisplay()
     
-#    print(rig_data_pack)
-
     for part_type in rig_data_pack.keys():
         var part_tag = rig_data_pack[part_type]['part_tag']
         var boosts = rig_data_pack[part_type]['boosts']

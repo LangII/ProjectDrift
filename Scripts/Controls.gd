@@ -34,44 +34,45 @@ var gameplay = {
     'number_of_targets':0, # (currently) 64 or less
     'vehicle_rig': {
 
-#        'body': {'part_tag': 'BodyWhite', 'boosts': []}, # 0
-#        'body': {'part_tag': 'BodyWhiteWithYellow', 'boosts': ['body_boost_03']}, # 1
-#        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': ['body_boost_02', 'body_boost_01']}, # 2
-        'body': {'part_tag': 'BodyWhiteWithGreen', 'boosts': []}, # 0
+##        'body': {'part_tag': 'BodyWhite', 'boosts': []}, # 0
+##        'body': {'part_tag': 'BodyWhiteWithYellow', 'boosts': ['body_boost_03']}, # 1
+##        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': ['body_boost_02', 'body_boost_01']}, # 2
+#        'body': {'part_tag': 'BodyWhiteWithGreen', 'boosts': []}, # 0
+#
+##        'generator': {'part_tag': 'GeneratorWhite', 'boosts': ['generator_boost_01']}, # 1
+#        'generator': {'part_tag': 'GeneratorWhiteWithYellow', 'boosts': ['generator_boost_03', 'generator_boost_02']}, # 2
+#
+#        'engines': {'part_tag': 'EnginesWhite', 'boosts': ['']}, # 1
+##        'engines': {'part_tag': 'EnginesWhiteWithYellow', 'boosts': []}, # 0
+#
+#        'shields': {'part_tag': 'ShieldsWhite', 'boosts': ['shields_boost_01', 'shields_boost_03']}, # 2
+##        'shields': {'part_tag': 'ShieldsWhiteWithYellow', 'boosts': []}, # 0
+##        'shields': {'part_tag': '', 'boosts': []}, # 0
+#
+##        'blaster_1': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_01']}, # 1
+#        'blaster_1': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['blaster_boost_01', 'blaster_boost_03']}, # 2
+##        'blaster_1': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
+##        'blaster_1': {'part_tag': '', 'boosts': []}, # 0
+#
+#        'blaster_2': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_02']}, # 1
+##        'blaster_2': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['', 'blaster_boost_02']}, # 2
+##        'blaster_2': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
+##        'blaster_2': {'part_tag': '', 'boosts': []}, # 0
+#
+##        'blaster_3': {'part_tag': 'BlasterWhite', 'boosts': []}, # 1
+##        'blaster_3': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': []}, # 2
+#        'blaster_3': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
+##        'blaster_3': {'part_tag': '', 'boosts': []}, # 0
+#
+##        'missilelauncher_1': {'part_tag': 'MissileLauncherWhite', 'boosts': ['missilelauncher_boost_01']}, # 1
+#        'missilelauncher_1': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': ['missilelauncher_boost_03', 'missilelauncher_boost_01']}, # 2
+##        'missilelauncher_1': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
+#
+#        'missilelauncher_2': {'part_tag': 'MissileLauncherWhite', 'boosts': []}, # 1
+##        'missilelauncher_2': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': []}, # 2
+##        'missilelauncher_2': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
 
-#        'generator': {'part_tag': 'GeneratorWhite', 'boosts': ['generator_boost_01']}, # 1
-        'generator': {'part_tag': 'GeneratorWhiteWithYellow', 'boosts': ['generator_boost_03', 'generator_boost_02']}, # 2
-
-        'engines': {'part_tag': 'EnginesWhite', 'boosts': ['']}, # 1
-#        'engines': {'part_tag': 'EnginesWhiteWithYellow', 'boosts': []}, # 0
-
-        'shields': {'part_tag': 'ShieldsWhite', 'boosts': ['shields_boost_01', 'shields_boost_03']}, # 2
-#        'shields': {'part_tag': 'ShieldsWhiteWithYellow', 'boosts': []}, # 0
-#        'shields': {'part_tag': '', 'boosts': []}, # 0
-
-#        'blaster_1': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_01']}, # 1
-        'blaster_1': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['blaster_boost_01', 'blaster_boost_03']}, # 2
-#        'blaster_1': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
-#        'blaster_1': {'part_tag': '', 'boosts': []}, # 0
-
-        'blaster_2': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_02']}, # 1
-#        'blaster_2': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['', 'blaster_boost_02']}, # 2
-#        'blaster_2': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
-#        'blaster_2': {'part_tag': '', 'boosts': []}, # 0
-
-#        'blaster_3': {'part_tag': 'BlasterWhite', 'boosts': []}, # 1
-#        'blaster_3': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': []}, # 2
-        'blaster_3': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
-#        'blaster_3': {'part_tag': '', 'boosts': []}, # 0
-
-#        'missilelauncher_1': {'part_tag': 'MissileLauncherWhite', 'boosts': ['missilelauncher_boost_01']}, # 1
-        'missilelauncher_1': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': ['missilelauncher_boost_03', 'missilelauncher_boost_01']}, # 2
-#        'missilelauncher_1': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
-
-        'missilelauncher_2': {'part_tag': 'MissileLauncherWhite', 'boosts': []}, # 1
-#        'missilelauncher_2': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': []}, # 2
-#        'missilelauncher_2': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
-    },
+    }
 }
 
 
@@ -118,36 +119,6 @@ var parts_inv = {
     }
 }
 
-#var parts_inv = {
-#    'body': [
-#        {'id': 1, 'tag': 'BodyWhite', 'used': false},
-#        {'id': 2, 'tag': 'BodyWhiteWithYellow', 'used': false},
-#        {'id': 3, 'tag': 'BodyWhiteWithOrange', 'used': false},
-#        {'id': 4, 'tag': 'BodyWhiteWithGreen', 'used': false}
-#    ],
-#    'generator': [
-#        {'id': 1, 'tag': 'GeneratorWhite', 'used': false},
-#        {'id': 2, 'tag': 'GeneratorWhiteWithYellow', 'used': false}
-#       ],
-#    'engines': [
-#        {'id': 1, 'tag': 'EnginesWhite', 'used': false},
-#        {'id': 2, 'tag': 'EnginesWhiteWithYellow', 'used': false}
-#    ],
-#    'shields': [
-#        {'id': 1, 'tag': 'ShieldsWhite', 'used': false},
-#        {'id': 2, 'tag': 'ShieldsWhiteWithYellow', 'used': false}
-#    ],
-#    'blaster': [
-#        {'id': 1, 'tag': 'BlasterWhite', 'used': false},
-#        {'id': 2, 'tag': 'BlasterWhiteWithYellow', 'used': false},
-#        {'id': 3, 'tag': 'BlasterWhiteWithOrange', 'used': false}
-#    ],
-#    'missilelauncher': [
-#        {'id': 1, 'tag': 'MissileLauncherWhite', 'used': false},
-#        {'id': 2, 'tag': 'MissileLauncherWhiteWithYellow', 'used': false}
-#    ]
-#}
-
 var boosts_inv = {
     'body': {
         'body_boost_01': {'used': false},
@@ -180,39 +151,6 @@ var boosts_inv = {
         'missilelauncher_boost_03': {'used': false}
     }
 }
-
-#var boosts_inv = {
-#    'body': [
-#        {'id': 1, 'tag': 'body_boost_01', 'used': false},
-#        {'id': 2, 'tag': 'body_boost_02', 'used': false},
-#        {'id': 3, 'tag': 'body_boost_03', 'used': false}
-#    ],
-#    'generator': [
-#        {'id': 1, 'tag': 'generator_boost_01', 'used': false},
-#        {'id': 2, 'tag': 'generator_boost_02', 'used': false},
-#        {'id': 3, 'tag': 'generator_boost_03', 'used': false}
-#    ],
-#    'engines': [
-#        {'id': 1, 'tag': 'engines_boost_01', 'used': false},
-#        {'id': 2, 'tag': 'engines_boost_02', 'used': false},
-#        {'id': 3, 'tag': 'engines_boost_03', 'used': false}
-#    ],
-#    'shields': [
-#        {'id': 1, 'tag': 'shields_boost_01', 'used': false},
-#        {'id': 2, 'tag': 'shields_boost_02', 'used': false},
-#        {'id': 3, 'tag': 'shields_boost_03', 'used': false}
-#    ],
-#    'blaster': [
-#        {'id': 1, 'tag': 'blaster_boost_01', 'used': false},
-#        {'id': 2, 'tag': 'blaster_boost_02', 'used': false},
-#        {'id': 3, 'tag': 'blaster_boost_03', 'used': false}
-#    ],
-#    'missilelauncher': [
-#        {'id': 1, 'tag': 'missilelauncher_boost_01', 'used': false},
-#        {'id': 2, 'tag': 'missilelauncher_boost_02', 'used': false},
-#        {'id': 3, 'tag': 'missilelauncher_boost_03', 'used': false}
-#    ]
-#}
 
 
 
