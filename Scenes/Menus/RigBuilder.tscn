@@ -369,6 +369,7 @@ render_target_update_mode = 3
 [node name="PedestalCamera*" type="Camera" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/PanelContainer/MarginContainer3/PanelContainer/MarginContainer/ViewportContainer/Viewport"]
 transform = Transform( 1, 0, 0, 0, 0.998359, 0.0572678, 0, -0.0572678, 0.998359, 0, 2.27147, 0 )
 cull_mask = 1
+fov = 40.0
 
 [node name="Background*" type="MeshInstance" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/PanelContainer/MarginContainer3/PanelContainer/MarginContainer/ViewportContainer/Viewport/PedestalCamera*"]
 transform = Transform( 60, 0, 0, 0, -0.0572678, -19.9672, 0, 0.998359, -1.14536, 0, 0.739253, -12.8875 )
@@ -377,7 +378,7 @@ mesh = SubResource( 15 )
 material/0 = null
 
 [node name="PedestalPos*" type="Position3D" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*/PanelContainer/MarginContainer3/PanelContainer/MarginContainer/ViewportContainer/Viewport/PedestalCamera*"]
-transform = Transform( 1, 0, 0, 0, 0.925236, -0.379392, 0, 0.379392, 0.925236, 0, 0.185334, -3.23096 )
+transform = Transform( 1, 0, 0, 0, 0.925236, -0.379392, 0, 0.379392, 0.925236, 0, 0.244993, -4.27101 )
 
 [node name="StatsScrollContainer" type="ScrollContainer" parent="VBoxContainer/BodyContainer*/BodyContainer___/VSplitContainer/ModelTabContainer*"]
 visible = false
