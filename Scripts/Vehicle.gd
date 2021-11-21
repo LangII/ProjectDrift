@@ -248,8 +248,8 @@ func setHasLaunchers():
             has_launchers = true
             break
     
-    print("launcher_tags = ", launcher_tags)
-    print("has_launchers = ", has_launchers)
+#    print("launcher_tags = ", launcher_tags)
+#    print("has_launchers = ", has_launchers)
 
 
 

@@ -205,7 +205,13 @@ func getRigDataPack():
     # Build parts of data pack.
     for branch in tree.get_children():
         if not branch.branch_layer in ['part', 'body']:  continue
-        if not branch.pop_up_cur_selection_name_trim:  continue
+        
+        """ Need to review further, but looks like to avoid the 'shields' missing from Dictionary
+        error I need to build a complete rig_data_pack including empty parts.  Also just noticed
+        that boosts has this line uncommented.  So, I don't collect boosts empty tags but I do
+        collect parts empty tags.  Need to review further. """
+#        if not branch.pop_up_cur_selection_name_trim:  continue
+        
         rig_data_pack_[branch.branch_type] = {
             'part_tag': branch.pop_up_cur_selection_name_trim, 'boosts': []
         }
@@ -216,6 +222,8 @@ func getRigDataPack():
         if not branch.pop_up_cur_selection_name_trim:  continue
         var parent = branch.branch_parent
         rig_data_pack_[parent.branch_type]['boosts'] += [ branch.pop_up_cur_selection_name_trim ]
+    
+#    print(rig_data_pack_)
     
     return rig_data_pack_
 
@@ -697,6 +705,11 @@ func _on_PlayButton_pressed():
         return
     prepRigDataPackForPlay()
     controls.gameplay['vehicle_rig'] = rig_data_pack
+    
+    print("\n")
+    print(rig_data_pack)
+    print("\n")
+    
     main.changeScene('res://Scenes/Functional/Gameplay.tscn')
 
 

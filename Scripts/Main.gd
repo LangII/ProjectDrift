@@ -29,8 +29,12 @@ func _ready():
 #    print("word", word)
 
     """ comment in to do direct unisolated test of scene (comment out the rest of _ready()) """
-    changeScene('res://Scenes/Menus/RigBuilder.tscn')
+
+#    changeScene('res://Scenes/Menus/RigBuilder.tscn')
 #    changeScene('res://Scenes/Menus/ArenaSelection.tscn')
+    changeScene('res://Scenes/Functional/Gameplay.tscn')
+    
+    
     
 #    print("\n>>> [%s] scripted scene entering tree" % name)
 #    if controls.TESTING_no_menu:
@@ -49,12 +53,7 @@ func _process(_delta):
         ############################################################################################
         """ TESTING """
         
-        print("\ncontrols.parts_inv:")
-        for part_inv in controls.parts_inv:
-            print("part_inv = %s : %s" % [part_inv, controls.parts_inv[part_inv]])
-        print("\ncontrols.boosts_inv:")
-        for boost_inv in controls.boosts_inv:
-            print("boost_inv = %s : %s" % [boost_inv, controls.boosts_inv[boost_inv]])
+#        print()
         
         ############################################################################################
 
