@@ -698,7 +698,7 @@ func updateDetailsDisplay(_type, _branch, _selection):
                                                                                  ###   SIGNALS   ###
                                                                                  ###################
 
-func _on_PlayButton_pressed():
+func _on_StartMatchButton_pressed():
     
     if not minimumRequirementsMet():
         min_req_popup.popup_centered()
@@ -972,6 +972,9 @@ func queue_free():
 #func selectPart(_type, _selection):
 #
 #    pass
+
+
+
 
 
 

@@ -443,57 +443,57 @@ margin_bottom = 54.0
 rect_min_size = Vector2( 0, 40 )
 alignment = 2
 
-[node name="PlayButtonContainer*" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer"]
-margin_left = 1148.0
+[node name="StartMatchButtonContainer*" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer"]
+margin_left = 1116.0
 margin_top = 9.0
 margin_right = 1236.0
 margin_bottom = 44.0
-rect_min_size = Vector2( 0, 35 )
+rect_min_size = Vector2( 120, 35 )
 size_flags_vertical = 4
 custom_styles/panel = SubResource( 17 )
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/PlayButtonContainer*"]
-margin_right = 88.0
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*"]
+margin_right = 120.0
 margin_bottom = 35.0
 custom_constants/margin_right = 1
 custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/PlayButtonContainer*/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
-margin_right = 87.0
+margin_right = 119.0
 margin_bottom = 34.0
 custom_styles/panel = SubResource( 18 )
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/PlayButtonContainer*/MarginContainer/PanelContainer"]
-margin_right = 86.0
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer"]
+margin_right = 118.0
 margin_bottom = 33.0
 custom_constants/margin_right = 2
 custom_constants/margin_top = 2
 custom_constants/margin_left = 2
 custom_constants/margin_bottom = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/PlayButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
-margin_right = 84.0
+margin_right = 116.0
 margin_bottom = 31.0
 custom_styles/panel = SubResource( 19 )
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/PlayButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
-margin_right = 82.0
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
+margin_right = 114.0
 margin_bottom = 29.0
 custom_constants/margin_right = 1
 custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PlayButton*" type="Button" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/PlayButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="StartMatchButton*" type="Button" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
-margin_right = 81.0
+margin_right = 113.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 80, 0 )
 custom_styles/hover = SubResource( 20 )
@@ -502,7 +502,7 @@ custom_styles/normal = SubResource( 22 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
-text = "PLAY"
+text = "START MATCH"
 
 [node name="MinimumRequirementsPopUp*" type="AcceptDialog" parent="."]
 anchor_left = 0.5
@@ -534,4 +534,4 @@ window_title = "Are you sure?"
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 24 )
 
-[connection signal="pressed" from="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/PlayButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PlayButton*" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/StartMatchButton*" to="." method="_on_StartMatchButton_pressed"]

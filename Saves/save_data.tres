@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/SaveData.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+_inv_bodies_ = [ "TEST_BodyWhite" ]
+_inv_generators_ = [  ]
+_inv_engines_ = [  ]
+_inv_shields_ = [  ]
+_inv_blasters_ = [  ]
+_inv_missilelaunchers_ = [  ]
+_inv_body_boosts_ = [  ]
+_inv_generator_boosts_ = [  ]
+_inv_engines_boosts_ = [  ]
+_inv_shields_boosts_ = [  ]
+_inv_blaster_boosts_ = [  ]
+_inv_missilelauncher_boosts_ = [  ]
