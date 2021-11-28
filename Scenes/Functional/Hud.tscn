@@ -10,11 +10,11 @@
 [ext_resource path="res://Textures/ltblue_repl_bar_hor_01.png" type="Texture" id=8]
 [ext_resource path="res://Textures/blue_repl_bar_hor_01.png" type="Texture" id=9]
 [ext_resource path="res://Textures/grey_repl_bar_hor_01.png" type="Texture" id=10]
-[ext_resource path="res://Scenes/Functional/Expandables/Blaster1Box.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/Functional/Reusables/Blaster1Box.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Textures/grey_repl_bar_hor_thin.png" type="Texture" id=12]
 [ext_resource path="res://Textures/ltblue_repl_bar_hor_thin.png" type="Texture" id=13]
 [ext_resource path="res://Textures/white_repl_bar_hor_thin.png" type="Texture" id=14]
-[ext_resource path="res://Scenes/Functional/Expandables/Launcher1Box.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/Functional/Reusables/Launcher1Box.tscn" type="PackedScene" id=15]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.490196, 0.490196, 0.490196, 1 )

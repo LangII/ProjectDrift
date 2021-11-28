@@ -1,10 +1,19 @@
 
 extends Node
 
+# Singletons.
+onready var main = get_node('/root/Main')
+
 export(Script) var save_data
 
 
 ####################################################################################################
+
+
+func _ready():
+    
+    main.scriptedScenePrint(name)
+
 
 
 func saveDataReplace(_property_value:Dictionary) -> void:
@@ -26,6 +35,7 @@ func saveDataArrayAppend(_property_value: Dictionary):
 func getSavedData(_properties:Array=[]) -> Dictionary:
     
     var saved_data_dict_ = {}
+    
     var saved_data_res = load('res://Saves/save_data.tres')
     var saved_properties = saved_data_res.get_property_list()
     

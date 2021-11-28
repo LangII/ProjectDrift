@@ -75,7 +75,7 @@ var targets_array
 
 func _ready():
     
-    print("\n>>> [%s] scripted scene entering tree" % name)
+    main.scriptedScenePrint(name)
     
     # Open temp mods.
     var boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')

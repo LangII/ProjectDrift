@@ -11,6 +11,7 @@ dependent on user input of vehicle body and parts selection.
 extends Control
 
 # Singletons.
+onready var main = get_node('/root/Main')
 onready var controls =  get_node('/root/Controls')
 onready var gameplay =  get_node('/root/Main/Gameplay')
 
@@ -131,7 +132,7 @@ onready var focus_obj_pos = Vector3()
 
 func _ready():
     
-    print("\n>>> [%s] scripted scene entering tree" % name)
+    main.scriptedScenePrint(name)
     
     # Set initial BottomLeft values.
     speed_prog_bar.max_value =      MAX_SPEED
@@ -215,7 +216,7 @@ func adjustNodesForBlasters():
         blaster_counter += 1
         if blaster_counter == 1:  continue
         # Get container scene and adjust names of node children per counter.
-        var blaster_box = preload('res://Scenes/Functional/Expandables/Blaster1Box.tscn').instance()
+        var blaster_box = preload('res://Scenes/Functional/Reusables/Blaster1Box.tscn').instance()
         var blaster_box_nodes = [
             'Blaster%sCurrentContainer*', 'Blaster%sText*', 'Blaster%sProgBar*',
             'Blaster%sBoltEnergyText*'
@@ -234,7 +235,7 @@ func adjustNodesForLaunchers():
     for launcher in launcher_tags:
         launcher_counter += 1
         if launcher_counter == 1:  continue
-        var launcher_box = preload('res://Scenes/Functional/Expandables/Launcher1Box.tscn').instance()
+        var launcher_box = preload('res://Scenes/Functional/Reusables/Launcher1Box.tscn').instance()
         var launcher_box_nodes = [
             'Launcher%sCurrentContainer*', 'Launcher%sText*', 'Launcher%sProgBar*',
             'Launcher%sRoundDmgText*'

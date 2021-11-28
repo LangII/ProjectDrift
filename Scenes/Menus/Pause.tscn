@@ -2,32 +2,32 @@
 
 [ext_resource path="res://Scripts/Menus/Pause.gd" type="Script" id=1]
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=2]
 content_margin_left = 15.0
 content_margin_right = 15.0
 content_margin_top = 15.0
 content_margin_bottom = 15.0
 bg_color = Color( 0.239216, 0.227451, 0.270588, 1 )
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 1 )
-
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 1, 1, 1, 1 )
-
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+bg_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0.784314, 0.784314, 0.784314, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.784314, 0.784314, 0.784314, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="Shader" id=9]
@@ -40,6 +40,7 @@ bg_color = Color( 1, 1, 1, 1 )
 
 [node name="Pause" type="Control"]
 pause_mode = 2
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
@@ -47,7 +48,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="GreyOutPanelContainer" type="PanelContainer" parent="."]
 self_modulate = Color( 0, 0, 0, 0.392157 )
 margin_right = 1280.0
 margin_bottom = 720.0
@@ -56,7 +57,6 @@ __meta__ = {
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-self_modulate = Color( 0, 0, 0, 0.392157 )
 margin_top = 1.49829
 margin_right = 1280.0
 margin_bottom = 721.498
@@ -68,24 +68,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+[node name="PauseMenuMarginContainer" type="MarginContainer" parent="MarginContainer"]
 margin_left = 350.0
 margin_top = 200.0
 margin_right = 930.0
-margin_bottom = 520.0
+margin_bottom = 519.0
 custom_constants/margin_right = 1
 custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PauseMenuMarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 579.0
-margin_bottom = 319.0
-custom_styles/panel = SubResource( 7 )
+margin_bottom = 318.0
+custom_styles/panel = SubResource( 1 )
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer"]
 margin_right = 578.0
 margin_bottom = 318.0
 custom_constants/margin_right = 3
@@ -93,15 +93,15 @@ custom_constants/margin_top = 3
 custom_constants/margin_left = 3
 custom_constants/margin_bottom = 3
 
-[node name="PauseMenuScrollContainer" type="ScrollContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="PauseMenuScrollContainer" type="ScrollContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer"]
 margin_left = 3.0
 margin_top = 3.0
 margin_right = 575.0
 margin_bottom = 315.0
-custom_styles/bg = SubResource( 8 )
+custom_styles/bg = SubResource( 2 )
 scroll_horizontal_enabled = false
 
-[node name="PauseMenuVBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer"]
+[node name="PauseMenuVBoxContainer" type="VBoxContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer"]
 margin_left = 15.0
 margin_top = 15.0
 margin_right = 557.0
@@ -110,18 +110,18 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 15
 
-[node name="RestartMatchCenterContainer" type="CenterContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer"]
+[node name="RestartMatchCenterContainer" type="CenterContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer"]
 margin_right = 542.0
 margin_bottom = 35.0
 
-[node name="RestartMatchButtonContainer*" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer"]
+[node name="RestartMatchButtonContainer*" type="PanelContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer"]
 margin_left = 202.0
 margin_right = 340.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 138, 35 )
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 3 )
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*"]
 margin_right = 138.0
 margin_bottom = 35.0
 custom_constants/margin_right = 1
@@ -129,14 +129,14 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 137.0
 margin_bottom = 34.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 4 )
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer/PanelContainer"]
 margin_right = 136.0
 margin_bottom = 33.0
 custom_constants/margin_right = 2
@@ -144,14 +144,14 @@ custom_constants/margin_top = 2
 custom_constants/margin_left = 2
 custom_constants/margin_bottom = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 134.0
 margin_bottom = 31.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 5 )
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
 margin_right = 132.0
 margin_bottom = 29.0
 custom_constants/margin_right = 1
@@ -159,33 +159,33 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="RestartMatchButton*" type="Button" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="RestartMatchButton*" type="Button" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 131.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 80, 0 )
-custom_styles/hover = SubResource( 4 )
-custom_styles/pressed = SubResource( 5 )
-custom_styles/normal = SubResource( 6 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "RESTART MATCH"
 
-[node name="ReturnToRigBuilderCenterContainer" type="CenterContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer"]
+[node name="ReturnToRigBuilderCenterContainer" type="CenterContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer"]
 margin_top = 50.0
 margin_right = 542.0
 margin_bottom = 85.0
 
-[node name="ReturnToRigBuilderButtonContainer*" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer"]
+[node name="ReturnToRigBuilderButtonContainer*" type="PanelContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer"]
 margin_left = 171.0
 margin_right = 371.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 200, 35 )
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 3 )
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*"]
 margin_right = 200.0
 margin_bottom = 35.0
 custom_constants/margin_right = 1
@@ -193,14 +193,14 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 199.0
 margin_bottom = 34.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 4 )
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer/PanelContainer"]
 margin_right = 198.0
 margin_bottom = 33.0
 custom_constants/margin_right = 2
@@ -208,14 +208,14 @@ custom_constants/margin_top = 2
 custom_constants/margin_left = 2
 custom_constants/margin_bottom = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 196.0
 margin_bottom = 31.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 5 )
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
 margin_right = 194.0
 margin_bottom = 29.0
 custom_constants/margin_right = 1
@@ -223,48 +223,48 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="ReturnToRigBuilderButton*" type="Button" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="ReturnToRigBuilderButton*" type="Button" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 193.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 80, 0 )
-custom_styles/hover = SubResource( 4 )
-custom_styles/pressed = SubResource( 5 )
-custom_styles/normal = SubResource( 6 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "RETURN TO RIG BUILDER"
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer"]
 material = SubResource( 10 )
 margin_top = 100.0
 margin_right = 542.0
-margin_bottom = 204.0
+margin_bottom = 130.0
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 11 )
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer"]
 margin_right = 542.0
-margin_bottom = 104.0
+margin_bottom = 30.0
 custom_constants/margin_right = 1
 custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 541.0
-margin_bottom = 103.0
+margin_bottom = 29.0
 custom_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 540.0
 margin_bottom = 28.0
 
-[node name="Label" type="Label" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
+[node name="Label" type="Label" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 533.0
@@ -273,65 +273,13 @@ text = "INPUT CONTROLS"
 align = 1
 valign = 1
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="InputControlsGridContainer*" type="GridContainer" parent="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 margin_top = 28.0
 margin_right = 540.0
-margin_bottom = 102.0
+margin_bottom = 28.0
 custom_constants/vseparation = 1
 custom_constants/hseparation = 1
 columns = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
-margin_right = 100.0
-margin_bottom = 28.0
-rect_min_size = Vector2( 100, 0 )
-
-[node name="Label" type="Label" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/PanelContainer"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 93.0
-margin_bottom = 21.0
-size_flags_vertical = 1
-text = "W-key"
-
-[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
-margin_left = 101.0
-margin_right = 540.0
-margin_bottom = 28.0
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/PanelContainer2"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 432.0
-margin_bottom = 21.0
-size_flags_vertical = 1
-text = "Thrust forward"
-
-[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
-margin_top = 29.0
-margin_right = 100.0
-margin_bottom = 74.0
-
-[node name="Label" type="Label" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/PanelContainer3"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 93.0
-margin_bottom = 38.0
-size_flags_vertical = 1
-text = "TAB-key"
-
-[node name="PanelContainer4" type="PanelContainer" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
-margin_left = 101.0
-margin_top = 29.0
-margin_right = 540.0
-margin_bottom = 74.0
-
-[node name="Label" type="Label" parent="MarginContainer/MarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/PanelContainer4"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 432.0
-margin_bottom = 38.0
-size_flags_vertical = 1
-text = "Do things and other things more text some more text keep going looking for the wrap.  There it is "
-autowrap = true
+[connection signal="pressed" from="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/RestartMatchCenterContainer/RestartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/RestartMatchButton*" to="." method="_on_RestartMatchButton_pressed"]
+[connection signal="pressed" from="MarginContainer/PauseMenuMarginContainer/PanelContainer/MarginContainer/PauseMenuScrollContainer/PauseMenuVBoxContainer/ReturnToRigBuilderCenterContainer/ReturnToRigBuilderButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/ReturnToRigBuilderButton*" to="." method="_on_ReturnToRigBuilderButton_pressed"]

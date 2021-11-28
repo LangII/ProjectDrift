@@ -37,8 +37,8 @@ var gameplay = {
 #        'body': {'part_tag': 'BodyWhite', 'boosts': []}, # 0
 #        'body': {'part_tag': 'BodyWhiteWithYellow', 'boosts': ['body_boost_03']}, # 1
 #        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': ['body_boost_02', 'body_boost_01']}, # 2
-        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': []}, # 2
-#        'body': {'part_tag': 'BodyWhiteWithGreen', 'boosts': []}, # 0
+#        'body': {'part_tag': 'BodyWhiteWithOrange', 'boosts': []}, # 2
+        'body': {'part_tag': 'BodyWhiteWithGreen', 'boosts': []}, # 0
 
 #        'generator': {'part_tag': 'GeneratorWhite', 'boosts': ['generator_boost_01']}, # 1
         'generator': {'part_tag': 'GeneratorWhite', 'boosts': []}, # 1
@@ -54,20 +54,20 @@ var gameplay = {
 #        'shields': {'part_tag': '', 'boosts': []}, # 0
 
 #        'blaster_1': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_01']}, # 1
-#        'blaster_1': {'part_tag': 'BlasterWhite', 'boosts': ['']}, # 1
+        'blaster_1': {'part_tag': 'BlasterWhite', 'boosts': []}, # 1
 #        'blaster_1': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['blaster_boost_01', 'blaster_boost_03']}, # 2
 #        'blaster_1': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
-        'blaster_1': {'part_tag': '', 'boosts': []}, # 0
+#        'blaster_1': {'part_tag': '', 'boosts': []}, # 0
 
 #        'blaster_2': {'part_tag': 'BlasterWhite', 'boosts': ['blaster_boost_02']}, # 1
 #        'blaster_2': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['', 'blaster_boost_02']}, # 2
-#        'blaster_2': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': ['']}, # 2
+        'blaster_2': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': []}, # 2
 #        'blaster_2': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
-        'blaster_2': {'part_tag': '', 'boosts': []}, # 0
+#        'blaster_2': {'part_tag': '', 'boosts': []}, # 0
 
 #        'blaster_3': {'part_tag': 'BlasterWhite', 'boosts': []}, # 1
 #        'blaster_3': {'part_tag': 'BlasterWhiteWithYellow', 'boosts': []}, # 2
-#        'blaster_3': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
+        'blaster_3': {'part_tag': 'BlasterWhiteWithOrange', 'boosts': []}, # 0
 #        'blaster_3': {'part_tag': '', 'boosts': []}, # 0
 
 #        'missilelauncher_1': {'part_tag': 'MissileLauncherWhite', 'boosts': ['missilelauncher_boost_01']}, # 1
@@ -76,7 +76,7 @@ var gameplay = {
 #        'missilelauncher_1': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
 
 #        'missilelauncher_2': {'part_tag': 'MissileLauncherWhite', 'boosts': []}, # 1
-#        'missilelauncher_2': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': []}, # 2
+        'missilelauncher_2': {'part_tag': 'MissileLauncherWhiteWithYellow', 'boosts': []}, # 2
 #        'missilelauncher_2': {'part_tag': 'MissileLauncher', 'boosts': []}, # 0
 
     }

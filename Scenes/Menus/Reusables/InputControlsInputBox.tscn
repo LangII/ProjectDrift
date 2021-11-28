@@ -1,0 +1,14 @@
+[gd_scene format=2]
+
+[node name="InputKeyPanelContainer*" type="PanelContainer"]
+margin_right = 100.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 100, 0 )
+
+[node name="InputKeyLabel*" type="Label" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 93.0
+margin_bottom = 21.0
+size_flags_vertical = 1
+text = "W-key"

@@ -67,7 +67,6 @@ func init(_layer, _type):
         branch_parent = getPartParent()
         setFirstBodyBranchImgVis()
         setPopUpOptions()
-        
         setPopUpOptionsDisabled()
     
     pop_up_menu = pop_up.get_children()[0]
@@ -316,6 +315,17 @@ func removePartTagUniqueId(_part_tag: String) -> String:
 
 
 
+func getPopUpIdFromText(_text:String) -> int:
+    
+    var id_
+    for i in range(pop_up.get_item_count()):
+        if pop_up.get_item_text(i) == _text:
+            id_ = i
+            break
+    return id_
+
+
+
 ####################################################################################################
                                                                              ###   ON DELETION   ###
                                                                              #######################
@@ -382,6 +392,7 @@ func _on_PartSelectionPopUp_item_selected(id):
         rig_builder.buildRigModel()
         rig_builder.updateStatsDisplay()
         rig_builder.updateAllPopUpOptionsDisabled() 
+        rig_builder.deleteStartingSeparators()
     
     else:
         rig_builder.deleteSeparators()
@@ -389,8 +400,9 @@ func _on_PartSelectionPopUp_item_selected(id):
         timer_2.start()
         timer_3.start()
 
+
+
 func _on_Timer1_timeout():
-    
     match branch_layer:
         'body':  rig_builder.bodySelected(self, pop_up_cur_selection_name_trim)
         'part':  rig_builder.partSelected(self, pop_up_cur_selection_name_trim)
@@ -403,6 +415,7 @@ func _on_Timer3_timeout():
     rig_builder.buildRigModel()
     rig_builder.updateStatsDisplay()
     rig_builder.updateAllPopUpOptionsDisabled()
+    rig_builder.deleteStartingSeparators()
 
 
 

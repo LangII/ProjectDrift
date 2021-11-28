@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-_inv_bodies_ = [ "TEST_BodyWhite" ]
+_inv_bodies_ = [  ]
 _inv_generators_ = [  ]
 _inv_engines_ = [  ]
 _inv_shields_ = [  ]
@@ -16,3 +16,29 @@ _inv_engines_boosts_ = [  ]
 _inv_shields_boosts_ = [  ]
 _inv_blaster_boosts_ = [  ]
 _inv_missilelauncher_boosts_ = [  ]
+_last_used_vehicle_rig_ = {
+"blaster_1": {
+"boosts": [  ],
+"part_tag": ""
+},
+"blaster_2": {
+"boosts": [  ],
+"part_tag": ""
+},
+"body": {
+"boosts": [ "body_boost_02" ],
+"part_tag": "BodyWhiteWithYellow"
+},
+"engines": {
+"boosts": [ "engines_boost_02" ],
+"part_tag": "EnginesWhite"
+},
+"generator": {
+"boosts": [ "generator_boost_02", "generator_boost_03" ],
+"part_tag": "GeneratorWhiteWithYellow"
+},
+"shields": {
+"boosts": [  ],
+"part_tag": ""
+}
+}

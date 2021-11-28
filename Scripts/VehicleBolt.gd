@@ -2,6 +2,7 @@
 extends Spatial
 
 # singletons.
+onready var main = get_node('/root/Main')
 onready var controls = get_node('/root/Controls')
 onready var gameplay = get_node('/root/Main/Gameplay')
 

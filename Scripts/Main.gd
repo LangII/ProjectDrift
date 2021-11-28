@@ -28,21 +28,11 @@ func _ready():
 #        print("word", word)
 #    print("word", word)
 
-    """ comment in to do direct unisolated test of scene (comment out the rest of _ready()) """
+    """ Comment in/out to select game starting scene. """
 
-#    changeScene('res://Scenes/Menus/RigBuilder.tscn')
+    changeScene('res://Scenes/Menus/RigBuilder.tscn')
 #    changeScene('res://Scenes/Menus/ArenaSelection.tscn')
-    changeScene('res://Scenes/Functional/Gameplay.tscn')
-    
-    
-    
-#    print("\n>>> [%s] scripted scene entering tree" % name)
-#    if controls.TESTING_no_menu:
-#        var gameplay = preload('res://Scenes/Functional/Gameplay.tscn')
-#        add_child(gameplay.instance())
-#    else:
-#        var part_selection = preload('res://Scenes/Menus/PartSelection.tscn')
-#        add_child(part_selection.instance())
+#    changeScene('res://Scenes/Functional/Gameplay.tscn')
 
     ################################################################################################
 
@@ -53,7 +43,16 @@ func _process(_delta):
         ############################################################################################
         """ TESTING """
         
-#        print()
+        var rig_builder = get_node('/root/Main/RigBuilder')
+        for branch in rig_builder.tree.get_children():
+            print("")
+            print("branch.branch_layer = ", branch.branch_layer)
+            print("branch.branch_type = ", branch.branch_type)
+            
+#        print("\ncontrols.parts_inv:")
+#        print(controls.parts_inv)
+#        print("\ncontrols.boosts_inv:")
+#        print(controls.boosts_inv)
         
         ############################################################################################
 
@@ -80,6 +79,12 @@ func changeScene(_scene):
     print(print_str)
 
     add_child(load(_scene).instance())
+
+
+
+func scriptedScenePrint(_scene_name):
+    
+    print("\n>>> [%s] scripted scene entering tree" % _scene_name)
 
 
 ####################################################################################################

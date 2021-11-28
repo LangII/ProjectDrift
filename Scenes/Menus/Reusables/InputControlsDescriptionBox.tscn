@@ -1,0 +1,15 @@
+[gd_scene format=2]
+
+[node name="InputValuePanelContainer*" type="PanelContainer"]
+margin_left = 101.0
+margin_right = 540.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+
+[node name="InputValueLabel*" type="Label" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 432.0
+margin_bottom = 21.0
+size_flags_vertical = 1
+text = "Thrust forward"

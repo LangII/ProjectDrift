@@ -8,6 +8,7 @@ Target.gd
 extends StaticBody
 
 # Singletons.
+onready var main = get_node('/root/Main')
 onready var controls = get_node('/root/Controls')
 
 
@@ -68,7 +69,7 @@ export(String, 'left', 'right', 'up', 'down', 'forward', 'back') var at_rest_dir
                                                                                    #################
 
 func _ready():
-
+    
     setRefDirsFromExport()
 
     # Set node values.

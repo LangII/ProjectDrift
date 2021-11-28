@@ -21,4 +21,6 @@ export(Array) var _inv_shields_boosts_
 export(Array) var _inv_blaster_boosts_
 export(Array) var _inv_missilelauncher_boosts_
 
+export(Dictionary) var _last_used_vehicle_rig_
+
 

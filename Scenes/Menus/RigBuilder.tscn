@@ -93,26 +93,26 @@ albedo_color = Color( 0.239216, 0.227451, 0.270588, 1 )
 material = SubResource( 14 )
 
 [sub_resource type="StyleBoxFlat" id=16]
-content_margin_right = 8.0
-bg_color = Color( 0.239216, 0.227451, 0.270588, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=17]
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="StyleBoxFlat" id=18]
-bg_color = Color( 1, 1, 1, 1 )
-
-[sub_resource type="StyleBoxFlat" id=19]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=20]
+[sub_resource type="StyleBoxFlat" id=19]
 bg_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 
-[sub_resource type="StyleBoxFlat" id=21]
+[sub_resource type="StyleBoxFlat" id=20]
 bg_color = Color( 0.784314, 0.784314, 0.784314, 1 )
 
-[sub_resource type="StyleBoxFlat" id=22]
+[sub_resource type="StyleBoxFlat" id=21]
 bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=22]
+content_margin_right = 8.0
+bg_color = Color( 0.239216, 0.227451, 0.270588, 1 )
 
 [sub_resource type="PanoramaSky" id=23]
 panorama = ExtResource( 2 )
@@ -148,6 +148,9 @@ cull_mask = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = -130.0
+margin_bottom = -314.0
+rect_min_size = Vector2( 1280, 720 )
 custom_constants/separation = 15
 __meta__ = {
 "_edit_use_anchors_": false
@@ -426,33 +429,104 @@ custom_constants/margin_top = 2
 custom_constants/margin_left = 2
 custom_constants/margin_bottom = 2
 
-[node name="TopContainer___" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 1246.0
 margin_bottom = 56.0
 rect_min_size = Vector2( 0, 54 )
-custom_styles/panel = SubResource( 16 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___"]
-margin_right = 1236.0
-margin_bottom = 54.0
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1237.0
+margin_bottom = 47.0
 rect_min_size = Vector2( 0, 40 )
-alignment = 2
 
-[node name="StartMatchButtonContainer*" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer"]
-margin_left = 1116.0
-margin_top = 9.0
-margin_right = 1236.0
-margin_bottom = 44.0
-rect_min_size = Vector2( 120, 35 )
+[node name="LeftHBoxContainer" type="HBoxContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer"]
+margin_right = 613.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ReloadLastRigButtonContainer*" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/LeftHBoxContainer"]
+margin_top = 2.0
+margin_right = 142.0
+margin_bottom = 37.0
+rect_min_size = Vector2( 142, 35 )
 size_flags_vertical = 4
+custom_styles/panel = SubResource( 16 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/LeftHBoxContainer/ReloadLastRigButtonContainer*"]
+margin_right = 142.0
+margin_bottom = 35.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/LeftHBoxContainer/ReloadLastRigButtonContainer*/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 141.0
+margin_bottom = 34.0
 custom_styles/panel = SubResource( 17 )
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/LeftHBoxContainer/ReloadLastRigButtonContainer*/MarginContainer/PanelContainer"]
+margin_right = 140.0
+margin_bottom = 33.0
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/LeftHBoxContainer/ReloadLastRigButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 138.0
+margin_bottom = 31.0
+custom_styles/panel = SubResource( 18 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/LeftHBoxContainer/ReloadLastRigButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
+margin_right = 136.0
+margin_bottom = 29.0
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="ReloadLastRigButton*" type="Button" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/LeftHBoxContainer/ReloadLastRigButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 135.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 80, 0 )
+custom_styles/hover = SubResource( 19 )
+custom_styles/pressed = SubResource( 20 )
+custom_styles/normal = SubResource( 21 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "RELOAD LAST RIG"
+
+[node name="RightHBoxContainer" type="HBoxContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer"]
+margin_left = 617.0
+margin_right = 1230.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
+
+[node name="StartMatchButtonContainer*" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/RightHBoxContainer"]
+margin_left = 493.0
+margin_top = 2.0
+margin_right = 613.0
+margin_bottom = 37.0
+rect_min_size = Vector2( 120, 35 )
+size_flags_vertical = 4
+custom_styles/panel = SubResource( 16 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/RightHBoxContainer/StartMatchButtonContainer*"]
 margin_right = 120.0
 margin_bottom = 35.0
 custom_constants/margin_right = 1
@@ -460,14 +534,14 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/RightHBoxContainer/StartMatchButtonContainer*/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 119.0
 margin_bottom = 34.0
-custom_styles/panel = SubResource( 18 )
+custom_styles/panel = SubResource( 17 )
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/RightHBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer"]
 margin_right = 118.0
 margin_bottom = 33.0
 custom_constants/margin_right = 2
@@ -475,14 +549,14 @@ custom_constants/margin_top = 2
 custom_constants/margin_left = 2
 custom_constants/margin_bottom = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/RightHBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 116.0
 margin_bottom = 31.0
-custom_styles/panel = SubResource( 19 )
+custom_styles/panel = SubResource( 18 )
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/RightHBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer"]
 margin_right = 114.0
 margin_bottom = 29.0
 custom_constants/margin_right = 1
@@ -490,19 +564,31 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="StartMatchButton*" type="Button" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="StartMatchButton*" type="Button" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/RightHBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
 margin_left = 1.0
 margin_top = 1.0
 margin_right = 113.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 80, 0 )
-custom_styles/hover = SubResource( 20 )
-custom_styles/pressed = SubResource( 21 )
-custom_styles/normal = SubResource( 22 )
+custom_styles/hover = SubResource( 19 )
+custom_styles/pressed = SubResource( 20 )
+custom_styles/normal = SubResource( 21 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "START MATCH"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer"]
+visible = false
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 1246.0
+margin_bottom = 56.0
+rect_min_size = Vector2( 0, 54 )
+custom_styles/panel = SubResource( 22 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MinimumRequirementsPopUp*" type="AcceptDialog" parent="."]
 anchor_left = 0.5
@@ -534,4 +620,14 @@ window_title = "Are you sure?"
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 24 )
 
-[connection signal="pressed" from="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/TopContainer___/HBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/StartMatchButton*" to="." method="_on_StartMatchButton_pressed"]
+[node name="Timer1*" type="Timer" parent="."]
+one_shot = true
+
+[node name="Timer2*" type="Timer" parent="."]
+wait_time = 1.4
+one_shot = true
+
+[connection signal="pressed" from="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/LeftHBoxContainer/ReloadLastRigButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/ReloadLastRigButton*" to="." method="_on_ReloadLastRigButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/LowerContainer*/PanelContainer/MarginContainer/PanelContainer/MarginContainer/PanelContainer2/HBoxContainer/RightHBoxContainer/StartMatchButtonContainer*/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer/StartMatchButton*" to="." method="_on_StartMatchButton_pressed"]
+[connection signal="timeout" from="Timer1*" to="." method="_on_Timer1_timeout"]
+[connection signal="timeout" from="Timer2*" to="." method="_on_Timer2_timeout"]

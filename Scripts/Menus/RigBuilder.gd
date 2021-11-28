@@ -18,10 +18,12 @@ onready var are_you_sure_popup = find_node('AreYouSurePopUp*')
 onready var rig_builder_tab_container = find_node('RigBuilderTabContainer*')
 onready var details_tab_container = find_node('DetailsTabContainer*')
 onready var model_tab_container = find_node('ModelTabContainer*')
+onready var timer_1 = find_node('Timer1*')
+onready var timer_2 = find_node('Timer2*')
 
 # Resources.
-onready var PartSelectionBoxScene = preload('res://Scenes/Menus/Expandables/PartSelectionBox.tscn')
-onready var StatDisplayBoxScene = preload('res://Scenes/Menus/Expandables/StatDisplayBox.tscn')
+onready var PartSelectionBoxScene = preload('res://Scenes/Menus/Reusables/PartSelectionBox.tscn')
+onready var StatDisplayBoxScene = preload('res://Scenes/Menus/Reusables/StatDisplayBox.tscn')
 
 onready var pedestal_rot_spd = 0.008
 onready var background_cam_rot_spd_1 = 0.0009
@@ -30,7 +32,9 @@ onready var background_cam_rot_spd_2 = -0.0006
 var inv_mod
 var boost_mod
 var stat_refs
+var save_mod
 var rig_data_pack = {}
+var last_rig_data_pack = {}
 
 onready var boosts = controls.boosts
 
@@ -42,14 +46,19 @@ onready var boosts = controls.boosts
 
 func _ready():
     
+    main.scriptedScenePrint(name)
+    
     # Open temp mods.
     inv_mod = main.loadModule(main, 'res://Scenes/Functional/InventoryMod.tscn')
     boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
     stat_refs = main.loadModule(main, 'res://Scenes/Functional/StatDisplayRefs.tscn')
+    save_mod = main.loadModule(main, 'res://Scenes/Functional/SaveMod.tscn')
     
     setTabs()
     
     insertSelectionBox(0, 'body', 'body')
+    
+    Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) 
 
 
 
@@ -158,7 +167,9 @@ func buildRigModel():
     rig_data_pack = getRigDataPack()
 #    print(rig_data_pack)
     
-    if not 'body' in rig_data_pack:  return
+    var has_no_body = not 'body' in rig_data_pack.keys()
+    var body_has_no_part_tag = not rig_data_pack['body']['part_tag']
+    if has_no_body or body_has_no_part_tag:  return
     
     var body_model = getBodyModel(rig_data_pack)
     
@@ -239,7 +250,7 @@ func getBodyModel(_rig_data_pack):
     
     var body_tag = _rig_data_pack['body']['part_tag']
     var body_model_ = load('res://Scenes/Functional/VehicleBodies/%s.tscn' % body_tag).instance()
-    
+
     body_model_.script = null
     
     var nodes_to_delete = ['NonSpatial*', 'CameraPivot*']
@@ -635,6 +646,17 @@ func updateBoostAdjustNodes(_stat_display_box):
 
 
 
+func deleteStartingSeparators() -> void:
+    
+    for branch in tree.get_children():
+        if branch.branch_type == 'separator':
+            tree.remove_child(branch)
+            branch.queue_free()
+        else:
+            break
+
+
+
 ####################################################################################################
 
 
@@ -706,11 +728,84 @@ func _on_StartMatchButton_pressed():
     prepRigDataPackForPlay()
     controls.gameplay['vehicle_rig'] = rig_data_pack
     
-    print("\n")
-    print(rig_data_pack)
-    print("\n")
+    save_mod.saveDataReplace({'_last_used_vehicle_rig_': rig_data_pack})
     
     main.changeScene('res://Scenes/Functional/Gameplay.tscn')
+
+
+####################################################################################################
+
+
+func _on_ReloadLastRigButton_pressed() -> void:
+    
+    last_rig_data_pack = save_mod.getSavedData(['_last_used_vehicle_rig_']).values()[0]
+
+    loadRigBuilderFromLastRigDataPack()
+
+
+
+func loadRigBuilderFromLastRigDataPack() -> void:
+    
+    # Load body selection box.
+    findAndLoadPartSelectionBox(last_rig_data_pack['body']['part_tag'], 'body')
+    
+    # Load parts selection boxes.
+    timer_1.start()
+    
+    # Load boosts selection boxes.
+    timer_2.start()
+
+
+
+func getSelectionBox(_branch_type:String, _parent_type:String='') -> Object:
+    
+    var selection_box_
+    
+    for branch in tree.get_children():
+        
+        # Get bool conditional vars.
+        var same_branch_type = branch.branch_type == _branch_type
+        var same_parent_type
+        if _parent_type and branch.branch_parent:
+            same_parent_type = branch.branch_parent.branch_type == _parent_type
+        else:
+            same_parent_type = true
+        
+        # Do condition check.
+        if same_branch_type and same_parent_type:
+            selection_box_ = branch
+            break
+    
+    return selection_box_
+
+
+
+func findAndLoadPartSelectionBox(_part_tag:String, _branch_type:String, _parent_type:String='') -> void:
+    
+    var part_box_node = getSelectionBox(_branch_type, _parent_type)
+    var part_selected_id = part_box_node.getPopUpIdFromText(_part_tag)
+    part_box_node.pop_up.select(part_selected_id)
+    part_box_node._on_PartSelectionPopUp_item_selected(part_selected_id)
+
+
+
+func _on_Timer1_timeout() -> void:
+    """ Load parts selection boxes from last_rig_data_pack. """
+    
+    for part_type in last_rig_data_pack.keys():
+        if part_type == 'body':  continue
+        findAndLoadPartSelectionBox(last_rig_data_pack[part_type]['part_tag'], part_type)
+    
+
+
+func _on_Timer2_timeout() -> void:
+    """ Load boosts selection boxes from last_rig_data_pack. """
+
+    for parent_part_type in last_rig_data_pack.keys():
+        for i in range(len(last_rig_data_pack[parent_part_type]['boosts'])):
+            var part_tag = last_rig_data_pack[parent_part_type]['boosts'][i]
+            var boost_part_type = 'boost_%s' % (i + 1)
+            findAndLoadPartSelectionBox(part_tag, boost_part_type, parent_part_type)
 
 
 
@@ -718,12 +813,23 @@ func _on_StartMatchButton_pressed():
                                                                              ###   ON DELETION   ###
                                                                              #######################
 
+func resetAllInv():
+    
+    for part_type in controls.parts_inv.values() + controls.boosts_inv.values():
+        for part in part_type.values():
+            part['used'] = false
+
+
+
 func queue_free():
     
     # Close temp mods.
     inv_mod.queue_free()
     boost_mod.queue_free()
     stat_refs.queue_free()
+    save_mod.queue_free()
+    
+    resetAllInv()
 
 
 
@@ -972,6 +1078,18 @@ func queue_free():
 #func selectPart(_type, _selection):
 #
 #    pass
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

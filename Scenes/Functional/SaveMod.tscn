@@ -3,6 +3,6 @@
 [ext_resource path="res://Scripts/SaveMod.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/SaveData.gd" type="Script" id=2]
 
-[node name="Node" type="Node"]
+[node name="SaveMod" type="Node"]
 script = ExtResource( 1 )
 save_data = ExtResource( 2 )
