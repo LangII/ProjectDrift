@@ -13,6 +13,8 @@ extends Node
 
 onready var controls = get_node('/root/Controls')
 
+var save_mod
+
 ####################################################################################################
 
 
@@ -21,12 +23,8 @@ func _ready():
     
     ################################################################################################
     """ TESTING """
-#    print("TESTING")
-#    var word = 'something'
-#    for i in range(2):
-#        var word = String(i)
-#        print("word", word)
-#    print("word", word)
+
+    save_mod = loadModule(self, 'res://Scenes/Functional/SaveMod.tscn')
 
     """ Comment in/out to select game starting scene. """
 
@@ -43,16 +41,14 @@ func _process(_delta):
         ############################################################################################
         """ TESTING """
         
-        var rig_builder = get_node('/root/Main/RigBuilder')
-        for branch in rig_builder.tree.get_children():
-            print("")
-            print("branch.branch_layer = ", branch.branch_layer)
-            print("branch.branch_type = ", branch.branch_type)
-            
-#        print("\ncontrols.parts_inv:")
-#        print(controls.parts_inv)
-#        print("\ncontrols.boosts_inv:")
-#        print(controls.boosts_inv)
+        var pause = get_node('/root/Main/Gameplay/Pause')
+        
+        print("pause mouse_sensitivity slider value = ", pause.mouse_sensitivity_slider.value)
+        print("pause mouse_vertical_drag slider value = ", pause.mouse_vertical_drag_slider.value)
+        print("")
+        print("saved_mouse_sensitivity = ", save_mod.getSavedData(['_mouse_sensitivity_']))
+        print("saved_mouse_vertical_drag = ", save_mod.getSavedData(['_mouse_vertical_drag_']))
+        
         
         ############################################################################################
 
@@ -82,9 +78,12 @@ func changeScene(_scene):
 
 
 
-func scriptedScenePrint(_scene_name):
+func scriptedScenePrint(_scene_name:String, _type:String) -> void:
     
-    print("\n>>> [%s] scripted scene entering tree" % _scene_name)
+    if _type == 'enter':  _type = 'entering'
+    elif _type == 'exit':  _type = 'exiting'
+    
+    print("\n>>> [%s] scripted scene [%s] tree" % [_scene_name, _type])
 
 
 ####################################################################################################

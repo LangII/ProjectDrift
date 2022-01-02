@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "
+
+extends Node
+
+
+####################################################################################################
+                                                                                  # \\/   VARS   \\/ #
+
+### singletons
+onready var main = get_node('/root/Main')
+onready var controls =  get_node('/root/Controls')
+
+var save_mod
+
+
+####################################################################################################
+                                                                                 # \\/   READY   \\/ #
+
+func _ready() -> void:
+    
+    save_mod = main.loadModule(main, 'res://Scenes/Functional/SaveMod.tscn')
+
+
+####################################################################################################
+                                                                            # \\/   MENU FUNCS   \\/ #
+
+func updateMouseSensitivity(_value:float) -> void:
+    
+#	# update controls singleton
+#	controls.global['vehicle']['mouse_sensitivity'] = _value
+    
+    # update save data
+    save_mod.saveDataReplace({'_mouse_sensitivity_': _value})
+    
+    # update pause menu
+    var pause = get_node('/root/Main/Gameplay/Pause')
+    if pause:
+        pause.mouse_sens_value_label.text = str(_value)
+
+
+####################################################################################################
+                                                                        # \\/   GAMEPLAY FUNCS   \\/ #
+
+
+#
+
+
+####################################################################################################
+                                                                           # \\/   ON DELETION   \\/ #
+
+func queue_free() -> void:
+    
+    save_mod.queue_free()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"
+
+[node name="Operators" type="Node"]
+script = SubResource( 1 )

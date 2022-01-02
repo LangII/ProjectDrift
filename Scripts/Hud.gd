@@ -132,7 +132,7 @@ onready var focus_obj_pos = Vector3()
 
 func _ready():
     
-    main.scriptedScenePrint(name)
+    main.scriptedScenePrint(name, 'enter')
     
     # Set initial BottomLeft values.
     speed_prog_bar.max_value =      MAX_SPEED
@@ -419,12 +419,12 @@ func clearFocusObject():
 
 func updateReplenishValues(_engines, _shields, _blasters):
     
-    replenish_engines_input = _engines
-    replenish_shields_input = _shields
-    replenish_blasters_input = _blasters
-    engines_repl_prog_bar.value = replenish_engines_input
-    shields_repl_prog_bar.value = replenish_shields_input
-    blasters_repl_prog_bar.value = replenish_blasters_input
+    replenish_engines_input =       _engines
+    replenish_shields_input =       _shields
+    replenish_blasters_input =      _blasters
+    engines_repl_prog_bar.value =   replenish_engines_input
+    shields_repl_prog_bar.value =   replenish_shields_input
+    blasters_repl_prog_bar.value =  replenish_blasters_input
     # Update _debug_values_ if needed.
     if _debug_values_.is_visible():
         replenish_engines_value.text =  "%7.2f" % replenish_engines_input
@@ -521,5 +521,13 @@ func updateObjectiveValue(_value):
     
     # Trigger winConditionMet().
     if objective_input <= 0:  gameplay.winConditionMet()
+
+
+####################################################################################################
+
+
+func queue_free() -> void:
+    
+    main.scriptedScenePrint(name, 'exit')
 
 

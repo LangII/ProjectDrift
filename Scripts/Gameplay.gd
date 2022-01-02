@@ -75,7 +75,7 @@ var targets_array
 
 func _ready():
     
-    main.scriptedScenePrint(name)
+    main.scriptedScenePrint(name, 'enter')
     
     # Open temp mods.
     var boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
@@ -336,6 +336,14 @@ func _on_HalfSecond_timeout():
 #    print(vehicle.MAX_SPEED)
 
 #    vehicle.printTransformBasis()
+
+
+####################################################################################################
+
+
+func queue_free():
+    
+    main.scriptedScenePrint(name, 'exit')
 
 
 

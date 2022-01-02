@@ -30,8 +30,6 @@ onready var FRICTION =              controls.global['vehicle']['friction']
 onready var SPIN =                  controls.global['vehicle']['spin']
 onready var LINEAR_DAMP =           controls.global['vehicle']['linear_damp']
 onready var SPIN_DAMP =             controls.global['vehicle']['spin_damp']
-onready var MOUSE_SENSITIVITY =     controls.global['vehicle']['mouse_sensitivity']
-onready var MOUSE_VERT_DAMP =       controls.global['vehicle']['mouse_vert_damp']
 
 ### (still not sure if I might need this at some point)
 # onready var REST_LINEAR_DAMP =      controls.global['vehicle']['rest_linear_damp']
@@ -55,6 +53,10 @@ onready var BLASTER_COOL_DOWNS = []
 onready var BOLT_ENERGIES = []
 onready var LAUNCHER_MAGAZINE_CAPACITIES = []
 onready var LAUNCHER_COOL_DOWNS = []
+
+### save data vars
+var mouse_sensitivity
+var mouse_vertical_drag
 
 
 
@@ -142,10 +144,14 @@ onready var shields_battery = SHIELDS_BATTERY_CAPACITY
 
 func _ready():
     
-    main.scriptedScenePrint(name)
+    main.scriptedScenePrint(name, 'enter')
     
     # Open temp mods.
     var boost_mod = main.loadModule(main, 'res://Scenes/Functional/BoostMod.tscn')
+    var save_mod = main.loadModule(main, 'res://Scenes/Functional/SaveMod.tscn')
+    
+    mouse_sensitivity = save_mod.getSavedData(['_mouse_sensitivity_'])
+    mouse_vertical_drag = save_mod.getSavedData(['_mouse_vertical_drag_'])
     
     """
     TO-DOS:  Mouse capture should be handled in Gameplay.gd.
@@ -191,6 +197,7 @@ func _ready():
     
     # Close temp mods.
     boost_mod.queue_free()
+    save_mod.queue_free()
     
     print("\n>>> [%s] ready..." % name)
 
@@ -755,9 +762,9 @@ func handleInputMouseMotion(_event):
     var mouse_motion = _event is InputEventMouseMotion
     var mouse_captured = Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
     if mouse_motion and mouse_captured:
-        rot_force = -_event.relative.x * MOUSE_SENSITIVITY * SPIN
+        rot_force = -_event.relative.x * mouse_sensitivity * SPIN
         # Mouse motion on the y-axis translates to camera ('pivot') motion on the z-axis.
-        camera_pivot.rotate_z(-_event.relative.y * MOUSE_SENSITIVITY * MOUSE_VERT_DAMP)
+        camera_pivot.rotate_z(-_event.relative.y * mouse_sensitivity * mouse_vertical_drag)
         # Have to apply 'clamp' to prevent extreme camera positions.
         camera_pivot.rotation.z = clamp(camera_pivot.rotation.z, -1.2, 0.6)
 
@@ -882,6 +889,14 @@ func _on_Launcher1CoolDown_timeout():
 func _on_Launcher2CoolDown_timeout():
     
     launcher_cooled_downs[1] = true
+
+
+####################################################################################################
+
+
+func queue_free():
+    
+    main.scriptedScenePrint(name, 'exit')
 
 
 

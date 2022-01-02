@@ -46,7 +46,7 @@ onready var boosts = controls.boosts
 
 func _ready():
     
-    main.scriptedScenePrint(name)
+    main.scriptedScenePrint(name, 'enter')
     
     # Open temp mods.
     inv_mod = main.loadModule(main, 'res://Scenes/Functional/InventoryMod.tscn')
@@ -733,8 +733,10 @@ func _on_StartMatchButton_pressed():
     main.changeScene('res://Scenes/Functional/Gameplay.tscn')
 
 
-####################################################################################################
 
+####################################################################################################
+                                                                         ###   RELOAD LAST RIG   ###
+                                                                         ###########################
 
 func _on_ReloadLastRigButton_pressed() -> void:
     
@@ -754,6 +756,35 @@ func loadRigBuilderFromLastRigDataPack() -> void:
     
     # Load boosts selection boxes.
     timer_2.start()
+
+
+
+func _on_Timer1_timeout() -> void:
+    """ Load parts selection boxes from last_rig_data_pack. """
+    
+    for part_type in last_rig_data_pack.keys():
+        if part_type == 'body':  continue
+        findAndLoadPartSelectionBox(last_rig_data_pack[part_type]['part_tag'], part_type)
+    
+
+
+func _on_Timer2_timeout() -> void:
+    """ Load boosts selection boxes from last_rig_data_pack. """
+    
+    for parent_part_type in last_rig_data_pack.keys():
+        for i in range(len(last_rig_data_pack[parent_part_type]['boosts'])):
+            var part_tag = last_rig_data_pack[parent_part_type]['boosts'][i]
+            var boost_part_type = 'boost_%s' % (i + 1)
+            findAndLoadPartSelectionBox(part_tag, boost_part_type, parent_part_type)
+
+
+
+func findAndLoadPartSelectionBox(_part_tag:String, _branch_type:String, _parent_type:String='') -> void:
+    
+    var part_box_node = getSelectionBox(_branch_type, _parent_type)
+    var part_selected_id = part_box_node.getPopUpIdFromText(_part_tag)
+    part_box_node.pop_up.select(part_selected_id)
+    part_box_node._on_PartSelectionPopUp_item_selected(part_selected_id)
 
 
 
@@ -780,46 +811,9 @@ func getSelectionBox(_branch_type:String, _parent_type:String='') -> Object:
 
 
 
-func findAndLoadPartSelectionBox(_part_tag:String, _branch_type:String, _parent_type:String='') -> void:
-    
-    var part_box_node = getSelectionBox(_branch_type, _parent_type)
-    var part_selected_id = part_box_node.getPopUpIdFromText(_part_tag)
-    part_box_node.pop_up.select(part_selected_id)
-    part_box_node._on_PartSelectionPopUp_item_selected(part_selected_id)
-
-
-
-func _on_Timer1_timeout() -> void:
-    """ Load parts selection boxes from last_rig_data_pack. """
-    
-    for part_type in last_rig_data_pack.keys():
-        if part_type == 'body':  continue
-        findAndLoadPartSelectionBox(last_rig_data_pack[part_type]['part_tag'], part_type)
-    
-
-
-func _on_Timer2_timeout() -> void:
-    """ Load boosts selection boxes from last_rig_data_pack. """
-
-    for parent_part_type in last_rig_data_pack.keys():
-        for i in range(len(last_rig_data_pack[parent_part_type]['boosts'])):
-            var part_tag = last_rig_data_pack[parent_part_type]['boosts'][i]
-            var boost_part_type = 'boost_%s' % (i + 1)
-            findAndLoadPartSelectionBox(part_tag, boost_part_type, parent_part_type)
-
-
-
 ####################################################################################################
                                                                              ###   ON DELETION   ###
                                                                              #######################
-
-func resetAllInv():
-    
-    for part_type in controls.parts_inv.values() + controls.boosts_inv.values():
-        for part in part_type.values():
-            part['used'] = false
-
-
 
 func queue_free():
     
@@ -829,7 +823,17 @@ func queue_free():
     stat_refs.queue_free()
     save_mod.queue_free()
     
-    resetAllInv()
+    resetAllInvUsed()
+    
+    main.scriptedScenePrint(name, 'exit')
+
+
+
+func resetAllInvUsed():
+    
+    for part_type in controls.parts_inv.values() + controls.boosts_inv.values():
+        for part in part_type.values():
+            part['used'] = false
 
 
 

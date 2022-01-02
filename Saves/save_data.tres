@@ -21,24 +21,22 @@ _last_used_vehicle_rig_ = {
 "boosts": [  ],
 "part_tag": ""
 },
-"blaster_2": {
-"boosts": [  ],
-"part_tag": ""
-},
 "body": {
-"boosts": [ "body_boost_02" ],
-"part_tag": "BodyWhiteWithYellow"
+"boosts": [  ],
+"part_tag": "BodyWhite"
 },
 "engines": {
-"boosts": [ "engines_boost_02" ],
+"boosts": [  ],
 "part_tag": "EnginesWhite"
 },
 "generator": {
-"boosts": [ "generator_boost_02", "generator_boost_03" ],
-"part_tag": "GeneratorWhiteWithYellow"
+"boosts": [  ],
+"part_tag": "GeneratorWhite"
 },
 "shields": {
 "boosts": [  ],
 "part_tag": ""
 }
 }
+_mouse_sensitivity_ = 0.00432
+_mouse_vertical_drag_ = 0.22

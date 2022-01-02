@@ -23,7 +23,7 @@ var UNIT_TESTING = false
 
 func _ready():
     
-    main.scriptedScenePrint(name)
+    main.scriptedScenePrint(name, 'enter')
 
 
 
@@ -346,6 +346,14 @@ func printModelUpdate(_part_tag, _boost_tag, _stat, _boost_model):
     ]
     print("| %-*s | %-*s | %-*s | %-*s |" % str_form)
     print(div_line)
+
+
+####################################################################################################
+
+
+func queue_free():
+    
+    main.scriptedScenePrint(name, 'exit')
 
 
 

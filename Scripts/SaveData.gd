@@ -23,4 +23,7 @@ export(Array) var _inv_missilelauncher_boosts_
 
 export(Dictionary) var _last_used_vehicle_rig_
 
+export(float) var _mouse_sensitivity_
+export(float) var _mouse_vertical_drag_
+
 
