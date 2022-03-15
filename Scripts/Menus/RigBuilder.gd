@@ -740,13 +740,16 @@ func _on_StartMatchButton_pressed():
 
 func _on_ReloadLastRigButton_pressed() -> void:
     
-    last_rig_data_pack = save_mod.getSavedData(['_last_used_vehicle_rig_']).values()[0]
+#    last_rig_data_pack = save_mod.getSavedData(['_last_used_vehicle_rig_']).values()[0]
+    last_rig_data_pack = save_mod.getSavedData(['_last_used_vehicle_rig_'])
 
     loadRigBuilderFromLastRigDataPack()
 
 
 
 func loadRigBuilderFromLastRigDataPack() -> void:
+    
+    print("last_rig_data_pack = ", last_rig_data_pack)
     
     # Load body selection box.
     findAndLoadPartSelectionBox(last_rig_data_pack['body']['part_tag'], 'body')
@@ -764,7 +767,12 @@ func _on_Timer1_timeout() -> void:
     
     for part_type in last_rig_data_pack.keys():
         if part_type == 'body':  continue
-        findAndLoadPartSelectionBox(last_rig_data_pack[part_type]['part_tag'], part_type)
+        var part_tag = last_rig_data_pack[part_type]['part_tag']
+        
+        # I REALLY need to make the large update to not have empty missile launchers be 'MissileLauncher'.
+        if part_tag == 'MissileLauncher':  part_tag = ''
+        
+        findAndLoadPartSelectionBox(part_tag, part_type)
     
 
 
@@ -783,6 +791,7 @@ func findAndLoadPartSelectionBox(_part_tag:String, _branch_type:String, _parent_
     
     var part_box_node = getSelectionBox(_branch_type, _parent_type)
     var part_selected_id = part_box_node.getPopUpIdFromText(_part_tag)
+    
     part_box_node.pop_up.select(part_selected_id)
     part_box_node._on_PartSelectionPopUp_item_selected(part_selected_id)
 
