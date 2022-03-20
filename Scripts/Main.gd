@@ -24,7 +24,18 @@ func _ready():
     ################################################################################################
     """ TESTING """
 
-    save_mod = loadModule(self, 'res://Scenes/Functional/SaveMod.tscn')
+##    save_mod = loadModule(self, 'res://Scenes/Functional/SaveMod.tscn')
+#    var scene_path = 'test/TEST_NAME.tscn'
+##    var len_scene_path = len(scene_path)
+##    print("len_scene_path = ", len_scene_path)
+#    var slash_i = scene_path.rfind('/')
+#    var dot_i = scene_path.rfind('.')
+#    print("slash_i = ", slash_i)
+#    print("dot_i = ", dot_i)
+#
+#    print(scene_path.substr(slash_i + 1, dot_i - slash_i - 1))
+#
+#    get_tree().quit()
 
     """ Comment in/out to select game starting scene. """
 
@@ -54,26 +65,33 @@ func _process(_delta):
 
 func loadModule(_parent, _path):
     
+    # get 'module_name' from '_path'
+    var slash_i = _path.rfind('/')
+    var dot_i = _path.rfind('.')
+    var module_name = _path.substr(slash_i + 1, dot_i - slash_i - 1)
+    
+    # check all prev loaded modules, if module already loaded, return it
+    for child in get_children():
+        if module_name == child.name:
+            print("\n>>> [%s] scene already loaded" % module_name)
+            return child
+    
+    # load module (if not prev loaded) and return it
     var Module = load(_path)
     var module = Module.instance()
     _parent.add_child(module)
-    
     return module
 
 
 
 func changeScene(_scene):
     
-    var print_str = "\n>>> changing scene to %s" % _scene
+    for child in get_children():
+        print("\n>>> removing scene [%s]" % child.name)
+        remove_child(child)
+        child.queue_free()
     
-    var current_scene = get_child(0)
-    if current_scene:
-        print_str += " ... from scene %s" % current_scene.name
-        remove_child(current_scene)
-        current_scene.queue_free()
-    
-    print(print_str)
-
+    print("\n>>> changing scene to [%s]" % _scene)
     add_child(load(_scene).instance())
 
 

@@ -749,8 +749,6 @@ func _on_ReloadLastRigButton_pressed() -> void:
 
 func loadRigBuilderFromLastRigDataPack() -> void:
     
-    print("last_rig_data_pack = ", last_rig_data_pack)
-    
     # Load body selection box.
     findAndLoadPartSelectionBox(last_rig_data_pack['body']['part_tag'], 'body')
     
