@@ -13,7 +13,7 @@ extends Node
 
 onready var controls = get_node('/root/Controls')
 
-var save_mod
+#var save_mod
 
 ####################################################################################################
 
@@ -52,14 +52,13 @@ func _process(_delta):
         ############################################################################################
         """ TESTING """
         
-        var pause = get_node('/root/Main/Gameplay/Pause')
+        var save_mod = loadModule(self, 'res://Scenes/Functional/SaveMod.tscn')
         
-        print("pause mouse_sensitivity slider value = ", pause.mouse_sensitivity_slider.value)
-        print("pause mouse_vertical_drag slider value = ", pause.mouse_vertical_drag_slider.value)
-        print("")
-        print("saved_mouse_sensitivity = ", save_mod.getSavedData(['_mouse_sensitivity_']))
-        print("saved_mouse_vertical_drag = ", save_mod.getSavedData(['_mouse_vertical_drag_']))
+        print("\ncontrols.gameplay['vehicle_rig'] =")
+        print(controls.gameplay['vehicle_rig'])
         
+        print("\nsave_mod.getSavedData(['_last_used_vehicle_rig_']) =")
+        print(save_mod.getSavedData(['_last_used_vehicle_rig_']))
         
         ############################################################################################
 

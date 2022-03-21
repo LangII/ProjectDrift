@@ -785,13 +785,119 @@ func _on_Timer2_timeout() -> void:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+THIS NEEDS TO BE CLEANED THE EFF UP!!!
+
+PLUS DO A LOT MORE TESTING BEFORE CLEANING.  JUST TO BE SURE IT'S CORRECT.
+"""
+
+
 func findAndLoadPartSelectionBox(_part_tag:String, _branch_type:String, _parent_type:String='') -> void:
     
-    var part_box_node = getSelectionBox(_branch_type, _parent_type)
-    var part_selected_id = part_box_node.getPopUpIdFromText(_part_tag)
+    print("")
+    print("_part_tag = ", _part_tag)
+    print("_branch_type = ", _branch_type)
+    print("_parent_type = ", _parent_type)
     
-    part_box_node.pop_up.select(part_selected_id)
-    part_box_node._on_PartSelectionPopUp_item_selected(part_selected_id)
+    var branch_type = ""
+    if '_' in _branch_type:  branch_type = _branch_type.left(_branch_type.rfind('_'))
+    print("branch_type = ", branch_type)
+    
+    # get selection box
+    var part_box_node = getSelectionBox(_branch_type, _parent_type)
+    
+    # get list of pop up options
+    var pop_up_options = []
+    for i in range(part_box_node.pop_up.get_item_count()):
+        pop_up_options += [part_box_node.pop_up.get_item_text(i)]
+#    print("pop_up_options = ", pop_up_options)
+    
+    # get list of pop up options with parenthesis
+    var options_with_parens = []
+    for option in pop_up_options:
+        if '(' in option:  options_with_parens += [option]
+    
+    # determine if part tag will be an option with parenthesis
+    var part_tag_is_option_with_parens = false
+    for option in options_with_parens:
+        if option.begins_with(_part_tag + "("):
+            part_tag_is_option_with_parens = true
+            break
+    
+    var part_selected_id = null
+    if part_tag_is_option_with_parens:
+        
+        for option in controls.parts_inv[branch_type].keys():
+            if controls.parts_inv[branch_type][option]['used']:
+                pop_up_options.erase(option)
+        print("pop_up_options = ", pop_up_options)
+        
+            # get list of pop up options with parenthesis
+        var new_options_with_parens = []
+        for option in pop_up_options:
+            if '(' in option:  new_options_with_parens += [option]
+        
+        # get parens options specific for this part tag
+        var options_for_part_tag = []
+        for option in new_options_with_parens:
+            if option.begins_with(_part_tag + "("):  options_for_part_tag += [option]
+        options_for_part_tag.sort()
+        print("options_for_part_tag = ", options_for_part_tag)
+        
+        var part_selected_text = options_for_part_tag[0]
+        
+        part_selected_id = part_box_node.getPopUpIdFromText(part_selected_text)
+    
+        part_box_node.pop_up.select(part_selected_id)
+    
+        controls.parts_inv[branch_type][part_selected_text]['used'] = true
+        
+        """
+        TURNOVER NOTES:
+        - I need to find all the Part Selection Boxes that have this parenthesis part and disable
+        this parenthesis part in all of them.
+        """
+    
+        part_box_node._on_PartSelectionPopUp_item_selected(part_selected_id)
+    
+    else:
+        part_selected_id = part_box_node.getPopUpIdFromText(_part_tag)
+        
+        part_box_node.pop_up.select(part_selected_id)
+    
+        part_box_node._on_PartSelectionPopUp_item_selected(part_selected_id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

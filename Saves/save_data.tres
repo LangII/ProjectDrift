@@ -21,9 +21,17 @@ _last_used_vehicle_rig_ = {
 "boosts": [  ],
 "part_tag": ""
 },
+"blaster_2": {
+"boosts": [  ],
+"part_tag": "BlasterWhite"
+},
+"blaster_3": {
+"boosts": [  ],
+"part_tag": "BlasterWhite"
+},
 "body": {
 "boosts": [  ],
-"part_tag": "BodyWhite"
+"part_tag": "BodyWhiteWithGreen"
 },
 "engines": {
 "boosts": [  ],
@@ -33,10 +41,18 @@ _last_used_vehicle_rig_ = {
 "boosts": [  ],
 "part_tag": "GeneratorWhite"
 },
+"missilelauncher_1": {
+"boosts": [  ],
+"part_tag": "MissileLauncher"
+},
+"missilelauncher_2": {
+"boosts": [  ],
+"part_tag": "MissileLauncher"
+},
 "shields": {
 "boosts": [  ],
 "part_tag": ""
 }
 }
-_mouse_sensitivity_ = 0.00256
+_mouse_sensitivity_ = 0.0032
 _mouse_vertical_drag_ = 0.62
