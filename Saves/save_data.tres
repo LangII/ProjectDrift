@@ -19,19 +19,15 @@ _inv_missilelauncher_boosts_ = [  ]
 _last_used_vehicle_rig_ = {
 "blaster_1": {
 "boosts": [  ],
-"part_tag": ""
+"part_tag": "BlasterWhite"
 },
 "blaster_2": {
 "boosts": [  ],
 "part_tag": "BlasterWhite"
 },
-"blaster_3": {
-"boosts": [  ],
-"part_tag": "BlasterWhite"
-},
 "body": {
 "boosts": [  ],
-"part_tag": "BodyWhiteWithGreen"
+"part_tag": "BodyWhiteWithYellow"
 },
 "engines": {
 "boosts": [  ],
@@ -40,14 +36,6 @@ _last_used_vehicle_rig_ = {
 "generator": {
 "boosts": [  ],
 "part_tag": "GeneratorWhite"
-},
-"missilelauncher_1": {
-"boosts": [  ],
-"part_tag": "MissileLauncher"
-},
-"missilelauncher_2": {
-"boosts": [  ],
-"part_tag": "MissileLauncher"
 },
 "shields": {
 "boosts": [  ],

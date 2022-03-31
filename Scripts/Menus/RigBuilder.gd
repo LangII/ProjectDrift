@@ -785,45 +785,23 @@ func _on_Timer2_timeout() -> void:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-THIS NEEDS TO BE CLEANED THE EFF UP!!!
-
-PLUS DO A LOT MORE TESTING BEFORE CLEANING.  JUST TO BE SURE IT'S CORRECT.
-"""
-
-
 func findAndLoadPartSelectionBox(_part_tag:String, _branch_type:String, _parent_type:String='') -> void:
+    """ I had to severly rewrite this function due to the "(a)", "(b)", "(c)", etc that can be in 
+    part tags when many of a single type of part is in an inventory. """
     
-    print("")
-    print("_part_tag = ", _part_tag)
-    print("_branch_type = ", _branch_type)
-    print("_parent_type = ", _parent_type)
-    
-    var branch_type = ""
-    if '_' in _branch_type:  branch_type = _branch_type.left(_branch_type.rfind('_'))
-    print("branch_type = ", branch_type)
+    # get branch_type_no_suffix
+    var branch_type_no_suffix = ""
+    if '_' in _branch_type:  branch_type_no_suffix = _branch_type.left(_branch_type.rfind('_'))
+    else:  branch_type_no_suffix = _branch_type
+#    print("branch_type_no_suffix = ", branch_type_no_suffix)
     
     # get selection box
-    var part_box_node = getSelectionBox(_branch_type, _parent_type)
+    var selection_box = getSelectionBox(_branch_type, _parent_type)
     
     # get list of pop up options
     var pop_up_options = []
-    for i in range(part_box_node.pop_up.get_item_count()):
-        pop_up_options += [part_box_node.pop_up.get_item_text(i)]
+    for i in range(selection_box.pop_up.get_item_count()):
+        pop_up_options += [selection_box.pop_up.get_item_text(i)]
 #    print("pop_up_options = ", pop_up_options)
     
     # get list of pop up options with parenthesis
@@ -841,12 +819,13 @@ func findAndLoadPartSelectionBox(_part_tag:String, _branch_type:String, _parent_
     var part_selected_id = null
     if part_tag_is_option_with_parens:
         
-        for option in controls.parts_inv[branch_type].keys():
-            if controls.parts_inv[branch_type][option]['used']:
+        # check controls for 'used' true or false and update pop up options accordingly
+        for option in controls.parts_inv[branch_type_no_suffix].keys():
+            if controls.parts_inv[branch_type_no_suffix][option]['used']:
                 pop_up_options.erase(option)
-        print("pop_up_options = ", pop_up_options)
+#        print("pop_up_options = ", pop_up_options)
         
-            # get list of pop up options with parenthesis
+        # get list of pop up options with parenthesis
         var new_options_with_parens = []
         for option in pop_up_options:
             if '(' in option:  new_options_with_parens += [option]
@@ -855,49 +834,20 @@ func findAndLoadPartSelectionBox(_part_tag:String, _branch_type:String, _parent_
         var options_for_part_tag = []
         for option in new_options_with_parens:
             if option.begins_with(_part_tag + "("):  options_for_part_tag += [option]
-        options_for_part_tag.sort()
-        print("options_for_part_tag = ", options_for_part_tag)
+#        print("options_for_part_tag = ", options_for_part_tag)
         
+        # get part selected text
+        options_for_part_tag.sort()
         var part_selected_text = options_for_part_tag[0]
         
-        part_selected_id = part_box_node.getPopUpIdFromText(part_selected_text)
-    
-        part_box_node.pop_up.select(part_selected_id)
-    
-        controls.parts_inv[branch_type][part_selected_text]['used'] = true
+        part_selected_id = selection_box.getPopUpIdFromText(part_selected_text)
         
-        """
-        TURNOVER NOTES:
-        - I need to find all the Part Selection Boxes that have this parenthesis part and disable
-        this parenthesis part in all of them.
-        """
-    
-        part_box_node._on_PartSelectionPopUp_item_selected(part_selected_id)
-    
     else:
-        part_selected_id = part_box_node.getPopUpIdFromText(_part_tag)
+        part_selected_id = selection_box.getPopUpIdFromText(_part_tag)
         
-        part_box_node.pop_up.select(part_selected_id)
-    
-        part_box_node._on_PartSelectionPopUp_item_selected(part_selected_id)
+    selection_box.pop_up.select(part_selected_id)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    selection_box._on_PartSelectionPopUp_item_selected(part_selected_id)
 
 
 
